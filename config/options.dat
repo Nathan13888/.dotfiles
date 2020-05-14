@@ -234,6 +234,8 @@ set winWidth(.analysisWin5)  44
 set winHeight(.analysisWin5) 8
 set winWidth(.analysisWin6)  44
 set winHeight(.analysisWin6) 8
+set winWidth(.analysisWin7)  44
+set winHeight(.analysisWin7) 8
 set winWidth(.baseWin)  310
 set winHeight(.baseWin) 110
 set winWidth(.bdOptions)  856
@@ -358,7 +360,7 @@ set winY(.twinchecker)  128
 set winX(.uciConfigWin)  107
 set winY(.uciConfigWin)  281
 
-set analysisCommand /home/attackercow/chess/Stockfish/src/stockfish
+set analysisCommand /home/attackercow/chess/lc0/build/release/lc0
 
 set lite {#f3f3f3}
 set dark {#6efe81}
@@ -592,7 +594,7 @@ set ::fics::findopponent(manual) auto
 set ::fics::findopponent(rated) unrated
 set ::fics::findopponent(rating1) 1000
 set ::fics::findopponent(rating2) 1500
-set ::docking::layout_list(1) {{MainWindowGeometry 1920x1989+-20+38} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal {}} {TPanedwindow {{.pw.pw0.pw2 vertical 1428} {TPanedwindow {{.pw.pw0.pw2.pw6 horizontal 1272} {TNotebook .tb1 .fdockmain} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8 vertical 459} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8.pw13 horizontal 319} {TNotebook .tb10 .fdockanalysisWin3} {TNotebook .tb14 .fdockanalysisWin4}}} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8.pw11 horizontal {}} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8.pw11.pw20 vertical 460} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8.pw11.pw20.pw22 horizontal 319} {TNotebook .tb23 .fdockanalysisWin5} {TNotebook .tb7 .fdockanalysisWin6}}} {TNotebook .tb21 .fdocktreeWin2}}}}}}}}} {TPanedwindow {{.pw.pw0.pw2.pw4 horizontal 454} {TNotebook .tb5 .fdockpgnWin} {TNotebook .tb3 .fdockglistWin}}}}}}}}}
+set ::docking::layout_list(1) {{MainWindowGeometry 1920x1989+-20+38} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal {}} {TPanedwindow {{.pw.pw0.pw2 vertical 1428} {TPanedwindow {{.pw.pw0.pw2.pw6 horizontal 1272} {TNotebook .tb1 .fdockmain} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8 vertical 459} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8.pw13 horizontal 319} {TNotebook .tb29 .fdockanalysisWin4} {TNotebook .tb28 .fdockanalysisWin7}}} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8.pw11 horizontal {}} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8.pw11.pw20 vertical 460} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8.pw11.pw20.pw22 horizontal 319} {TNotebook .tb23 .fdockanalysisWin5} {TNotebook .tb7 .fdockanalysisWin6}}} {TNotebook .tb21 .fdocktreeWin2}}}}}}}}} {TPanedwindow {{.pw.pw0.pw2.pw4 horizontal 454} {TNotebook .tb5 .fdockpgnWin} {TNotebook .tb3 .fdockglistWin}}}}}}}}}
 set ::docking::layout_list(2) {{MainWindowGeometry 1311x716+65+36} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal 570} {TNotebook .nb .fdockmain} {TPanedwindow {{.pw.pw0.pw2 vertical 261} {TPanedwindow {{.pw.pw0.pw2.pw9 horizontal 235} {TNotebook .tb32 .fdockpgnWin} {TPanedwindow {{.pw.pw0.pw2.pw9.pw30 vertical {}} {TNotebook .tb1 {.fdockplayerInfoWin .fdockcommentWin}}}}}} {TPanedwindow {{.pw.pw0.pw2.pw3 horizontal {}} {TNotebook .tb8 {.fdockglistWin .fdockcrosstabWin}}}}}}}}}}
 set ::docking::layout_list(3) {{MainWindowGeometry 968x666+80+50} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal 566} {TNotebook .nb .fdockmain} {TPanedwindow {{.pw.pw0.pw2 vertical 363} {TNotebook .tb1 {.fdockanalysisWin1 .fdockpgnWin}} {TNotebook .tb3 {.fdocktreeWin1 .fdocktreeBest1}}}}}}}}
 set ::docking::layout_list(4) {{MainWindowGeometry 1449x817+76+30} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal 747} {TNotebook .nb .fdockmain} {TPanedwindow {{.pw.pw0.pw2 vertical {}} {TPanedwindow {{.pw.pw0.pw2.pw3 horizontal {}} {TPanedwindow {{.pw.pw0.pw2.pw3.pw35 vertical 378} {TPanedwindow {{.pw.pw0.pw2.pw3.pw35.pw38 horizontal 347} {TNotebook .tb36 {.fdockpgnWin .fdockcommentWin}} {TNotebook .tb39 {.fdockanalysisWin0 .fdockplayerInfoWin .fdocktreeWin1}}}} {TNotebook .tb8 {.fdockglistWin .fdocksgraph .fdockcrosstabWin}}}}}}}}}}}}

@@ -45,7 +45,7 @@ engine {
   Time 1589344679
   URL  {}
   UCI  1
-  UCIoptions {{Ponder true} {Cache 5000000} {CpuctBase 15000} {CpuctF 2.817} {CpuctInit 2.1} {DebugInfo false} {DebugLog false} {EarlyExitFactor 0.72} {FeaturesOff none} {GPUCores 1} {MaxBatchSize 272} {MoveOverhead 300} {OpeningTimeFactor 2.2} {SyzygyPath /home/attackercow/chess/syzygy-5/} {TryPlayoutLimit 136} {UseFP16 false} {WeightsFile /home/attackercow/chess/allie/bin/256x20-mod-swa-1541000.pb}}
+  UCIoptions {}
 }
 
 engine {
@@ -82,5 +82,17 @@ engine {
   URL  {}
   UCI  1
   UCIoptions {{Threads 4} {Hash 512} {Ponder true} {MultiPV 3} {{Skill Level} 20} {UCI_LimitStrength false} {UCI_Elo 1350} {{Debug Log File} {}} {Contempt 24} {{Analysis Contempt} Both} {{Move Overhead} 30} {{Minimum Thinking Time} 20} {{Slow Mover} 84} {nodestime 0} {SyzygyPath /home/attackercow/chess/syzygy-5/} {SyzygyProbeDepth 1} {Syzygy50MoveRule true} {SyzygyProbeLimit 7}}
+}
+
+engine {
+  Name Ethereal
+  Cmd  /home/attackercow/chess/Ethereal/src/Ethereal
+  Args {}
+  Dir  .
+  Elo  0
+  Time 1589422744
+  URL  {}
+  UCI  1
+  UCIoptions {{Hash 256} {Threads 4} {MultiPV 3} {Ponder false} {ContemptDrawPenalty 0} {ContemptComplexity 0} {MoveOverhead 100} {SyzygyPath /home/attackercow/chess/syzygy-6/} {SyzygyProbeDepth 0}}
 }
 

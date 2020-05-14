@@ -109,8 +109,8 @@ set analysis(showBoard) 1
 set analysis(showEngineInfo) 0
 set scidBooksDir /usr/local/share/scid/books
 set scidBasesDir /usr/local/share/scid/bases
-set ::book::lastBook1 {}
-set ::book::lastBook2 {}
+set ::book::lastBook1 Elo2400.bin
+set ::book::lastBook2 Elo2400.bin
 set ::book::lastTuning {}
 set ::book::sortAlpha 0
 set ::book::showTwo 0
@@ -168,7 +168,7 @@ set ::commenteditor::State(markColor) purple
 set ::commenteditor::State(markType) +
 set boardfile_lite emptySquare
 set boardfile_dark emptySquare
-set ::file::finder::data(dir) /home/attackercow/chess/games
+set ::file::finder::data(dir) /home/attackercow/chess/Caissabase_2019_09_08
 set ::file::finder::data(sort) name
 set ::file::finder::data(Scid) 1
 set ::file::finder::data(PGN) 1
@@ -209,14 +209,14 @@ set ::tools::graphs::type Auto
 set maintFlag W
 set useGraphFigurine 1
 set photosMinimized 0
-set bookmarks(gamehistory) {{g {MyGames:  xXPrototypeXx - Ladekolon, *,  Chess.com 2020} /home/attackercow/chess/games/MyGames 6 1 xXPrototypeXx Ladekolon 2020 Chess.com ? *} {g {MyGames:  jasonmichael79 - xXPrototypeXx, *,  Chess.com 2020} /home/attackercow/chess/games/MyGames 3 1 jasonmichael79 xXPrototypeXx 2020 Chess.com ? *} {g {MyGames:  Porzuneiros - xXPrototypeXx, *,  Chess.com 2020} /home/attackercow/chess/games/MyGames 5 1 Porzuneiros xXPrototypeXx 2020 Chess.com ? *} {g {MyGames:  Porzuneiros - xXPrototypeXx, *,  Chess.com 2020} /home/attackercow/chess/games/MyGames 4 1 Porzuneiros xXPrototypeXx 2020 Chess.com ? *} {g {Caissabase_2019_09_08:  Markelova - Guseva, 0-1,  Sochi (1.3) 2018} /home/attackercow/Downloads/Caissabase_2019_09_08/Caissabase_2019_09_08 1 1 {Markelova, L} {Guseva, Marina} 2018 {Sochi RUS} 1.3 0-1}}
+set bookmarks(gamehistory) {{g {Caissabase_2019_09_08:  Markelova - Guseva, 0-1,  Sochi (1.3) 2018} /home/attackercow/chess/Caissabase_2019_09_08/Caissabase_2019_09_08 1 1 {Markelova, L} {Guseva, Marina} 2018 {Sochi RUS} 1.3 0-1} {g {Caissabase_2019_09_08:  Markelova - Guseva, 0-1,  Sochi (1.3) 2018} /home/attackercow/Downloads/Caissabase_2019_09_08/Caissabase_2019_09_08 1 1 {Markelova, L} {Guseva, Marina} 2018 {Sochi RUS} 1.3 0-1} {g {MyGames:  alexskillet - xXPrototypeXx, 0-1,  Chess.com 2020} /home/attackercow/chess/games/MyGames 1 1 alexskillet xXPrototypeXx 2020 Chess.com ? 0-1} {g {MyGames:  jasonmichael79 - xXPrototypeXx, *,  Chess.com 2020} /home/attackercow/chess/games/MyGames 3 1 jasonmichael79 xXPrototypeXx 2020 Chess.com ? *} {g {MyGames:  alexskillet - xXPrototypeXx, *,  Chess.com 2020} /home/attackercow/chess/games/MyGames 1 1 alexskillet xXPrototypeXx 2020 Chess.com ? *}}
 set playerInfoHistory {}
 set defaultDBs {/home/attackercow/chess/games/MyGames /home/attackercow/Downloads/Caissabase_2019_09_08/Caissabase_2019_09_08}
 set glistSize 19
 set glexport {g6: w13 W4  b13 B4  r3:m2 y4 s11 o4}
-set glistColOrder {0 11 8 15 1 7 2 10 5 6}
-set glistColWidth {52 263 269 114 176 187 168 93 85 178 166 52 248 190 131 95 221 188 367 135 170 56}
-set glistColAnchor {c w w e e w w e e e w e e e e c w e e e w e}
+set glistColOrder {0 15 3 1 7 2 8 10 6 5}
+set glistColWidth {43 236 243 95 176 187 178 93 85 178 166 52 248 190 131 95 221 188 367 135 170 56}
+set glistColAnchor {c w w c e w w e e e w e e e e c w e e e w e}
 set addRatings(overwrite) 0
 set addRatings(filter) 1
 set blistColOrder {0 1 2 3 4 5 6 7 8 9 10 11 12 13}
@@ -268,7 +268,7 @@ set winWidth(.treeWin)  58
 set winHeight(.treeWin) 20
 set winWidth(.twinchecker)  979
 set winHeight(.twinchecker) 614
-set winWidth(.uciConfigWin)  2849
+set winWidth(.uciConfigWin)  1742
 set winHeight(.uciConfigWin) 1684
 
 set winX(.)  -1
@@ -283,8 +283,8 @@ set winX(.crosstabWin)  -1
 set winY(.crosstabWin)  -1
 set winX(.ecograph)  -1
 set winY(.ecograph)  -1
-set winX(.enginelist)  1341
-set winY(.enginelist)  1076
+set winX(.enginelist)  75
+set winY(.enginelist)  937
 set winX(.enginelog4)  -20
 set winY(.enginelog4)  38
 set winX(.finder)  -1
@@ -307,6 +307,8 @@ set winX(.pgnWin)  -1
 set winY(.pgnWin)  -1
 set winX(.playerInfoWin)  -1
 set winY(.playerInfoWin)  -1
+set winX(.spellcheckWin)  441
+set winY(.spellcheckWin)  868
 set winX(.statsWin)  -1
 set winY(.statsWin)  -1
 set winX(.tourney)  0
@@ -353,10 +355,10 @@ set winX(.treeWin9)  -1
 set winY(.treeWin9)  -1
 set winX(.twinchecker)  70
 set winY(.twinchecker)  128
-set winX(.uciConfigWin)  333
-set winY(.uciConfigWin)  254
+set winX(.uciConfigWin)  107
+set winY(.uciConfigWin)  281
 
-set analysisCommand /home/attackercow/chess/Stockfish/src/stockfish
+set analysisCommand /home/attackercow/chess/lc0/build/release/lc0
 
 set lite {#f3f3f3}
 set dark {#6efe81}
@@ -440,7 +442,7 @@ set toolbar(tree) 1
 set twinSettings(colors) Yes
 set twinSettings(comments) Yes
 set twinSettings(day) No
-set twinSettings(delete) Newer
+set twinSettings(delete) Shorter
 set twinSettings(eco) No
 set twinSettings(event) No
 set twinSettings(month) Yes
@@ -471,7 +473,7 @@ set fontOptions(Menu) {{Nimbus Sans} 10 normal roman}
 set fontOptions(Small) {{Nimbus Sans} 10 normal roman}
 set fontOptions(Tiny) {{Nimbus Sans} 8 normal roman}
 set fontOptions(Fixed) {{Liberation Mono} 11 normal roman}
-set initialDir(base) /home/attackercow/Downloads/Caissabase_2019_09_08
+set initialDir(base) /home/attackercow/chess/Caissabase_2019_09_08
 set initialDir(book) /home/attackercow
 set initialDir(html) /home/attackercow
 set initialDir(tex) /home/attackercow
@@ -590,7 +592,7 @@ set ::fics::findopponent(manual) auto
 set ::fics::findopponent(rated) unrated
 set ::fics::findopponent(rating1) 1000
 set ::fics::findopponent(rating2) 1500
-set ::docking::layout_list(1) {{MainWindowGeometry 1920x1989+-20+38} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal {}} {TPanedwindow {{.pw.pw0.pw2 vertical 1428} {TPanedwindow {{.pw.pw0.pw2.pw6 horizontal 1272} {TNotebook .tb1 .fdockmain} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8 vertical 459} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8.pw13 horizontal 319} {TNotebook .tb10 .fdockanalysisWin3} {TNotebook .tb14 .fdockanalysisWin4}}} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8.pw11 horizontal {}} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8.pw11.pw20 vertical 460} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8.pw11.pw20.pw22 horizontal 319} {TNotebook .tb23 .fdockanalysisWin5} {TNotebook .tb7 .fdockanalysisWin6}}} {TNotebook .tb21 .fdocktreeWin2}}}}}}}}} {TPanedwindow {{.pw.pw0.pw2.pw4 horizontal 503} {TNotebook .tb5 .fdockpgnWin} {TNotebook .tb3 .fdockglistWin}}}}}}}}}
+set ::docking::layout_list(1) {{MainWindowGeometry 1920x1989+-20+38} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal {}} {TPanedwindow {{.pw.pw0.pw2 vertical 1428} {TPanedwindow {{.pw.pw0.pw2.pw6 horizontal 1272} {TNotebook .tb1 .fdockmain} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8 vertical 459} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8.pw13 horizontal 319} {TNotebook .tb10 .fdockanalysisWin3} {TNotebook .tb14 .fdockanalysisWin4}}} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8.pw11 horizontal {}} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8.pw11.pw20 vertical 460} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8.pw11.pw20.pw22 horizontal 319} {TNotebook .tb23 .fdockanalysisWin5} {TNotebook .tb7 .fdockanalysisWin6}}} {TNotebook .tb21 .fdocktreeWin2}}}}}}}}} {TPanedwindow {{.pw.pw0.pw2.pw4 horizontal 454} {TNotebook .tb5 .fdockpgnWin} {TNotebook .tb3 .fdockglistWin}}}}}}}}}
 set ::docking::layout_list(2) {{MainWindowGeometry 1311x716+65+36} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal 570} {TNotebook .nb .fdockmain} {TPanedwindow {{.pw.pw0.pw2 vertical 261} {TPanedwindow {{.pw.pw0.pw2.pw9 horizontal 235} {TNotebook .tb32 .fdockpgnWin} {TPanedwindow {{.pw.pw0.pw2.pw9.pw30 vertical {}} {TNotebook .tb1 {.fdockplayerInfoWin .fdockcommentWin}}}}}} {TPanedwindow {{.pw.pw0.pw2.pw3 horizontal {}} {TNotebook .tb8 {.fdockglistWin .fdockcrosstabWin}}}}}}}}}}
 set ::docking::layout_list(3) {{MainWindowGeometry 968x666+80+50} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal 566} {TNotebook .nb .fdockmain} {TPanedwindow {{.pw.pw0.pw2 vertical 363} {TNotebook .tb1 {.fdockanalysisWin1 .fdockpgnWin}} {TNotebook .tb3 {.fdocktreeWin1 .fdocktreeBest1}}}}}}}}
 set ::docking::layout_list(4) {{MainWindowGeometry 1449x817+76+30} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal 747} {TNotebook .nb .fdockmain} {TPanedwindow {{.pw.pw0.pw2 vertical {}} {TPanedwindow {{.pw.pw0.pw2.pw3 horizontal {}} {TPanedwindow {{.pw.pw0.pw2.pw3.pw35 vertical 378} {TPanedwindow {{.pw.pw0.pw2.pw3.pw35.pw38 horizontal 347} {TNotebook .tb36 {.fdockpgnWin .fdockcommentWin}} {TNotebook .tb39 {.fdockanalysisWin0 .fdockplayerInfoWin .fdocktreeWin1}}}} {TNotebook .tb8 {.fdockglistWin .fdocksgraph .fdockcrosstabWin}}}}}}}}}}}}

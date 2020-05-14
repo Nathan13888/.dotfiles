@@ -45,7 +45,7 @@ engine {
   Time 1589344679
   URL  {}
   UCI  1
-  UCIoptions {{Ponder true} {Cache 5000000} {CpuctBase 15000} {CpuctF 2.817} {CpuctInit 2.1} {DebugInfo false} {DebugLog false} {EarlyExitFactor 0.72} {FeaturesOff none} {GPUCores 1} {MaxBatchSize 272} {MoveOverhead 300} {OpeningTimeFactor 2.2} {SyzygyPath <empty>} {TryPlayoutLimit 136} {UseFP16 false} {WeightsFile /home/attackercow/chess/allie/bin/256x20-mod-swa-1541000.pb}}
+  UCIoptions {{Ponder true} {Cache 5000000} {CpuctBase 15000} {CpuctF 2.817} {CpuctInit 2.1} {DebugInfo false} {DebugLog false} {EarlyExitFactor 0.72} {FeaturesOff none} {GPUCores 1} {MaxBatchSize 272} {MoveOverhead 300} {OpeningTimeFactor 2.2} {SyzygyPath /home/attackercow/chess/syzygy-5/} {TryPlayoutLimit 136} {UseFP16 false} {WeightsFile /home/attackercow/chess/allie/bin/256x20-mod-swa-1541000.pb}}
 }
 
 engine {
@@ -54,10 +54,10 @@ engine {
   Args --weights=/home/attackercow/chess/lc0-nets/SV-20b-t40-1541/256x20-mod-swa-1541000.pb
   Dir  .
   Elo  0
-  Time 1589319663
+  Time 1589421517
   URL  {}
   UCI  1
-  UCIoptions {{Threads 4} {MultiPV 3} {Ponder true} {WeightsFile /home/attackercow/chess/lc0-nets/SV-20b-t40-1541/256x20-mod-swa-1541000.pb} {Backend cudnn-auto} {BackendOptions {}} {NNCacheSize 200000} {MinibatchSize 256} {MaxPrefetch 32} {LogitQ false} {CPuct 3.000000} {CPuctBase 19652.000000} {CPuctFactor 2.000000} {Temperature 0.000000} {TempDecayMoves 0} {TempCutoffMove 0} {TempEndgame 0.000000} {TempValueCutoff 100.000000} {TempVisitOffset 0.000000} {DirichletNoise false} {VerboseMoveStats false} {FpuStrategy reduction} {FpuValue 1.200000} {FpuStrategyAtRoot same} {FpuValueAtRoot 1.000000} {CacheHistoryLength 0} {PolicyTemperature 2.200000} {MaxCollisionEvents 32} {MaxCollisionVisits 9999} {OutOfOrderEval true} {StickyEndgames true} {SyzygyFastPlay true} {PerPVCounters false} {ScoreType centipawn} {HistoryFill fen_only} {ShortSightedness 0.000000} {SyzygyPath {}} {ConfigFile lc0.config} {KLDGainAverageInterval 100} {MinimumKLDGainPerNode 0.000000} {SmartPruningFactor 1.330000} {RamLimitMb 0} {MoveOverheadMs 200} {Slowmover 1.000000} {ImmediateTimeUse 1.000000} {LogFile {}}}
+  UCIoptions {{Threads 4} {MultiPV 3} {Ponder true} {WeightsFile /home/attackercow/chess/lc0-nets/SV-20b-t40-1541/256x20-mod-swa-1541000.pb} {Backend cudnn-auto} {BackendOptions {}} {NNCacheSize 200000} {MinibatchSize 256} {MaxPrefetch 32} {LogitQ false} {CPuct 3.000000} {CPuctBase 19652.000000} {CPuctFactor 2.000000} {Temperature 0.000000} {TempDecayMoves 0} {TempCutoffMove 0} {TempEndgame 0.000000} {TempValueCutoff 100.000000} {TempVisitOffset 0.000000} {DirichletNoise false} {VerboseMoveStats false} {FpuStrategy reduction} {FpuValue 1.200000} {FpuStrategyAtRoot same} {FpuValueAtRoot 1.000000} {CacheHistoryLength 0} {PolicyTemperature 2.200000} {MaxCollisionEvents 32} {MaxCollisionVisits 9999} {OutOfOrderEval true} {StickyEndgames true} {SyzygyFastPlay true} {PerPVCounters false} {ScoreType centipawn} {HistoryFill fen_only} {ShortSightedness 0.000000} {SyzygyPath /home/attackercow/chess/syzygy-5/} {ConfigFile lc0.config} {KLDGainAverageInterval 100} {MinimumKLDGainPerNode 0.000000} {SmartPruningFactor 1.330000} {RamLimitMb 0} {MoveOverheadMs 200} {Slowmover 1.000000} {ImmediateTimeUse 1.000000} {LogFile {}}}
 }
 
 engine {
@@ -69,7 +69,7 @@ engine {
   Time 1589304641
   URL  {}
   UCI  1
-  UCIoptions {{Threads 4} {Ponder true} {Hash 512} {MultiPV 3} {OwnBook true} {{Table Memory} 128} {{Book File} komodo.bin} {{Best Book Line} false} {{Log File} <empty>} {{Hash File Name} <empty>} {{Use LMR} true} {{Null Move Pruning} true} {{Minimal Reporting} 0} {{Overhead ms} 30} {{Time Usage} 5} {{Use Syzygy} true} {SyzygyPath <empty>} {{Syzygy Probe Depth} 2} {{Syzygy Probe Limit} 6} {{Syzygy 50 Move Rule} true} {{Smart Syzygy} false} {{King Safety} 73} {Selectivity 73} {Reduction 0} {Dynamism 120} {Contempt 10} {{White Contempt} false} {{Null Scale} 28} {{Progress Threshold} 30} {Variety 0}}
+  UCIoptions {{Threads 4} {Ponder true} {Hash 512} {MultiPV 3} {OwnBook true} {{Table Memory} 128} {{Book File} komodo.bin} {{Best Book Line} false} {{Log File} <empty>} {{Hash File Name} <empty>} {{Use LMR} true} {{Null Move Pruning} true} {{Minimal Reporting} 0} {{Overhead ms} 30} {{Time Usage} 5} {{Use Syzygy} true} {SyzygyPath /home/attackercow/chess/syzygy-5/} {{Syzygy Probe Depth} 2} {{Syzygy Probe Limit} 6} {{Syzygy 50 Move Rule} true} {{Smart Syzygy} false} {{King Safety} 73} {Selectivity 73} {Reduction 0} {Dynamism 120} {Contempt 10} {{White Contempt} false} {{Null Scale} 28} {{Progress Threshold} 30} {Variety 0}}
 }
 
 engine {
@@ -78,9 +78,9 @@ engine {
   Args {}
   Dir  .
   Elo  0
-  Time 1589387885
+  Time 1589300390
   URL  {}
   UCI  1
-  UCIoptions {{Threads 4} {Hash 512} {Ponder true} {MultiPV 3} {{Skill Level} 20} {UCI_LimitStrength false} {UCI_Elo 1350} {{Debug Log File} {}} {Contempt 24} {{Analysis Contempt} Both} {{Move Overhead} 30} {{Minimum Thinking Time} 20} {{Slow Mover} 84} {nodestime 0} {SyzygyPath <empty>} {SyzygyProbeDepth 1} {Syzygy50MoveRule true} {SyzygyProbeLimit 7}}
+  UCIoptions {{Threads 4} {Hash 512} {Ponder true} {MultiPV 3} {{Skill Level} 20} {UCI_LimitStrength false} {UCI_Elo 1350} {{Debug Log File} {}} {Contempt 24} {{Analysis Contempt} Both} {{Move Overhead} 30} {{Minimum Thinking Time} 20} {{Slow Mover} 84} {nodestime 0} {SyzygyPath /home/attackercow/chess/syzygy-5/} {SyzygyProbeDepth 1} {Syzygy50MoveRule true} {SyzygyProbeLimit 7}}
 }
 

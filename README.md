@@ -29,6 +29,7 @@ Nathan's Dot Files for Debian/Ubuntu
 - https://abdullah.today/encrypted-dotfiles/
 - https://medium.com/@webprolific/getting-started-with-dotfiles-43c3602fd789
 - https://github.com/oh-my-fish/oh-my-fish
+- https://hub.github.com/
 
 
 

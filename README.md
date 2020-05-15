@@ -24,4 +24,12 @@ Nathan's Dot Files for Debian/Ubuntu
 
 # Guides
 - https://www.anishathalye.com/2014/08/03/managing-your-dotfiles/
+- https://git-scm.com/docs/git-config
+- https://github.com/mathiasbynens/dotfiles/blob/master/.aliases
+- https://abdullah.today/encrypted-dotfiles/
+- https://medium.com/@webprolific/getting-started-with-dotfiles-43c3602fd789
+
+
+
+
 

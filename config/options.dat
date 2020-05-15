@@ -168,7 +168,7 @@ set ::commenteditor::State(markColor) purple
 set ::commenteditor::State(markType) +
 set boardfile_lite emptySquare
 set boardfile_dark emptySquare
-set ::file::finder::data(dir) /home/attackercow/chess/games/pgns
+set ::file::finder::data(dir) /home/attackercow/chess/games
 set ::file::finder::data(sort) name
 set ::file::finder::data(Scid) 1
 set ::file::finder::data(PGN) 1
@@ -209,7 +209,7 @@ set ::tools::graphs::type Auto
 set maintFlag W
 set useGraphFigurine 1
 set photosMinimized 0
-set bookmarks(gamehistory) {{g {MyGames:  alexskillet - xXPrototypeXx, *,  Chess.com 2020} /home/attackercow/chess/games/MyGames 11 1 alexskillet xXPrototypeXx 2020 Chess.com ? *} {g {MyGames:  xXPrototypeXx - adam568753368, *,  Chess.com 2020} /home/attackercow/chess/games/MyGames 6 1 xXPrototypeXx adam568753368 2020 Chess.com ? *} {g {MyGames:  Porzuneiros - xXPrototypeXx, *,  Chess.com 2020} /home/attackercow/chess/games/MyGames 8 1 Porzuneiros xXPrototypeXx 2020 Chess.com ? *} {g {Caissabase_2019_09_08:  Markelova - Guseva, 0-1,  Sochi (1.3) 2018} /home/attackercow/chess/Caissabase_2019_09_08/Caissabase_2019_09_08 1 1 {Markelova, L} {Guseva, Marina} 2018 {Sochi RUS} 1.3 0-1} {g {MyGames:  alexskillet - xXPrototypeXx, 0-1,  Chess.com 2020} /home/attackercow/chess/games/MyGames 1 1 alexskillet xXPrototypeXx 2020 Chess.com ? 0-1}}
+set bookmarks(gamehistory) {{g {MyGames:  xXPrototypeXx - alexskillet, *,  Chess.com 2020} /home/attackercow/chess/games/MyGames 8 1 xXPrototypeXx alexskillet 2020 Chess.com ? *} {g {MyGames:  xXPrototypeXx - adam568753368, *,  Chess.com 2020} /home/attackercow/chess/games/MyGames 10 1 xXPrototypeXx adam568753368 2020 Chess.com ? *} {g {MyGames:  xXPrototypeXx - 3ladeMaster, *,  Chess.com 2020} /home/attackercow/chess/games/MyGames 9 1 xXPrototypeXx 3ladeMaster 2020 Chess.com ? *} {g {MyGames:  xXPrototypeXx - Ladekolon, *,  Chess.com 2020} /home/attackercow/chess/games/MyGames 1 1 xXPrototypeXx Ladekolon 2020 Chess.com ? *} {g {MyGames:  jasonmichael79 - xXPrototypeXx, *,  Chess.com 2020} /home/attackercow/chess/games/MyGames 5 1 jasonmichael79 xXPrototypeXx 2020 Chess.com ? *}}
 set playerInfoHistory {}
 set defaultDBs {/home/attackercow/chess/games/MyGames /home/attackercow/chess/Caissabase_2019_09_08/Caissabase_2019_09_08}
 set glistSize 19
@@ -487,7 +487,7 @@ set initialDir(epd) /home/attackercow
 set initialDir(stm) /home/attackercow
 set initialDir(sso) /home/attackercow
 set initialDir(sff) /home/attackercow
-set initialDir(pgn) /home/attackercow/chess/games/pgns
+set initialDir(pgn) /home/attackercow/chess/games
 set initialDir(report) /home/attackercow
 set initialDir(tablebase1) {}
 set initialDir(tablebase2) {}

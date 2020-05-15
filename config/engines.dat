@@ -69,7 +69,7 @@ engine {
   Time 1589304641
   URL  {}
   UCI  1
-  UCIoptions {{Threads 4} {Ponder true} {Hash 512} {MultiPV 3} {OwnBook true} {{Table Memory} 128} {{Book File} komodo.bin} {{Best Book Line} false} {{Log File} <empty>} {{Hash File Name} <empty>} {{Use LMR} true} {{Null Move Pruning} true} {{Minimal Reporting} 0} {{Overhead ms} 30} {{Time Usage} 5} {{Use Syzygy} true} {SyzygyPath /home/attackercow/chess/syzygy-5/} {{Syzygy Probe Depth} 2} {{Syzygy Probe Limit} 6} {{Syzygy 50 Move Rule} true} {{Smart Syzygy} false} {{King Safety} 73} {Selectivity 73} {Reduction 0} {Dynamism 120} {Contempt 10} {{White Contempt} false} {{Null Scale} 28} {{Progress Threshold} 30} {Variety 0}}
+  UCIoptions {{Threads 4} {Ponder false} {Hash 512} {MultiPV 3} {OwnBook true} {{Table Memory} 128} {{Book File} komodo.bin} {{Best Book Line} false} {{Log File} <empty>} {{Hash File Name} <empty>} {{Use LMR} true} {{Null Move Pruning} true} {{Minimal Reporting} 0} {{Overhead ms} 30} {{Time Usage} 5} {{Use Syzygy} true} {SyzygyPath /home/attackercow/chess/syzygy-5/} {{Syzygy Probe Depth} 2} {{Syzygy Probe Limit} 6} {{Syzygy 50 Move Rule} true} {{Smart Syzygy} false} {{King Safety} 73} {Selectivity 73} {Reduction 0} {Dynamism 120} {Contempt 10} {{White Contempt} false} {{Null Scale} 28} {{Progress Threshold} 30} {Variety 0}}
 }
 
 engine {

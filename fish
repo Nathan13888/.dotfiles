@@ -1,0 +1,1 @@
+/home/attackercow/.config/fish/

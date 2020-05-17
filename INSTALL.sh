@@ -10,10 +10,10 @@ ln -s ${BASEDIR}/vim/ ~/.vim
 ln -s ${BASEDIR}/gitconfig ~/.gitconfig
 
 # vscode
-
 ln -s ${BASEDIR}/.vscode ~/workspace/Git/.vscode
 
-# fish
+# fish shell
+ln -s ${BASEDIR}/omf ~/.config/fish
 ln -s ${BASEDIR}/fish ~/.config/fish
 
 ## NEED TO ADD OTHER DotFiles

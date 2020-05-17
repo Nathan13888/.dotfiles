@@ -1,4 +1,0 @@
-# Scid vs. PC combobox history lists
-
-set ::utils::history::listData(::windows::gamelist::findtext) {a 3l Ladeko jason 123 pecan jas adam por Pecan}
-set ::utils::history::listData(setupFen) {{6r1/2p5/2p2k2/4r1Np/5p1P/3P1P2/PPPK4/6R1 w - - 0 1} {6r1/2p5/2p2k2/4r1Np/P4p1P/3P1P2/1PPK4/6R1 w - - 0 1}}

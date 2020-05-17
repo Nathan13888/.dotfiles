@@ -1,0 +1,605 @@
+# Scid vs. PC (version 4.21) Options file
+# This file contains commands in the Tcl language format.
+# If you edit this file, you must preserve valid its Tcl
+# format or it will not set your Scid options properly.
+
+set boardSize 140
+set boardStyle Merida1
+set language E
+set ::pgn::showColor 1
+set ::pgn::indentVars 1
+set ::pgn::indentComments 1
+set ::defaultBackground white
+set ::defaultForeground black
+set ::::defaultGraphBackgroud white
+set ::enableBackground 0
+set ::enableForeground 0
+set ::pgn::shortHeader 0
+set ::pgn::boldMainLine 0
+set ::pgn::stripMarks 0
+set ::pgn::symbolicNags 1
+set ::pgn::moveNumberSpaces 0
+set ::pgn::columnFormat 0
+set ::pgn::showScrollbar 1
+set myPlayerNames {}
+set optionsAutoSave 1
+set ::tree::mask::recentMask {}
+set ::tree::mask::autoLoadMask 0
+set ::tree::showBar 1
+set ::tree::short 0
+set ::tree::sortBest 1
+set ::tree::autoAdjust 0
+set ::tree::autoSave 0
+set ::tree::order frequency
+set ::tree::showFrame 1
+set ecoFile /usr/local/share/scid/data/scid.eco
+set showVarPopup 0
+set showVarArrows 1
+set colorActiveSquare 1
+set annotate(blunder) 1.0
+set annotate(addTag) 1
+set annotate(Moves) all
+set annotate(WithVars) blunders
+set annotate(WithScore) allmoves
+set useAnalysisBook 0
+set annotate(isVar) 0
+set annotate(scoreType) {+ 1.5}
+set annotate(cutoff) 5.0
+set annotate(MissedMates) 1
+set annotate(WantedDepth) 13
+set annotate(Depth) 1
+set autoplayDelay 5000
+set animateDelay 200
+set boardCoords 1
+set boardSTM 1
+set moveEntry(AutoExpand) 0
+set moveEntry(Coord) 1
+set translatePieces 1
+set highlightLastMove 1
+set highlightLastMoveWidth 2
+set highlightLastMoveColor {#ffc83c}
+set askToReplaceMoves 1
+set ::windows::switcher::icons 0
+set ::windows::switcher::confirmCopy 1
+set locale(numeric) .,
+set spellCheckFile /usr/local/share/scid/spelling.ssp
+set ::splash::keepopen 0
+set autoRaise 1
+set autoIconify 1
+set windowsDock 1
+set autoLoadLayout 1
+set exportFlags(comments) 1
+set exportFlags(space) 1
+set exportFlags(vars) 1
+set exportFlags(indentc) 0
+set exportFlags(indentv) 1
+set exportFlags(column) 0
+set exportFlags(htmldiag) 0
+set exportFlags(utf8) 0
+set email(smtp) 1
+set email(smproc) /usr/lib/sendmail
+set email(server) localhost
+set email(from) {}
+set email(bcc) {}
+set ::windows::gamelist::findcase 1
+set ::windows::gamelist::showButtons 1
+set gameInfo(show) 1
+set gameInfo(photos) 0
+set gameInfo(wrap) 0
+set gameInfo(showStatus) 0
+set gameInfo(fullComment) 0
+set gameInfo(showMarks) 1
+set gameInfo(showMenu) 1
+set gameInfo(showTool) 0
+set gameInfo(showMaterial) 1
+set gameInfo(showFEN) 0
+set gameInfo(showButtons) 1
+set gameInfo(showTB) 2
+set analysis(mini) 0
+set engines(F2) 4
+set engines(F3) 5
+set engines(F4) 6
+set analysis(logMax) 5000
+set analysis(logName) 1
+set analysis(maxPly) 0
+set analysis(lowPriority) 1
+set analysis(boardSize) 2
+set analysis(boardShowsVar) 1
+set analysis(showBoard) 1
+set analysis(showEngineInfo) 0
+set scidBooksDir /usr/local/share/scid/books
+set scidBasesDir /usr/local/share/scid/bases
+set ::book::lastBook1 Elo2400.bin
+set ::book::lastBook2 Elo2400.bin
+set ::book::lastTuning {}
+set ::book::sortAlpha 0
+set ::book::showTwo 0
+set ::book::oppMovesVisible 0
+set ::gbrowser::size 35
+set crosstab(type) auto
+set crosstab(ages) +ages
+set crosstab(countries) +countries
+set crosstab(ratings) +ratings
+set crosstab(titles) +titles
+set crosstab(breaks) -breaks
+set crosstab(colorrows) 1
+set crosstab(deleted) -deleted
+set crosstab(colors) +colors
+set crosstab(cnumbers) -numcolumns
+set crosstab(groups) -groups
+set crosstab(sort) score
+set crosstab(tallies) +tallies
+set crosstab(tiewin) -tiewin
+set crosstab(tiehead) -tiehead
+set ::utils::sound::soundFolder {}
+set ::utils::sound::announceNew 0
+set ::utils::sound::announceTock 0
+set ::utils::sound::announceForward 0
+set ::utils::sound::announceBack 0
+set ::utils::sound::device {}
+set ::tacgame::threshold 0.9
+set ::tacgame::levelMin 1200
+set ::tacgame::levelMax 2200
+set ::tacgame::levelFixed 1500
+set ::tacgame::randomLevel 0
+set ::tacgame::showblunder 1
+set ::tacgame::showblundervalue 1
+set ::tacgame::showblunderfound 1
+set ::tacgame::showmovevalue 1
+set ::tacgame::showevaluation 1
+set ::tacgame::isLimitedAnalysisTime 1
+set ::tacgame::analysisTime 10
+set ::tacgame::openingType new
+set ::tacgame::chosenOpening 0
+set ::sergame::bookToUse {}
+set ::sergame::useBook 1
+set ::sergame::startFromCurrent 0
+set ::sergame::winc 10
+set ::sergame::wtime 5
+set ::sergame::binc 10
+set ::sergame::btime 5
+set ::sergame::timeMode movetime
+set ::sergame::movetime 6
+set ::sergame::current 0
+set ::sergame::chosenOpening 0
+set ::sergame::isOpening 0
+set ::commenteditor::showBoard 1
+set ::commenteditor::State(markColor) purple
+set ::commenteditor::State(markType) +
+set boardfile_lite emptySquare
+set boardfile_dark emptySquare
+set ::file::finder::data(dir) /home/attackercow/chess/games
+set ::file::finder::data(sort) name
+set ::file::finder::data(Scid) 1
+set ::file::finder::data(PGN) 1
+set ::file::finder::data(EPD) 1
+set ::file::finder::data(Old) 1
+set FilterMaxMoves 80
+set FilterMinMoves 5
+set FilterStepMoves 1
+set FilterMaxElo 2800
+set FilterMinElo 2100
+set FilterStepElo 100
+set FilterMaxYear 2020
+set FilterMinYear 1995
+set FilterStepYear 1
+set FilterGuessELO 1
+set lookTheme default
+set autoResizeBoard 1
+set comp(timecontrol) pergame
+set comp(seconds) 180
+set comp(base) 60
+set comp(incr) 1
+set comp(timeout) 0
+set comp(name) {Scid vs. PC}
+set comp(usebook) 0
+set comp(book) {}
+set comp(rounds) 2
+set comp(showclock) 0
+set comp(debug) 1
+set comp(animate) 1
+set comp(type) Normal
+set comp(ponder) 0
+set comp(scoreType) No
+set ::tools::graphs::filter::type year
+set ::tools::graphs::absfilter::type year
+set ::tools::graphs::showpoints 1
+set ::tools::graphs::showbar 1
+set ::tools::graphs::type Auto
+set maintFlag W
+set useGraphFigurine 1
+set photosMinimized 0
+set bookmarks(gamehistory) {{g {MyGames:  xXPrototypeXx - alexskillet, *,  Chess.com 2020} /home/attackercow/chess/games/MyGames 8 1 xXPrototypeXx alexskillet 2020 Chess.com ? *} {g {MyGames:  xXPrototypeXx - adam568753368, *,  Chess.com 2020} /home/attackercow/chess/games/MyGames 10 1 xXPrototypeXx adam568753368 2020 Chess.com ? *} {g {MyGames:  xXPrototypeXx - 3ladeMaster, *,  Chess.com 2020} /home/attackercow/chess/games/MyGames 9 1 xXPrototypeXx 3ladeMaster 2020 Chess.com ? *} {g {MyGames:  xXPrototypeXx - Ladekolon, *,  Chess.com 2020} /home/attackercow/chess/games/MyGames 1 1 xXPrototypeXx Ladekolon 2020 Chess.com ? *} {g {MyGames:  jasonmichael79 - xXPrototypeXx, *,  Chess.com 2020} /home/attackercow/chess/games/MyGames 5 1 jasonmichael79 xXPrototypeXx 2020 Chess.com ? *}}
+set playerInfoHistory {}
+set defaultDBs {/home/attackercow/chess/games/MyGames /home/attackercow/chess/Caissabase_2019_09_08/Caissabase_2019_09_08}
+set glistSize 19
+set glexport {g6: w13 W4  b13 B4  r3:m2 y4 s11 o4}
+set glistColOrder {0 15 3 1 7 2 8 10 6 5}
+set glistColWidth {43 236 243 95 176 187 178 93 85 178 166 52 248 190 131 95 221 188 367 135 170 56}
+set glistColAnchor {c w w c e w w e e e w e e e e c w e e e w e}
+set addRatings(overwrite) 0
+set addRatings(filter) 1
+set blistColOrder {0 1 2 3 4 5 6 7 8 9 10 11 12 13}
+set blistColWidth {56 112 112 40 40 80 80 40 40 40 80 24 56 48}
+set blistColAnchor {e w w e e w w e e e w e w w}
+set macWheelMouse 1
+set epdAnnotateMode 0
+set epdDelay 3
+
+set winWidth(.analysisWin3)  44
+set winHeight(.analysisWin3) 8
+set winWidth(.analysisWin4)  44
+set winHeight(.analysisWin4) 8
+set winWidth(.analysisWin5)  44
+set winHeight(.analysisWin5) 8
+set winWidth(.analysisWin6)  44
+set winHeight(.analysisWin6) 8
+set winWidth(.analysisWin7)  44
+set winHeight(.analysisWin7) 8
+set winWidth(.baseWin)  310
+set winHeight(.baseWin) 110
+set winWidth(.bdOptions)  856
+set winHeight(.bdOptions) 1478
+set winWidth(.ccWindow)  10
+set winHeight(.ccWindow) 20
+set winWidth(.commentWin)  40
+set winHeight(.commentWin) 6
+set winWidth(.crosstabWin)  75
+set winHeight(.crosstabWin) 15
+set winWidth(.enginelist)  20
+set winHeight(.enginelist) 10
+set winWidth(.enginelog4)  1299
+set winHeight(.enginelog4) 1257
+set winWidth(.fontdialog)  819
+set winHeight(.fontdialog) 446
+set winWidth(.helpWin)  50
+set winHeight(.helpWin) 32
+set winWidth(.maintWin)  1060
+set winHeight(.maintWin) 922
+set winWidth(.pgnWin)  65
+set winHeight(.pgnWin) 20
+set winWidth(.playerInfoWin)  45
+set winHeight(.playerInfoWin) 20
+set winWidth(.setup)  1279
+set winHeight(.setup) 1291
+set winWidth(.spellcheckWin)  55
+set winHeight(.spellcheckWin) 25
+set winWidth(.statsWin)  60
+set winHeight(.statsWin) 13
+set winWidth(.tourney)  120
+set winHeight(.tourney) 22
+set winWidth(.treeWin)  58
+set winHeight(.treeWin) 20
+set winWidth(.twinchecker)  979
+set winHeight(.twinchecker) 614
+set winWidth(.uciConfigWin)  1742
+set winHeight(.uciConfigWin) 1684
+
+set winX(.)  -1
+set winY(.)  -1
+set winX(.baseWin)  -1
+set winY(.baseWin)  -1
+set winX(.bdOptions)  0
+set winY(.bdOptions)  52
+set winX(.commentWin)  -1
+set winY(.commentWin)  -1
+set winX(.crosstabWin)  -1
+set winY(.crosstabWin)  -1
+set winX(.ecograph)  -1
+set winY(.ecograph)  -1
+set winX(.enginelist)  75
+set winY(.enginelist)  937
+set winX(.enginelog4)  -20
+set winY(.enginelog4)  38
+set winX(.finder)  -1
+set winY(.finder)  -1
+set winX(.fontdialog)  550
+set winY(.fontdialog)  685
+set winX(.glist)  -1
+set winY(.glist)  -1
+set winX(.glistWin)  -1
+set winY(.glistWin)  -1
+set winX(.helpWin)  0
+set winY(.helpWin)  0
+set winX(.main)  -1
+set winY(.main)  -1
+set winX(.maintWin)  11
+set winY(.maintWin)  554
+set winX(.nedit)  -1
+set winY(.nedit)  -1
+set winX(.pgnWin)  -1
+set winY(.pgnWin)  -1
+set winX(.playerInfoWin)  -1
+set winY(.playerInfoWin)  -1
+set winX(.setup)  70
+set winY(.setup)  128
+set winX(.spellcheckWin)  441
+set winY(.spellcheckWin)  868
+set winX(.statsWin)  -1
+set winY(.statsWin)  -1
+set winX(.tourney)  0
+set winY(.tourney)  0
+set winX(.treeBest)  -1
+set winY(.treeBest)  -1
+set winX(.treeBest1)  -1
+set winY(.treeBest1)  -1
+set winX(.treeBest2)  -1
+set winY(.treeBest2)  -1
+set winX(.treeBest3)  -1
+set winY(.treeBest3)  -1
+set winX(.treeBest4)  -1
+set winY(.treeBest4)  -1
+set winX(.treeBest5)  -1
+set winY(.treeBest5)  -1
+set winX(.treeBest6)  -1
+set winY(.treeBest6)  -1
+set winX(.treeBest7)  -1
+set winY(.treeBest7)  -1
+set winX(.treeBest8)  -1
+set winY(.treeBest8)  -1
+set winX(.treeBest9)  -1
+set winY(.treeBest9)  -1
+set winX(.treeWin)  -1
+set winY(.treeWin)  -1
+set winX(.treeWin1)  -1
+set winY(.treeWin1)  -1
+set winX(.treeWin2)  -1
+set winY(.treeWin2)  -1
+set winX(.treeWin3)  -1
+set winY(.treeWin3)  -1
+set winX(.treeWin4)  -1
+set winY(.treeWin4)  -1
+set winX(.treeWin5)  -1
+set winY(.treeWin5)  -1
+set winX(.treeWin6)  -1
+set winY(.treeWin6)  -1
+set winX(.treeWin7)  -1
+set winY(.treeWin7)  -1
+set winX(.treeWin8)  -1
+set winY(.treeWin8)  -1
+set winX(.treeWin9)  -1
+set winY(.treeWin9)  -1
+set winX(.twinchecker)  70
+set winY(.twinchecker)  128
+set winX(.uciConfigWin)  107
+set winY(.uciConfigWin)  281
+
+set analysisCommand /home/attackercow/chess/Stockfish/src/stockfish
+
+set lite {#f3f3f3}
+set dark {#6efe81}
+set highcolor {#ce0e46}
+set bgcolor {#333333}
+set maincolor black
+set varcolor {#807e76}
+set engineLineColor black
+set rowcolor lightsteelblue1
+set progcolor rosybrown
+set crosscolor grey80
+set scorecolor steelblue
+set scorebarcolor grey10
+set switchercolor lightsteelblue3
+set borderwidth 3
+set pgnColor(Header) {#00008b}
+set pgnColor(Main) {#000000}
+set pgnColor(Var) {#0000ee}
+set pgnColor(Nag) {#aa2c2c}
+set pgnColor(Comment) {#008b00}
+set pgnColor(Background) {#ffffff}
+set pgnColor(Current) lightSteelBlue
+set pgnColor(NextMove) {#fefe80}
+
+set optable(AvgPerf) 1
+set optable(Endgames) 1
+set optable(ExtraMoves) 1
+set optable(HighRating) 8
+set optable(MaxGames) 500
+set optable(MostFrequent) 6
+set optable(MostFrequentBlack) 1
+set optable(MostFrequentWhite) 1
+set optable(MoveOrders) 8
+set optable(MovesFrom) 1
+set optable(Newest) 5
+set optable(Oldest) 5
+set optable(Popular) 1
+set optable(Results) 1
+set optable(Shortest) 5
+set optable(ShortestBlack) 1
+set optable(ShortestWhite) 1
+set optable(Stats) 1
+set optable(Themes) 1
+set startup(book) 0
+set startup(crosstable) 0
+set startup(fics) 0
+set startup(finder) 0
+set startup(gamelist) 0
+set startup(pgn) 0
+set startup(stats) 0
+set startup(switcher) 0
+set startup(tip) 0
+set startup(tree) 0
+set toolbar(bkm) 1
+set toolbar(book) 1
+set toolbar(bsearch) 0
+set toolbar(close) 0
+set toolbar(comment) 0
+set toolbar(copy) 0
+set toolbar(crosst) 1
+set toolbar(eco) 0
+set toolbar(engine) 1
+set toolbar(finder) 0
+set toolbar(gfirst) 1
+set toolbar(glast) 1
+set toolbar(glist) 1
+set toolbar(gnext) 1
+set toolbar(gprev) 1
+set toolbar(hsearch) 0
+set toolbar(maint) 1
+set toolbar(msearch) 0
+set toolbar(new) 0
+set toolbar(newgame) 0
+set toolbar(open) 0
+set toolbar(paste) 0
+set toolbar(pgn) 1
+set toolbar(rfilter) 0
+set toolbar(save) 1
+set toolbar(tmt) 1
+set toolbar(tree) 1
+set twinSettings(colors) Yes
+set twinSettings(comments) Yes
+set twinSettings(day) Yes
+set twinSettings(delete) Shorter
+set twinSettings(eco) Yes
+set twinSettings(event) No
+set twinSettings(month) Yes
+set twinSettings(moves) Yes
+set twinSettings(players) No
+set twinSettings(result) No
+set twinSettings(round) Yes
+set twinSettings(setfilter) Yes
+set twinSettings(site) No
+set twinSettings(skipshort) Yes
+set twinSettings(undelete) Yes
+set twinSettings(usefilter) No
+set twinSettings(variations) Yes
+set twinSettings(year) Yes
+set cleaner(cgames) 0
+set cleaner(cnames) 0
+set cleaner(eco) 1
+set cleaner(elo) 1
+set cleaner(events) 1
+set cleaner(players) 1
+set cleaner(rounds) 1
+set cleaner(sites) 1
+set cleaner(tree) 0
+set cleaner(twins) 1
+
+set fontOptions(Regular) {{Nimbus Sans} 11 normal roman}
+set fontOptions(Menu) {{Nimbus Sans} 10 normal roman}
+set fontOptions(Small) {{Nimbus Sans} 10 normal roman}
+set fontOptions(Tiny) {{Nimbus Sans} 8 normal roman}
+set fontOptions(Fixed) {{Liberation Mono} 11 normal roman}
+set initialDir(base) /home/attackercow/chess/Caissabase_2019_09_08
+set initialDir(book) /home/attackercow
+set initialDir(html) /home/attackercow
+set initialDir(tex) /home/attackercow
+set initialDir(epd) /home/attackercow
+set initialDir(stm) /home/attackercow
+set initialDir(sso) /home/attackercow
+set initialDir(sff) /home/attackercow
+set initialDir(pgn) /home/attackercow/chess/games
+set initialDir(report) /home/attackercow
+set initialDir(tablebase1) {}
+set initialDir(tablebase2) {}
+set initialDir(tablebase3) {}
+set initialDir(tablebase4) {}
+
+set exportStartFile(PGN) {}
+set exportEndFile(PGN) {}
+set exportStartFile(HTML) {<html>
+  <head><title>Scid export</title></head>
+  <body bgcolor="#ffffff">
+}
+set exportEndFile(HTML) {</body>
+  </html>
+}
+set exportStartFile(Latex) {\documentclass[10pt,DIV=20]{scrreprt}
+% This is a LaTeX file generated by Scid.
+% You must have the skak, KOMAScript and pstricks packages installed to typeset this file.
+
+\usepackage{scrpage2}
+\usepackage{charter}
+\usepackage[svgnames]{xcolor}
+\usepackage{xskak}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{latexsym}
+\usepackage{pstricks-add}
+\usepackage{tabularx}
+
+% \definecolor{VariationColor}{gray}{0.40}
+\definecolor{VariationColor}{RGB}{0,0,128}
+% \definecolor{ScoreColor}{gray}{0.40}
+\definecolor{ScoreColor}{RGB}{255,215,0}
+\definecolor{GridColor}{RGB}{72,61,139}
+\definecolor{EvenGameColor}{RGB}{240,240,240}
+\definecolor{BlackPiecesGraphColor}{RGB}{101,37,37}
+\definecolor{WhitePiecesGraphColor}{RGB}{189,183,107}
+
+\setlength{\extrarowheight}{3pt}  
+  
+\newcommand{\win}{1-0}
+\newcommand{\loss}{0-1}  
+\newcommand{\draw}{=-=}  
+\newcommand{\p}{\figsymbol{p}}
+\newcommand{\N}{\figsymbol{N}}
+\newcommand{\B}{\figsymbol{B}}
+\newcommand{\R}{\figsymbol{R}}
+\newcommand{\Q}{\figsymbol{Q}}  
+\newcommand{\K}{\figsymbol{K}}    
+  
+\renewcommand*\thesection{\arabic{section}}
+\addtokomafont{section}{\color{blue}}
+\addtokomafont{subsection}{\color{red}}
+
+\begin{document}
+}
+set exportEndFile(Latex) {\end{document}
+}
+
+set latexRendering(engine) {pdflatex -interaction=nonstopmode}
+set latexRendering(viewer) xdg-open
+
+set informant("!?") 0.5
+set informant("++-") 5.5
+set informant("+-") 3.0
+set informant("+/-") 1.5
+set informant("+=") 0.5
+set informant("?!") 0.5
+set informant("?") 1.5
+set informant("??") 3.0
+
+set ::fics::use_timeseal 0
+set ::fics::timeseal_exec timeseal
+set ::fics::port_fics 5000
+set ::fics::port_timeseal 5001
+set ::fics::login {}
+set ::fics::password {}
+set ::fics::consolebg grey35
+set ::fics::consolefg LimeGreen
+set ::fics::chanoff 1
+set ::fics::shouts 1
+set ::fics::server_ip 0.0.0.0
+set ::fics::consolebg grey35
+set ::fics::consolefg LimeGreen
+set ::fics::autopromote 0
+set ::fics::storeclk 1
+set ::fics::autoraise 1
+set ::fics::size 2
+set ::fics::sound 0
+set ::fics::no_results 0
+set ::fics::no_requests 0
+set ::fics::server freechess.org
+set ::fics::init_commands {{set gin  0} {set echo 1} {set seek 0}}
+set ::fics::show_buttons 1
+set ::fics::allow_premove 1
+set ::fics::user_buttons {FICSInfo FICSOpponent Abort}
+set ::fics::user_commands {
+	{::fics::writechan finger ; ::fics::writechan "inchannel $::fics::reallogin"}
+	{if {$::fics::opponent != {}} { ::fics::writechan "finger $::fics::opponent" }}
+	{::fics::writechan "abort"}
+      }
+set ::fics::findopponent(color) auto
+set ::fics::findopponent(formula) {}
+set ::fics::findopponent(incTime) 0
+set ::fics::findopponent(initTime) 10
+set ::fics::findopponent(limitrating) 0
+set ::fics::findopponent(manual) auto
+set ::fics::findopponent(rated) unrated
+set ::fics::findopponent(rating1) 1000
+set ::fics::findopponent(rating2) 1500
+set ::docking::layout_list(1) {{MainWindowGeometry 1920x1989+-20+38} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal {}} {TPanedwindow {{.pw.pw0.pw2 vertical 1428} {TPanedwindow {{.pw.pw0.pw2.pw6 horizontal 1272} {TNotebook .tb1 .fdockmain} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8 vertical 459} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8.pw13 horizontal 319} {TNotebook .tb29 .fdockanalysisWin4} {TNotebook .tb28 .fdockanalysisWin7}}} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8.pw11 horizontal {}} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8.pw11.pw20 vertical 460} {TPanedwindow {{.pw.pw0.pw2.pw6.pw8.pw11.pw20.pw22 horizontal 319} {TNotebook .tb23 .fdockanalysisWin5} {TNotebook .tb7 .fdockanalysisWin6}}} {TNotebook .tb21 .fdocktreeWin2}}}}}}}}} {TPanedwindow {{.pw.pw0.pw2.pw4 horizontal 454} {TNotebook .tb5 .fdockpgnWin} {TNotebook .tb3 .fdockglistWin}}}}}}}}}
+set ::docking::layout_list(2) {{MainWindowGeometry 1311x716+65+36} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal 570} {TNotebook .nb .fdockmain} {TPanedwindow {{.pw.pw0.pw2 vertical 261} {TPanedwindow {{.pw.pw0.pw2.pw9 horizontal 235} {TNotebook .tb32 .fdockpgnWin} {TPanedwindow {{.pw.pw0.pw2.pw9.pw30 vertical {}} {TNotebook .tb1 {.fdockplayerInfoWin .fdockcommentWin}}}}}} {TPanedwindow {{.pw.pw0.pw2.pw3 horizontal {}} {TNotebook .tb8 {.fdockglistWin .fdockcrosstabWin}}}}}}}}}}
+set ::docking::layout_list(3) {{MainWindowGeometry 968x666+80+50} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal 566} {TNotebook .nb .fdockmain} {TPanedwindow {{.pw.pw0.pw2 vertical 363} {TNotebook .tb1 {.fdockanalysisWin1 .fdockpgnWin}} {TNotebook .tb3 {.fdocktreeWin1 .fdocktreeBest1}}}}}}}}
+set ::docking::layout_list(4) {{MainWindowGeometry 1449x817+76+30} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal 747} {TNotebook .nb .fdockmain} {TPanedwindow {{.pw.pw0.pw2 vertical {}} {TPanedwindow {{.pw.pw0.pw2.pw3 horizontal {}} {TPanedwindow {{.pw.pw0.pw2.pw3.pw35 vertical 378} {TPanedwindow {{.pw.pw0.pw2.pw3.pw35.pw38 horizontal 347} {TNotebook .tb36 {.fdockpgnWin .fdockcommentWin}} {TNotebook .tb39 {.fdockanalysisWin0 .fdockplayerInfoWin .fdocktreeWin1}}}} {TNotebook .tb8 {.fdockglistWin .fdocksgraph .fdockcrosstabWin}}}}}}}}}}}}
+set ::docking::layout_list(5) {}

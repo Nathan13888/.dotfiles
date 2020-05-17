@@ -21,6 +21,10 @@ Nathan's Dot Files for Debian/Ubuntu
  - [ ] via
  - [ ] openrazer
 
+## Other Dot File Repositories
+https://github.com/Nathan13888/ChessGames
+https://github.com/Nathan13888/lc0-nets
+https://github.com/Nathan13888/.vscode
 
 # Guides
 - https://www.anishathalye.com/2014/08/03/managing-your-dotfiles/

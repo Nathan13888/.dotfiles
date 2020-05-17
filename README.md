@@ -8,20 +8,19 @@ Nathan's Dot Files for Debian/Ubuntu
 - everything below
 - add delete old backups script
 
-## TO ADD
+## Dot Files
 - [ ] vimrc
 - [ ] bashrc
-- [ ] scidvspc
-- [ ] vscode
+- [x] scidvspc
+- [x] vscode (git clone)
 - [ ] crontab
-- [ ] gitconfig
-- [ ] config
- - [ ] omf
+- [x] gitconfig
+- .config
+ - [x] omf
+ - [x] fish
  - [ ] via
  - [ ] openrazer
 
-## OTHER
-- setup dotbot
 
 # Guides
 - https://www.anishathalye.com/2014/08/03/managing-your-dotfiles/

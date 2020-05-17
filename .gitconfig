@@ -2,7 +2,7 @@
 	name = Nathan13888
 	email = 29968201+Nathan13888@users.noreply.github.com
 [core]
-	editor = nano
+	editor = /usr/bin/nano
 	autocrlf = input
 [credential]
 	helper = store
@@ -11,5 +11,23 @@
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+[color "status"]
+	added = green
+	changed = blue
+	untracked = red 
+[color "diff"]
+	meta = yellow
+	old = red 
+	new = green
+[alias]
+	st = status
+	com = commit
+	ch = checkout
+	tm = merge --no-ff --no-commit
+	pp = !git pull && git push
 [hub]
 	protocol = https

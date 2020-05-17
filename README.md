@@ -15,16 +15,15 @@ Nathan's Dot Files for Debian/Ubuntu
 - [x] vscode (git clone)
 - [ ] crontab
 - [x] gitconfig
-- .config
- - [x] omf
- - [x] fish
- - [ ] via
- - [ ] openrazer
+- [x] omf
+- [x] fish
+- [ ] via
+- [ ] openrazer
 
 ## Other Dot File Repositories
-https://github.com/Nathan13888/ChessGames
-https://github.com/Nathan13888/lc0-nets
-https://github.com/Nathan13888/.vscode
+- https://github.com/Nathan13888/ChessGames
+- https://github.com/Nathan13888/lc0-nets
+- https://github.com/Nathan13888/.vscode
 
 # Guides
 - https://www.anishathalye.com/2014/08/03/managing-your-dotfiles/

@@ -1,19 +1,44 @@
 #!/bin/bash
 
-BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+dotfilesDir=$(pwd)
+
+function link {
+  dest="${HOME}/${1}"
+  dateStr=$(date +%Y-%m-%d-%H%M)
+
+  if [ -h ~/${1} ]; then
+    # Existing symlink 
+    echo "Removing existing symlink: ${dest}"
+    rm ${dest} 
+
+  elif [ -f "${dest}" ]; then
+    # Existing file
+    echo "Backing up existing file: ${dest}"
+    mv ${dest}{,.${dateStr}}
+
+  elif [ -d "${dest}" ]; then
+    # Existing dir
+    echo "Backing up existing dir: ${dest}"
+    mv ${dest}{,.${dateStr}}
+  fi
+
+  echo "Creating new symlink: ${dest}"
+  ln -s ${dotfilesDir}/${1} ${dest}
+}
 
 # vim
-ln -s ${BASEDIR}/vimrc ~/.vimrc
-ln -s ${BASEDIR}/vim/ ~/.vim
+link .vim
+link .vimrc
 
 # git
-#ln -s ${BASEDIR}/gitconfig ~/.gitconfig
+link .gitconfig
 
 # vscode
-ln -s ${BASEDIR}/.vscode ~/workspace/Git/.vscode
+#link workspace/Git/.vscode
+# Just do --> git clone Nathan13888/.vscode
 
 # fish shell
-ln -s ${BASEDIR}/omf ~/.config/fish
-ln -s ${BASEDIR}/fish ~/.config/fish
+link .config/fish
+link .config/omf
 
 ## NEED TO ADD OTHER DotFiles

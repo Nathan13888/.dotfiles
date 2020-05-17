@@ -1,0 +1,15 @@
+[user]
+	name = Nathan13888
+	email = 29968201+Nathan13888@users.noreply.github.com
+[core]
+	editor = nano
+	autocrlf = input
+[credential]
+	helper = store
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+[hub]
+	protocol = https

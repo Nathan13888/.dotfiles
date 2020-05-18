@@ -27,8 +27,8 @@ function link {
 }
 
 # vim
-#link .vim
-#link .vimrc
+link .vim
+link .vimrc
 
 # git
 link .gitconfig

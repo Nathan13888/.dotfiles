@@ -1,3 +1,7 @@
 [submodule "fonts"]
 	path = fonts
 	url = https://github.com/powerline/fonts
+[submodule "source-code-pro"]
+	path = source-code-pro
+	url = https://github.com/adobe-fonts/source-code-pro/
+	branch = release

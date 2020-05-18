@@ -4,15 +4,14 @@ Nathan's Dot Files for Debian/Ubuntu
 
 # TODO
 
-## Dotfiles to Configure / Improve
-- everything below
+## Features
 - add delete old backups script
 - implement dotbot --> https://github.com/anishathalye/dotbot/tree/5d83f9e797b1950199e127a8196803f5e33e0916
 - git alias and colours
 - add fish themes and configs
 - terminal colours
-- add fonts folder and add to lfs; also add fonts checklist in README
-- remove fish dotfiles 
+- add Script to automate downloading submodules in the future
+ 
 
 ## Dot Files
 - [ ] vimrc

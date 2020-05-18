@@ -10,7 +10,7 @@ Nathan's Dot Files for Debian/Ubuntu
 - git alias and colours
 - add fish themes and configs
 - terminal colours
-- add Script to automate downloading submodules in the future
+- fix submodule downloading script
  
 
 ## Dot Files

@@ -7,6 +7,8 @@ Nathan's Dot Files for Debian/Ubuntu
 ## Dotfiles to Configure / Improve
 - everything below
 - add delete old backups script
+- implement dotbot
+- git alias
 
 ## Dot Files
 - [ ] vimrc

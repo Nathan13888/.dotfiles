@@ -32,9 +32,9 @@
 	co = checkout
 	mnff = merge --no-ff
 	pp = !git pull && git push
-	pl = git pull
-	pu = git push
-	aa = git add .
+	pl = pull
+	pu = push
+	aa = add .
 	lg = log -p
 	gr = log --graph --format=line # graph
 	grd = log --graph --format=detail # graph detail

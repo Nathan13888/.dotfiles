@@ -1,5 +1,8 @@
 #!/bin/bash
 
+## SUBMODULES AREN'T COPIED BY DEFAULT; GUIDE TO COPYING SUBMODULES:
+## https://git-scm.com/book/en/v2/Git-Tools-Submodules
+
 dotfilesDir=$(pwd)
 
 function link {

@@ -12,8 +12,7 @@ Nathan's Dot Files for Debian/Ubuntu
 - add fish themes and configs
 - terminal colours
 - add fonts folder and add to lfs; also add fonts checklist in README
-- 
-- 
+- remove fish dotfiles 
 
 ## Dot Files
 - [ ] vimrc

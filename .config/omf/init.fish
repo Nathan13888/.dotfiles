@@ -3,7 +3,11 @@
 ## SHORTCUTS
 alias v="vim"
 alias g="git"
+alias s="sudo"
+alias shutdown="sudo shutdown now"
+alias reboot="sudo reboot now"
 alias reload='omf reload' # reload fish
+alias chmox="chmod +x"
 
 ## TYPOS
 alias gti="git"
@@ -29,5 +33,3 @@ alias .....="cd ../../../.."
 #alias ~="cd ~" # using "cd" is faster
 #alias -- -="cd -"
 
-## Permissions
-alias chmox='chmod -x'

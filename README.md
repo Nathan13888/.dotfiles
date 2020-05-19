@@ -15,7 +15,7 @@ Nathan's Dot Files for Debian/Ubuntu
  
 
 ## Dot Files
-- [ ] vimrc
+- [x] vimrc
 - [ ] bashrc
 - [x] scidvspc
 - [x] vscode (git clone)

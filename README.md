@@ -11,6 +11,7 @@ Nathan's Dot Files for Debian/Ubuntu
 - add fish themes and configs
 - terminal colours
 - fix submodule downloading script
+- get better fish theme
  
 
 ## Dot Files

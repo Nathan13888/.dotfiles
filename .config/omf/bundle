@@ -1,3 +1,5 @@
+package fish_logo
+theme bobthefish
 theme clearance
 theme default
 theme lolfish

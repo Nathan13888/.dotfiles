@@ -29,11 +29,14 @@
 	br = branch -vv --all
 	save = commit -a -m "Save"
 	ca = commit
+	caa = commit -a
+	sta = stage
 	co = checkout
 	mnff = merge --no-ff
 	pp = !git pull && git push
 	pl = pull
 	pu = push
+	a = add
 	aa = add .
 	lg = log -p
 	gr = log --graph --format=line # graph

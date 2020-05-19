@@ -3,6 +3,8 @@
 ## SUBMODULES AREN'T COPIED BY DEFAULT; GUIDE TO COPYING SUBMODULES:
 ## https://git-scm.com/book/en/v2/Git-Tools-Submodules
 
+# CREDIT! Installation script design and inspiration from Tom Hudson's (aka tomnomnom) Dotfiles. Original link: https://github.com/tomnomnom/dotfiles/blob/master/setup.sh
+
 dotfilesDir=$(pwd)
 
 function link {

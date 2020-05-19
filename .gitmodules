@@ -6,3 +6,6 @@
 	path = source-code-pro
 	url = https://github.com/adobe-fonts/source-code-pro/
 	branch = release
+[submodule "FiraCode"]
+	path = FiraCode
+	url = https://github.com/tonsky/FiraCode

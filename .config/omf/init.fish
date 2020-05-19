@@ -7,7 +7,7 @@ alias s="sudo"
 alias shutdown="sudo shutdown now"
 alias reboot="sudo reboot now"
 alias reload='omf reload' # reload fish
-alias chmox="chmod +x"
+alias chmox='chmod +x'
 
 ## TYPOS
 alias gti="git"

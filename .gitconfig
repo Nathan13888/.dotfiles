@@ -1,28 +1,3 @@
-[user]
-	name = Nathan13888
-	email = 29968201+Nathan13888@users.noreply.github.com
-[core]
-	editor = /usr/bin/nano # nano is a bit faster imo for just typing a message
-	autocrlf = input
-[credential]
-	helper = store
-[filter "lfs"]
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-[color]
-	diff = auto
-	status = auto
-	branch = auto
-[color "status"]
-	added = green
-	changed = blue
-	untracked = red 
-[color "diff"]
-	meta = yellow
-	old = red 
-	new = green
 [alias]
 ## INFO
 	st = status -sb
@@ -52,6 +27,31 @@
 	grad = log --graph --format=detail --all # graph all in detail
 	showtool = ! "st() { if [ -z $1 ]; then c='HEAD'; else c=$1; fi; git difftool $c~..$c; }; st"
 	info = ! "inf() { if git rev-parse ${1} >/dev/null 2>&1; then git cat-file -p $(git rev-parse ${1}); else echo Invalid object; fi }; inf"
+[user]
+	name = Nathan13888
+	email = 29968201+Nathan13888@users.noreply.github.com
+[core]
+	editor = /usr/bin/nano # nano is a bit faster imo for just typing a message
+	autocrlf = input
+[credential]
+	helper = store
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+[color "status"]
+	added = green
+	changed = blue
+	untracked = red 
+[color "diff"]
+	meta = yellow
+	old = red 
+	new = green
 
 [hub]
 	protocol = https

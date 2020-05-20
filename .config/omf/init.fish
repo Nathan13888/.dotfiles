@@ -2,6 +2,7 @@
 
 ## SHORTCUTS
 alias v="vim"
+alias vr="v -r"
 alias g="git"
 alias s="sudo"
 alias c="clear -x"

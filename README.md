@@ -12,7 +12,8 @@ Nathan's Dot Files for Debian/Ubuntu
 - terminal colours
 - fix submodule downloading script
 - get better fish theme
- 
+- add .git-crendtials encrypted --> make sure install script for this is separate
+
 
 ## Dot Files
 - [x] vimrc
@@ -25,6 +26,7 @@ Nathan's Dot Files for Debian/Ubuntu
 - [x] fish
 - [ ] via
 - [ ] openrazer
+- 
 
 ## Other Dot File Repositories
 - https://github.com/Nathan13888/ChessGames

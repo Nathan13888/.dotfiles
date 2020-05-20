@@ -1,13 +1,20 @@
-[alias]
+[alias] ## Useful GIT commands https://github.com/joshnh/Git-Commands
 ## INFO
-	st = status -sb
-	versions = tag -l --sort=version:refname
-	br = branch -vv --all
+	st = status -sb # shortened and more concise version of git status
+	versions = tag -l --sort=version:refname # view all tags
+	bra = branch -vv --all # view all branches in the current repository
 	credit = shortlog -sn
 ## CUSTOM SHORTCUTS
 	save = commit -a -m "Save"
 	mff = merge --ff-only
 	mnff = merge --no-ff
+	brd = branch -d
+	brm = branch -m #<A> <B> rename branch from A to B
+	cob = checkout -b # create new branch and switch to it
+	rema = remote add # add remote URL
+	remao = rema origin # add origin (remote) URL
+	rems = remote set # set remote URL
+	remso = rems origin # set origin URL
 	# add fetch command, good for large projects
 	pp = !git pull && git push
 ## COMMAND SHORTCUTS
@@ -15,11 +22,14 @@
 	caa = commit -a # stage and commit everything
 	sta = stage
 	co = checkout
+	br = branch
 	pl = pull
 	pu = push
+	rem = remote
 	a = add
 	aa = add . # stage everything to be committed
 	lg = log -p
+	# could maybe add some more log commands in the future
 ## WHAT ARE THESE BELOW??
 	gr = log --graph --format=line # graph
 	grd = log --graph --format=detail # graph detail

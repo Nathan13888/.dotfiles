@@ -4,7 +4,7 @@
 alias v="vim"
 alias g="git"
 alias s="sudo"
-alias c="cls"
+alias c="clear -x"
 alias shutdown="sudo shutdown now"
 alias reboot="sudo reboot now"
 alias reload='omf reload' # reload fish
@@ -25,7 +25,7 @@ alias sshnvr 'ssh attackercow@192.168.10.140'
 alias sshwpc 'ssh tvbox@192.168.10.121'
 
 ## Navigation
-alias cls="clear"
+alias cls="c"
 alias ..="cd .."
 alias cd..="cd .."
 alias ...="cd ../.."

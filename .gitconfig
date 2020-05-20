@@ -2,7 +2,7 @@
 	name = Nathan13888
 	email = 29968201+Nathan13888@users.noreply.github.com
 [core]
-	editor = /usr/bin/nano
+	editor = /usr/bin/nano # nano is a bit faster imo for just typing a message
 	autocrlf = input
 [credential]
 	helper = store
@@ -24,26 +24,32 @@
 	old = red 
 	new = green
 [alias]
+## INFO
 	st = status -sb
 	versions = tag -l --sort=version:refname
 	br = branch -vv --all
+	credit = shortlog -sn
+## CUSTOM SHORTCUTS
 	save = commit -a -m "Save"
+	mff = merge --ff-only
+	mnff = merge --no-ff
+	# add fetch command, good for large projects
+	pp = !git pull && git push
+## COMMAND SHORTCUTS
 	ca = commit
-	caa = commit -a
+	caa = commit -a # stage and commit everything
 	sta = stage
 	co = checkout
-	mnff = merge --no-ff
-	pp = !git pull && git push
 	pl = pull
 	pu = push
 	a = add
-	aa = add .
+	aa = add . # stage everything to be committed
 	lg = log -p
+## WHAT ARE THESE BELOW??
 	gr = log --graph --format=line # graph
 	grd = log --graph --format=detail # graph detail
 	gra = log --graph --format=line --all # graph all
 	grad = log --graph --format=detail --all # graph all in detail
-	credit = shortlog -sn
 	showtool = ! "st() { if [ -z $1 ]; then c='HEAD'; else c=$1; fi; git difftool $c~..$c; }; st"
 	info = ! "inf() { if git rev-parse ${1} >/dev/null 2>&1; then git cat-file -p $(git rev-parse ${1}); else echo Invalid object; fi }; inf"
 

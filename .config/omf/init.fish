@@ -4,6 +4,7 @@
 alias v="vim"
 alias g="git"
 alias s="sudo"
+alias c="cls"
 alias shutdown="sudo shutdown now"
 alias reboot="sudo reboot now"
 alias reload='omf reload' # reload fish

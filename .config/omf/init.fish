@@ -13,6 +13,7 @@ alias chmox='chmod +x'
 
 ## TYPOS
 alias gti="git"
+# This really isn't a problem since I rarely do typos and could easily fix them if I do...
 
 ## COMMANDS
 alias git 'hub'

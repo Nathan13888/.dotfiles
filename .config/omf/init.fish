@@ -5,7 +5,7 @@ alias v="vim"
 alias vr="v -r"
 alias g="git"
 alias s="sudo"
-alias c="clear -x"
+alias c="clear"
 alias free="free -hm"
 alias df="df -h"
 alias du="du -h"
@@ -17,6 +17,9 @@ alias chmox='chmod +x'
 
 ## TYPOS
 alias gti="git"
+alias cl="clear"
+alias cls="clear"
+alias clear="clear -x"
 # This really isn't a problem since I rarely do typos and could easily fix them if I do...
 
 ## COMMANDS

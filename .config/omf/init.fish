@@ -15,7 +15,8 @@ alias code="code-insiders"
 alias shutdown="sudo shutdown now"
 alias reboot="sudo reboot now"
 alias reload='omf reload' # reload fish
-alias chmox='chmod +x'
+alias chmox="chmod +x"
+alias chowm="chown $USER:$USER"
 
 ## TYPOS
 alias gti="git"

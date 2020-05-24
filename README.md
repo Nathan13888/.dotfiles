@@ -16,6 +16,7 @@ Nathan's Dot Files for Debian/Ubuntu
 - add betterdiscord themes and plugins and install script
 - move FISH alias to separate file
 - add install alis command with organization feature
+- add alias to SUDO command
 
 ## Dot Files
 - [x] vimrc
@@ -28,7 +29,7 @@ Nathan's Dot Files for Debian/Ubuntu
 - [x] fish
 - [ ] via
 - [ ] openrazer
-- 
+- [x] Bandaged Better Discord
 
 ## Other Dot File Repositories
 - https://github.com/Nathan13888/ChessGames

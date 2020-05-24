@@ -5,6 +5,7 @@ alias v="vim"
 alias vr="v -r"
 alias g="git"
 alias s="sudo"
+alias sudo='sudo ' # for using other alias when using sudo
 alias c="clear"
 alias free="free -hm"
 alias df="df -h"
@@ -27,7 +28,7 @@ alias clear="clear -x"
 # This really isn't a problem since I rarely do typos and could easily fix them if I do...
 
 ## COMMANDS
-alias git 'hub'
+alias git 'hub' # eval "$(hub alias -s)" what's the difference even??
 alias lla "ls -alF"
 alias lsa "ls -aF"
 

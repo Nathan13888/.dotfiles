@@ -1,0 +1,17 @@
+{
+	"changelog": {
+		"currentversion": "1.1.4"
+	},
+	"choices": {
+		"lastMessageDateLang": "$discord"
+	},
+	"settings": {
+		"addInUserPopout": true,
+		"addInUserProfil": true,
+		"cutSeconds": false,
+		"displayDate": true,
+		"displayTime": true,
+		"forceZeros": false,
+		"otherOrder": false
+	}
+}

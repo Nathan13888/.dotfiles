@@ -1,5 +1,8 @@
 *.log
 log/
 
+# Better Discord
+emote_data.json
+
 # Vim Swap Files
 *.swp

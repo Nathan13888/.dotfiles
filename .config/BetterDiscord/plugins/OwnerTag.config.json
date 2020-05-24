@@ -1,0 +1,20 @@
+{
+	"changelog": {
+		"currentversion": "1.2.8"
+	},
+	"inputs": {
+		"ownAdminTagName": "Admin",
+		"ownTagName": "Owner"
+	},
+	"settings": {
+		"addForAdmins": false,
+		"addInChatWindow": true,
+		"addInMemberList": true,
+		"addInUserPopout": true,
+		"addInUserProfile": true,
+		"hideNativeCrown": true,
+		"useBlackFont": false,
+		"useCrown": false,
+		"useRoleColor": true
+	}
+}

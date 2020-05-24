@@ -13,7 +13,9 @@ Nathan's Dot Files for Debian/Ubuntu
 - fix submodule downloading script
 - get better fish theme
 - add .git-crendtials encrypted --> make sure install script for this is separate
-
+- add betterdiscord themes and plugins and install script
+- move FISH alias to separate file
+- add install alis command with organization feature
 
 ## Dot Files
 - [x] vimrc

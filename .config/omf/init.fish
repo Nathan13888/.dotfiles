@@ -12,6 +12,7 @@ alias du="du -h"
 alias service="sudo service"
 alias serv="service"
 alias code="code-insiders"
+alias bdctl="betterdiscordctl"
 alias shutdown="sudo shutdown now"
 alias reboot="sudo reboot now"
 alias reload='omf reload' # reload fish

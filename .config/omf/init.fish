@@ -1,10 +1,12 @@
-# ALIAS
+#########
+# ALIAS #
+#########
 
 ## SHORTCUTS
 alias v="vim"
-alias vr="v -r"
+alias vr='v -r'
 alias g="git"
-alias s="sudo"
+alias s 'sudo'
 alias sudo='sudo ' # for using other alias when using sudo
 alias c="clear"
 alias free="free -hm"
@@ -16,19 +18,19 @@ alias code="code-insiders"
 alias bdctl="betterdiscordctl"
 alias shutdown="sudo shutdown now"
 alias reboot="sudo reboot now"
-alias reload='omf reload' # reload fish
+alias reload="omf reload" # reload fish
 alias chmox="chmod +x"
 alias chowm="chown $USER:$USER"
 
 ## TYPOS
-alias gti="git"
+alias gti='git'
 alias cl="clear"
 alias cls="clear"
 alias clear="clear -x"
 # This really isn't a problem since I rarely do typos and could easily fix them if I do...
 
 ## COMMANDS
-alias git 'hub' # eval "$(hub alias -s)" what's the difference even??
+alias git 'hub' # eval "$(hub alias -s)" # what's the difference even??
 alias lla "ls -alF"
 alias lsa "ls -aF"
 

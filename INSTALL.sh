@@ -43,7 +43,11 @@ link .gitconfig
 # Just do --> git clone Nathan13888/.vscode
 
 # fish shell
-link .config/fish
+#link .config/fish
 link .config/omf
+
+# Bandaged Better Discord
+link .config/BetterDiscord
+
 
 ## NEED TO ADD OTHER DotFiles

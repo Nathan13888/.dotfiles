@@ -1,4 +1,5 @@
 # Scid vs. PC combobox history lists
 
-set ::utils::history::listData(::windows::gamelist::findtext) {por adam Ladek Por jason Lad a 3l Ladeko 123}
+set ::utils::history::listData(::preport::_player) xXPrototypeXx
+set ::utils::history::listData(::windows::gamelist::findtext) {porz Porzu lad porzun lade Por POZ ladeko adam por}
 set ::utils::history::listData(setupFen) {{6r1/2p5/2p2k2/4r1Np/5p1P/3P1P2/PPPK4/6R1 w - - 0 1} {6r1/2p5/2p2k2/4r1Np/P4p1P/3P1P2/1PPK4/6R1 w - - 0 1}}

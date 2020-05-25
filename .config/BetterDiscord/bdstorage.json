@@ -44,20 +44,20 @@
                 "CreationDate": true,
                 "DetailedServerTooltips": true,
                 "DoNotTrack": true,
-                "Edit Uploads": true,
+                "Edit Uploads": false,
                 "Guild And Friend Removal Alerts": true,
                 "HideMutedServers": true,
                 "ImageToClipboard": true,
                 "LastMessageDate": true,
                 "OwnerTag": true,
                 "SpellCheck": true,
-                "RevealAllSpoilersOption": true,
+                "RevealAllSpoilersOption": false,
                 "RoleMembers": true,
                 "EmojiUtilities": true,
                 "EmoteSearch": true,
                 "HideDisabledEmojis": true,
                 "PermissionsViewer": true,
-                "ResizableCSS": true
+                "ResizableCSS": false
             },
             "themes": {
                 "Minimalist Dark": false,

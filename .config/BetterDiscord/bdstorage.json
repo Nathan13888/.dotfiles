@@ -28,7 +28,7 @@
                 "fork-ps-3": true,
                 "fork-ps-4": true,
                 "fork-ps-5": true,
-                "fork-es-2": false,
+                "fork-es-2": true,
                 "fork-es-3": true,
                 "fork-wp-1": true,
                 "fork-wp-2": false,

@@ -1,6 +1,6 @@
 {
 	"changelog": {
-		"currentversion": "1.2.8"
+		"currentversion": "1.2.9"
 	},
 	"inputs": {
 		"ownAdminTagName": "Admin",
@@ -13,6 +13,7 @@
 		"addInUserPopout": true,
 		"addInUserProfile": true,
 		"hideNativeCrown": true,
+		"ignoreBotAdmins": false,
 		"useBlackFont": false,
 		"useCrown": false,
 		"useRoleColor": true

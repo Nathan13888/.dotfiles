@@ -1,5 +1,9 @@
 {
+	"changelog": {
+		"currentversion": "1.4.3"
+	},
 	"choices": {
-		"dictionaryLanguage": "en"
+		"dictionaryLanguage": "en",
+		"secondaryLanguage": "-"
 	}
 }

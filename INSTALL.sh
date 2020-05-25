@@ -35,6 +35,9 @@ function link {
 link .vim
 link .vimrc
 
+# scidvspc
+link .scidvspc
+
 # git
 link .gitconfig
 

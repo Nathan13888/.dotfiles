@@ -10,19 +10,25 @@
             {
                 "id": "222078108977594368",
                 "name": "Discord.js Official",
-                "owner": "hydrabolt#0001",
+                "owner": null,
                 "icon": "https://cdn.discordapp.com/icons/222078108977594368/72153038872deb9b81a2444a0edcf041.webp?size=256"
             },
             {
                 "id": "622158425068929084",
                 "name": "xDevs",
-                "owner": "*  ᗩTTᗩᑕKEᖇᑕOᗯ *#6074"
+                "owner": "*  ᗩTTᗩᑕKEᖇᑕOᗯ  *#6074"
             },
             {
                 "id": "700888523011653642",
                 "name": "🚀   𝓽𝓮𝓪𝓶 𝓡𝓸𝓬𝓴𝓮𝓽  🚀",
-                "owner": "*  ᗩTTᗩᑕKEᖇᑕOᗯ *#6074",
+                "owner": "*  ᗩTTᗩᑕKEᖇᑕOᗯ  *#6074",
                 "icon": "https://cdn.discordapp.com/icons/700888523011653642/0cb9a588cd84882becf87b66449027e9.webp?size=256"
+            },
+            {
+                "id": "473760315293696010",
+                "name": "Official HackTheBox Discord",
+                "owner": null,
+                "icon": "https://cdn.discordapp.com/icons/473760315293696010/a_aad2f41ed19435d0822c30cc07008a24.webp?size=256"
             },
             {
                 "id": "700010762827202650",
@@ -34,12 +40,12 @@
                 "id": "557838730363404299",
                 "name": "Pixel Gun 3D",
                 "owner": null,
-                "icon": "https://cdn.discordapp.com/icons/557838730363404299/a_4c81f3ad22fc8bcf0160020bb5712dcc.webp?size=256"
+                "icon": "https://cdn.discordapp.com/icons/557838730363404299/9d633289c6acf3e1c0f6b0b5e566227b.webp?size=256"
             },
             {
                 "id": "417816118095249408",
                 "name": "Dragon Labs",
-                "owner": "*  ᗩTTᗩᑕKEᖇᑕOᗯ *#6074",
+                "owner": "*  ᗩTTᗩᑕKEᖇᑕOᗯ  *#6074",
                 "icon": "https://cdn.discordapp.com/icons/417816118095249408/933ef931dfca7409d2772496c78a788f.webp?size=256"
             },
             {
@@ -51,12 +57,12 @@
             {
                 "id": "420703084881379349",
                 "name": "test",
-                "owner": "*  ᗩTTᗩᑕKEᖇᑕOᗯ *#6074"
+                "owner": "*  ᗩTTᗩᑕKEᖇᑕOᗯ  *#6074"
             },
             {
                 "id": "280806472928198656",
                 "name": "BetterDiscord2",
-                "owner": "Jiiks#5000",
+                "owner": null,
                 "icon": "https://cdn.discordapp.com/icons/280806472928198656/cbdda04c041699d80689b99c4e5e89dc.webp?size=256"
             },
             {
@@ -68,7 +74,7 @@
             {
                 "id": "692369885694525472",
                 "name": "tmw's CP club",
-                "owner": "tmwilliamlin168#3440"
+                "owner": null
             },
             {
                 "id": "660218950570868757",
@@ -85,13 +91,20 @@
             {
                 "id": "621790759405879313",
                 "name": "MC Society Club",
-                "owner": "Nutella®#1872",
+                "owner": null,
                 "icon": "https://cdn.discordapp.com/icons/621790759405879313/8468bdcbc1298a4817635741cdc899a8.webp?size=256"
+            },
+            {
+                "id": "704958479194128507",
+                "name": "OctoPrint",
+                "owner": null,
+                "icon": "https://cdn.discordapp.com/icons/704958479194128507/b6acced14542243bc45d49e45f880d5a.webp?size=256"
             },
             {
                 "id": "701457164090343475",
                 "name": "𝖂𝖔𝖔𝖉𝖑𝖆𝖓𝖉𝖘 𝕮𝖍𝖊𝖘𝖘 𝕮𝖑𝖚𝖇",
-                "owner": "*  ᗩTTᗩᑕKEᖇᑕOᗯ *#6074"
+                "owner": "*  ᗩTTᗩᑕKEᖇᑕOᗯ  *#6074",
+                "icon": "https://cdn.discordapp.com/icons/701457164090343475/ed0a4a299e616f52a580ad0805dde2ec.webp?size=256"
             },
             {
                 "id": "632997868826918973",
@@ -100,27 +113,39 @@
                 "icon": "https://cdn.discordapp.com/icons/632997868826918973/c278a612931e5d8166883ef48bac7592.webp?size=256"
             },
             {
+                "id": "425419482568196106",
+                "name": "Leela Chess Zero",
+                "owner": null,
+                "icon": "https://cdn.discordapp.com/icons/425419482568196106/dee6a018b8f3cd8eb43a6a125f286490.webp?size=256"
+            },
+            {
+                "id": "387637011965804544",
+                "name": "Chess.com",
+                "owner": null,
+                "icon": "https://cdn.discordapp.com/icons/387637011965804544/0d854af86cf1e5c7cd59a63c27e109dd.webp?size=256"
+            },
+            {
                 "id": "203924560351985664",
                 "name": "ConspiracyCraft",
-                "owner": "Jamm#0747",
+                "owner": null,
                 "icon": "https://cdn.discordapp.com/icons/203924560351985664/7b9e2b998c0aa070442a51567d10111a.webp?size=256"
             },
             {
                 "id": "546189819127267329",
                 "name": "PDSB Discord",
-                "owner": "retrocraft#6259",
+                "owner": null,
                 "icon": "https://cdn.discordapp.com/icons/546189819127267329/d50d33281552338d40f715b59796dea4.webp?size=256"
             },
             {
                 "id": "259466564246568961",
                 "name": "Centrix Faction",
-                "owner": "*  ᗩTTᗩᑕKEᖇᑕOᗯ *#6074",
+                "owner": "*  ᗩTTᗩᑕKEᖇᑕOᗯ  *#6074",
                 "icon": "https://cdn.discordapp.com/icons/259466564246568961/13a229bb00bf9763404cdd32dbb8b7b6.webp?size=256"
             },
             {
                 "id": "81384788765712384",
                 "name": "Discord API",
-                "owner": "Danny#0007",
+                "owner": null,
                 "icon": "https://cdn.discordapp.com/icons/81384788765712384/d3fb5f8de75f22494de95e5c1d47af51.webp?size=256"
             },
             {
@@ -136,6 +161,12 @@
                 "icon": "https://cdn.discordapp.com/icons/295940020844363776/f54f108afcb1cc9c4898380369810085.webp?size=256"
             },
             {
+                "id": "441080049756536842",
+                "name": "/r/webhosting",
+                "owner": null,
+                "icon": "https://cdn.discordapp.com/icons/441080049756536842/c166281ae445bd3f40fce932f0f8d619.webp?size=256"
+            },
+            {
                 "id": "295644785224450048",
                 "name": "Frosty Kingdom",
                 "owner": null,
@@ -148,9 +179,15 @@
                 "icon": "https://cdn.discordapp.com/icons/615614489458376714/6b56f8187fb6ce7bf97e14e853e666d5.webp?size=256"
             },
             {
+                "id": "708328142179401748",
+                "name": "m0leCon CTF 2020 Teaser",
+                "owner": "matpro#0914",
+                "icon": "https://cdn.discordapp.com/icons/708328142179401748/d4927dfedc05906927e82d8cdd05dff7.webp?size=256"
+            },
+            {
                 "id": "533153217119387658",
                 "name": "Mathematical Olympiads",
-                "owner": "Tony [Exams until 22 May]#6285",
+                "owner": null,
                 "icon": "https://cdn.discordapp.com/icons/533153217119387658/c3fb0c607ce6a9301b578378fdb10935.webp?size=256"
             },
             {
@@ -166,31 +203,31 @@
             {
                 "id": "629400098459222047",
                 "name": "Spine Club (Formerly known as Kyphosis Clan)",
-                "owner": "*  ᗩTTᗩᑕKEᖇᑕOᗯ *#6074",
+                "owner": "*  ᗩTTᗩᑕKEᖇᑕOᗯ  *#6074",
                 "icon": "https://cdn.discordapp.com/icons/629400098459222047/2533b92c203edcb19cf3f3d2ac5ab635.webp?size=256"
             },
             {
                 "id": "292064287956926465",
                 "name": "WildPvP",
-                "owner": "Electric Lightbulb#4604",
+                "owner": null,
                 "icon": "https://cdn.discordapp.com/icons/292064287956926465/ca7f6844504bb0472c40c4c83fd48341.webp?size=256"
             },
             {
                 "id": "86004744966914048",
                 "name": "BetterDiscord",
-                "owner": "Jiiks#5000",
+                "owner": null,
                 "icon": "https://cdn.discordapp.com/icons/86004744966914048/292e7f6bfff2b71dfd13e508a859aedd.webp?size=256"
             },
             {
                 "id": "376764768729432064",
                 "name": "《 ShelbyPlays 》",
-                "owner": "Shelby#0002",
-                "icon": "https://cdn.discordapp.com/icons/376764768729432064/a_3280bbeb3dc375d935db5a955f976924.webp?size=256"
+                "owner": null,
+                "icon": "https://cdn.discordapp.com/icons/376764768729432064/3280bbeb3dc375d935db5a955f976924.webp?size=256"
             },
             {
                 "id": "264819784292499457",
                 "name": "Shinobi Community",
-                "owner": "moeiscool#0001",
+                "owner": null,
                 "icon": "https://cdn.discordapp.com/icons/264819784292499457/6d28ce95f3ad2c040b4f979c2623e792.webp?size=256"
             },
             {
@@ -204,6 +241,12 @@
                 "name": "KBDfans",
                 "owner": "KBDfans |kbdfans.com#8394",
                 "icon": "https://cdn.discordapp.com/icons/404457789893640232/1626f670ddf306081ef61c08b79370a3.webp?size=256"
+            },
+            {
+                "id": "412393574898860032",
+                "name": "MrKeebs",
+                "owner": null,
+                "icon": "https://cdn.discordapp.com/icons/412393574898860032/afaf729872e7756b79104d0645c0b08d.webp?size=256"
             },
             {
                 "id": "546754678172549124",
@@ -240,6 +283,12 @@
                 "name": "Computer Science Club",
                 "owner": "SaurontheMighty#7185",
                 "icon": "https://cdn.discordapp.com/icons/696890559343755335/341df8f524fe3bd5fcc6aa350b888cee.webp?size=256"
+            },
+            {
+                "id": "447523563935891456",
+                "name": "CWA Mobile Gaming",
+                "owner": null,
+                "icon": "https://cdn.discordapp.com/icons/447523563935891456/a_eb2133048b9ef86d10afdfe260062236.webp?size=256"
             }
         ],
         "friends": [
@@ -266,7 +315,7 @@
             {
                 "id": "186935819603279872",
                 "tag": "Beaner25#2997",
-                "avatar": "https://cdn.discordapp.com/avatars/186935819603279872/9fd763c8daff9511b145d40af9a004ae.png?size=256"
+                "avatar": "https://cdn.discordapp.com/avatars/186935819603279872/9d1bd7ba70ec0b5f26190344e66caa1d.png?size=256"
             },
             {
                 "id": "186949932824002561",
@@ -301,7 +350,7 @@
             {
                 "id": "255084344601870336",
                 "tag": "ironik#2116",
-                "avatar": "https://cdn.discordapp.com/avatars/255084344601870336/89a312e520830ee89836b058a5fd1876.png?size=256"
+                "avatar": "https://cdn.discordapp.com/avatars/255084344601870336/599af86cc1d6f3579ca80df1c82100b1.png?size=256"
             },
             {
                 "id": "255742603155210240",
@@ -331,7 +380,7 @@
             {
                 "id": "277507281652940800",
                 "tag": "yolo.#5376",
-                "avatar": "https://cdn.discordapp.com/avatars/277507281652940800/f7ff2772af79a6df493fde52bae5b144.png?size=256"
+                "avatar": "https://cdn.discordapp.com/avatars/277507281652940800/df348620950250a50c1c0f2b17d1511d.png?size=256"
             },
             {
                 "id": "281847963918008321",
@@ -356,7 +405,7 @@
             {
                 "id": "286610226478841858",
                 "tag": "SpaceAceMAO9#4857",
-                "avatar": "https://cdn.discordapp.com/avatars/286610226478841858/4f145b147655f6656f50a7624f779c1d.png?size=256"
+                "avatar": "https://cdn.discordapp.com/avatars/286610226478841858/74966d966a663377a1e5d22a6f93c97b.png?size=256"
             },
             {
                 "id": "288409650913607680",
@@ -451,7 +500,7 @@
             {
                 "id": "362688410194018305",
                 "tag": "L0khi#7856",
-                "avatar": "https://cdn.discordapp.com/avatars/362688410194018305/4b80485f5b7c35184fb871367bda2244.png?size=256"
+                "avatar": "https://cdn.discordapp.com/avatars/362688410194018305/0febebcbc973300db36de38f4d1a7099.png?size=256"
             },
             {
                 "id": "365859771921858560",
@@ -466,7 +515,7 @@
             {
                 "id": "368187915450187776",
                 "tag": "dandancool#3546",
-                "avatar": "https://cdn.discordapp.com/avatars/368187915450187776/bf42b11e4860889a05633f40958a54ab.png?size=256"
+                "avatar": "https://cdn.discordapp.com/avatars/368187915450187776/644c642c519f5bb84b2ee5f47522a05d.png?size=256"
             },
             {
                 "id": "372096115228803072",
@@ -496,12 +545,12 @@
             {
                 "id": "425765408088391688",
                 "tag": "Parad0XX#9489",
-                "avatar": "https://cdn.discordapp.com/avatars/425765408088391688/f46b2bc7712d0869c0bf2f78402bdeba.png?size=256"
+                "avatar": "https://cdn.discordapp.com/avatars/425765408088391688/754fc12eca6a444b6007fe9d857903d6.png?size=256"
             },
             {
                 "id": "449344856213684224",
                 "tag": "Xam#6095",
-                "avatar": "https://cdn.discordapp.com/avatars/449344856213684224/543add1a9d3d53baf5a85a2556410d84.png?size=256"
+                "avatar": "https://cdn.discordapp.com/avatars/449344856213684224/7ba7278da56b562dc7fe40950f5d308e.png?size=256"
             },
             {
                 "id": "461563777696137216",
@@ -522,6 +571,11 @@
                 "id": "497162940190031903",
                 "tag": "Eric8268#7031",
                 "avatar": "https://cdn.discordapp.com/avatars/497162940190031903/65c131e52ad0a02a9ffb5df5dbeb2ff5.png?size=256"
+            },
+            {
+                "id": "498506968021991454",
+                "tag": "BASS#5822",
+                "avatar": "https://cdn.discordapp.com/avatars/498506968021991454/ff753b6b4dff99b4da8d74a63e7859f6.png?size=256"
             },
             {
                 "id": "501055949042221076",

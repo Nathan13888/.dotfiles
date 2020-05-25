@@ -1,0 +1,30 @@
+{
+	"changelog": {
+		"currentversion": "3.8.5"
+	},
+	"settings": {
+		"changeInActivity": true,
+		"changeInAppTitle": true,
+		"changeInAuditLog": true,
+		"changeInAutoComplete": true,
+		"changeInChatTextarea": true,
+		"changeInChatWindow": true,
+		"changeInDmCalls": true,
+		"changeInDmHeader": true,
+		"changeInDmsList": true,
+		"changeInEmojiLog": true,
+		"changeInFriendList": true,
+		"changeInInviteList": true,
+		"changeInMemberList": true,
+		"changeInMemberLog": true,
+		"changeInMentions": true,
+		"changeInQuickSwitcher": true,
+		"changeInRecentDms": true,
+		"changeInSearchPopout": true,
+		"changeInTyping": true,
+		"changeInUserAccount": true,
+		"changeInUserPopout": true,
+		"changeInUserProfile": true,
+		"changeInVoiceChat": true
+	}
+}

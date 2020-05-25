@@ -17,6 +17,7 @@ Nathan's Dot Files for Debian/Ubuntu
 - move FISH alias to separate file
 - add install alis command with organization feature
 - add alias to SUDO command
+- add zram config
 
 ## Dot Files
 - [x] vimrc

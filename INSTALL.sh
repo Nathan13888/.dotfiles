@@ -35,6 +35,9 @@ function link {
 link .vim
 link .vimrc
 
+# Angular
+link .angular-config.json
+
 # scidvspc
 link .scidvspc
 

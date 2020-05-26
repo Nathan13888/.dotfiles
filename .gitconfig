@@ -44,6 +44,9 @@
 [core]
 	editor = /usr/bin/nano # nano is a bit faster imo
 	autocrlf = input
+[push] # http://stackoverflow.com/a/23918418/89484
+	default = current
+	followTags = true
 [merge]
 	tool = opendiff
 	renameLimit = 0

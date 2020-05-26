@@ -44,6 +44,9 @@
 [core]
 	editor = /usr/bin/nano # nano is a bit faster imo for just typing a message
 	autocrlf = input
+[merge]
+	tool = opendiff
+	renameLimit = 0
 [credential]
 	helper = store
 [filter "lfs"]

@@ -42,6 +42,7 @@ link .vimrc
 
 # git
 link .gitconfig
+link .gitmessage.txt
 
 # Angular
 link .angular-config.json

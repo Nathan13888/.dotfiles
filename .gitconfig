@@ -44,6 +44,8 @@
 [core]
 	editor = /usr/bin/nano # nano is a bit faster imo
 	autocrlf = input
+[commit]
+	template = ~/.gitmessage.txt
 [push] # http://stackoverflow.com/a/23918418/89484
 	default = current
 	followTags = true

@@ -1,6 +1,6 @@
 {
 	"changelog": {
-		"currentversion": "1.1.4"
+		"currentversion": "1.1.5"
 	},
 	"choices": {
 		"lastMessageDateLang": "$discord"

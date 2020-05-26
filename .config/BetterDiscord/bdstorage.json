@@ -62,13 +62,14 @@
                 "BetterFolders": true,
                 "BetterReplyer": true,
                 "OnlineFriendCount": true,
-                "EditUsers": false
+                "EditUsers": false,
+                "AutoStartRichPresence": false
             },
             "themes": {
                 "Minimalist Dark": false,
-                "Frosted Glass": false,
+                "Frosted Glass": true,
                 "RadialStatus": true,
-                "Nocturnal": true,
+                "Nocturnal": false,
                 "Nox": false,
                 "SimplyDark": false
             }

@@ -31,29 +31,31 @@ function link {
   ln -s ${dotfilesDir}/${1} ${dest}
 }
 
+
+# vscode
+#link workspace/Git/.vscode
+# Just do --> git clone Nathan13888/.vscode
+
 # vim
 link .vim
 link .vimrc
+
+# git
+link .gitconfig
 
 # Angular
 link .angular-config.json
 
 # scidvspc
 link .scidvspc
-
-# git
-link .gitconfig
-
-# vscode
-#link workspace/Git/.vscode
-# Just do --> git clone Nathan13888/.vscode
-
+# Bandaged Better Discord
+link .config/BetterDiscord
 # fish shell
 #link .config/fish
 link .config/omf
 
-# Bandaged Better Discord
-link .config/BetterDiscord
+
+
 
 
 ## NEED TO ADD OTHER DotFiles

@@ -50,7 +50,7 @@
 	default = current
 	followTags = true
 [merge]
-	tool = opendiff
+	tool = vimdiff
 	renameLimit = 0
 [fetch]
 	prune = true

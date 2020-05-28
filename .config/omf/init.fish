@@ -44,9 +44,9 @@ alias sshwpc 'ssh tvbox@192.168.10.121'
 alias cls="c"
 alias ..="cd .."
 alias cd..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
+alias ....="cd ../.."
+alias ......="cd ../../.."
+alias ........="cd ../../../.."
 #alias ~="cd ~" # using "cd" is faster
 #alias -- -="cd -"
 

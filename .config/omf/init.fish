@@ -19,8 +19,8 @@ alias bdctl="betterdiscordctl"
 alias shutdown="sudo shutdown now"
 alias reboot="sudo reboot now"
 alias reload="omf reload" # reload fish
-alias chmox="chmod +x"
-alias chowm="chown $USER:$USER"
+alias chmox="sudo chmod +x"
+alias chowm="sudo chown $USER:$USER"
 
 ## TYPOS
 alias gti='git'

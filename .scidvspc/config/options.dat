@@ -88,7 +88,7 @@ set gameInfo(photos) 0
 set gameInfo(wrap) 0
 set gameInfo(showStatus) 0
 set gameInfo(fullComment) 0
-set gameInfo(showMarks) 1
+set gameInfo(showMarks) 0
 set gameInfo(showMenu) 1
 set gameInfo(showTool) 0
 set gameInfo(showMaterial) 1
@@ -168,7 +168,7 @@ set ::commenteditor::State(markColor) purple
 set ::commenteditor::State(markType) +
 set boardfile_lite emptySquare
 set boardfile_dark emptySquare
-set ::file::finder::data(dir) /home/attackercow/chess/games
+set ::file::finder::data(dir) /home/attackercow/chess/Caissabase_2019_09_08
 set ::file::finder::data(sort) name
 set ::file::finder::data(Scid) 1
 set ::file::finder::data(PGN) 1

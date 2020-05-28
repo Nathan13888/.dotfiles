@@ -27,6 +27,7 @@
 	pl = pull
 	pu = push
 	rem = remote
+	fe = fetch
 	a = add
 	aa = add . # stage everything to be committed
 	lg = log -p

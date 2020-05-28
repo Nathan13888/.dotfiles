@@ -1,10 +1,3 @@
-# Golang developers might need this one
-set -xg GOPATH $HOME/gocode
-
-# Python developers otherwise
-set -xg PYTHONDONTWRITEBYTECODE 1
-
-
 #########
 # ALIAS #
 #########
@@ -57,3 +50,10 @@ alias .....="cd ../../../.."
 #alias ~="cd ~" # using "cd" is faster
 #alias -- -="cd -"
 
+# Golang developers might need this one
+#set -xg GOPATH $HOME/gocode
+set -xg PATH /usr/local/go/bin/ $PATH
+#export PATH=$PATH:/usr/local/go/bin
+
+# Python developers otherwise
+set -xg PYTHONDONTWRITEBYTECODE 1

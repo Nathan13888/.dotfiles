@@ -18,8 +18,8 @@
 	# add fetch command, good for large projects
 	pp = !git pull && git push
 ## COMMAND SHORTCUTS
-	ca = commit
-	caa = commit -a # stage and commit everything
+	ca = commit -S
+	caa = ca -a # stage and commit everything
 	sta = stage
 	co = checkout
 	br = branch

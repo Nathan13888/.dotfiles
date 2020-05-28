@@ -17,8 +17,10 @@
 	remso = rems origin # set origin URL
 	# add fetch command, good for large projects
 	pp = !git pull && git push
+### Hub CLI
+	brow = browse
 ## COMMAND SHORTCUTS
-	ca = commit -S
+	ca = commit -S -s # sign commit and add comment
 	caa = ca -a # stage and commit everything
 	sta = stage
 	co = checkout
@@ -28,6 +30,7 @@
 	pu = push
 	rem = remote
 	fe = fetch
+	ash = stash
 	a = add
 	aa = add . # stage everything to be committed
 	lg = log -p

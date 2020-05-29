@@ -1,5 +1,0 @@
-# swap  alg     mem_limit       disk_size       swap_priority   page-cluster    swappiness
-swap    lz4     1000M           1024M           69              0               80
-swap    lz4     1000M           1024M           69              0               80
-swap    lz4     1000M           1024M           69              0               80
-swap    lz4     1000M           1024M           69              0               80

@@ -5,32 +5,23 @@ Nathan's Dot Files for Debian/Ubuntu
 # TODO
 
 ## Features
-- add delete old backups script
 - implement dotbot --> https://github.com/anishathalye/dotbot/tree/5d83f9e797b1950199e127a8196803f5e33e0916
 - git alias and colours
 - add fish themes and configs
 - terminal colours
-- fix submodule downloading script
-- get better fish theme
 - add .git-crendtials encrypted --> make sure install script for this is separate
-- add betterdiscord themes and plugins and install script
-- move FISH alias to separate file
-- add install alis command with organization feature
 - add alias to SUDO command
-- add zram config
+- add dotfiles for servers
 
 ## Dot Files
 - [x] vimrc
-- [ ] bashrc
 - [x] scidvspc
 - [x] vscode (git clone)
-- [ ] crontab
 - [x] gitconfig
 - [x] omf
 - [x] fish
-- [ ] via
-- [ ] openrazer
 - [x] Bandaged Better Discord
+- [ ] 
 
 ## Other Dot File Repositories
 - https://github.com/Nathan13888/ChessGames
@@ -43,8 +34,6 @@ Nathan's Dot Files for Debian/Ubuntu
 - https://github.com/mathiasbynens/dotfiles/blob/master/.aliases
 - https://abdullah.today/encrypted-dotfiles/
 - https://medium.com/@webprolific/getting-started-with-dotfiles-43c3602fd789
-- https://github.com/oh-my-fish/oh-my-fish
-- https://hub.github.com/
 
 
 

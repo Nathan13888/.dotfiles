@@ -8,7 +8,6 @@ alias vr='v -r'
 alias g="git"
 alias s 'sudo'
 alias sudo='sudo ' # for using other alias when using sudo
-alias c="clear"
 alias free="free -hm"
 alias df="df -h"
 alias du="du -h"
@@ -19,14 +18,16 @@ alias bdctl="betterdiscordctl"
 alias shutdown="sudo shutdown now"
 alias reboot="sudo reboot now"
 alias reload="omf reload" # reload fish
-alias chmox="sudo chmod +x"
-alias chowm="sudo chown $USER:$USER"
-
-## TYPOS
-alias gti='git'
+alias chmox='sudo chmod +x'
+alias chowm='sudo chown $USER:$USER'
+alias c="clear"
 alias cl="clear"
 alias cls="clear"
 alias clear="clear -x"
+
+## TYPOS
+alias gti='git'
+alias f='g'
 # This really isn't a problem since I rarely do typos and could easily fix them if I do...
 
 ## COMMANDS

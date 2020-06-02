@@ -13,6 +13,8 @@ Nathan's Dot Files for Debian/Ubuntu
 - add alias to SUDO command
 - add dotfiles for servers
 - bdstorage tracking
+- Github PGP keys tracking
+- Gitea mirroring
 
 
 ## Dot Files

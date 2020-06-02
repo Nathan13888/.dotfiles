@@ -107,6 +107,8 @@
 	local = red bold
 	remote = cyan bold
 	plain = magenta dim
+[color "decorate"] # slots: branch, remoteBranch, tag, stash, HEAD (for git log --decorate)
+[color "interactive"] # slots: prompt, header, help, error (for git add --interactive)
 [hub]
 	protocol = https
 [help]

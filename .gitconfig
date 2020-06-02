@@ -12,6 +12,7 @@
 	bra = branch -vv --all # view all branches in the current repository
 	brv = bra # remove duplicate
 	brd = branch -d
+	brrm = brd
 	brm = branch -m #<A> <B> rename branch from A to B
 	cob = checkout -b # create new branch and switch to it
 	remv = remote -vv
@@ -88,16 +89,23 @@
 	ui = auto
 [color "status"]
 	added = green
-	updated = red
+	#updated = red
 	changed = cyan
 	untracked = magenta
 	nobranch = red white bold # not sure what this is...
 [color "diff"]
+	plain = dim
 	meta = yellow
+	frag = magenta
+	func = cyan
 	old = red 
 	new = green
+	commit = blue
 [color "branch"]
-
+	current = green bold #reverse
+	local = red bold
+	remote = cyan bold
+	plain = magenta dim
 [hub]
 	protocol = https
 [help]

@@ -30,6 +30,7 @@ alias cls="clear"
 alias clear="clear -x"
 
 ## TYPOS
+alias gi='git'
 alias gti='git'
 alias f='g'
 # This really isn't a problem since I rarely do typos and could easily fix them if I do...

@@ -36,7 +36,13 @@ alias git 'hub' # eval "$(hub alias -s)" # what's the difference even??
 alias lla "ls -alF"
 alias lsa "ls -aF"
 
-## SSH
+### CD SHORTCUTS
+alias pers "cd /mnt/nas/personal"
+alias medi "cd /mnt/nas/media"
+alias back "cd /mnt/nas/backup"
+alias arch "cd /mnt/nas/archival"
+
+### SSH
 alias sshdev 'ssh attackercow@192.168.10.69'
 alias sshnas 'ssh attackercow@192.168.10.250'
 alias sshnvr 'ssh attackercow@192.168.10.140'
@@ -58,3 +64,4 @@ set -xg PATH $PATH /usr/local/go/bin/
 
 # Python developers otherwise
 set -xg PYTHONDONTWRITEBYTECODE 1
+

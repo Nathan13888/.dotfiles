@@ -11,7 +11,7 @@
 	brd = branch -d
 	brm = branch -m #<A> <B> rename branch from A to B
 	cob = checkout -b # create new branch and switch to it
-	remv = remote -v
+	remv = remote -vv
 	rema = remote add # add remote URL
 	remao = rema origin # add origin (remote) URL
 	rems = remote set-url # set remote URL

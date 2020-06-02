@@ -3,6 +3,7 @@
 #########
 
 ## SHORTCUTS
+alias sv="sudo vim"
 alias v="vim"
 alias vr='v -r'
 alias g="git"

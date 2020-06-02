@@ -16,6 +16,8 @@ Nathan's Dot Files for Debian/Ubuntu
 - Github PGP keys tracking
 - Gitea mirroring
 
+- change git SAVE alias to stash
+
 
 ## Dot Files
 - [x] vimrc

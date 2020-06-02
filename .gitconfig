@@ -96,11 +96,12 @@
 [color "diff"]
 	plain = dim
 	meta = yellow
-	frag = magenta
-	func = cyan
-	old = red 
+	frag = magenta bold
+	func = cyan bold
+	old = red
 	new = green
-	commit = blue
+	commit = blue bold
+	whitespace = white reverse
 [color "branch"]
 	current = green bold #reverse
 	local = red bold

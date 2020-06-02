@@ -11,9 +11,10 @@
 	brd = branch -d
 	brm = branch -m #<A> <B> rename branch from A to B
 	cob = checkout -b # create new branch and switch to it
+	remv = remote -v
 	rema = remote add # add remote URL
 	remao = rema origin # add origin (remote) URL
-	rems = remote set # set remote URL
+	rems = remote set-url # set remote URL
 	remso = rems origin # set origin URL
 	# add fetch command, good for large projects
 	pp = !git pull && git push

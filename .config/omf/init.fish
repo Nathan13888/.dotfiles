@@ -7,7 +7,9 @@ alias sv="sudo vim"
 alias v="vim"
 alias vr='v -r'
 alias g="git"
+alias l='le'
 alias le="less"
+alias m='mo'
 alias mo="more"
 alias s 'sudo'
 alias sudo='sudo ' # for using other alias when using sudo

@@ -20,6 +20,7 @@ alias reboot="sudo reboot now"
 alias reload="omf reload" # reload fish
 alias chmox='sudo chmod +x'
 alias chowm='sudo chown $USER:$USER'
+alias su="sudo su -"
 alias c="clear"
 alias cl="clear"
 alias cls="clear"

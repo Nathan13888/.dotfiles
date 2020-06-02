@@ -12,6 +12,8 @@ Nathan's Dot Files for Debian/Ubuntu
 - add .git-crendtials encrypted --> make sure install script for this is separate
 - add alias to SUDO command
 - add dotfiles for servers
+- bdstorage tracking
+
 
 ## Dot Files
 - [x] vimrc

@@ -1,6 +1,6 @@
 [alias] ## Useful GIT commands https://github.com/joshnh/Git-Commands
 ## INFO
-	st = status -sb # shortened and more concise version of git status
+	st = status -sb --show-stash # shortened and more concise version of git status
 	versions = tags
 	tags = tag -l --sort=version:refname # view all tags
 	credit = shortlog -sn
@@ -28,6 +28,8 @@
 	caa = ca -a # stage and commit everything
 	caam = caa -m
 	sta = stage
+	ash = sash
+	sash = stash
 	co = checkout
 	br = branch
 	di = diff
@@ -80,12 +82,11 @@
 	branch = auto
 [color "status"]
 	added = green
-	changed = blue
-	untracked = red 
+	changed = cyan
+	untracked = red
 [color "diff"]
 	meta = yellow
 	old = red 
 	new = green
-
 [hub]
 	protocol = https

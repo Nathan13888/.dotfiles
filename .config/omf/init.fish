@@ -43,6 +43,8 @@ alias pers "cd /mnt/nas/personal"
 alias medi "cd /mnt/nas/media"
 alias back "cd /mnt/nas/backup"
 alias arch "cd /mnt/nas/archival"
+alias work "cd ~/workspace"
+alias cgit "cd ~/workspace/Git"
 
 ### SSH
 alias sshdev 'ssh attackercow@192.168.10.69'

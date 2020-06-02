@@ -6,6 +6,8 @@
 alias v="vim"
 alias vr='v -r'
 alias g="git"
+alias le="less"
+alias mo="more"
 alias s 'sudo'
 alias sudo='sudo ' # for using other alias when using sudo
 alias free="free -hm"

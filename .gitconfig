@@ -1,6 +1,7 @@
 [alias] ## Useful GIT commands https://github.com/joshnh/Git-Commands
 ## INFO
-	st = status -sb --show-stash # shortened and more concise version of git status
+	st = status -sb -uall # shortened and more concise version of git status, -uall option isn't actually needed
+	status = status --show-stash
 	versions = tags
 	tags = tag -l --sort=version:refname # view all tags
 	credit = shortlog -sn
@@ -57,6 +58,9 @@
 	path = ~/.gitconfig.local
 [commit]
 	template = ~/.gitmessage.txt
+	cleanup = strip
+[diff]
+	renames = true
 [push] # http://stackoverflow.com/a/23918418/89484
 	default = current
 	followTags = true
@@ -77,16 +81,24 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 [color]
-	diff = auto
-	status = auto
 	branch = auto
+	diff = auto
+	interactive = auto
+	status = auto
+	ui = auto
 [color "status"]
 	added = green
+	updated = red
 	changed = cyan
-	untracked = red
+	untracked = magenta
+	nobranch = red white bold # not sure what this is...
 [color "diff"]
 	meta = yellow
 	old = red 
 	new = green
+[color "branch"]
+
 [hub]
 	protocol = https
+[help]
+	#autocorrect = 1 # basically instant, refer to git-config

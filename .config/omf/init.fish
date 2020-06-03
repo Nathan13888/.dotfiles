@@ -4,8 +4,9 @@
 
 ## SHORTCUTS
 #alias vim="nvim" # comment this out if you don't what to use vim
+alias nv="nvim"
 alias sv="sudo nvim"
-alias v="nvim"
+alias v="nvim" # screen -t Vim nvim
 alias vr='v -r'
 alias g="git"
 alias git='hub' # eval "$(hub alias -s)" # what's the difference even??

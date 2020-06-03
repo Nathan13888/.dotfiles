@@ -33,10 +33,10 @@ alias gti='git'
 alias cd..="cd .."
 
 ## SSH
-alias sshdev 'ssh attackercow@192.168.10.69'
-alias sshnas 'ssh attackercow@192.168.10.250'
-alias sshnvr 'ssh attackercow@192.168.10.140'
-alias sshwpc 'ssh tvbox@192.168.10.121'
+alias sshdev 'ssh attackercow@192.168.10.69' # dev server
+alias sshnas 'ssh attackercow@192.168.10.250' # nas server
+alias sshnvr 'ssh attackercow@192.168.10.140' # nvr security server
+alias sshwpc 'ssh tvbox@192.168.10.121' # media server
 
 ## INFO and NAVIGATION
 alias disks='df -h | grep sd \
@@ -45,11 +45,11 @@ alias disks='df -h | grep sd \
     | sed -e "s_[,0-9]*[MG]_\x1b[36m&\x1b[0m_" \
     | sed -e "s_[0-9]*%_\x1b[32m&\x1b[0m_" \
     | sed -e "s_9[0-9]%_\x1b[31m&\x1b[0m_" \
-    | sed -e "s_/mnt/[-_A-Za-z0-9]*_\x1b[34;1m&\x1b[0m_"'
+    | sed -e "s_/mnt/[-_A-Za-z0-9]*_\x1b[34;1m&\x1b[0m_"' # list all disks
 
 alias du="du -h"
 alias df="df -h"
-alias du1="du -d 1"
+alias du1="du -d 1" # view the size of all directories of depth 1
 alias free="free -hm"
 alias uptime='uptime -p'
 alias top="htop" # HTOP is better than TOP

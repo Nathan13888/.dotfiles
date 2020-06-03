@@ -39,6 +39,7 @@ function link {
 # vim
 link .vim
 link .vimrc
+link .config/nvim
 
 # git
 link .gitconfig

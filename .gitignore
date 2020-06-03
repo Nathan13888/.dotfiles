@@ -6,3 +6,6 @@ emote_data.json
 
 # Vim Swap Files
 *.swp
+
+# Vim-Plug Plugins
+.config/nvim/plugged

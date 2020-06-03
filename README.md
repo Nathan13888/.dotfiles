@@ -17,6 +17,9 @@ Use `INSTALL.sh` to create new symlinks in a new or existing Debian/Ubuntu syste
 - [x] Bandaged Better Discord
 - [ ] 
 
+## VIM
+- Neovim
+
 ## Other Packages not included
 
 ## Other Dot File Repositories

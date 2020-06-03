@@ -2,7 +2,7 @@
 ## INFO
 	st = status -sb -uall # shortened and more concise version of git status, -uall option isn't actually needed
 	status = status --show-stash
-	versions = tags
+	#versions = tags
 	tags = tag -l --sort=version:refname # view all tags
 	credit = shortlog -sn
 ## CUSTOM SHORTCUTS
@@ -25,6 +25,7 @@
 ### Hub CLI
 	brow = browse
 ## COMMAND SHORTCUTS
+	v = version
 	ca = commit -S# -s # sign commit and add comment
 	cam = ca -m
 	caa = ca -a # stage and commit everything

@@ -76,6 +76,7 @@ alias medi "cd /mnt/nas/media"
 alias back "cd /mnt/nas/backup"
 alias arch "cd /mnt/nas/archival"
 alias work "cd ~/workspace"
+alias cftp "cd ~/SFTP"
 alias cgit "cd ~/workspace/Git"
 
 alias ..="cd .."

@@ -1,6 +1,10 @@
 # DotFiles
 
-A dotfiles repository containing Nathan's personal dotfiles that he uses with ubuntu and debian systems.
+A dotfiles repository containing Nathan's personal dotfiles that he uses with debian/ubuntu systems.
+
+Three other Github repositories for fonts are included as a submodule of this repository.
+
+Use `INSTALL.sh` to create new symlinks in a new or existing Debian/Ubuntu system.
 
 ## Dot Files Included
 
@@ -12,6 +16,8 @@ A dotfiles repository containing Nathan's personal dotfiles that he uses with ub
 - [x] fish
 - [x] Bandaged Better Discord
 - [ ] 
+
+## Other Packages not included
 
 ## Other Dot File Repositories
 - https://github.com/Nathan13888/ChessGames

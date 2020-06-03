@@ -1,5 +1,9 @@
 # TODO
 
+- afk command
+- setup screen and tmux
+- setup nvim
+- clean up alias and test untested aliases
 - change git SAVE alias to stash
 - add .git-crendtials encrypted --> make sure install script for this is separate
 - bdstorage tracking

@@ -22,6 +22,7 @@
 	remso = rems origin # set origin URL
 	# add fetch command, good for large projects
 	pp = !git pull && git push
+	undo = reset HEAD~1
 ### Hub CLI
 	brow = browse
 ## COMMAND SHORTCUTS
@@ -114,3 +115,17 @@
 	protocol = https
 [help]
 	#autocorrect = 1 # basically instant, refer to git-config
+[gpg]
+    program = gpg
+
+[url "git@github.com:"]
+    insteadOf = "gh:"
+    pushInsteadOf = "gh:"
+
+[url "git@gist.github.com:"]
+    insteadOf = "gist:"
+    pushInsteadOf = "gist:"
+
+[url "git@gitlab.com:"]
+    insteadOf = "gl:"
+    pushInsteadOf = "gl:"

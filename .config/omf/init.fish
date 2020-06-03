@@ -31,6 +31,7 @@ alias f='g'
 alias gi='git'
 alias gti='git'
 alias cd..="cd .."
+alias exti="exit"
 
 ## SSH
 alias sshdev 'ssh attackercow@192.168.10.69' # dev server

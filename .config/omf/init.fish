@@ -35,6 +35,7 @@ alias clear="clear -x"
 ## TYPOS
 alias gi='git'
 alias gti='git'
+alias cd..="cd .."
 alias f='g'
 # This really isn't a problem since I rarely do typos and could easily fix them if I do...
 
@@ -70,20 +71,18 @@ alias arch "cd /mnt/nas/archival"
 alias work "cd ~/workspace"
 alias cgit "cd ~/workspace/Git"
 
-alias cls="c"
 alias ..="cd .."
-alias cd..="cd .."
-alias ....="cd ../.."
-alias ......="cd ../../.."
-alias ........="cd ../../../.."
 alias ...="cd ../.."
-alias .3='cd ../../..'
-alias .4='cd ../../../..'
-alias .5='cd ../../../../..'
-alias 1='cd -'
-alias 2='cd -2'
-alias 3='cd -3'
-alias 4='cd -4'
-alias 5='cd -5'
+#alias ....="cd ../.."
+#alias ......="cd ../../.."
+#alias ........="cd ../../../.."
+#alias .3='cd ../../..'
+#alias .4='cd ../../../..'
+#alias .5='cd ../../../../..'
+alias 1='cd ..'
+alias 2='cd ../..'
+alias 3='cd ../../..'
+alias 4='cd ../../../..'
+alias 5='cd ../../../../..'
 #alias ~="cd ~" # using "cd" is faster
 #alias -- -="cd -"

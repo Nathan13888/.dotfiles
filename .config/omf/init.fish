@@ -64,9 +64,9 @@ alias lsr="ls -R --color=always" # show all directories recursively, useful for 
 alias mkd="mkdir -vp"
 alias smkd="sudo mkdir -vp"
 
-alias cp='cp -iv'
-alias mv='mv -iv'
-alias rm='rm -iv'
+alias cp='cp -v'
+alias mv='mv -v'
+alias rm='rm -v'
 
 alias fd='find . -type d -name' # find directory
 alias ff='find . -type f -name' # find file

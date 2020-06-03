@@ -38,11 +38,31 @@ alias gti='git'
 alias f='g'
 # This really isn't a problem since I rarely do typos and could easily fix them if I do...
 
+## SSH
+alias sshdev 'ssh attackercow@192.168.10.69'
+alias sshnas 'ssh attackercow@192.168.10.250'
+alias sshnvr 'ssh attackercow@192.168.10.140'
+alias sshwpc 'ssh tvbox@192.168.10.121'
 
-## NAVIGATION
-alias lla="ls -alhF --color=always" 
+## INFO and NAVIGATION
+alias lla="ls -AlhF --color=always --group-directories-first" 
 alias lld="lla | grep --color=always '^d'"
-alias lsa="ls -ahF --color=always" # don't think I'd use this very often
+alias llf="lla | grep --color=always '^-'"
+alias lsa="ls -AhF --color=always" # don't think I'd use this very often
+alias lsr="ls -R --color=always" # show all directories recursively, useful for small directories
+
+alias mkd="mkdir -vp"
+alias mkd="sudo mkdir -v"
+
+alias cp='cp -iv'
+alias mv='mv -iv'
+alias rm='rm -iv'
+
+alias du1="du -d 1"
+
+alias fdir='find . -type d -name' # find directory
+alias ff='find . -type f -name' # find file
+
 alias pers "cd /mnt/nas/personal"
 alias medi "cd /mnt/nas/media"
 alias back "cd /mnt/nas/backup"
@@ -50,19 +70,21 @@ alias arch "cd /mnt/nas/archival"
 alias work "cd ~/workspace"
 alias cgit "cd ~/workspace/Git"
 
-### SSH
-alias sshdev 'ssh attackercow@192.168.10.69'
-alias sshnas 'ssh attackercow@192.168.10.250'
-alias sshnvr 'ssh attackercow@192.168.10.140'
-alias sshwpc 'ssh tvbox@192.168.10.121'
-
-## Navigation
 alias cls="c"
 alias ..="cd .."
 alias cd..="cd .."
 alias ....="cd ../.."
 alias ......="cd ../../.."
 alias ........="cd ../../../.."
+alias ...="cd ../.."
+alias .3='cd ../../..'
+alias .4='cd ../../../..'
+alias .5='cd ../../../../..'
+alias 1='cd -'
+alias 2='cd -2'
+alias 3='cd -3'
+alias 4='cd -4'
+alias 5='cd -5'
 #alias ~="cd ~" # using "cd" is faster
 #alias -- -="cd -"
 

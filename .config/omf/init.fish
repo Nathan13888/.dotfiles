@@ -87,11 +87,3 @@ alias 4='cd -4'
 alias 5='cd -5'
 #alias ~="cd ~" # using "cd" is faster
 #alias -- -="cd -"
-
-# Golang developers might need this one
-#set -xg GOPATH $HOME/gocode
-set -xg PATH $PATH /usr/local/go/bin/
-
-# Python developers otherwise
-set -xg PYTHONDONTWRITEBYTECODE 1
-

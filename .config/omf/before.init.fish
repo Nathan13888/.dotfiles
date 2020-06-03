@@ -1,3 +1,11 @@
+# Golang developers might need this one
+#set -xg GOPATH $HOME/gocode
+set -xg PATH $PATH /usr/local/go/bin/
+
+# Python developers otherwise
+set -xg PYTHONDONTWRITEBYTECODE 1
+
+
 function fish_greeting
     echo '                 '(set_color F00)'___
   ___======____='(set_color FF7F00)'-'(set_color FF0)'-'(set_color FF7F00)'-='(set_color F00)')

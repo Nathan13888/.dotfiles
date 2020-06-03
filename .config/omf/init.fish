@@ -52,7 +52,7 @@ alias lsa="ls -AhF --color=always" # don't think I'd use this very often
 alias lsr="ls -R --color=always" # show all directories recursively, useful for small directories
 
 alias mkd="mkdir -vp"
-alias mkd="sudo mkdir -v"
+alias smkd="sudo mkdir -vp"
 
 alias cp='cp -iv'
 alias mv='mv -iv'

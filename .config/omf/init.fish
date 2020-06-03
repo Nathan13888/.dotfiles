@@ -7,6 +7,7 @@ alias sv="sudo vim"
 alias v="vim"
 alias vr='v -r'
 alias g="git"
+alias git='hub' # eval "$(hub alias -s)" # what's the difference even??
 alias l='le'
 alias le="less"
 alias m='mo'
@@ -37,13 +38,11 @@ alias gti='git'
 alias f='g'
 # This really isn't a problem since I rarely do typos and could easily fix them if I do...
 
-## COMMANDS
-alias git 'hub' # eval "$(hub alias -s)" # what's the difference even??
-alias lla="ls -alF --color=always"
-alias lld="lla | grep --color=always '^d'"
-alias lsa="ls -aF --color=always"
 
-### CD SHORTCUTS
+## NAVIGATION
+alias lla="ls -alhF --color=always" 
+alias lld="lla | grep --color=always '^d'"
+alias lsa="ls -ahF --color=always" # don't think I'd use this very often
 alias pers "cd /mnt/nas/personal"
 alias medi "cd /mnt/nas/media"
 alias back "cd /mnt/nas/backup"

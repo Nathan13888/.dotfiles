@@ -42,7 +42,6 @@ alias git 'hub' # eval "$(hub alias -s)" # what's the difference even??
 alias lla="ls -alF --color=always"
 alias lld="lla | grep --color=always '^d'"
 alias lsa="ls -aF --color=always"
-alias lsd="lsa | grep --color=always '^d'"
 
 ### CD SHORTCUTS
 alias pers "cd /mnt/nas/personal"

@@ -1,5 +1,7 @@
 # TODO
 
+- fix ZSH config
+- add git STASH aliases
 - afk command
 - setup screen and tmux
 - setup nvim

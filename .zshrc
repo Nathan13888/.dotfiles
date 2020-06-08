@@ -112,3 +112,5 @@ source $P10KCONF
 
 POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -23,7 +23,7 @@ alias chowm='sudo chown $USER:$USER'
 alias su="sudo su -"
 alias c="clear"
 alias clear="clear -x"
-alias reload="omf reload" # reload fish
+alias reload="exec $SHELL" # reload fish
 alias shutdown="sudo shutdown now"
 alias reboot="sudo reboot now"
 

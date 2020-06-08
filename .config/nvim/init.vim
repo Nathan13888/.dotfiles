@@ -121,7 +121,6 @@ let g:fzf_colors =
 autocmd FileType markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
 autocmd FileType journal setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
-" Swaping lines
 function! s:swap_lines(n1, n2)
     let line1 = getline(a:n1)
     let line2 = getline(a:n2)
@@ -149,14 +148,20 @@ function! s:swap_down()
     exec n + 1
 endfunction
 
+""" Key Mappings
+
+" Swapping Lines
 noremap <silent> <A-k> :call <SID>swap_up()<CR>
 noremap <silent> <A-j> :call <SID>swap_down()<CR>
-
-noremap <silent> <c-s-k> :call <SID>swap_up()<CR>
-noremap <silent> <c-s-j> :call <SID>swap_down()<CR>
-
-noremap <silent> <c-s-up> :call <SID>swap_up()<CR>
-noremap <silent> <c-s-down> :call <SID>swap_down()<CR>
+noremap <silent> <A-up> :call <SID>swap_up()<CR>
+noremap <silent> <A-down> :call <SID>swap_down()<CR>
+" Tab Navigation
+nnoremap <C-S-tab> :tabprevious<CR>
+nnoremap <C-tab>   :tabnext<CR>
+nnoremap <C-t>     :tabnew<CR>
+inoremap <C-S-tab> <Esc>:tabprevious<CR>i
+inoremap <C-tab>   <Esc>:tabnext<CR>i
+inoremap <C-t>     <Esc>:tabnew<CR>
 
 """ Styling
 syntax on

@@ -77,6 +77,7 @@ alias rmd='rmdir -v'
 
 alias fd='find . -type d -name' # find directory
 alias ff='find . -type f -name' # find file
+alias pg="pgrep" # find process id, `$ pidof` is another viable command alternative
 
 alias pers "cd /mnt/nas/personal"
 alias medi "cd /mnt/nas/media"

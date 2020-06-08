@@ -23,6 +23,8 @@
 	# add fetch command, good for large projects
 	pp = !git pull && git push
 	undo = reset HEAD~1
+    rmc = rm --cached # remove from VCS
+    us = reset -- # "unstage"; git reset [commit(def=HEAD)] -- <path>
 ### Hub CLI
     brow = browse
 ## TYPOS
@@ -30,6 +32,7 @@
     ac = ca
 ## COMMAND SHORTCUTS
     v = version
+    lsf = ls-files
 	ca = commit -S# -s # sign commit and add comment
 	cam = ca -m
 	caa = ca -a # stage and commit everything

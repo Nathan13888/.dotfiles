@@ -26,6 +26,7 @@ alias clear="clear -x"
 alias reload="exec $SHELL" # reload fish
 alias shutdown="sudo shutdown now"
 alias reboot="sudo reboot now"
+alias update="sudo apt full-upgrade"
 
 ## TYPOS
 alias f='g'

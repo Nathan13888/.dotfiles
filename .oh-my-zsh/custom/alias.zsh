@@ -1,4 +1,4 @@
 # REMOVE ALL DEFAULT ZSH ALIASES
 unalias -m '*'
 
-source ~/.aliases
+[[ -f ~/.aliases ]] && source ~/.aliases

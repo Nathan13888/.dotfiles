@@ -56,7 +56,9 @@ link .config/BetterDiscord
 #link .config/fish
 link .config/omf
 
-
+# OH MY ZSH
+link .oh-my-zsh
+link .aliases
 
 
 

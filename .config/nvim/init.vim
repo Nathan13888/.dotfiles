@@ -155,12 +155,10 @@ noremap <silent> <A-j> :call <SID>swap_down()<CR>
 noremap <silent> <A-up> :call <SID>swap_up()<CR>
 noremap <silent> <A-down> :call <SID>swap_down()<CR>
 " Tab Navigation
-nnoremap <C-S-tab> :tabprevious<CR>
-nnoremap <C-tab>   :tabnext<CR>
-nnoremap <C-t>     :tabnew<CR>
 inoremap <C-S-tab> <Esc>:tabprevious<CR>i
 inoremap <C-tab>   <Esc>:tabnext<CR>i
 inoremap <C-t>     <Esc>:tabnew<CR>
+nnoremap <C-w>     tabclose<CR>
 nnoremap <A-1> 1gt
 nnoremap <A-2> 2gt
 nnoremap <A-3> 3gt

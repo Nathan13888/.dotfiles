@@ -24,9 +24,12 @@
 	pp = !git pull && git push
 	undo = reset HEAD~1
 ### Hub CLI
-	brow = browse
+    brow = browse
+## TYPOS
+    aac = caa
+    ac = ca
 ## COMMAND SHORTCUTS
-	v = version
+    v = version
 	ca = commit -S# -s # sign commit and add comment
 	cam = ca -m
 	caa = ca -a # stage and commit everything

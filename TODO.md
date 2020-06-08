@@ -15,6 +15,7 @@
 - clean up alias and test untested aliases
 - Github PGP keys tracking
 - git prompts (push, commit, add)
+- add RESET aliases --> https://devconnected.com/how-to-unstage-files-on-git/
 
 - add packages install script
 - add guake

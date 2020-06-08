@@ -26,6 +26,7 @@
     rmc = rm --cached # remove from VCS
     us = reset -- # "unstage"; git reset [commit(def=HEAD)] -- <path>
     ci = check-ignore
+    resethard = reset --hard
 ### Hub CLI
     brow = browse
 ## TYPOS

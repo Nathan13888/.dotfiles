@@ -3,7 +3,7 @@
 #########
 
 ## SHORTCUTS
-#alias vim="nvim" # comment this out if you don't what to use vim
+#alias vim="nvim" # comment this out if you what to use vim
 alias nv="nvim"
 alias sv="sudo nvim"
 alias v="nvim" # screen -t Vim nvim
@@ -69,6 +69,7 @@ alias smkd="sudo mkdir -vp"
 alias cp='cp -v'
 alias mv='mv -v'
 alias rm='rm -v'
+alias rmd='rmdir -v'
 
 alias fd='find . -type d -name' # find directory
 alias ff='find . -type f -name' # find file

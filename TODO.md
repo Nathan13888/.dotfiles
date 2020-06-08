@@ -19,7 +19,7 @@
 - add packages install script
 - add guake
 - add update alternatives
-- add ZSH plugins
+- add ZSH plugins --> https://github.com/unixorn/awesome-zsh-plugins#oh-my-zsh
 - setup nvim
 - add nvim root config sync script
 - setup screen and tmux

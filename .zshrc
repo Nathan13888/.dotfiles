@@ -107,7 +107,8 @@ source $ZSH/oh-my-zsh.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 P10KCONF="$ZSH/custom/themes/powerlevel10k/config/p10k-robbyrussell.zsh"
-[[ ! -f P10KCONF ]] || source $P10KCONF
+#[[ ! -f P10KCONF ]] || 
+source $P10KCONF
 
 POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
 

@@ -59,6 +59,7 @@ link .config/omf
 # OH MY ZSH
 link .oh-my-zsh
 link .aliases
+link .zshrc
 link .p10k.zsh
 
 

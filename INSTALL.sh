@@ -59,7 +59,7 @@ link .config/omf
 # OH MY ZSH
 link .oh-my-zsh
 link .aliases
-
+link .p10k.zsh
 
 
 ## NEED TO ADD OTHER DotFiles

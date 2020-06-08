@@ -1,3 +1,7 @@
+" NO LONGER uses vim, therefore, this file `.vimrc` won't be updated in the
+" future
+" Might potentially just SYMLINK nvim config to this instead
+
 function! s:swap_lines(n1, n2)
     let line1 = getline(a:n1)
     let line2 = getline(a:n2)

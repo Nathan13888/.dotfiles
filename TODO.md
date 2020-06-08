@@ -6,7 +6,11 @@
 - c++ lint
 - change moving lines to ALT+HJKL
 - more shortcuts
-- integrating terminal
+  - nvim terminal
+  - page navigation
+  - tab navigation --> https://vim.fandom.com/wiki/Alternative_tab_navigation
+  - custom shortcuts
+- integrated terminal
 - auto compile and run shortcuts for c++
 
 ## Git

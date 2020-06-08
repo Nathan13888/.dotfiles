@@ -21,6 +21,7 @@
 - Language Compilers and Tools --> Python Java GCC NodeJS NPM
 - make and qmake
 - fish and oh my fish shell
+- guake (popup terminal)
 
 - cuda and cudnn
 - chess engines --> allie lc0 kommodo stockfish

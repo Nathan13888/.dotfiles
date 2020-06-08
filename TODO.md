@@ -16,6 +16,8 @@
 - Github PGP keys tracking
 - git prompts (push, commit, add)
 
+- add packages install script
+- add guake
 - add update alternatives
 - add ZSH plugins
 - setup nvim

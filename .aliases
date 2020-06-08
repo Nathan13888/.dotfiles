@@ -28,6 +28,8 @@ alias shutdown="sudo shutdown now"
 alias reboot="sudo reboot now"
 alias update="sudo apt full-upgrade"
 
+alias weather="xdg-open https://www.accuweather.com/en/ca/mississauga/l5b/hourly-weather-forecast/55071"
+
 ## TYPOS
 alias f='g'
 alias gi='git'

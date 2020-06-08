@@ -16,6 +16,7 @@
 - Github PGP keys tracking
 - git prompts (push, commit, add)
 
+- add update alternatives
 - add ZSH plugins
 - setup nvim
 - add nvim root config sync script

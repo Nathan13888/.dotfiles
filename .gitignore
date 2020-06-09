@@ -4,6 +4,7 @@ log/
 # Better Discord
 emote_data.json
 BadgesEverywhere.config.json
+.config/BetterDiscord/bdstorage.json
 
 # Vim Swap Files
 *.swp

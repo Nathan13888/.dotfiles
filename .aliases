@@ -17,6 +17,7 @@ alias sudo='sudo ' # for using other alias when using sudo
 alias service="sudo service"
 alias serv="service"
 alias code="code-insiders"
+alias chrome="google-chrome"
 alias bdctl="betterdiscordctl"
 alias chmox='sudo chmod +x'
 alias chowm='sudo chown $USER:$USER'

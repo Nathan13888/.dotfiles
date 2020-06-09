@@ -28,6 +28,7 @@ alias shutdown="sudo shutdown now"
 alias reboot="sudo reboot now"
 alias update="sudo apt full-upgrade"
 alias sai="sudo apt install"
+alias sar="sudo apt remove"
 alias sdi="sudo dpkg -i"
 
 alias weather="xdg-open https://www.accuweather.com/en/ca/mississauga/l5b/hourly-weather-forecast/55071"

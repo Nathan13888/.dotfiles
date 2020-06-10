@@ -28,7 +28,7 @@
 - ZSH install script
 - update-alternatives script
 
-- add guake
+- include extensions and plugin install scripts
 - add update alternatives
 - add ZSH plugins --> https://github.com/unixorn/awesome-zsh-plugins#oh-my-zsh
 - setup nvim

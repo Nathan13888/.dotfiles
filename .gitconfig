@@ -35,6 +35,7 @@
 ## COMMAND SHORTCUTS
     v = version
     lsf = ls-files
+    amend = commit --amend
 	ca = commit -S# -s # sign commit and add comment
 	cam = ca -m
 	caa = ca -a # stage and commit everything

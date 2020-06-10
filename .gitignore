@@ -1,6 +1,9 @@
 *.log
 log/
 
+# ZSH
+.oh-my-zsh/custom/plugins/*
+
 # Better Discord
 emote_data.json
 BadgesEverywhere.config.json

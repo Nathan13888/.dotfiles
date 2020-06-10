@@ -73,7 +73,7 @@ alias llf="lla | grep --color=always '^-'"
 alias lsa="ls -AhF --color=always" # don't think I'd use this very often
 alias lsr="ls -R --color=always" # show all directories recursively, useful for small directories
 
-alias mkd="mkdir -vp"
+kjjjjjjjalias mkd="mkdir -vp"
 alias smkd="sudo mkdir -vp"
 
 alias cp='cp -v'
@@ -84,6 +84,11 @@ alias rmd='rmdir -v'
 alias fd='find . -type d -name' # find directory
 alias ff='find . -type f -name' # find file
 alias pg="pgrep" # find process id, `$ pidof` is another viable command alternative
+
+alias down="cd ~/Downloads"
+alias docs="cd ~/Documents"
+alias pics="cd ~/Pictures"
+alias desk="cd ~/Desktop"
 
 alias pers="cd /mnt/nas/personal"
 alias medi="cd /mnt/nas/media"

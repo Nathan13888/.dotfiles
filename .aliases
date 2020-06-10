@@ -73,7 +73,7 @@ alias llf="lla | grep --color=always '^-'"
 alias lsa="ls -AhF --color=always" # don't think I'd use this very often
 alias lsr="ls -R --color=always" # show all directories recursively, useful for small directories
 
-kjjjjjjjalias mkd="mkdir -vp"
+alias mkd="mkdir -vp"
 alias smkd="sudo mkdir -vp"
 
 alias cp='cp -v'

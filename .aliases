@@ -65,6 +65,8 @@ alias free="free -hm"
 alias uptime='uptime -p'
 alias top="htop" # HTOP is better than TOP
 
+alias e="exit"
+
 alias ll="lla"
 alias la="lla"
 alias lla="ls -AlhF --color=always --group-directories-first" 

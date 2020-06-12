@@ -6,7 +6,8 @@ log/
 
 # Better Discord
 emote_data.json
-BadgesEverywhere.config.json
+.config/BetterDiscord/plugins/BadgesEverywhere.config.json
+.config/BetterDiscord/plugins/Guild\ And\ Friend\ Removal\ Alerts.config.json
 .config/BetterDiscord/bdstorage.json
 
 # Vim Swap Files

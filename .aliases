@@ -8,6 +8,7 @@ alias nv="nvim"
 alias sv="sudo nvim"
 alias v="nvim" # screen -t Vim nvim
 alias vr='v -r'
+alias vm="v -M"
 alias g="git"
 alias git='hub' # eval "$(hub alias -s)" # what's the difference even??
 alias l="less"

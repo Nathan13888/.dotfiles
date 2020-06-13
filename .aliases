@@ -61,6 +61,7 @@ alias disks='df -h | grep sd \
 alias du="du -h"
 alias df="df -h"
 alias du1="du -d 1" # view the size of all directories of depth 1
+alias fr="free"
 alias free="free -hm"
 alias uptime='uptime -p'
 alias top="htop" # HTOP is better than TOP

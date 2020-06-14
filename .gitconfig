@@ -22,7 +22,9 @@
 	remso = rems origin # set origin URL
 	# add fetch command, good for large projects
 	pp = !git pull && git push
-	undo = reset HEAD~1
+    undo = reset HEAD~1
+    undo2 = reset HEAD~2
+    undo3 = reset HEAD~3
     rmc = rm --cached # remove from VCS
     us = reset -- # "unstage"; git reset [commit(def=HEAD)] -- <path>
     ci = check-ignore

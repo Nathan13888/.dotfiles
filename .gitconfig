@@ -29,6 +29,7 @@
     us = reset -- # "unstage"; git reset [commit(def=HEAD)] -- <path>
     ci = check-ignore
     resethard = reset --hard
+    renorm = add --renormalize .
 ### Hub CLI
     brow = browse
 ## TYPOS

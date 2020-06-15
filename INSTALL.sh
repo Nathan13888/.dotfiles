@@ -36,6 +36,9 @@ function link {
 #link workspace/Git/.vscode
 # Just do --> git clone Nathan13888/.vscode
 
+# tmux
+link .tmux.conf
+
 # vim
 link .vim
 link .vimrc

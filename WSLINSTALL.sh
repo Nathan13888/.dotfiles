@@ -8,7 +8,7 @@
 # - angular and node
 # - ZSH
 # - Oh My ZSH
-#
+# - Tmux
 
 dotfilesDir=$(pwd)
 
@@ -25,6 +25,9 @@ function link {
   echo "Creating new symlink: ${dest}"
   ln -s ${dotfilesDir}/${1} ${dest}
 }
+
+# tmux
+link .tmux.conf
 
 # vim
 link .config/nvim

@@ -32,6 +32,11 @@
     renorm = add --renormalize .
 ### Hub CLI
     brow = browse
+    pr="!f() { \
+        BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD); \
+        git push -u origin $BRANCH_NAME; \
+        hub pull-request; \
+    };f "
 ## TYPOS
     aac = caa
     ac = ca

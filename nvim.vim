@@ -8,7 +8,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
-#Plug 'yuttie/hydrangea-vim'
+"Plug 'yuttie/hydrangea-vim'
 Plug 'chriskempson/tomorrow-theme', { 'rtp': 'vim' }
 
 " Functionalities

@@ -260,8 +260,8 @@ set winWidth(.pgnWin)  65
 set winHeight(.pgnWin) 20
 set winWidth(.playerInfoWin)  45
 set winHeight(.playerInfoWin) 20
-set winWidth(.setup)  1279
-set winHeight(.setup) 1291
+set winWidth(.setup)  1247
+set winHeight(.setup) 1287
 set winWidth(.spellcheckWin)  55
 set winHeight(.spellcheckWin) 25
 set winWidth(.statsWin)  60
@@ -311,8 +311,8 @@ set winX(.pgnWin)  -1
 set winY(.pgnWin)  -1
 set winX(.playerInfoWin)  -1
 set winY(.playerInfoWin)  -1
-set winX(.setup)  70
-set winY(.setup)  128
+set winX(.setup)  2122
+set winY(.setup)  410
 set winX(.spellcheckWin)  441
 set winY(.spellcheckWin)  868
 set winX(.statsWin)  -1

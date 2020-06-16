@@ -4,6 +4,10 @@ log/
 # ZSH
 .oh-my-zsh/custom/plugins/*
 
+# SCID VS PC
+.scidvspc/config/history.dat
+.scidvspc/config/recent.dat
+
 # Better Discord
 emote_data.json
 .config/BetterDiscord/plugins/BadgesEverywhere.config.json

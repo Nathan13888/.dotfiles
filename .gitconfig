@@ -17,9 +17,11 @@
 	cob = checkout -b # create new branch and switch to it
 	remv = remote -vv
 	rema = remote add # add remote URL
-	remao = rema origin # add origin (remote) URL
+    remao = rema origin # add origin (remote) URL
+    remau = rema upstream # add upstream URL
 	rems = remote set-url # set remote URL
-	remso = rems origin # set origin URL
+    remso = rems origin # set origin URL
+    remsu = rems upstream # set upstream URL
 	# add fetch command, good for large projects
 	pp = !git pull && git push
     undo = reset HEAD~1

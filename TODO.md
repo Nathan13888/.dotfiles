@@ -14,6 +14,8 @@
 - auto compile and run shortcuts for c++
 
 ## Git
+- https://www.git-tower.com/learn/git/faq/delete-remote-branch
+- delete remotes
 - add git aliases to shell aliases
 - add FORK alias
 - add git STASH aliases

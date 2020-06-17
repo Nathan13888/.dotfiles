@@ -15,6 +15,7 @@
 
 ## Git
 - add git aliases to shell aliases
+- add FORK alias
 - add git STASH aliases
 - clean up alias and test untested aliases
 - git prompts (push, commit, add)

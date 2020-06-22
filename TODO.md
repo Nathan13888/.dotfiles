@@ -12,6 +12,7 @@
   - custom shortcuts
 - integrated terminal
 - auto compile and run shortcuts for c++
+- change to global clipboard for debian and WSL (https://github.com/datwaft/nvim/blob/master/doc/installation_wsl.md#make-clipboard-work-with-neovim-in-wsl)
 
 ## Git
 - https://www.git-tower.com/learn/git/faq/delete-remote-branch

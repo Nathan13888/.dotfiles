@@ -27,8 +27,18 @@ alias m="more"
 alias su="sudo su -"
 alias c="clear" clear="clear -x"
 alias e="exit"
+### WIFI
+alias ifa="/sbin/ifconfig -a"
+alias ipshow="ip link show"
+alias nmds="nmcli device status"
+alias nmcs="nmcli connection show"
+alias mc="sudo macchanger"
+alias airm="sudo airmon-ng" # https://github.com/aircrack-ng/rtl8812au
+alias airmck="airm check kill"
+alias ipls="sudo ip link set" # reference below from https://stackoverflow.com/questions/55127741/how-do-you-pass-arguments-to-custom-zsh-functions
+function iplsd { readonly face=${1:?"The interface must be specified"} ipls $1 down }
+#function iplsu
 ### SYSTEM
-alias mc="macchanger"
 alias service="sudo service" alias serv="service"
 alias shutdown="sudo shutdown now"
 alias reboot="sudo reboot now"

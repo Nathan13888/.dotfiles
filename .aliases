@@ -34,6 +34,7 @@ alias nmds="nmcli device status"
 alias nmcs="nmcli connection show"
 alias mc="sudo macchanger"
 alias mch="macchanger --help"
+alias mcl="macchanger -l"
 alias mcr="mc -r"
 alias mce="mc -e"
 alias airm="sudo airmon-ng" # https://github.com/aircrack-ng/rtl8812au

@@ -21,6 +21,9 @@
 - Language Compilers and Tools --> Python Java GCC NodeJS NPM
 - make and qmake
 - fish and oh my fish shell
+- privoxy
+- macchanger
+- 
 - guake (popup terminal)
 
 - cuda and cudnn

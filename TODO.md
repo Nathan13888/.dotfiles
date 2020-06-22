@@ -31,6 +31,8 @@
 - ZSH install script
 - update-alternatives script
 
+- organize PACKAGES.md
+- add list of changes --> `EXTRA-MODIFICATIONS.md`
 - include extensions and plugin install scripts
 - add update alternatives
 - add ZSH plugins --> https://github.com/unixorn/awesome-zsh-plugins#oh-my-zsh

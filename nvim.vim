@@ -137,6 +137,13 @@ endfunction
 
 """ Key Mappings
 
+" Cut, Copy & Paste
+"noremap <Leader>d "*d
+"noremap <Leader>p "*p
+"noremap <Leader>Y "+y
+"noremap <Leader>D "+d
+"noremap <Leader>Y "+y
+"noremap <Leader>P "+p
 " Swapping Lines
 noremap <silent> <A-k> :call <SID>swap_up()<CR>
 noremap <silent> <A-j> :call <SID>swap_down()<CR>

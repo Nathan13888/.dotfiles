@@ -28,6 +28,7 @@ alias su="sudo su -"
 alias c="clear" clear="clear -x"
 alias e="exit"
 ### SYSTEM
+alias mc="macchanger"
 alias service="sudo service" alias serv="service"
 alias shutdown="sudo shutdown now"
 alias reboot="sudo reboot now"

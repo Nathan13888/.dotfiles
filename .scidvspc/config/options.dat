@@ -209,7 +209,7 @@ set ::tools::graphs::type Auto
 set maintFlag W
 set useGraphFigurine 1
 set photosMinimized 0
-set bookmarks(gamehistory) {{g {Repertoire:  Markelova - Guseva, 0-1,  Sochi (1.3) 2018} /home/attackercow/chess/games/Repertoire 0 1 {Markelova, L} {Guseva, Marina} 2018 {Sochi RUS} 1.3 0-1} {g {Caissabase_2019_09_08:  Markelova - Guseva, 0-1,  Sochi (1.3) 2018} /home/attackercow/chess/Caissabase_2019_09_08/Caissabase_2019_09_08 1 1 {Markelova, L} {Guseva, Marina} 2018 {Sochi RUS} 1.3 0-1} {g {MyGames:  jasonmichael79 - xXPrototypeXx, 0-1,  Chess.com 2020} /home/attackercow/chess/games/MyGames 1 1 jasonmichael79 xXPrototypeXx 2020 Chess.com ? 0-1} {g {MyGames:  dcampbell1972 - xXPrototypeXx, 0-1,  Chess.com (-) 2020} /home/attackercow/chess/games/MyGames 8 1 dcampbell1972 xXPrototypeXx 2020 Chess.com - 0-1} {g {MyGames:  alexskillet - xXPrototypeXx, 0-1,  Chess.com 2020} /home/attackercow/chess/games/MyGames 2 1 alexskillet xXPrototypeXx 2020 Chess.com ? 0-1}}
+set bookmarks(gamehistory) {{g {Repertoire:  ? - ?, *,  ? 0} /home/attackercow/chess/games/Repertoire 0 1 ? ? 0 ? ? *} {g {MyGames:  jasonmichael79 - xXPrototypeXx, 0-1,  Chess.com 2020} /home/attackercow/chess/games/MyGames 1 1 jasonmichael79 xXPrototypeXx 2020 Chess.com ? 0-1} {g {Repertoire:  Markelova - Guseva, 0-1,  Sochi (1.3) 2018} /home/attackercow/chess/games/Repertoire 0 1 {Markelova, L} {Guseva, Marina} 2018 {Sochi RUS} 1.3 0-1} {g {Caissabase_2019_09_08:  Markelova - Guseva, 0-1,  Sochi (1.3) 2018} /home/attackercow/chess/Caissabase_2019_09_08/Caissabase_2019_09_08 1 1 {Markelova, L} {Guseva, Marina} 2018 {Sochi RUS} 1.3 0-1} {g {MyGames:  dcampbell1972 - xXPrototypeXx, 0-1,  Chess.com (-) 2020} /home/attackercow/chess/games/MyGames 8 1 dcampbell1972 xXPrototypeXx 2020 Chess.com - 0-1}}
 set playerInfoHistory {}
 set defaultDBs {/home/attackercow/chess/games/MyGames /home/attackercow/chess/games/Repertoire}
 set glistSize 19
@@ -311,8 +311,8 @@ set winX(.pgnWin)  -1
 set winY(.pgnWin)  -1
 set winX(.playerInfoWin)  -1
 set winY(.playerInfoWin)  -1
-set winX(.setup)  2122
-set winY(.setup)  410
+set winX(.setup)  2173
+set winY(.setup)  327
 set winX(.spellcheckWin)  441
 set winY(.spellcheckWin)  868
 set winX(.statsWin)  -1

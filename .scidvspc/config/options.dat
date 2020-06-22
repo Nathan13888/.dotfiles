@@ -311,8 +311,8 @@ set winX(.pgnWin)  -1
 set winY(.pgnWin)  -1
 set winX(.playerInfoWin)  -1
 set winY(.playerInfoWin)  -1
-set winX(.setup)  2173
-set winY(.setup)  327
+set winX(.setup)  549
+set winY(.setup)  603
 set winX(.spellcheckWin)  441
 set winY(.spellcheckWin)  868
 set winX(.statsWin)  -1

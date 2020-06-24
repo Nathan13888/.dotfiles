@@ -39,7 +39,7 @@
 - aircrack-ng and airegeddon
 - hashcat
 - hydra
-- nmap
+- nmap and zenmap
 
 - Kicad
 - Fidglet

@@ -9,21 +9,20 @@
 - KVM
 - Docker
 - Samba and Cifs-Utils
-- Pro
+- Pro #what is this??
 - SSH and SFTP (Filezilla too)
 - Steam
 - Phoronix Test Suite
-- Snap and Flatpak
 - Screen and Tmux
 - Time
 - git and hub (github git-wrapper)
 - putty
 - Language Compilers and Tools --> Python Java GCC NodeJS NPM
 - make and qmake
-- fish and oh my fish shell
+- curl, wget, rpm
+- Snap and Flatpak
 - privoxy
 - macchanger
-- 
 - guake (popup terminal)
 
 - cuda and cudnn

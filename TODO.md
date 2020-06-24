@@ -37,14 +37,13 @@
 - add script to sync root configs
 
 - organize PACKAGES.md
+- add dotfiles for server and WSL
 - add list of changes --> `EXTRA-MODIFICATIONS.md`
 - include extensions and plugin install scripts
 - add update alternatives
 - add ZSH plugins --> https://github.com/unixorn/awesome-zsh-plugins#oh-my-zsh
 - setup nvim
 - setup screen and tmux
-- add dotfiles for server and WSL
 - afk command
-- bdstorage tracking
 
 - implement dotbot --> https://github.com/anishathalye/dotbot/tree/5d83f9e797b1950199e127a8196803f5e33e0916

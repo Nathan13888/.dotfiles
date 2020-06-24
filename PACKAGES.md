@@ -40,6 +40,7 @@
 - hashcat
 - hydra
 - nmap and zenmap
+- zenmap download --> https://nmap.org/download.html
 
 - Kicad
 - Fidglet

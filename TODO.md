@@ -2,6 +2,8 @@
 
 ## NVIM
 - commenting
+- fix tabbing and setup with editorconfig
+- fix quotes and brackets
 - autocomplete
 - c++ lint
 - change moving lines to ALT+HJKL
@@ -31,6 +33,8 @@
 - add nvim root config sync script
 - ZSH install script
 - update-alternatives script
+- add script to sync /etc files
+- add script to sync root configs
 
 - organize PACKAGES.md
 - add list of changes --> `EXTRA-MODIFICATIONS.md`

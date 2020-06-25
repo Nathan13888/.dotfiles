@@ -24,8 +24,6 @@
 - add git STASH aliases
 - clean up alias and test untested aliases
 - git prompts (push, commit, add)
-- add RESET aliases --> https://devconnected.com/how-to-unstage-files-on-git/
-- change git SAVE alias to stash
 
 ## Scripts
 - Github PGP keys install script

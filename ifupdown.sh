@@ -30,3 +30,6 @@ if [ "$IFACE" = lo ]; then
 fi
 
 /usr/bin/${package} -e $IFACE >> $LOGFILE 2>&1
+
+# RANDOMIZE MAC
+/usr/bin/${package} -A $IFACE

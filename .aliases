@@ -11,7 +11,13 @@ alias f='g'
 #alias al="la"
 ### CLI & APPLICATIONS
 alias s="sudo" alias sudo='sudo ' # for using other alias when using sudo
-alias reload="exec $SHELL" # reload fish
+function reload {
+  if [[ $SHELL == */tmux ]] ; then
+    exec /usr/bin/zsh
+  else
+    exec $SHELL # reload whatever is $SHELL
+  fi
+}
 alias scr="screen"
 alias tm="tmux"
 alias tmr="tmux source-file ~/.tmux.conf"

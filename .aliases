@@ -49,8 +49,16 @@ alias mcA="mc -A"
 alias airm="sudo airmon-ng" # https://github.com/aircrack-ng/rtl8812au
 alias airmck="airm check kill"
 alias ipls="sudo ip link set" # reference below from https://stackoverflow.com/questions/55127741/how-do-you-pass-arguments-to-custom-zsh-functions
-#function iplsd { readonly face=${1:?"The interface must be specified"} ipls $1 down } # TO BE TESTED!
-#function iplsu
+function iplsd {
+  readonly face=${1:?"The interface must be specified"}
+  ipls $1 down
+  echo "Put interface $1 down"
+}
+function iplsu {
+  readonly face=${1:?"The interface must be specified"}
+  ipls $1 up
+  echo "Put interface $1 up"
+}
 ### SYSTEM
 alias service="sudo service" alias serv="service"
 alias shutdown="sudo shutdown now"

@@ -40,8 +40,8 @@
         hub pull-request; \
     };f "
 ## TYPOS
-    aac = caa
-    ac = ca
+#    aac = caa
+#    ac = ca
 ## COMMAND SHORTCUTS
     v = version
     lsf = ls-files

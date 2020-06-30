@@ -46,6 +46,7 @@
     v = version
     lsf = ls-files
     amend = commit --amend
+    aca = "!f() { git add \"$1\"; git ca \"$1\"; }; f"
 	ca = commit -S# -s # sign commit and add comment
 	cam = ca -m
 	caa = ca -a # stage and commit everything

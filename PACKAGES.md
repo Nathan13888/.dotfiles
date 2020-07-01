@@ -33,8 +33,8 @@
 - zram-config --> setup https://github.com/StuartIanNaylor/zram-config
 
 # GNOME
-- extended gestures
 - gnome-keyring
+- libinput-gestures https://github.com/bulletmark/libinput-gestures
 
 - wireshark
 - aircrack-ng and airegeddon

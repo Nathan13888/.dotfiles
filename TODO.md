@@ -34,6 +34,12 @@
 - add script to sync /etc files
 - add script to sync root configs
 
+# Desktop
+- backup gnome settings https://www.addictivetips.com/ubuntu-linux-tips/back-up-the-gnome-shell-desktop-settings-linux/
+- fix terminal font for guake
+- add more libinput gestures
+- add libinput conf to install script
+
 - organize PACKAGES.md
 - add dotfiles for server and WSL
 - add list of changes --> `EXTRA-MODIFICATIONS.md`

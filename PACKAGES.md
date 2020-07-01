@@ -32,7 +32,9 @@
 
 - zram-config --> setup https://github.com/StuartIanNaylor/zram-config
 
-
+# GNOME
+- extended gestures
+- gnome-keyring
 
 - wireshark
 - aircrack-ng and airegeddon

@@ -125,6 +125,8 @@ alias sshnvr='ssh attackercow@192.168.10.140' # nvr security server
 alias sshwpc='ssh tvbox@192.168.10.121' # media server
 ### CD
 alias pers="cd /mnt/nas/personal"
+alias note="cd $NOTE"
+alias notes="note"
 alias medi="cd /mnt/nas/media"
 alias back="cd /mnt/nas/backup"
 alias arch="cd /mnt/nas/archival"

@@ -15,6 +15,14 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 
 - `UPDATE-SUBMODULES.sh` --> update submodules of this respository
 
+# Cloning (with submodules)
+*Reference* https://git-scm.com/book/en/v2/Git-Tools-Submodules
+### To clone this repository
+- `git clone --recurse-submodules https://github.com/Nathan13888/DotFiles`
+### To download the submodules (after cloning without `--recurse-submodules`)
+- `git clone https://github.com/Nathan13888/DotFiles`
+- `git submodule update --init --recursive`
+
 ## Dot Files Included
 
 - [x] vimrc

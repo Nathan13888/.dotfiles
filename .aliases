@@ -123,6 +123,7 @@ alias sshdev='ssh attackercow@192.168.10.69' # dev server
 alias sshnas='ssh attackercow@192.168.10.250' # nas server
 alias sshnvr='ssh attackercow@192.168.10.140' # nvr security server
 alias sshwpc='ssh tvbox@192.168.10.121' # media server
+alias sshoct='ssh pi@192.168.10.118' # octoprint
 ### CD
 alias pers="cd /mnt/nas/personal"
 alias note="cd $NOTE"

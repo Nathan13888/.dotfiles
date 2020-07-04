@@ -116,6 +116,7 @@ alias smkd="sudo mkdir -vp"
 alias cp='cp -v'
 alias mv='mv -v'
 alias rm='rm -v'
+alias rmf="rm -f" # removes all prompts
 alias rmd='rmdir -v'
 alias tra="trash -v"
 ## SSH

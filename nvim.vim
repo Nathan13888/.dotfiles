@@ -135,6 +135,15 @@ function! s:swap_down()
     exec n + 1
 endfunction
 
+""" Custom Mappings
+
+let mapleader="."
+nmap <leader>r :so ~/.config/nvim/init.vim<CR>
+nmap <Tab> :bnext<CR>
+nmap <S-Tab> :bprevious<CR>
+" CP
+nmap <leader>y ggVG"+y''
+
 """ Key Mappings
 
 " Cut, Copy & Paste
@@ -187,9 +196,3 @@ set number
 set title
 set mouse=a
 
-""" Custom Mappings
-
-let mapleader="."
-nmap <leader>r :so ~/.config/nvim/init.vim<CR>
-nmap <Tab> :bnext<CR>
-nmap <S-Tab> :bprevious<CR>

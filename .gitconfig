@@ -6,7 +6,8 @@
 	tags = tag -l --sort=version:refname # view all tags
 	credit = shortlog -sn
 ## CUSTOM SHORTCUTS
-	save = commit -a -m "Save"
+    save = commit -a -m "Save"
+    mer = merge
 	mff = merge --ff-only
 	mnff = merge --no-ff
 	bra = branch -vv --all # view all branches in the current repository

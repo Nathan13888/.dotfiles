@@ -3,6 +3,7 @@
   "cli": {
     "warnings": {
       "versionMismatch": false
-    }
+    },
+    "analytics": false
   }
 }

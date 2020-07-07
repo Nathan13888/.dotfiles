@@ -30,6 +30,11 @@
 - chess engines --> allie lc0 kommodo stockfish
 
 
+# Web
+- visual studio code
+- heorku cli
+- netlify cli
+
 
 - zram-config --> setup https://github.com/StuartIanNaylor/zram-config
 

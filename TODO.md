@@ -40,6 +40,7 @@
 - add more libinput gestures
 - add libinput conf to install script
 
+- ~/.secrets encrypted version control
 - organize PACKAGES.md
 - add dotfiles for server and WSL
 - add list of changes --> `EXTRA-MODIFICATIONS.md`

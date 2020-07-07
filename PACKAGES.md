@@ -37,6 +37,7 @@
 - gnome-keyring
 - libinput-gestures https://github.com/bulletmark/libinput-gestures
 
+- QMK
 - wireshark
 - aircrack-ng and airegeddon
 - hashcat

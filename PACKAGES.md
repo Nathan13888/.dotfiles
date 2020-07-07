@@ -25,6 +25,7 @@
 - macchanger
 - guake (popup terminal)
 
+- certbot
 - cuda and cudnn
 - chess engines --> allie lc0 kommodo stockfish
 

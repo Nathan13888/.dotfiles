@@ -142,7 +142,8 @@ nmap <leader>r :so ~/.config/nvim/init.vim<CR>
 nmap <Tab> :bnext<CR>
 nmap <S-Tab> :bprevious<CR>
 " CP
-nmap <leader>y ggVG"+y''
+nmap <leader>Y ggVG"+y''
+nmap <leader>y V"+y''
 
 """ Key Mappings
 

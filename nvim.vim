@@ -137,7 +137,7 @@ endfunction
 
 """ Custom Mappings
 
-let mapleader="."
+let mapleader=","
 nmap <leader>r :so ~/.config/nvim/init.vim<CR>
 nmap <Tab> :bnext<CR>
 nmap <S-Tab> :bprevious<CR>

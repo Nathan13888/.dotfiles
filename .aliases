@@ -46,6 +46,7 @@ alias mcr="mc -r"
 alias mce="mc -e"
 alias mca="mc -a"
 alias mcA="mc -A"
+alias mcp="mc -p"
 alias airm="sudo airmon-ng" # https://github.com/aircrack-ng/rtl8812au
 alias airmck="airm check kill"
 alias ipls="sudo ip link set" # reference below from https://stackoverflow.com/questions/55127741/how-do-you-pass-arguments-to-custom-zsh-functions
@@ -63,6 +64,12 @@ function remac {
   readonly face=${1:?"The interface must be specified"}
   iplsd $1
   mcA $1
+  iplsu $1
+}
+function unmac {
+  readonly face=${1:?"The interface must be specified"}
+  iplsd $1
+  mcp $1
   iplsu $1
 }
 ### SYSTEM

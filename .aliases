@@ -136,7 +136,7 @@ alias sshwpc='ssh tvbox@192.168.10.121' # media server
 alias sshoct='ssh pi@192.168.10.118' # octoprint
 ### CD
 alias pers="cd /mnt/nas/personal"
-alias note='cd $NOTE'
+alias note="cd \"$NOTE\""
 alias notes="note"
 alias medi="cd /mnt/nas/media"
 alias back="cd /mnt/nas/backup"

@@ -35,7 +35,10 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 - [ ] 
 
 ## VIM
-- Neovim
+Dotfiles mainly contains configs for Neovim.
+- Install Vim-Plug (https://github.com/junegunn/vim-plug)
+- Run `:PlugInstall` to install all the plugins for vim
+- Install YCM using these instructions (https://github.com/ycm-core/YouCompleteMe#linux-64-bit)
 
 ## Other Packages not included
 

@@ -34,6 +34,7 @@ Plug 'metakirby5/codi.vim'
 Plug 'dkarter/bullets.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vim-syntastic/syntastic'
+Plug 'ycm-core/YouCompleteMe'
 
 call plug#end()
 

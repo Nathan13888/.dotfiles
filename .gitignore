@@ -8,6 +8,9 @@ log/
 .scidvspc/config/history.dat
 .scidvspc/config/recent.dat
 
+# Enhanced Discord
+.config/EnhancedDiscord
+
 # Better Discord
 emote_data.json
 .config/BetterDiscord/plugins/BadgesEverywhere.config.json

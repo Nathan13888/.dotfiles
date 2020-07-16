@@ -51,13 +51,13 @@ engine {
 engine {
   Name {Leela Chess Zero}
   Cmd  /home/attackercow/chess/lc0/build/release/lc0
-  Args --weights=/home/attackercow/chess/lc0-nets/SV-20b-t40-1541/256x20-mod-swa-1541000.pb
+  Args --weights=/home/attackercow/chess/lc0-nets/J20-460/J20-460.pb
   Dir  .
   Elo  0
-  Time 1589421517
+  Time 1594847986
   URL  {}
   UCI  1
-  UCIoptions {{Threads 4} {MultiPV 3} {Ponder true} {WeightsFile /home/attackercow/chess/lc0-nets/SV-20b-t40-1541/256x20-mod-swa-1541000.pb} {Backend cudnn-auto} {BackendOptions {}} {NNCacheSize 200000} {MinibatchSize 256} {MaxPrefetch 32} {LogitQ false} {CPuct 3.000000} {CPuctBase 19652.000000} {CPuctFactor 2.000000} {Temperature 0.000000} {TempDecayMoves 0} {TempCutoffMove 0} {TempEndgame 0.000000} {TempValueCutoff 100.000000} {TempVisitOffset 0.000000} {DirichletNoise false} {VerboseMoveStats false} {FpuStrategy reduction} {FpuValue 1.200000} {FpuStrategyAtRoot same} {FpuValueAtRoot 1.000000} {CacheHistoryLength 0} {PolicyTemperature 2.200000} {MaxCollisionEvents 32} {MaxCollisionVisits 9999} {OutOfOrderEval true} {StickyEndgames true} {SyzygyFastPlay true} {PerPVCounters false} {ScoreType centipawn} {HistoryFill fen_only} {ShortSightedness 0.000000} {SyzygyPath /home/attackercow/chess/syzygy-5/} {ConfigFile lc0.config} {KLDGainAverageInterval 100} {MinimumKLDGainPerNode 0.000000} {SmartPruningFactor 1.330000} {RamLimitMb 0} {MoveOverheadMs 200} {Slowmover 1.000000} {ImmediateTimeUse 1.000000} {LogFile {}}}
+  UCIoptions {}
 }
 
 engine {

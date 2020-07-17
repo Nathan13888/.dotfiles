@@ -209,10 +209,10 @@ set ::tools::graphs::type Auto
 set maintFlag W
 set useGraphFigurine 1
 set photosMinimized 0
-set bookmarks(gamehistory) {{g {Caissabase_2019_09_08:  Markelova - Guseva, 0-1,  Sochi (1.3) 2018} /home/attackercow/chess/Caissabase_2019_09_08/Caissabase_2019_09_08 1 1 {Markelova, L} {Guseva, Marina} 2018 {Sochi RUS} 1.3 0-1} {g {Repertoire:  ? - ?, *,  ? 0} /home/attackercow/chess/games/Repertoire 0 1 ? ? 0 ? ? *} {g {MyGames:  jasonmichael79 - xXPrototypeXx, 0-1,  Chess.com 2020} /home/attackercow/chess/games/MyGames 1 1 jasonmichael79 xXPrototypeXx 2020 Chess.com ? 0-1} {g {Repertoire:  Markelova - Guseva, 0-1,  Sochi (1.3) 2018} /home/attackercow/chess/games/Repertoire 0 1 {Markelova, L} {Guseva, Marina} 2018 {Sochi RUS} 1.3 0-1} {g {MyGames:  dcampbell1972 - xXPrototypeXx, 0-1,  Chess.com (-) 2020} /home/attackercow/chess/games/MyGames 8 1 dcampbell1972 xXPrototypeXx 2020 Chess.com - 0-1}}
+set bookmarks(gamehistory) {{g {Repertoire:  ? - ?, *,  ? 0} /home/attackercow/chess/games/Repertoire 0 1 ? ? 0 ? ? *} {g {MyGames:  jasonmichael79 - xXPrototypeXx, 0-1,  Chess.com 2020} /home/attackercow/chess/games/MyGames 1 1 jasonmichael79 xXPrototypeXx 2020 Chess.com ? 0-1} {g {Caissabase_2019_09_08:  Markelova - Guseva, 0-1,  Sochi (1.3) 2018} /home/attackercow/chess/Caissabase_2019_09_08/Caissabase_2019_09_08 1 1 {Markelova, L} {Guseva, Marina} 2018 {Sochi RUS} 1.3 0-1} {g {Repertoire:  Markelova - Guseva, 0-1,  Sochi (1.3) 2018} /home/attackercow/chess/games/Repertoire 0 1 {Markelova, L} {Guseva, Marina} 2018 {Sochi RUS} 1.3 0-1} {g {MyGames:  dcampbell1972 - xXPrototypeXx, 0-1,  Chess.com (-) 2020} /home/attackercow/chess/games/MyGames 8 1 dcampbell1972 xXPrototypeXx 2020 Chess.com - 0-1}}
 set playerInfoHistory {}
 set defaultDBs {/home/attackercow/chess/games/MyGames /home/attackercow/chess/games/Repertoire /home/attackercow/chess/Caissabase_2019_09_08/Caissabase_2019_09_08}
-set glistSize 19
+set glistSize 21
 set glexport {g6: w13 W4  b13 B4  r3:m2 y4 s11 o4}
 set glistColOrder {0 11 15 3 1 7 2 8 10 6 5}
 set glistColWidth {43 227 222 95 176 187 187 93 85 178 166 41 248 190 131 95 221 188 367 135 170 56}
@@ -287,8 +287,8 @@ set winX(.crosstabWin)  -1
 set winY(.crosstabWin)  -1
 set winX(.ecograph)  -1
 set winY(.ecograph)  -1
-set winX(.enginelist)  2038
-set winY(.enginelist)  1252
+set winX(.enginelist)  111
+set winY(.enginelist)  901
 set winX(.enginelog4)  -20
 set winY(.enginelog4)  38
 set winX(.finder)  -1
@@ -364,7 +364,7 @@ set winY(.twinchecker)  128
 set winX(.uciConfigWin)  107
 set winY(.uciConfigWin)  281
 
-set analysisCommand /home/attackercow/chess/lc0/build/release/lc0
+set analysisCommand /home/attackercow/chess/engines/komodo-11/komodo-11_386a7a/Linux/komodo-11.01-linux
 
 set lite {#f3f3f3}
 set dark {#6efe81}

@@ -79,6 +79,7 @@ plugins=(
     git
     zsh-syntax-highlighting
     zsh-autosuggestions
+    wakatime
 )
 
 source $ZSH/oh-my-zsh.sh

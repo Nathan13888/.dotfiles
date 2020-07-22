@@ -99,8 +99,6 @@
 	showPatch = true
 [log]
 	date = relative
-[credential]
-	helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f

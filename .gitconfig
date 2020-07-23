@@ -77,7 +77,6 @@
 
 [core]
 	editor = /usr/bin/nvim # nano is a bit faster imo
-    autocrlf = input
     filemode = true
     ignorecase = true
 [include]

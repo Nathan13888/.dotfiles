@@ -13,4 +13,7 @@ export DOCS="~/Documents"
 export PICS="~/Pictures"
 export DESK="~/Desktop"
 
+# https://alfredmyers.com/2019/05/02/error-gpg-failed-to-sign-the-data/
+# for WSL
+export GPG_TTY=$(tty)
 

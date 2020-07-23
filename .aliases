@@ -76,7 +76,7 @@ function unmac {
 alias service="sudo service" alias serv="service"
 alias shutdown="sudo shutdown now"
 alias reboot="sudo reboot now"
-alias update="sudo apt full-upgrade"
+alias update="sudo apt update && sudo apt full-upgrade"
 alias sa="sudo apt"
 alias sai="sudo apt install"
 alias sar="sudo apt remove"

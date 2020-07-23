@@ -6,6 +6,18 @@ Three other Github repositories for fonts are included as a submodule of this re
 
 Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubuntu system.
 
+# Prep
+### WSL
+- refer to this [link](https://askubuntu.com/questions/966488/how-do-i-fix-r-command-not-found-errors-running-bash-scripts-in-wsl)
+### Git
+- install `git` and `hub`
+- make a .gitconfig.local file
+- setup [git credential helper](https://git-scm.com/docs/gitcredentials)
+- setup GPG signing key
+### ZSH
+- install `zsh` and [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)
+### Wakatime
+
 # Scripts
 - `FULL-INSTALL.sh` --> install everything for a complete Ubuntu system running GNOME
 - `MIN-INSTALL.sh` --> install the least dotfiles that do not effect the system (eg. aliases)

@@ -28,6 +28,8 @@
 - certbot
 - cuda and cudnn
 - chess engines --> allie lc0 kommodo stockfish
+- htop
+- tree
 
 
 # Web

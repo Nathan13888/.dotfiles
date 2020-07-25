@@ -19,7 +19,7 @@ function link {
   if [ -h ~/${1} ]; then
     # Existing symlink 
     echo "Removing existing symlink: ${dest}"
-    rm ${dest} 
+    rm ${dest} -ivf 
   fi
 
   echo "Creating new symlink: ${dest}"
@@ -45,8 +45,7 @@ link .angular-config.json
 
 # OH MY ZSH
 
-
-link .oh-my-zsh
+link .oh-my-zsh/custom
 link .aliases
 link .exports
 link .zshrc

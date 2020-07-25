@@ -9,6 +9,10 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 # Prep
 ### WSL
 - refer to this [link](https://askubuntu.com/questions/966488/how-do-i-fix-r-command-not-found-errors-running-bash-scripts-in-wsl)
+- fix powerline fonts
+- remove any existing config files
+- install LS_COLORS
+- use `dos2unix` to fix any file ending problems
 ### Git
 - install `git` and `hub`
 - make a .gitconfig.local file
@@ -16,7 +20,10 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 - setup GPG signing key
 ### ZSH
 - install `zsh` and [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)
+- remove ~/.oh-my-zsh/custom
 ### Wakatime
+- install wakatime cli
+- add API key
 
 # Scripts
 - `FULL-INSTALL.sh` --> install everything for a complete Ubuntu system running GNOME

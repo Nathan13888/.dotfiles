@@ -149,3 +149,5 @@
 [url "git@gitlab.com:"]
     insteadOf = "gl:"
     pushInsteadOf = "gl:"
+[rebase]
+	autosquash = true

@@ -14,7 +14,7 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 - install LS_COLORS
 - use `dos2unix` to fix any file ending problems
 ### Git
-- install `git` and `hub`
+- install `git`, `hub`, [`git-extras`](https://github.com/tj/git-extras)
 - make a .gitconfig.local file
 - setup [git credential helper](https://git-scm.com/docs/gitcredentials)
 - setup GPG signing key

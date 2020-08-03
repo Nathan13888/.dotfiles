@@ -54,7 +54,8 @@
 	caam = caa -m
 	sta = stage
 	ash = sash
-	sash = stash
+    sash = stash
+    cln = clean
 	co = checkout
 	br = branch
 	di = diff

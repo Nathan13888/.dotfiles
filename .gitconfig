@@ -63,7 +63,8 @@
 	pu = push
 	rem = remote
 	fe = fetch
-	ash = stash
+    ash = stash
+    sm = submodule
 	a = add
 	aa = add . # stage everything to be committed
 	lg = log -p

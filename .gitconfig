@@ -23,6 +23,7 @@
 	rems = remote set-url # set remote URL
     remso = rems origin # set origin URL
     remsu = rems upstream # set upstream URL
+    smuir = submodule update --init --recursive
 	# add fetch command, good for large projects
 	pp = !git pull && git push
     undo = reset HEAD~1

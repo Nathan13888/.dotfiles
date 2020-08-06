@@ -47,6 +47,7 @@ let g:syntastic_check_on_wq = 0
 let NERDTreeShowHidden=1
 let g:NERDTreeDirArrowExpandable = '↠'
 let g:NERDTreeDirArrowCollapsible = '↡'
+map <C-n> :NERDTreeToggle<CR>
 
 " Airline
 let g:airline_powerline_fonts = 1

@@ -174,9 +174,15 @@ let mapleader=","
 nmap <leader>r :so ~/.config/nvim/init.vim<CR>
 nmap <Tab> :bnext<CR>
 nmap <S-Tab> :bprevious<CR>
+
+" Behave like Windows
+source $VIMRUNTIME/mswin.vim
+behave mswin
 " CP
 nmap <leader>Y ggVG"+y''
 nmap <leader>y V"+y''
+nnoremap gb :w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -g -std=c++17 -Wall -Wextra -Wno-unused-result -D LOCAL -O2 %:r.cpp -o %:r 2>&1 \| tee %:r.cerr && printf "\n================\n   Running...\n================\n" && time ./%:r < %:r.in > %:r.out 2> %:r.err && printf "\n\n\n\n"<CR>
+autocmd filetype cpp nnoremap <F5> :w <bar> exec '!g++ '.shellescape('%').' -std=c++11 -Wshadow -Wall -O2 -Wno-unused-result -o '.shellescape('%:r').' && /usr/bin/time '.shellescape('%:p:r')<CR>
 
 """ Key Mappings
 

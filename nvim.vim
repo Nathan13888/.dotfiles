@@ -54,7 +54,7 @@ let g:airline_section_z = ' %{strftime("%-I:%M %p")}'
 let g:airline_section_warning = ''
 "let g:airline#extensions#tabline#enabled = 1
 
-" Neovim :Terminal
+" Neovim : Terminal
 tmap <Esc> <C-\><C-n>
 tmap <C-w> <Esc><C-w>
 "tmap <C-d> <Esc>:q<CR>

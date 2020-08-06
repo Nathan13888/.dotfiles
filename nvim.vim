@@ -106,10 +106,6 @@ let g:UltiSnipsExpandTrigger="<C-Space>"
 let g:UltiSnipsJumpForwardTrigger="<Tab>"
 let g:UltiSnipsJumpBackwardTrigger="<C-x>"
 
-" EasyAlign
-xmap ga <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
-
 " indentLine
 let g:indentLine_char = '▏'
 let g:indentLine_color_gui = '#363949'
@@ -117,6 +113,7 @@ let g:indentLine_color_gui = '#363949'
 " TagBar
 let g:tagbar_width = 30
 let g:tagbar_iconchars = ['↠', '↡']
+nmap <F8> :TagbarToggle<CR>
 
 " fzf-vim
 let g:fzf_action = {

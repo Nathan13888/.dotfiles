@@ -16,14 +16,8 @@ Plug 'tpope/vim-surround'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
-Plug 'ervandew/supertab'
-Plug 'jiangmiao/auto-pairs'
-Plug 'junegunn/vim-easy-align'
-Plug 'alvan/vim-closetag'
-Plug 'tpope/vim-abolish'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'sheerun/vim-polyglot'
 Plug 'chrisbra/Colorizer'
 Plug 'vim-scripts/loremipsum'
 Plug 'SirVer/ultisnips'
@@ -106,9 +100,6 @@ let g:bullets_enabled_file_types = [
     \ 'gitcommit',
     \ 'scratch'
     \]
-
-" Supertab
-let g:SuperTabDefaultCompletionType = "<C-n>"
 
 " Ultisnips
 let g:UltiSnipsExpandTrigger="<C-Space>"

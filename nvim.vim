@@ -47,7 +47,7 @@ let g:syntastic_check_on_wq = 0
 let NERDTreeShowHidden=1
 let g:NERDTreeDirArrowExpandable = '↠'
 let g:NERDTreeDirArrowCollapsible = '↡'
-map <C-n> :NERDTreeToggle<CR>
+noremap <silent> <C-n> :NERDTreeToggle<CR>
 
 " Airline
 let g:airline_powerline_fonts = 1
@@ -173,8 +173,6 @@ endfunction
 
 let mapleader=","
 nmap <leader>r :so ~/.config/nvim/init.vim<CR>
-nmap <Tab> :bnext<CR>
-nmap <S-Tab> :bprevious<CR>
 
 " Behave like Windows
 source $VIMRUNTIME/mswin.vim
@@ -199,21 +197,23 @@ noremap <silent> <A-k> :call <SID>swap_up()<CR>
 noremap <silent> <A-j> :call <SID>swap_down()<CR>
 noremap <silent> <A-up> :call <SID>swap_up()<CR>
 noremap <silent> <A-down> :call <SID>swap_down()<CR>
+" Clearing Search
+nnoremap <silent> <space> :nohlsearch<CR>
 " Tab Navigation
-inoremap <C-S-tab> <Esc>:tabprevious<CR>i
-inoremap <C-tab>   <Esc>:tabnext<CR>i
-inoremap <C-t>     <Esc>:tabnew<CR>
-nnoremap <C-w>     tabclose<CR>
-nnoremap <A-1> 1gt
-nnoremap <A-2> 2gt
-nnoremap <A-3> 3gt
-nnoremap <A-4> 4gt
-nnoremap <A-5> 5gt
-nnoremap <A-6> 6gt
-nnoremap <A-7> 7gt
-nnoremap <A-8> 8gt
-nnoremap <A-9> 9gt
-nnoremap <A-0> 10gt
+noremap <silent> <C-S-Tab> <esc>:tabprevious<CR>
+noremap <silent> <C-Tab> <esc>:tabnext<CR>
+noremap <silent> <C-t> <esc>:tabnew<CR>
+noremap <silent> <C-w> <esc>:tabclose<CR>
+noremap <silent> <A-1> 1gt
+noremap <silent> <A-2> 2gt
+noremap <silent> <A-3> 3gt
+noremap <silent> <A-4> 4gt
+noremap <silent> <A-5> 5gt
+noremap <silent> <A-6> 6gt
+noremap <silent> <A-7> 7gt
+noremap <silent> <A-8> 8gt
+noremap <silent> <A-9> 9gt
+noremap <silent> <A-0> 10gt
 
 """ Styling
 syntax on

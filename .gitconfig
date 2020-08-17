@@ -48,7 +48,14 @@
     v = version
     lsf = ls-files
     amend = commit --amend
-    aca = "!f() { git add \"$1\"; git ca \"$1\"; }; f"
+#    aca = !git add && git ca
+#    aca="!aca() { \
+#        PWD=$(pwd); \
+#        PATH=$PWD/${1}; \
+#        echo Adding and committing `${1}`; \
+#        git add \"$PATH\"; \
+#        git commit -S \"$PATH\"; \
+#    };aca "
 	ca = commit -S# -s # sign commit and add comment
 	cam = ca -m
 	caa = ca -a # stage and commit everything

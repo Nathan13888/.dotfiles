@@ -69,7 +69,8 @@
 	di = diff
 	pl = pull
 	pu = push
-	rem = remote
+    rem = remote
+    reb = rebase
 	fe = fetch
     ash = stash
     sm = submodule

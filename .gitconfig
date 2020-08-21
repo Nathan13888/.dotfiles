@@ -102,7 +102,9 @@
 	followTags = true
 [merge]
 	tool = vimdiff
-	renameLimit = 0
+    renameLimit = 0
+    ff = true # fast forward tip of current branch
+    renames = true
 [fetch]
 	prune = true
 [stash]

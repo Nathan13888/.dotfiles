@@ -56,7 +56,7 @@
 #        git add \"$PATH\"; \
 #        git commit -S \"$PATH\"; \
 #    };aca "
-	ca = commit -S# -s # sign commit and add comment
+	ca = commit -S -s # sign commit and add comment
 	cam = ca -m
 	caa = ca -a # stage and commit everything
 	caam = caa -m
@@ -94,7 +94,8 @@
 	path = ~/.gitconfig.local
 [commit]
 	template = ~/.gitmessage.txt
-	cleanup = strip
+    cleanup = strip
+    gpgSign = true
 [diff]
 	renames = true
 [push] # http://stackoverflow.com/a/23918418/89484

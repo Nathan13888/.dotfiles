@@ -1,4 +1,5 @@
 export PATH="$PATH:/usr/local/go/bin/"
+export PATH="$PATH:/usr/local/cuda-11.0/bin"
 
 export PYTHONDONTWRITEBYTECODE=1
 

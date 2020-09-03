@@ -21,7 +21,12 @@
 - make and qmake
 - curl, wget, rpm
 - Snap and Flatpak
+
+### INFOSEC
 - privoxy
+- wireguard
+- stubby
+
 - macchanger
 - guake (popup terminal)
 

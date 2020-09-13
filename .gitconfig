@@ -46,6 +46,7 @@
 #    ac = ca
 ## COMMAND SHORTCUTS
     v = version
+    mt = mergetool
     lsf = ls-files
     amend = commit --amend
 #    aca = !git add && git ca

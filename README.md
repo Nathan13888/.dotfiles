@@ -24,6 +24,9 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 ### Wakatime
 - install wakatime cli
 - add API key
+### WireGuard ([quick install](https://www.wireguard.com/quickstart/))
+- `apt install wireguard`
+- configure wireguard
 
 # Scripts
 - `FULL-INSTALL.sh` --> install everything for a complete Ubuntu system running GNOME

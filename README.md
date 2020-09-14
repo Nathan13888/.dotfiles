@@ -21,6 +21,9 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 ### ZSH
 - install `zsh` and [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)
 - remove ~/.oh-my-zsh/custom
+### Nvim
+- **Install Vim-Plug**: `sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'`
+- Inside neovim, run `:PlugInstall`
 ### Wakatime
 - install wakatime cli
 - add API key

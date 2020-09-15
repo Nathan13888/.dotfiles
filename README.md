@@ -24,6 +24,7 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 ### Nvim
 - **Install Vim-Plug**: `sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'`
 - Inside neovim, run `:PlugInstall`
+- `CocInstall coc-css coc-json coc-python coc-discord coc-sh coc-yaml`
 ### Wakatime
 - install wakatime cli
 - add API key

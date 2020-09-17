@@ -28,6 +28,7 @@ alias g="git" git='hub' # eval "$(hub alias -s)" # what's the difference even??
 alias n="npm"
 alias p="pm2"
 alias h="heroku"
+alias dock="docker"
 alias vr='v -r'
 alias vm="v -M"
 alias l="less"

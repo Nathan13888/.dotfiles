@@ -145,6 +145,7 @@ alias sshoct='ssh pi@192.168.10.221' # octoprint
 ### CD
 alias pers="cd /mnt/nas/personal"
 alias note="cd /mnt/nas/personal/\!Notes"
+alias isos="cd /mnt/nas/personal/ISOs"
 alias notes="note"
 alias medi="cd /mnt/nas/media"
 alias back="cd /mnt/nas/backup"

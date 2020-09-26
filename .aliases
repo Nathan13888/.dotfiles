@@ -123,6 +123,7 @@ alias llf="lla | grep --color=always '^-'"
 alias lsa="ls -AhF --color=always" # don't think I'd use this very often
 alias lsr="ls -R --color=always" # show all directories recursively, useful for small directories
 ### FILE OPERATIONS
+alias remount="sudo mount -av"
 alias chm="chmod"
 alias chmox='sudo chmod +x'
 alias cho="chown"

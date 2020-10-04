@@ -29,6 +29,7 @@ alias n="npm"
 alias p="pm2"
 alias h="heroku"
 alias dock="docker"
+alias py="python"
 alias vr='v -r'
 alias vm="v -M"
 alias l="less"

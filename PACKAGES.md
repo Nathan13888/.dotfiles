@@ -20,7 +20,9 @@
 - Language Compilers and Tools --> Python Java GCC NodeJS NPM
 - make and qmake
 - curl, wget, rpm
-- Snap and Flatpak
+- Snap and Flatpak (eww)
+- THE FUCK (install with pip3)
+- pavucontrol (for pulseaudio)
 
 ### INFOSEC
 - privoxy

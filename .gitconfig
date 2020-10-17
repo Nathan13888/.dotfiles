@@ -6,8 +6,8 @@
 	tags = tag -l --sort=version:refname # view all tags
 	credit = shortlog -sn
 ## CUSTOM SHORTCUTS
-    save = commit -a -m "Save"
-    mer = merge
+	save = commit -a -m "Save"
+	mer = merge
 	mff = merge --ff-only
 	mnff = merge --no-ff
 	bra = branch -vv --all # view all branches in the current repository
@@ -18,63 +18,63 @@
 	cob = checkout -b # create new branch and switch to it
 	remv = remote -vv
 	rema = remote add # add remote URL
-    remao = rema origin # add origin (remote) URL
-    remau = rema upstream # add upstream URL
+	remao = rema origin # add origin (remote) URL
+	remau = rema upstream # add upstream URL
 	rems = remote set-url # set remote URL
-    remso = rems origin # set origin URL
-    remsu = rems upstream # set upstream URL
-    smuir = submodule update --init --recursive
+	remso = rems origin # set origin URL
+	remsu = rems upstream # set upstream URL
+	smuir = submodule update --init --recursive
 	# add fetch command, good for large projects
 	pp = !git pull && git push
-    undo = reset HEAD~1
-    undo2 = reset HEAD~2
-    undo3 = reset HEAD~3
-    rmc = rm --cached # remove from VCS
-    us = reset -- # "unstage"; git reset [commit(def=HEAD)] -- <path>
-    ci = check-ignore
-    resethard = reset --hard
-    renorm = add --renormalize .
+	undo = reset HEAD~1
+	undo2 = reset HEAD~2
+	undo3 = reset HEAD~3
+	rmc = rm --cached # remove from VCS
+	us = reset -- # "unstage"; git reset [commit(def=HEAD)] -- <path>
+	ci = check-ignore
+	resethard = reset --hard
+	renorm = add --renormalize .
 ### Hub CLI
-    brow = browse
-    pr="!f() { \
-        BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD); \
-        git push -u origin $BRANCH_NAME; \
-        hub pull-request; \
-    };f "
+	brow = browse
+	pr="!f() { \
+		BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD); \
+		git push -u origin $BRANCH_NAME; \
+		hub pull-request; \
+	};f "
 ## TYPOS
-#    aac = caa
-#    ac = ca
+#	aac = caa
+#	ac = ca
 ## COMMAND SHORTCUTS
-    v = version
-    mt = mergetool
-    lsf = ls-files
-    amend = commit --amend
-#    aca = !git add && git ca
-#    aca="!aca() { \
-#        PWD=$(pwd); \
-#        PATH=$PWD/${1}; \
-#        echo Adding and committing `${1}`; \
-#        git add \"$PATH\"; \
-#        git commit -S \"$PATH\"; \
-#    };aca "
+	v = version
+	mt = mergetool
+	lsf = ls-files
+	amend = commit --amend
+#	aca = !git add && git ca
+#	aca="!aca() { \
+#		PWD=$(pwd); \
+#		PATH=$PWD/${1}; \
+#		echo Adding and committing `${1}`; \
+#		git add \"$PATH\"; \
+#		git commit -S \"$PATH\"; \
+#	};aca "
 	ca = commit -S -s # sign commit and add comment
 	cam = ca -m
 	caa = ca -a # stage and commit everything
 	caam = caa -m
 	sta = stage
 	ash = sash
-    sash = stash
-    cln = clean
+	sash = stash
+	cln = clean
 	co = checkout
 	br = branch
 	di = diff
 	pl = pull
 	pu = push
-    rem = remote
-    reb = rebase
+	rem = remote
+	reb = rebase
 	fe = fetch
-    ash = stash
-    sm = submodule
+	ash = stash
+	sm = submodule
 	a = add
 	aa = add . # stage everything to be committed
 	lg = log -p
@@ -89,14 +89,14 @@
 
 [core]
 	editor = /usr/bin/nvim # nano is a bit faster imo
-    filemode = true
-    ignorecase = true
+	filemode = true
+	ignorecase = true
 [include]
 	path = ~/.gitconfig.local
 [commit]
 	template = ~/.gitmessage.txt
-    cleanup = strip
-    gpgSign = true
+	cleanup = strip
+	gpgSign = true
 [diff]
 	renames = true
 [push] # http://stackoverflow.com/a/23918418/89484
@@ -104,9 +104,9 @@
 	followTags = true
 [merge]
 	tool = vimdiff
-    renameLimit = 0
-    ff = true # fast forward tip of current branch
-    renames = true
+	renameLimit = 0
+	ff = true # fast forward tip of current branch
+	renames = true
 [fetch]
 	prune = true
 [stash]
@@ -151,18 +151,18 @@
 [help]
 	#autocorrect = 1 # basically instant, refer to git-config
 [gpg]
-    program = gpg
+	program = gpg
 
 [url "git@github.com:"]
-    insteadOf = "gh:"
-    pushInsteadOf = "gh:"
+	insteadOf = "gh:"
+	pushInsteadOf = "gh:"
 
 [url "git@gist.github.com:"]
-    insteadOf = "gist:"
-    pushInsteadOf = "gist:"
+	insteadOf = "gist:"
+	pushInsteadOf = "gist:"
 
 [url "git@gitlab.com:"]
-    insteadOf = "gl:"
-    pushInsteadOf = "gl:"
+	insteadOf = "gl:"
+	pushInsteadOf = "gl:"
 [rebase]
 	autosquash = true

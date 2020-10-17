@@ -1,6 +1,9 @@
 *.log
 log/
 
+# NVIM
+.netrwhist
+
 # ZSH
 .oh-my-zsh/custom/plugins/*
 

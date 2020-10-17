@@ -20,11 +20,11 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'chrisbra/Colorizer'
 Plug 'vim-scripts/loremipsum'
-Plug 'SirVer/ultisnips'
+"Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 " Plug 'metakirby5/codi.vim'
 Plug 'dkarter/bullets.vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vim-syntastic/syntastic'
 "Plug 'ycm-core/YouCompleteMe'
 Plug 'wakatime/vim-wakatime'

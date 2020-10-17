@@ -1,15 +1,25 @@
 {
+	"amounts": {
+		"maxDaysAgo": 0
+	},
+	"changeLog": {
+		"version": "1.2.0"
+	},
 	"changelog": {
 		"currentversion": "1.1.5"
 	},
 	"choices": {
 		"lastMessageDateLang": "$discord"
 	},
+	"formats": {
+		"ownFormat": "$hour:$minute:$second, $day.$month.$year"
+	},
 	"settings": {
 		"addInUserPopout": true,
 		"addInUserProfil": true,
 		"cutSeconds": false,
 		"displayDate": true,
+		"displayText": true,
 		"displayTime": true,
 		"forceZeros": false,
 		"otherOrder": false

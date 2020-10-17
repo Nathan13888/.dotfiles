@@ -1,15 +1,25 @@
 {
+	"amounts": {
+		"maxDaysAgo": 0
+	},
+	"changeLog": {
+		"version": "1.4.0"
+	},
 	"changelog": {
 		"currentversion": "1.3.6"
 	},
 	"choices": {
 		"creationDateLang": "$discord"
 	},
+	"formats": {
+		"ownFormat": "$hour:$minute:$second, $day.$month.$year"
+	},
 	"settings": {
 		"addInUserPopout": true,
 		"addInUserProfil": true,
 		"cutSeconds": false,
 		"displayDate": true,
+		"displayText": true,
 		"displayTime": true,
 		"forceZeros": false,
 		"otherOrder": false

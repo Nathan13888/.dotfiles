@@ -10,6 +10,7 @@
     ~/.alacritty.yml: .alacritty.yml
     ~/.aliases: .aliases
     ~/.angular-config.json: .angular-config.json
+    ~/.config/BetterDiscord: .config/BetterDiscord
     ~/.config/nvim: .config/nvim
     ~/.exports: .exports
     ~/.gitconfig: .gitconfig

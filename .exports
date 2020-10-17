@@ -14,7 +14,8 @@ export DOCS="~/Documents"
 export PICS="~/Pictures"
 export DESK="~/Desktop"
 
-# https://alfredmyers.com/2019/05/02/error-gpg-failed-to-sign-the-data/
-# for WSL
+# GPG --> https://stackoverflow.com/questions/41052538/git-error-gpg-failed-to-sign-data
 export GPG_TTY=$(tty)
 
+export GIT_ASKPASS='/usr/bin/ksshaskpass'
+[ -f /usr/share/nvm ] && source /usr/share/nvm/init-nvm.sh

@@ -141,27 +141,7 @@ alias rm='rm -v'
 alias rmf="rm -f" # removes all prompts
 alias rmd='rmdir -v'
 alias tra="trash -v"
-## SSH
-alias sshdev='ssh attackercow@192.168.10.69' # dev server
-alias sshnas='ssh attackercow@192.168.10.250' # nas server
-alias sshnvr='ssh attackercow@192.168.10.160' # nvr security server
-alias sshwpc='ssh justin13888@192.168.10.121' # media server
-alias sshoct='ssh pi@192.168.10.221' # octoprint
 ### CD
-alias pers="cd /mnt/nas/personal"
-alias note="cd /mnt/nas/personal/\!Notes"
-alias isos="cd /mnt/nas/personal/ISOs"
-alias notes="note"
-alias medi="cd /mnt/nas/media"
-alias back="cd /mnt/nas/backup"
-alias arch="cd /mnt/nas/archival"
-alias work="cd ~/workspace"
-alias cftp="cd ~/SFTP"
-alias cgit="cd ~/workspace/Git"
-alias cqmk="cd ~/qmk_firmware"
-alias ches="cd ~/chess"
-alias dotf="cd ~/workspace/Git/DotFiles"
-alias dmoj="cd ~/workspace/Git/DMOJ"
 alias down="cd ~/Downloads"
 alias docs="cd ~/Documents"
 alias pics="cd ~/Pictures"
@@ -180,3 +160,5 @@ alias 6='cd -6'
 alias 7='cd -7'
 alias 8='cd -8'
 alias 9='cd -9'
+
+[ -f ~/.aliases.local ] && source ~/.aliases.local

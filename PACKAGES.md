@@ -1,57 +1,96 @@
-# Packaged Installed on NPC-POP
-- vim
-- font-manager
-- wine
-- xrdp
-- cuda and cudnn
-- wireshark
+############
+# Packages #
+############
+
+## Essentials
+- sudo
+- vim/neovim
 - Discord
-- KVM
-- Docker
-- Samba and Cifs-Utils
-- Pro #what is this??
-- SSH and SFTP (Filezilla too)
-- Steam
-- Phoronix Test Suite
-- Screen and Tmux
-- Time
-- git and hub (github git-wrapper)
-- putty
-- Language Compilers and Tools --> Python Java GCC NodeJS NPM
-- make and qmake
-- curl, wget, rpm
-- Snap and Flatpak (eww)
+- yakuake or guake (if gnome)
+- Alacritty
+- zsh
+- firefox-nightly
+
+## DEV
 - THE FUCK (install with pip3)
-- pavucontrol (for pulseaudio)
-
-### INFOSEC
-- privoxy
-- wireguard
-- stubby
-
-- macchanger
-- guake (popup terminal)
-
-- certbot
-- cuda and cudnn
-- chess engines --> allie lc0 kommodo stockfish
-- htop
-- tree
-
-
-# Web
+- Screen and Tmux
+- git and hub (github git-wrapper)
 - visual studio code
+- cuda and cudnn
 - heorku cli
 - netlify cli
+- wine
+- xrdp
+- Time
+- nodejs npm nvm
+- gcc gdb
+- python
+- go
+- openjdk
+- qt
+- cmake
+- QMK
 
+## Virtualization
+- VirtualBox
+  - https://www.virtualbox.org/wiki/Linux_Downloads 
+  - `modprobe vboxdrv vboxnetfit vboxnetadp vboxpci`
+  - https://www.oracle.com/virtualization/technologies/vm/downloads/virtualbox-downloads.html#extpack (or just download from AUR: virtualbox-ext-oracle)
+- KVM (https://wiki.archlinux.org/index.php/KVM)
+- QEMU (https://wiki.archlinux.org/index.php/QEMU)
+- Docker (https://wiki.archlinux.org/index.php/Docker#Installation)
 
+## Utilities
+- nut (ups)
+- pavucontrol (for pulseaudio)
+- Samba and Cifs-Utils
+- wakatime
+- curl, wget, rpm
+- Pro #what is this??
+- Snap and Flatpak (eww)
 - zram-config --> setup https://github.com/StuartIanNaylor/zram-config
 
-# GNOME
-- gnome-keyring
-- libinput-gestures https://github.com/bulletmark/libinput-gestures
+## Media
+- transmission
+- VLC/MPV
+- joplin
+- teams
+- krita
+- gimp
+- inkscape
+- DarkTable
+- filezilla
+- tigervnc
+- Kicad
+- Cura
+- Spectacle (KDE for screenshots)
+- Steam
 
-- QMK
+## Benchmark
+- Phoronix Test Suite
+- fio
+- Geekbench
+- hashcat -B
+- cinfo
+
+## Privacy
+- privoxy
+- tor
+- stubby
+
+## Chess
+- chess engines --> allie lc0 kommodo stockfish
+- syzygy tables
+
+## INFOSEC
+- wireguard
+- macchanger
+- hashcat
+- certbot
+- cuda and cudnn
+- ytop
+- tree
+- libinput-gestures https://github.com/bulletmark/libinput-gestures
 - wireshark
 - aircrack-ng and airegeddon
 - hashcat
@@ -59,6 +98,26 @@
 - nmap and zenmap
 - zenmap download --> https://nmap.org/download.html
 
-- Kicad
-- Fidglet
+## Fun
+- figlet
+- fortune
+- cmatrix
+- cowsay
 - lolcat
+- dofe
+- toilet bullshit
+- asciiquarium
+- aafire
+- tty-clock visudo (default instults)
+
+## KDE
+- kde-applications-meta
+- kwallet
+- kwallet-manager
+- kwalletcli
+- kwallet-pam
+- ksshaskpass
+
+## GNOME
+- gnome-keyring
+

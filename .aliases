@@ -108,6 +108,19 @@ alias disks='df -h | grep sd \
     | sed -e "s_[0-9]*%_\x1b[32m&\x1b[0m_" \
     | sed -e "s_9[0-9]%_\x1b[31m&\x1b[0m_" \
     | sed -e "s_/mnt/[-_A-Za-z0-9]*_\x1b[34;1m&\x1b[0m_"' # list all disks
+# SSD Benchmark
+function fiotest {
+    testFile="/mnt/fs/fiotest.tmp"
+    sudo fio --loops=5 --size=1000m --filename=$testFile --stonewall --ioengine=libaio --direct=1 \
+      --name=Seqread --bs=1m --rw=read \
+      --name=Seqwrite --bs=1m --rw=write \
+      --name=512Kread --bs=512k --rw=randread \
+      --name=512Kwrite --bs=512k --rw=randwrite \
+      --name=4kQD32read --bs=4k --iodepth=32 --rw=randread \
+      --name=4kQD32write --bs=4k --iodepth=32 --rw=randwrite
+    sudo rm -ivf $testFile
+}
+
 alias fd='find . -type d -name' # find directory
 alias ff='find . -type f -name' # find file
 alias du="du -h"

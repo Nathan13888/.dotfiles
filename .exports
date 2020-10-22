@@ -18,4 +18,4 @@ export DESK="~/Desktop"
 export GPG_TTY=$(tty)
 
 export GIT_ASKPASS='/usr/bin/ksshaskpass'
-[ -f /usr/share/nvm ] && source /usr/share/nvm/init-nvm.sh
+[ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh

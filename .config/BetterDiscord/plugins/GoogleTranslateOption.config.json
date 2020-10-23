@@ -1,0 +1,26 @@
+{
+	"changeLog": {
+		"version": "2.1.0"
+	},
+	"choices": {
+		"inputContext": "$discord",
+		"inputMessage": "$discord",
+		"outputContext": "$discord",
+		"outputMessage": "es"
+	},
+	"engines": {
+		"translator": "googleapi"
+	},
+	"favorites": {
+		"$discord": true,
+		"fr": true,
+		"ja": true,
+		"ko": true,
+		"zh-CN": true
+	},
+	"settings": {
+		"addTranslateButton": true,
+		"sendOriginalMessage": false,
+		"useChromium": false
+	}
+}

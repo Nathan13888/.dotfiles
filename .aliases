@@ -133,13 +133,17 @@ alias count-files="ls | wc -l"
 alias cfr="count-files-recursive"
 alias count-files-recursive="ls -R | wc -l"
 #alias ducks="du -cks -- * | sort -rn | head"
-alias ll="lla"
-alias la="lla"
-alias lla="ls -AlhF --color=always --group-directories-first" 
-alias lld="lla | grep --color=always '^d'"
-alias llf="lla | grep --color=always '^-'"
+##### LS
+alias la="ls -AlhF --color=always --group-directories-first" 
+alias lld="la | grep --color=always '^d'"
+alias llf="la | grep --color=always '^-'"
 alias lsa="ls -AhF --color=always" # don't think I'd use this very often
 alias lsr="ls -R --color=always" # show all directories recursively, useful for small directories
+##### LS LESS
+alias lal="la | less"
+alias lldl="lld | less"
+alias llfl="llf | less"
+
 ### FILE OPERATIONS
 alias remount="sudo mount -av"
 alias chm="chmod"

@@ -1,17 +1,25 @@
-//META{"name":"BDFDB","authorId":"278543574059057154","invite":"Jx3TjNS","donate":"https://www.paypal.me/MircoWittrien","patreon":"https://www.patreon.com/MircoWittrien","website":"https://github.com/mwittrien/BetterDiscordAddons/tree/master/Library","source":"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Library/0BDFDB.plugin.js"}*//
+/**
+ * @name BDFDB
+ * @authorId 278543574059057154
+ * @invite Jx3TjNS
+ * @donate https://www.paypal.me/MircoWittrien
+ * @patreon https://www.patreon.com/MircoWittrien
+ * @website https://github.com/mwittrien/BetterDiscordAddons/tree/master/Library
+ * @source https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Library/0BDFDB.plugin.js
+ */
 
 module.exports = (_ => {
 	const config = {
 		"info": {
 			"name": "BDFDB",
 			"author": "DevilBro",
-			"version": "1.0.8",
+			"version": "1.0.9",
 			"description": "Give other plugins utility functions"
 		},
 		"rawUrl": "https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js",
 		"changeLog": {
 			"fixed": {
-				"Switches": "Switches for all my plugins work again"
+				"BD Beta": "Fixed some issues with the beta"
 			}
 		}
 	};
@@ -535,13 +543,15 @@ module.exports = (_ => {
 					});
 				}, 1000);
 			}
-			BDFDB.DOMUtils.removeLocalStyle(plugin.name);
-			BDFDB.ListenerUtils.remove(plugin);
-			BDFDB.StoreChangeUtils.remove(plugin);
-			BDFDB.ObserverUtils.disconnect(plugin);
-			BDFDB.PatchUtils.unpatch(plugin);
-			BDFDB.WindowUtils.closeAll(plugin);
-			BDFDB.WindowUtils.removeListener(plugin);
+			if (BDFDB.DOMUtils) BDFDB.DOMUtils.removeLocalStyle(plugin.name);
+			if (BDFDB.ListenerUtils) BDFDB.ListenerUtils.remove(plugin);
+			if (BDFDB.StoreChangeUtils) BDFDB.StoreChangeUtils.remove(plugin);
+			if (BDFDB.ObserverUtils) BDFDB.ObserverUtils.disconnect(plugin);
+			if (BDFDB.PatchUtils) BDFDB.PatchUtils.unpatch(plugin);
+			if (BDFDB.WindowUtils) {
+				BDFDB.WindowUtils.closeAll(plugin);
+				BDFDB.WindowUtils.removeListener(plugin);
+			}
 		}, "Failed to clean up plugin!", plugin.name)();
 	};
 	BDFDB.PluginUtils.checkUpdate = function (pluginName, url) {
@@ -560,6 +570,7 @@ module.exports = (_ => {
 					return callback(2);
 				}
 				else if (BDFDB.NumberUtils.compareVersions(newVersion[0], window.PluginUpdates.plugins[url].version)) {
+					window.PluginUpdates.plugins[url].outdated = true;
 					BDFDB.PluginUtils.showUpdateNotice(pluginName, url);
 					return callback(1);
 				}
@@ -3089,14 +3100,13 @@ module.exports = (_ => {
 					function isRGB(comp) {return comp.slice(0, 3).every(rgb => rgb.toString().indexOf("%") == -1 && parseFloat(rgb) == parseInt(rgb));};
 					function isHSL(comp) {return comp.slice(1, 3).every(hsl => hsl.toString().indexOf("%") == hsl.length - 1);};
 				};
-				BDFDB.ColorUtils.createGradient = function (colorobj, direction = "to right") {
-					var sortedgradient = {};
-					var gradientstring = "linear-gradient(" + direction;
-					for (let pos of Object.keys(colorobj).sort()) {
-						let color = BDFDB.ColorUtils.convert(colorobj[pos], "RGBA");
-						gradientstring += color ? `, ${color} ${pos*100}%` : ''
+				BDFDB.ColorUtils.createGradient = function (colorObj, direction = "to right") {
+					let gradientString = "linear-gradient(" + direction;
+					for (let pos of Object.keys(colorObj).sort()) {
+						let color = BDFDB.ColorUtils.convert(colorObj[pos], "RGBA");
+						gradientString += color ? `, ${color} ${pos*100}%` : ''
 					}
-					return gradientstring += ")";
+					return gradientString += ")";
 				};
 				BDFDB.ColorUtils.getSwatchColor = function (container, number) {
 					if (!Node.prototype.isPrototypeOf(container)) return;
@@ -5782,7 +5792,7 @@ module.exports = (_ => {
 									tooltipConfig: {zIndex: 3001},
 									onClick: _ => {if (this.state.offset > 0) this.jump(0);},
 									children: BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.Clickable, {
-										className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.searchresultspaginationbutton, this.state.offset <= 0 && BDFDB.disCN.searchresultspaginationdisabled, BDFDB.disCN.focusable),
+										className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.searchresultspaginationbutton, this.state.offset <= 0 && BDFDB.disCN.searchresultspaginationdisabled),
 										children: BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.SvgIcon, {
 											className: BDFDB.disCN.searchresultspaginationicon,
 											name: InternalComponents.LibraryComponents.SvgIcon.Names.LEFT_DOUBLE_CARET
@@ -5797,7 +5807,7 @@ module.exports = (_ => {
 										if (this.state.offset > 0) this.jump(this.state.offset - 1);
 									},
 									children: BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.Clickable, {
-										className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.searchresultspaginationbutton, this.state.offset <= 0 && BDFDB.disCN.searchresultspaginationdisabled, BDFDB.disCN.focusable),
+										className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.searchresultspaginationbutton, this.state.offset <= 0 && BDFDB.disCN.searchresultspaginationdisabled),
 										children: BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.SvgIcon, {
 											className: BDFDB.disCN.searchresultspaginationicon,
 											name: InternalComponents.LibraryComponents.SvgIcon.Names.LEFT_CARET
@@ -5811,7 +5821,7 @@ module.exports = (_ => {
 									tooltipConfig: {zIndex: 3001},
 									onClick: _ => {if (this.state.offset < maxOffset) this.jump(this.state.offset + 1);},
 									children: BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.Clickable, {
-										className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.searchresultspaginationbutton, this.state.offset >= maxOffset && BDFDB.disCN.searchresultspaginationdisabled, BDFDB.disCN.focusable),
+										className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.searchresultspaginationbutton, this.state.offset >= maxOffset && BDFDB.disCN.searchresultspaginationdisabled),
 										children: BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.SvgIcon, {
 											className: BDFDB.disCN.searchresultspaginationicon,
 											name: InternalComponents.LibraryComponents.SvgIcon.Names.RIGHT_CARET
@@ -5824,7 +5834,7 @@ module.exports = (_ => {
 									tooltipConfig: {zIndex: 3001},
 									onClick: _ => {if (this.state.offset < maxOffset) this.jump(maxOffset);},
 									children: BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.Clickable, {
-										className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.searchresultspaginationbutton, this.state.offset >= maxOffset && BDFDB.disCN.searchresultspaginationdisabled, BDFDB.disCN.focusable),
+										className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.searchresultspaginationbutton, this.state.offset >= maxOffset && BDFDB.disCN.searchresultspaginationdisabled),
 										children: BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.SvgIcon, {
 											className: BDFDB.disCN.searchresultspaginationicon,
 											name: InternalComponents.LibraryComponents.SvgIcon.Names.RIGHT_DOUBLE_CARET
@@ -6573,13 +6583,19 @@ module.exports = (_ => {
 					CROWN: {
 						icon: `<svg name="Crown" aria-hidden="false" width="%%width" height="%%height" viewBox="0 0 16 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M13.6572 5.42868C13.8879 5.29002 14.1806 5.30402 14.3973 5.46468C14.6133 5.62602 14.7119 5.90068 14.6473 6.16202L13.3139 11.4954C13.2393 11.7927 12.9726 12.0007 12.6666 12.0007H3.33325C3.02725 12.0007 2.76058 11.792 2.68592 11.4954L1.35258 6.16202C1.28792 5.90068 1.38658 5.62602 1.60258 5.46468C1.81992 5.30468 2.11192 5.29068 2.34325 5.42868L5.13192 7.10202L7.44592 3.63068C7.46173 3.60697 7.48377 3.5913 7.50588 3.57559C7.5192 3.56612 7.53255 3.55663 7.54458 3.54535L6.90258 2.90268C6.77325 2.77335 6.77325 2.56068 6.90258 2.43135L7.76458 1.56935C7.89392 1.44002 8.10658 1.44002 8.23592 1.56935L9.09792 2.43135C9.22725 2.56068 9.22725 2.77335 9.09792 2.90268L8.45592 3.54535C8.46794 3.55686 8.48154 3.56651 8.49516 3.57618C8.51703 3.5917 8.53897 3.60727 8.55458 3.63068L10.8686 7.10202L13.6572 5.42868ZM2.66667 12.6673H13.3333V14.0007H2.66667V12.6673Z" fill="%%color" aria-hidden="true"></path></svg>`
 					},
+					DOWNLOAD: {
+						defaultProps: {
+							foreground: ""
+						},
+						icon: `<svg name="Download" fill="%%color" aria-hidden="false" width="%%width" height="%%height" viewBox="-2 -2 28 28"><path class="%%foreground" fill-rule="evenodd" clip-rule="evenodd" d="M16.293 9.293L17.707 10.707L12 16.414L6.29297 10.707L7.70697 9.293L11 12.586V2H13V12.586L16.293 9.293ZM18 20V18H20V20C20 21.102 19.104 22 18 22H6C4.896 22 4 21.102 4 20V18H6V20H18Z" aria-hidden="true"></path></svg>`
+					},
 					DROPPER: {
 						defaultProps: {
 							width: 16,
 							height: 16,
 							foreground: ""
 						},
-						icon: `<svg width="%%width" height="%%height" viewBox="0 0 16 16"><g fill="none"><path d="M-4-4h24v24H-4z"></path><path className="%%foreground" fill="%%color" d="M14.994 1.006C13.858-.257 11.904-.3 10.72.89L8.637 2.975l-.696-.697-1.387 1.388 5.557 5.557 1.387-1.388-.697-.697 1.964-1.964c1.13-1.13 1.3-2.985.23-4.168zm-13.25 10.25c-.225.224-.408.48-.55.764L.02 14.37l1.39 1.39 2.35-1.174c.283-.14.54-.33.765-.55l4.808-4.808-2.776-2.776-4.813 4.803z"></path></g></svg>`
+						icon: `<svg width="%%width" height="%%height" viewBox="0 0 16 16"><g fill="none"><path d="M-4-4h24v24H-4z"></path><path class="%%foreground" fill="%%color" d="M14.994 1.006C13.858-.257 11.904-.3 10.72.89L8.637 2.975l-.696-.697-1.387 1.388 5.557 5.557 1.387-1.388-.697-.697 1.964-1.964c1.13-1.13 1.3-2.985.23-4.168zm-13.25 10.25c-.225.224-.408.48-.55.764L.02 14.37l1.39 1.39 2.35-1.174c.283-.14.54-.33.765-.55l4.808-4.808-2.776-2.776-4.813 4.803z"></path></g></svg>`
 					},
 					FOLDER: {
 						icon: `<svg name="Folder" aria-hidden="false" width="%%width" height="%%height" viewBox="0 0 24 24"><path fill="%%color" d="M20 7H12L10.553 5.106C10.214 4.428 9.521 4 8.764 4H3C2.447 4 2 4.447 2 5V19C2 20.104 2.895 21 4 21H20C21.104 21 22 20.104 22 19V9C22 7.896 21.104 7 20 7Z"></path></svg>`
@@ -7140,15 +7156,25 @@ module.exports = (_ => {
 					let checkbox = card.querySelector(BDFDB.dotCN._reposwitch);
 					if (!checkbox) return;
 					let props = BDFDB.ObjectUtils.get(BDFDB.ReactUtils.getInstance(card), "return.stateNode.props");
-					if (props && !props.hasCustomControls && props.addon && props.addon.plugin && (props.addon.plugin == libraryInstance || props.addon.plugin.name && props.addon.plugin.name && PluginStores.loaded[props.addon.plugin.name] && PluginStores.loaded[props.addon.plugin.name] == props.addon.plugin)) {
+					let plugin = props && props.addon && (props.addon.plugin || props.addon.instance);
+					if (plugin && !props.hasCustomControls && (plugin == libraryInstance || plugin.name && plugin.name && PluginStores.loaded[plugin.name] && PluginStores.loaded[plugin.name] == plugin)) {
 						props.hasCustomControls = true;
+						let url = plugin.rawUrl ||`https://mwittrien.github.io/BetterDiscordAddons/Plugins/${plugin.name}/${plugin.name}.plugin.js`;
 						let controls = [];
-						if (props.addon.plugin.changeLog) controls.push(InternalBDFDB.createCustomControl(BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.TooltipContainer, {
+						if (plugin.changeLog) controls.push(InternalBDFDB.createCustomControl(BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.TooltipContainer, {
 							text: BDFDB.LanguageUtils.LanguageStrings.CHANGE_LOG,
 							children: BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.SvgIcon, {
 								className: BDFDB.disCN._repoicon,
 								name: InternalComponents.LibraryComponents.SvgIcon.Names.CHANGELOG,
-								onClick: _ => {BDFDB.PluginUtils.openChangeLog(props.addon.plugin);}
+								onClick: _ => {BDFDB.PluginUtils.openChangeLog(plugin);}
+							})
+						})));
+						if (window.PluginUpdates && window.PluginUpdates.plugins && window.PluginUpdates.plugins[url] && window.PluginUpdates.plugins[url].outdated) controls.push(InternalBDFDB.createCustomControl(BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.TooltipContainer, {
+							text: BDFDB.LanguageUtils.LanguageStrings.UPDATE_MANUALLY,
+							children: BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.SvgIcon, {
+								className: BDFDB.disCN._repoicon,
+								name: InternalComponents.LibraryComponents.SvgIcon.Names.DOWNLOAD,
+								onClick: _ => {BDFDB.PluginUtils.downloadUpdate(plugin.name, url);}
 							})
 						})));
 						for (let control of controls) checkbox.parentElement.insertBefore(control, checkbox.parentElement.firstElementChild);

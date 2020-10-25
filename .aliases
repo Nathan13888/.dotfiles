@@ -135,6 +135,7 @@ alias count-files-recursive="ls -R | wc -l"
 #alias ducks="du -cks -- * | sort -rn | head"
 ##### LS
 alias la="ls -AlhF --color=always --group-directories-first" 
+alias lag="la | grep --color=always ''"
 alias lld="la | grep --color=always '^d'"
 alias llf="la | grep --color=always '^-'"
 alias lsa="ls -AhF --color=always" # don't think I'd use this very often

@@ -43,6 +43,7 @@
 - Docker (https://wiki.archlinux.org/index.php/Docker#Installation)
 
 ## Utilities
+- ufw
 - East Asian Fonts: https://wiki.archlinux.org/index.php/Fonts#Chinese,_Japanese,_Korean,_Vietnamese
 - trash-cli
 - nnn
@@ -51,6 +52,8 @@
 - stubby: https://wiki.archlinux.org/index.php/Stubby
 - nordvpn: https://wiki.archlinux.org/index.php/NordVPN
 - cups: https://wiki.archlinux.org/index.php/CUPS#Installation
+  - https://wiki.archlinux.org/index.php/CUPS/Printer-specific_problems#UFRII
+  - pacman -S pciutils usbutils
 - nut (ups)
 - pavucontrol (for pulseaudio)
 - Samba and Cifs-Utils
@@ -63,6 +66,8 @@
 
 ## Media
 - transmission
+- handbrake
+- Audacity
 - VLC/MPV
 - joplin
 - teams

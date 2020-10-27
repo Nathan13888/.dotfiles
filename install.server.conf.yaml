@@ -4,7 +4,7 @@
       create: true
       force: true
 
-#- clean: ['~']
+- clean: ['~']
 
 - link:
     ~/.aliases: .aliases

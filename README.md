@@ -20,7 +20,8 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 - setup GPG signing key
 ### ZSH
 - install `zsh` and [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)
-- remove ~/.oh-my-zsh/custom
+- remove `~/.oh-my-zsh/custom`
+- Install P10k:`git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k`
 ### Tmux
 - Installing TPM: `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
 ### Nvim

@@ -23,6 +23,7 @@ function reload {
 }
 alias scr="screen"
 alias tm="tmux"
+alias tma="tmux attach"
 alias tmr="tmux source-file ~/.tmux.conf"
 alias tmks="tmux kill-server"
 alias sv="sudo nvim"

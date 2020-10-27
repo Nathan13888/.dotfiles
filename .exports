@@ -1,18 +1,7 @@
-export PERS="/mnt/nas/personal"
-export NOTE="$PERS/!Notes"
-export MEDI="/mnt/nas/media"
-export BACK="/mnt/nas/backup"
-export ARCH="/mnt/nas/archival"
-export WORK="~/workspace"
-export CFTP="~/SFTP"
-export CGIT="~/workspace/Git"
-export DMOJ="~/workspace/Git/DMOJ"
-export CHES="~/chess"
-export DOTF="~/workspace/Git/DotFiles"
-export DOWN="~/Downloads"
-export DOCS="~/Documents"
-export PICS="~/Pictures"
-export DESK="~/Desktop"
+[ -f ~/.exports.local ] && source ~/.exports.local
+
+export LANG=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
 
 # GPG --> https://stackoverflow.com/questions/41052538/git-error-gpg-failed-to-sign-data
 export GPG_TTY=$(tty)

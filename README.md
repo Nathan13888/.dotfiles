@@ -41,12 +41,8 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 - configure wireguard
 
 # Scripts
-- `FULL-INSTALL.sh` --> install everything for a complete Ubuntu system running GNOME
-- `MIN-INSTALL.sh` --> install the least dotfiles that do not effect the system (eg. aliases)
-- `WSL-INSTALL.sh` --> install in a debian WSL system
-- `ETC-INSTALL.sh` --> installing configs that are in `/etc/`
-- `EXTRA-INSTALL.sh` --> install other things
-
+- `install` --> regular install script for a desktop
+- `install-server` --> install script for a server
 - `UPDATE-SUBMODULES.sh` --> update submodules of this respository
 
 # Cloning (with submodules)

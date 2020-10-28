@@ -3,7 +3,7 @@ export OSH=~/.oh-my-bash
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-bash is loaded.
-OSH_THEME="font"
+OSH_THEME="standard"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -95,6 +95,8 @@ source $OSH/oh-my-bash.sh
 # plugins, and themes. Aliases can be placed here, though oh-my-bash
 # users are encouraged to define aliases within the OSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
+
+HISTSIZE=10000
 
 [ -f ~/.aliases ] && source ~/.aliases
 [ -f ~/.exports ] && source ~/.exports

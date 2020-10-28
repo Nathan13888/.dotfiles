@@ -21,6 +21,8 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 - make a .gitconfig.local file
 - setup [git credential helper](https://git-scm.com/docs/gitcredentials)
 - setup GPG signing key
+### Bash
+- Oh-my-bash: `bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"`
 ### ZSH
 - install `zsh` and [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)
 - remove `~/.oh-my-zsh/custom`

@@ -8,6 +8,8 @@
 
 - link:
     ~/.aliases: .aliases
+    ~/.bashrc: .bashrc
+    ~/.oh-my-bash/custom: .oh-my-bash
     ~/.config/nvim: .config/nvim
     ~/.exports: .exports
     ~/.gitconfig: .gitconfig

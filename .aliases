@@ -13,7 +13,8 @@ alias f="fuck"
 #alias exti="exit"
 #alias al="la"
 ### CLI & APPLICATIONS
-alias s="sudo" alias sudo='sudo ' # for using other alias when using sudo
+alias s="sudo"
+alias sudo='sudo ' # for using other alias when using sudo
 function reload {
   if [[ $SHELL == */tmux ]] ; then
     exec /usr/bin/zsh
@@ -82,7 +83,8 @@ function unmac {
   iplsu $1
 }
 ### SYSTEM
-alias service="sudo service" alias serv="service"
+alias service="sudo service"
+alias serv="service"
 alias shutdown="sudo shutdown now"
 alias reboot="sudo reboot now"
 alias update="sudo apt update && sudo apt full-upgrade"

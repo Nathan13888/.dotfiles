@@ -1,0 +1,52 @@
+{
+	"amounts": {
+		"minAliasLength": 2
+	},
+	"changeLog": {
+		"version": "2.1.9"
+	},
+	"configs": {
+		"autoc": true,
+		"case": false,
+		"exact": true,
+		"file": false,
+		"regex": false
+	},
+	"settings": {
+		"addAutoComplete": true,
+		"addContextMenu": true,
+		"replaceBeforeSend": true,
+		"triggerEdit": true,
+		"triggerNormal": true,
+		"triggerUpload": true
+	},
+	"words": {
+		"gaogao": {
+			"replace": "哥哥",
+			"filedata": null,
+			"case": false,
+			"exact": true,
+			"autoc": true,
+			"regex": false,
+			"file": false
+		},
+		"leilowmou": {
+			"replace": "你老母",
+			"filedata": null,
+			"case": false,
+			"exact": true,
+			"autoc": true,
+			"regex": false,
+			"file": false
+		},
+		"muimui": {
+			"replace": "妹妹",
+			"filedata": null,
+			"case": false,
+			"exact": true,
+			"autoc": true,
+			"regex": false,
+			"file": false
+		}
+	}
+}

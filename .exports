@@ -1,10 +1,13 @@
-[ -f ~/.exports.local ] && source ~/.exports.local
-
 export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 
 # GPG --> https://stackoverflow.com/questions/41052538/git-error-gpg-failed-to-sign-data
 export GPG_TTY=$(tty)
 
+export SSH_ASKPASS='/usr/bin/ksshaskpass'
+
 export GIT_ASKPASS='/usr/bin/ksshaskpass'
+
 [ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
+
+[ -f ~/.exports.local ] && source ~/.exports.local

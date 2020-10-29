@@ -83,8 +83,7 @@ function unmac {
   iplsu $1
 }
 ### SYSTEM
-alias service="sudo service"
-alias serv="service"
+alias resetlock="faillock --reset --user $USER"
 alias shutdown="sudo shutdown now"
 alias reboot="sudo reboot now"
 alias update="sudo apt update && sudo apt full-upgrade"

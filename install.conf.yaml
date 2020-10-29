@@ -12,7 +12,7 @@
     ~/.angular-config.json: .angular-config.json
     ~/.bashrc: .bashrc
     ~/.oh-my-bash/custom: .oh-my-bash
-    ~/.config/BetterDiscord: .config/BetterDiscord
+    ~/.config/BetterDiscord: BetterDiscord
     ~/.config/nvim: .config/nvim
     ~/.exports: .exports
     ~/.gitconfig: .gitconfig

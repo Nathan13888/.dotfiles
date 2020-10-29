@@ -1,0 +1,8 @@
+- MTP: https://wiki.archlinux.org/index.php/Media_Transfer_Protocol
+- CUPS:
+  - https://wiki.archlinux.org/index.php/CUPS
+  - https://wiki.archlinux.org/index.php/CUPS/Printer-specific_problems
+- SSH:
+  - https://wiki.archlinux.org/index.php/SSH_keys
+  - https://www.cyberciti.biz/faq/ssh-passwordless-login-with-keychain-for-scripts/
+  - Install `keychain` to save SSH password

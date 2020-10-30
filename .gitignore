@@ -17,9 +17,10 @@ TODO.md
 
 # Better Discord
 emote_data.json
-.config/BetterDiscord/plugins/BadgesEverywhere.config.json
-.config/BetterDiscord/plugins/Guild\ And\ Friend\ Removal\ Alerts.config.json
-.config/BetterDiscord/bdstorage.json
+BadgesEverywhere.config.json
+Guild\ And\ Friend\ Removal\ Alerts.config.json
+GoogleTranslateOption.config.json
+BetterDiscord/bdstorage.json
 
 # Vim Swap Files
 *.swp

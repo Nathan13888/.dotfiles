@@ -6,7 +6,7 @@
 		"inputContext": "$discord",
 		"inputMessage": "$discord",
 		"outputContext": "$discord",
-		"outputMessage": "es"
+		"outputMessage": "zh-CN"
 	},
 	"engines": {
 		"translator": "googleapi"

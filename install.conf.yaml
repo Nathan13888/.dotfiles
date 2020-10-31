@@ -11,8 +11,10 @@
     ~/.aliases: .aliases
     ~/.angular-config.json: .angular-config.json
     ~/.bashrc: .bashrc
+    ~/.bash.d: .bash.d
     ~/.oh-my-bash/custom: .oh-my-bash
     ~/.config/BetterDiscord: BetterDiscord
+    ~/.cht.sh/cht.sh.conf: cht.sh.conf
     ~/.config/nvim: .config/nvim
     ~/.exports: .exports
     ~/.gitconfig: .gitconfig
@@ -25,6 +27,7 @@
     ~/.vim: .vim
     ~/.vimrc: .vimrc
     ~/.zshrc: .zshrc
+    ~/.zsh.d: .zsh.d
 
 - create:
     - ~/workspace

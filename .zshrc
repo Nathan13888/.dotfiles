@@ -107,3 +107,6 @@ POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh
 P10KCONF="~/.p10k.zsh"
 [[ ! -f $P10KCONF ]] || source $P10KCONF
+
+# CHT.SH Autocomplete
+fpath=(~/.zsh.d/ $fpath)

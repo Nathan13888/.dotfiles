@@ -1,6 +1,6 @@
 {
 	"changeLog": {
-		"version": "2.1.0"
+		"version": "2.1.1"
 	},
 	"choices": {
 		"inputContext": "$discord",
@@ -10,6 +10,11 @@
 	},
 	"engines": {
 		"translator": "googleapi"
+	},
+	"exceptions": {
+		"wordStart": [
+			"!"
+		]
 	},
 	"favorites": {
 		"$discord": true,

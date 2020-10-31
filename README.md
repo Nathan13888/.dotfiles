@@ -1,4 +1,4 @@
-# Dot Files
+# Dotfiles
 
 A dotfiles repository containing Nathan's personal dotfiles that he uses with debian/ubuntu systems.
 
@@ -33,6 +33,7 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 - **Install Vim-Plug**: `sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'`
 - Inside neovim, run `:PlugInstall`
 - `CocInstall coc-css coc-json coc-python coc-discord coc-sh coc-yaml`
+- Install YCM using these instructions (https://github.com/ycm-core/YouCompleteMe#linux-64-bit)
 ### Wakatime
 - install wakatime cli
 - add API key
@@ -53,36 +54,8 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 - `git clone https://github.com/Nathan13888/DotFiles`
 - `git submodule update --init --recursive`
 
-## Dot Files Included
-
-- [x] vimrc
-- [x] scidvspc
-- [x] vscode (git clone)
-- [x] gitconfig
-- [x] omf
-- [x] fish
-- [x] Bandaged Better Discord
-- [ ] 
-
-## VIM
-Dotfiles mainly contains configs for Neovim.
-- Install Vim-Plug (https://github.com/junegunn/vim-plug)
-- Run `:PlugInstall` to install all the plugins for vim
-- Install YCM using these instructions (https://github.com/ycm-core/YouCompleteMe#linux-64-bit)
-
-## Other Packages not included
-
 ## Other Dot File Repositories
-- https://github.com/Nathan13888/ChessGames
-- https://github.com/Nathan13888/lc0-nets
 - https://github.com/Nathan13888/.vscode
-
-# Guides
-- https://www.anishathalye.com/2014/08/03/managing-your-dotfiles/
-- https://git-scm.com/docs/git-config
-- https://github.com/mathiasbynens/dotfiles/blob/master/.aliases
-- https://abdullah.today/encrypted-dotfiles/
-- https://medium.com/@webprolific/getting-started-with-dotfiles-43c3602fd789
 
 
 

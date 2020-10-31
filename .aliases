@@ -95,7 +95,6 @@ alias sdi="sudo dpkg -i"
 alias saar="sudo add-apt-repository"
 alias fr="free"
 alias free="free -hm"
-alias uptime='uptime -p'
 #alias top="htop" # HTOP is better than TOP
 alias pg="pgrep" # find process id, `$ pidof` is another viable command alternative
 ### APPLICATIONS

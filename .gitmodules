@@ -1,17 +1,3 @@
-[submodule "fonts"]
-    path = Fonts/powerline-fonts
-	url = https://github.com/powerline/fonts
-	branch = master
-[submodule "source-code-pro"]
-	path = Fonts/source-code-pro
-	url = https://github.com/adobe-fonts/source-code-pro/
-	branch = release
-[submodule "FiraCode"]
-	path = Fonts/FiraCode
-	url = https://github.com/tonsky/FiraCode
-[submodule "nerd-fonts"]
-	path = Fonts/nerd-fonts
-	url = https://github.com/ryanoasis/nerd-fonts
 [submodule ".oh-my-zsh/custom/themes/powerlevel10k"]
 	path = .oh-my-zsh/custom/themes/powerlevel10k
 	url = "https://github.com/romkatv/powerlevel10k#oh-my-zsh"

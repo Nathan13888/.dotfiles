@@ -34,6 +34,10 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 - Inside neovim, run `:PlugInstall`
 - `CocInstall coc-css coc-json coc-python coc-discord coc-sh coc-yaml`
 - Install YCM using these instructions (https://github.com/ycm-core/YouCompleteMe#linux-64-bit)
+### LS_COLORS
+Install options:
+1. run the **install** script inside the submodule
+2. Arch Linux: `lscolors-git` from AUR
 ### Wakatime
 - install wakatime cli
 - add API key

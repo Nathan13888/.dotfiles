@@ -38,6 +38,9 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 Install options:
 1. run the **install** script inside the submodule
 2. Arch Linux: `lscolors-git` from AUR
+### Vivd (LS_COLORS alternative)
+- Arch Linux: `vivid` from AUR
+- add to .exports.local: `export LS_COLORS="$(vivid generate <theme>)"`
 ### Wakatime
 - install wakatime cli
 - add API key

@@ -8,3 +8,6 @@
 	path = dotbot
 	url = https://github.com/anishathalye/dotbot
 	ignore = dirty
+[submodule "vivid"]
+	path = vivid
+	url = https://github.com/sharkdp/vivid

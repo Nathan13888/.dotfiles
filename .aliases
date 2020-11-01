@@ -90,6 +90,7 @@ function unmac {
 }
 ### SYSTEM
 alias systemctl="sudo systemctl"
+alias mount="sudo mount"
 alias ipt="sudo iptables"
 alias resetlock="faillock --reset --user $USER"
 alias shutdown="sudo shutdown now"

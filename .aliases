@@ -84,6 +84,8 @@ function unmac {
   iplsu $1
 }
 ### SYSTEM
+alias systemctl="sudo systemctl"
+alias ipt="sudo iptables"
 alias resetlock="faillock --reset --user $USER"
 alias shutdown="sudo shutdown now"
 alias reboot="sudo reboot now"

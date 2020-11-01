@@ -167,3 +167,5 @@
 	pushInsteadOf = "gl:"
 [rebase]
 	autosquash = true
+[pull]
+	rebase = true

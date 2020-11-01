@@ -17,7 +17,7 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 - **Import Key**: `gpg --import private.key`
 - **Verify Key**: `gpg --edit-key {KEY} trust quit`
 ### Git
-- install `git`, `hub`, [`git-extras`](https://github.com/tj/git-extras)
+- install `git`, `git-lfs`, `hub`, [`git-extras`](https://github.com/tj/git-extras)
 - make a .gitconfig.local file
 - setup [git credential helper](https://git-scm.com/docs/gitcredentials)
 - setup GPG signing key

@@ -28,7 +28,12 @@ alias tma="tmux attach"
 alias tmr="tmux source-file ~/.tmux.conf"
 alias tmks="tmux kill-server"
 alias sv="sudo nvim"
-alias nv="nvim" v="nvim"
+alias nv="nvim"
+if [[ $ISSERVER == YES ]] ; then
+  alias v=$(which vim)
+else
+  alias v=$(which nvim)
+fi
 alias vi="vim"
 alias t="todo.sh"
 alias g="git" git='hub' # eval "$(hub alias -s)" # what's the difference even??

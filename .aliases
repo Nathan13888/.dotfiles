@@ -30,6 +30,7 @@ alias tmks="tmux kill-server"
 alias sv="sudo nvim"
 alias nv="nvim" v="nvim"
 alias vi="vim"
+alias t="todo.sh"
 alias g="git" git='hub' # eval "$(hub alias -s)" # what's the difference even??
 alias n="npm"
 alias p="pm2"

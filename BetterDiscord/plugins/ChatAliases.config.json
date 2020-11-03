@@ -21,6 +21,33 @@
 		"triggerUpload": true
 	},
 	"words": {
+		"Happy Birthday": {
+			"replace": "୨୧ ᕼᗩᑭᑭY ᗷIᖇTᕼᗞᗩY୨୧",
+			"filedata": null,
+			"case": false,
+			"exact": false,
+			"autoc": true,
+			"regex": false,
+			"file": false
+		},
+		"I'd just like to interject": {
+			"replace": "I'd just like :couple_mm::cupid::two_hearts: to interject for a moment. What :frowning: you're referring to as Linux, is in fact, GNU/Linux, or as I've recently taken to calling :calling: it, :put_litter_in_its_place: GNU plus :heavy_plus_sign: Linux. Linux is not :do_not_litter: an operating system unto itself, but rather :rat: another free :free: component of a fully functioning GNU system made useful by the GNU corelibs, shell :snail: utilities and vital system components comprising a full :u6e80: OS as defined by POSIX.  Many computer :computer::woman_technologist: users :speaking_head::busts_in_silhouette: run a modified version of the GNU system every day, without realizing it. :put_litter_in_its_place: Through a peculiar turn of events, :ticket: the version of GNU which is widely used today is often called \"Linux\", and many of its :put_litter_in_its_place::put_litter_in_its_place::put_litter_in_its_place: users :bust_in_silhouette: are :point_right: not :do_not_litter: aware that it :put_litter_in_its_place: is basically the GNU system, developed by the GNU Project.  There really is a Linux, and these people :family_mwg: are :point_right: using it, :put_litter_in_its_place: but it :put_litter_in_its_place: is just a part :part_alternation_mark: of the system they :family_wwbb: use. Linux is the kernel: the program :radio: in the system that allocates the machine's :slot_machine: resources to the other programs :radio: that you :blush: run. The kernel is an essential part :part_alternation_mark: of an operating system, but useless by itself; it :put_litter_in_its_place: can only function in the context of a complete operating system. Linux is normally used in combination with the GNU operating system: the whole system is basically GNU with Linux added, or GNU/Linux. All the so-called :sos: \"Linux\" distributions are :point_right: really distributions of GNU/Linux.",
+			"filedata": null,
+			"case": false,
+			"exact": true,
+			"autoc": true,
+			"regex": false,
+			"file": false
+		},
+		"NOTICE": {
+			"replace": "This is a notice that I am currently typing with **ONE** hand! How did I type this? I didn't I have an __alias__ for this. So please be *patient* as I mistype words hextremely slow :)",
+			"filedata": null,
+			"case": true,
+			"exact": true,
+			"autoc": true,
+			"regex": false,
+			"file": false
+		},
 		"gaogao": {
 			"replace": "哥哥",
 			"filedata": null,

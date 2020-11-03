@@ -24,7 +24,7 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 ### Bash
 - Oh-my-bash: `bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"`
 ### ZSH
-- install `zsh` and [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)
+- install `zsh`: `sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"` and [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)
 - remove `~/.oh-my-zsh/custom`
 - Install P10k:`git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k`
 ### Tmux

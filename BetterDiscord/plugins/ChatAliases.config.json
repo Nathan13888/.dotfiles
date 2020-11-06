@@ -25,8 +25,8 @@
 			"replace": "୨୧ ᕼᗩᑭᑭY ᗷIᖇTᕼᗞᗩY୨୧",
 			"filedata": null,
 			"case": false,
-			"exact": false,
-			"autoc": true,
+			"exact": true,
+			"autoc": false,
 			"regex": false,
 			"file": false
 		},
@@ -35,7 +35,7 @@
 			"filedata": null,
 			"case": false,
 			"exact": true,
-			"autoc": true,
+			"autoc": false,
 			"regex": false,
 			"file": false
 		},
@@ -44,21 +44,12 @@
 			"filedata": null,
 			"case": true,
 			"exact": true,
-			"autoc": true,
+			"autoc": false,
 			"regex": false,
 			"file": false
 		},
 		"gaogao": {
 			"replace": "哥哥",
-			"filedata": null,
-			"case": false,
-			"exact": true,
-			"autoc": true,
-			"regex": false,
-			"file": false
-		},
-		"leilowmou": {
-			"replace": "你老母",
 			"filedata": null,
 			"case": false,
 			"exact": true,

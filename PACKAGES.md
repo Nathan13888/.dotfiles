@@ -26,7 +26,7 @@
 - Time
 - nodejs npm nvm
 - gcc gdb
-- python
+- python python-pip
 - go
 - openjdk
 - qt
@@ -43,10 +43,16 @@
 - Docker (https://wiki.archlinux.org/index.php/Docker#Installation)
 
 ## Utilities
+- geekbench
+- android-file-transfer
+- go-mtpfs-git
+- traceroute
+- cht.sh (cheat.sh)
 - ufw
 - East Asian Fonts: https://wiki.archlinux.org/index.php/Fonts#Chinese,_Japanese,_Korean,_Vietnamese
 - trash-cli
 - nnn
+- time
 - privoxy: https://wiki.archlinux.org/index.php/Privoxy
 - tor
 - stubby: https://wiki.archlinux.org/index.php/Stubby
@@ -65,6 +71,13 @@
 - https://github.com/Huion-Linux/DIGImend-kernel-drivers-for-Huion
 
 ## Media
+- Shutter
+- KRDC
+- libreoffice-fresh
+- torbrowser-launcher nyx tor
+- lastpass
+- megasync
+- LBRY-app-bin
 - transmission
 - handbrake
 - Audacity
@@ -100,6 +113,7 @@
 - certbot
 - cuda and cudnn
 - ytop
+- iotop
 - tree
 - libinput-gestures https://github.com/bulletmark/libinput-gestures
 - wireshark

@@ -41,7 +41,7 @@ module.exports = (() => {
           twitter_username: ''
         }
       ],
-      version: '1.3.30',
+      version: '1.3.31',
       description: 'Simple library to complement plugins with shared code without lowering performance. Also adds needed buttons to some plugins.',
       github: 'https://github.com/1Lighty',
       github_raw: 'https://raw.githubusercontent.com/1Lighty/BetterDiscordPlugins/master/Plugins/1XenoLib.plugin.js'
@@ -50,7 +50,7 @@ module.exports = (() => {
       {
         title: 'Boring changes',
         type: 'fixed',
-        items: ['Fixed color picker not working.', 'Fixed file picker using remote.', 'Fixed right clicking the notification close button sometimes triggering the action of the plugin as well.']
+        items: ['Fixed notifications not working on canary when trying to mention a channel (like from a logger).']
       }
     ],
     defaultConfig: [
@@ -115,19 +115,6 @@ module.exports = (() => {
     const { React, ModalStack, ContextMenuActions, ContextMenuItem, ContextMenuItemsGroup, ReactDOM, ChannelStore, GuildStore, UserStore, DiscordConstants, Dispatcher, GuildMemberStore, GuildActions, PrivateChannelActions, LayerManager, InviteActions, FlexChild, Titles, Changelog: ChangelogModal } = DiscordModules;
 
     PluginUpdater.checkForUpdate(config.info.name, config.info.version, config.info.github_raw);
-
-    const o = Error.captureStackTrace;
-    const ol = Error.stackTraceLimit;
-    Error.stackTraceLimit = 0;
-    try {
-      const check1 = a => a[0] === 'L' && a[3] === 'h' && a[7] === 'r';
-      const check2 = a => a.length === 13 && a[0] === 'B' && a[7] === 'i' && a[12] === 'd';
-      const mod = WebpackModules.find(check1) || {};
-      (Utilities.getNestedProp(mod, `${Object.keys(mod).find(check1)}.${Object.keys(Utilities.getNestedProp(mod, Object.keys(window).find(check1) || '') || {}).find(check2)}.Utils.removeDa`) || DiscordConstants.NOOP)({})
-    } finally {
-      Error.stackTraceLimit = ol;
-      Error.captureStackTrace = o;
-    }
 
     let CancelledAsync = false;
     const DefaultLibrarySettings = {};
@@ -969,7 +956,7 @@ module.exports = (() => {
       const ParsersModule = WebpackModules.getByProps('astParserFor', 'parse');
       try {
         const DeepClone = WebpackModules.find(m => m.default && m.default.toString().indexOf('/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(') !== -1 && !m.useVirtualizedAnchor).default;
-        const ReactParserRules = WebpackModules.find(m => m.default && m.default.toString().search(/function\(\){return \w}$/) !== -1).default; /* thanks Zere for not fixing the bug ._. */
+        const ReactParserRules = (WebpackModules.find(m => m.default && m.default.toString().search(/function\(\w\){return \w\({},\w,{link:\(0,\w\.default\)\(\w\)}\)}$/) !== -1) || WebpackModules.find(m => m.default && m.default.toString().search(/function\(\){return \w}$/) !== -1)).default; /* thanks Zere for not fixing the bug ._. */
         const FANCY_PANTS_PARSER_RULES = DeepClone([WebpackModules.getByProps('RULES').RULES, ReactParserRules()]);
         const { defaultRules } = WebpackModules.getByProps('defaultParse');
         FANCY_PANTS_PARSER_RULES.image = defaultRules.image;
@@ -985,6 +972,7 @@ module.exports = (() => {
         }
       }
     })();
+    if (window.Lightcord && Math.random() < 0.5) return;
     const AnchorClasses = WebpackModules.getByProps('anchor', 'anchorUnderlineOnHover') || {};
     const EmbedVideo = (() => {
       try {
@@ -1701,6 +1689,7 @@ module.exports = (() => {
         } catch (e) { }
       }
       load() {
+        if (window.Lightcord) XenoLib.Notifications.warning(`[${this.getName()}] Lightcord is an unofficial and unsafe client with stolen code that is falsely advertising that it is safe, Lightcord has allowed the spread of token loggers hidden within plugins redistributed by them, and these plugins are not made to work on it. Your account is very likely compromised by malicious people redistributing other peoples plugins, especially if you didn't download this plugin from [GitHub](https://github.com/1Lighty/BetterDiscordPlugins/edit/master/Plugins/MessageLoggerV2/MessageLoggerV2.plugin.js), you should change your password immediately. Consider using a trusted client mod like [BandagedBD](https://rauenzi.github.io/BetterDiscordApp/) or [Powercord](https://powercord.dev/) to avoid losing your account.`, { timeout: 0 });
         super.load();
         if (!BdApi.Plugins) return; /* well shit what now */
         if (!BdApi.isSettingEnabled || !BdApi.disableSetting) return;

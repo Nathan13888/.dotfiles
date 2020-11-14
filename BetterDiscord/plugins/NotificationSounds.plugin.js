@@ -6,6 +6,7 @@
  * @patreon https://www.patreon.com/MircoWittrien
  * @website https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/NotificationSounds
  * @source https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/NotificationSounds/NotificationSounds.plugin.js
+ * @updateUrl https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/NotificationSounds/NotificationSounds.plugin.js
  */
 
 module.exports = (_ => {
@@ -13,15 +14,20 @@ module.exports = (_ => {
 		"info": {
 			"name": "NotificationSounds",
 			"author": "DevilBro",
-			"version": "3.5.1",
+			"version": "3.5.5",
 			"description": "Allow you to replace the native sounds of Discord with your own"
 		},
 		"changeLog": {
 			"added": {
-				"Halloween": "Added discord's halloween call sound to the choices"
+				"Halloween": "Added discord's halloween call sound to the choices",
+				"Global Volume": "Added global volume slider affecting all sounds"
+			},
+			"fixed": {
+				"Removed Default Category": "Removed the category 'Default' since the audio files no longer exist on the webpage"
 			}
 		}
 	};
+
 	return !window.BDFDB_Global || (!window.BDFDB_Global.loaded && !window.BDFDB_Global.started) ? class {
 		getName () {return config.info.name;}
 		getAuthor () {return config.info.author;}
@@ -51,6 +57,7 @@ module.exports = (_ => {
 		stop() {}
 	} : (([Plugin, BDFDB]) => {
 		var audios, choices, firedEvents;
+		var volumes = {};
 		
 		const removeAllKey = "REMOVE_ALL_BDFDB_DEVILBRO_DO_NOT_COPY";
 		const defaultDevice = "default";
@@ -103,15 +110,6 @@ module.exports = (_ => {
 		const defaultAudios = {
 			"---": {
 				"---":						null
-			},
-			"Default": {
-				"Communication Channel": 	"https://notificationsounds.com/soundfiles/63538fe6ef330c13a05a3ed7e599d5f7/file-sounds-917-communication-channel.wav",
-				"Isn't it": 				"https://notificationsounds.com/soundfiles/ba2fd310dcaa8781a9a652a31baf3c68/file-sounds-969-isnt-it.wav",
-				"Job Done": 				"https://notificationsounds.com/soundfiles/5b69b9cb83065d403869739ae7f0995e/file-sounds-937-job-done.wav",
-				"Served": 					"https://notificationsounds.com/soundfiles/b337e84de8752b27eda3a12363109e80/file-sounds-913-served.wav",
-				"Solemn": 					"https://notificationsounds.com/soundfiles/53fde96fcc4b4ce72d7739202324cd49/file-sounds-882-solemn.wav",
-				"System Fault": 			"https://notificationsounds.com/soundfiles/ebd9629fc3ae5e9f6611e2ee05a31cef/file-sounds-990-system-fault.wav",
-				"You wouldn't believe": 	"https://notificationsounds.com/soundfiles/087408522c31eeb1f982bc0eaf81d35f/file-sounds-949-you-wouldnt-believe.wav"
 			},
 			"Discord": {}
 		};
@@ -168,7 +166,7 @@ module.exports = (_ => {
 					let audio = new Audio;
 					audio.src = this._src;
 					audio.onloadeddata = _ => {
-						audio.volume = Math.min((BDFDB.LibraryModules.MediaDeviceUtils.getOutputVolume() / 100) * (this._volume / 100), 1);
+						audio.volume = Math.min((BDFDB.LibraryModules.MediaDeviceUtils.getOutputVolume() / 100) * (this._volume / 100) * (volumes.globalVolume / 100), 1);
 						BDFDB.LibraryModules.PlatformUtils.embedded && audio.setSinkId(currentDevice || defaultDevice);
 						callback(audio);
 					};
@@ -189,11 +187,19 @@ module.exports = (_ => {
 				choices = {};
 				firedEvents = {};
 				
+				this.defaults = {
+					volumes: {
+						globalVolume:				{value:100,				description:"Global Notification Sounds Volume"}
+					}
+				};
+				
 				this.patchedModules = {
 					after: {
 						Shakeable: "render"
 					}
 				};
+				
+				this.patchPriority = 10;
 			}
 			
 			onStart() {
@@ -261,18 +267,22 @@ module.exports = (_ => {
 
 				BDFDB.PatchUtils.patch(this, BDFDB.LibraryModules.SoundUtils, "playSound", {instead: e => {
 					let type = e.methodArguments[0];
-					if (choices[type]) BDFDB.TimeUtils.timeout(_ => {
-						if (type == "message1") {
-							if (firedEvents["dm"]) firedEvents["dm"] = false;
-							else if (firedEvents["mentioned"]) firedEvents["mentioned"] = false;
-							else if (firedEvents["role"]) firedEvents["role"] = false;
-							else if (firedEvents["everyone"]) firedEvents["everyone"] = false;
-							else if (firedEvents["here"]) firedEvents["here"] = false;
+					if (!type) return;
+					else if (choices[type]) {
+						e.stopOriginalMethodCall();
+						BDFDB.TimeUtils.timeout(_ => {
+							if (type == "message1") {
+								if (firedEvents["dm"]) firedEvents["dm"] = false;
+								else if (firedEvents["mentioned"]) firedEvents["mentioned"] = false;
+								else if (firedEvents["role"]) firedEvents["role"] = false;
+								else if (firedEvents["everyone"]) firedEvents["everyone"] = false;
+								else if (firedEvents["here"]) firedEvents["here"] = false;
+								else this.playAudio(type);
+							}
 							else this.playAudio(type);
-						}
-						else this.playAudio(type);
-					});
-					else e.callOriginalMethod();
+						});
+					}
+					else e.callOriginalMethodAfterwards();
 				}});
 				BDFDB.PatchUtils.patch(this, BDFDB.LibraryModules.SoundUtils, "createSound", {after: e => {
 					if (choices[e.methodArguments[0]]) {
@@ -422,6 +432,19 @@ module.exports = (_ => {
 				let settingsPanel, settingsItems = [];
 			
 				settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.CollapseContainer, {
+					title: "Settings",
+					collapseStates: collapseStates,
+					children: Object.keys(volumes).map(key => BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
+						type: "Slider",
+						plugin: this,
+						keys: ["volumes", key],
+						basis: "50%",
+						label: this.defaults.volumes[key].description,
+						value: volumes[key]
+					}))
+				}));
+			
+				settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.CollapseContainer, {
 					title: "Add new Sound",
 					collapseStates: collapseStates,
 					children: [
@@ -470,7 +493,7 @@ module.exports = (_ => {
 								BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Button, {
 									style: {marginBottom: 1},
 									onClick: _ => {
-										for (let input of settingsPanel.querySelectorAll(".input-newsound " + BDFDB.dotCN.input)) if (!input.value || input.value.length == 0 || input.value.trim().length == 0) return BDFDB.NotificationUtils.toast("Fill out all fields to add a new sound.", {type:"danger"});
+										for (let input of settingsPanel.querySelectorAll(".input-newsound " + BDFDB.dotCN.input)) if (!input.value || input.value.length == 0 || input.value.trim().length == 0) return BDFDB.NotificationUtils.toast("Fill out all fields to add a new sound", {type:"danger"});
 										let category = settingsPanel.querySelector(".input-category " + BDFDB.dotCN.input).value.trim();
 										let sound = settingsPanel.querySelector(".input-sound " + BDFDB.dotCN.input).value.trim();
 										let source = settingsPanel.querySelector(".input-source " + BDFDB.dotCN.input).value.trim();
@@ -479,10 +502,10 @@ module.exports = (_ => {
 												let type = response.headers["content-type"];
 												if (type && (type.indexOf("octet-stream") > -1 || type.indexOf("audio") > -1 || type.indexOf("video") > -1)) return successSavedAudio({category, sound, source});
 											}
-											BDFDB.NotificationUtils.toast("Use a valid direct link to a video or audio source. They usually end on something like .mp3, .mp4 or .wav.", {type:"danger"});
+											BDFDB.NotificationUtils.toast("Use a valid direct link to a video or audio source, they usually end on something like .mp3, .mp4 or .wav", {type:"danger"});
 										});
 										else BDFDB.LibraryRequires.fs.readFile(source, (error, response) => {
-											if (error) BDFDB.NotificationUtils.toast("Could not fetch file. Please make sure the file exists.", {type:"danger"});
+											if (error) BDFDB.NotificationUtils.toast("Could not fetch file. Please make sure the file exists", {type:"danger"});
 											else return successSavedAudio({category, sound, source:`data:audio/mpeg;base64,${response.toString("base64")}`});
 										});
 									},
@@ -551,7 +574,7 @@ module.exports = (_ => {
 							}),
 							BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex.Child, {
 								grow: 0,
-								shrink: 0,
+								shrink: 1,
 								basis: "25%",
 								children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Button, {
 									style: {marginBottom: 1},
@@ -580,7 +603,7 @@ module.exports = (_ => {
 												this.loadChoices();
 												BDFDB.PluginUtils.refreshSettingsPanel(this, settingsPanel, collapseStates);
 											});
-											else BDFDB.NotificationUtils.toast("No sounds to delete.", {type:"danger"});
+											else BDFDB.NotificationUtils.toast("No sounds to delete", {type:"danger"});
 										}
 									},
 									children: BDFDB.LanguageUtils.LanguageStrings.DELETE
@@ -605,6 +628,7 @@ module.exports = (_ => {
 			forceUpdateAll () {
 				repatchIncoming = true;
 				createdAudios["call_calling"] = BDFDB.LibraryModules.SoundUtils.createSound("call_calling");
+				volumes = BDFDB.DataUtils.get(this, "volumes");
 				BDFDB.PatchUtils.forceAllUpdates(this);
 			}
 		
@@ -629,18 +653,14 @@ module.exports = (_ => {
 			}
 			
 			loadAudios () {
-				audios = Object.assign({}, defaultAudios, BDFDB.DataUtils.load(this, "audios"));
-				BDFDB.DataUtils.save(audios, this, "audios");
+				audios = Object.assign({}, BDFDB.DataUtils.load(this, "audios"), defaultAudios);
+				BDFDB.DataUtils.save(BDFDB.ObjectUtils.exclude(audios, Object.keys(defaultAudios)), this, "audios");
 			}
 
 			loadChoices () {
 				let loadedChoices = BDFDB.DataUtils.load(this, "choices");
 				for (let type in types) {
 					let choice = loadedChoices[type] || {}, soundFound = false;
-					// REMOVE 06.10.2020
-					choice.sound = choice.song || choice.sound;
-					delete choice.song;
-					delete choice.src;
 					for (let category in audios) if (choice.category == category) for (let sound in audios[category]) if (choice.sound == sound) {
 						soundFound = true;
 						break;

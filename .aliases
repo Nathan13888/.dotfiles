@@ -107,6 +107,10 @@ alias fr="free"
 alias free="free -hm"
 #alias top="htop" # HTOP is better than TOP
 alias pg="pgrep" # find process id, `$ pidof` is another viable command alternative
+function findexe() {
+  readonly pid=${1:?"The PID of the process must be specified"}
+  readlink -f /proc/$1/exe
+}
 ### APPLICATIONS
 alias code="code-insiders"
 alias bdctl="betterdiscordctl"

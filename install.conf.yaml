@@ -17,6 +17,7 @@
     ~/.cht.sh/cht.sh.conf: cht.sh.conf
     ~/.config/fontconfig: fontconfig
     ~/.config/nvim: .config/nvim
+    ~/.config/rofi: rofi
     ~/.exports: .exports
     ~/.gitconfig: .gitconfig
     ~/.gitmessage.txt: .gitmessage.txt

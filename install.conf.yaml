@@ -16,6 +16,7 @@
     ~/.config/BetterDiscord: BetterDiscord
     ~/.cht.sh/cht.sh.conf: cht.sh.conf
     ~/.config/fontconfig: fontconfig
+    ~/.config/neofetch: neofetch
     ~/.config/nvim: .config/nvim
     ~/.config/rofi: rofi
     ~/.exports: .exports

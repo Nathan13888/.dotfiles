@@ -193,10 +193,10 @@ autocmd filetype cpp nnoremap <F5> :w <bar> exec '!g++ '.shellescape('%').' -std
 "noremap <Leader>Y "+y
 "noremap <Leader>P "+p
 " Swapping Lines
-noremap <silent> <A-k> :call <SID>swap_up()<CR>
-noremap <silent> <A-j> :call <SID>swap_down()<CR>
-noremap <silent> <A-up> :call <SID>swap_up()<CR>
-noremap <silent> <A-down> :call <SID>swap_down()<CR>
+noremap <silent> <C-k> :call <SID>swap_up()<CR>
+noremap <silent> <C-j> :call <SID>swap_down()<CR>
+noremap <silent> <C-up> :call <SID>swap_up()<CR>
+noremap <silent> <C-down> :call <SID>swap_down()<CR>
 " Clearing Search
 nnoremap <silent> <space> :nohlsearch<CR>
 " Tab Navigation

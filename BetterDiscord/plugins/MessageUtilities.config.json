@@ -65,9 +65,6 @@
 			]
 		}
 	},
-	"changeLog": {
-		"version": "1.7.9"
-	},
 	"settings": {
 		"Copy_Link": true,
 		"Copy_Raw": true,

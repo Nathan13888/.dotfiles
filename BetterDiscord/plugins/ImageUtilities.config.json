@@ -2,9 +2,6 @@
 	"amounts": {
 		"hoverDelay": 0
 	},
-	"changeLog": {
-		"version": "4.1.9"
-	},
 	"engines": {
 		"Baidu": true,
 		"Bing": true,

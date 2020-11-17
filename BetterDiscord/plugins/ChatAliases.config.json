@@ -2,9 +2,6 @@
 	"amounts": {
 		"minAliasLength": 2
 	},
-	"changeLog": {
-		"version": "2.1.9"
-	},
 	"configs": {
 		"autoc": true,
 		"case": false,

@@ -1,7 +1,4 @@
 {
-	"changeLog": {
-		"version": "2.1.1"
-	},
 	"choices": {
 		"inputContext": "$discord",
 		"inputMessage": "$discord",

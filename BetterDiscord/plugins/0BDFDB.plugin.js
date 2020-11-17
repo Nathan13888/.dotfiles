@@ -16,13 +16,13 @@ module.exports = (_ => {
 		"info": {
 			"name": "BDFDB",
 			"author": "DevilBro",
-			"version": "1.1.2",
+			"version": "1.1.4",
 			"description": "Give other plugins utility functions"
 		},
 		"rawUrl": "https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js",
 		"changeLog": {
 			"fixed": {
-				"BD Beta": "Fixed some issues with the BD Beta"
+				"Works ": "Can discord stop messing with the server list, jeez"
 			}
 		}
 	};
@@ -34,7 +34,7 @@ module.exports = (_ => {
 	const Cache = {data: {}, modules: {}};
 	
 	var libraryInstance;
-	var settings = {};
+	var settings = {}, changeLogs = {};
 	
 	if (window.BDFDB_Global && window.BDFDB_Global.PluginUtils && typeof window.BDFDB_Global.PluginUtils.cleanUp == "function") {
 		window.BDFDB_Global.PluginUtils.cleanUp(window.BDFDB_Global);
@@ -721,10 +721,16 @@ module.exports = (_ => {
 	};
 	BDFDB.PluginUtils.checkChangeLog = function (plugin) {
 		if (!BDFDB.ObjectUtils.is(plugin) || !BDFDB.ObjectUtils.is(plugin.changeLog)) return;
+		// REMOVE 14.11.2020
 		let changeLog = BDFDB.DataUtils.load(plugin, "changeLog");
-		if (!changeLog.version || BDFDB.NumberUtils.compareVersions(plugin.version, changeLog.version)) {
-			changeLog.version = plugin.version;
-			BDFDB.DataUtils.save(changeLog, plugin, "changeLog");
+		if (changeLog && changeLog.version) {
+			BDFDB.DataUtils.remove(plugin, "changelog");
+			BDFDB.DataUtils.remove(plugin, "changeLog");
+			changeLogs[plugin.name] = changeLog.version;
+		}
+		if (!changeLogs[plugin.name] || BDFDB.NumberUtils.compareVersions(plugin.version, changeLogs[plugin.name])) {
+			changeLogs[plugin.name] = plugin.version;
+			BDFDB.DataUtils.save(changeLogs, BDFDB, "changeLogs");
 			BDFDB.PluginUtils.openChangeLog(plugin);
 		}
 	};
@@ -1563,6 +1569,7 @@ module.exports = (_ => {
 							propertyFind: InternalData.ModuleUtilsConfig.Finder[unmappedType] && InternalData.ModuleUtilsConfig.Finder[unmappedType].props,
 							specialFilter: InternalData.ModuleUtilsConfig.Finder[unmappedType] && InternalData.ModuleUtilsConfig.Finder[unmappedType].special && InternalBDFDB.createFilter(InternalData.ModuleUtilsConfig.Finder[unmappedType].special),
 							memoComponent: InternalData.ModuleUtilsConfig.MemoComponent.includes(unmappedType),
+							subRender: InternalData.ModuleUtilsConfig.SubRender.includes(unmappedType),
 							forceObserve: InternalData.ModuleUtilsConfig.ForceObserve.includes(unmappedType),
 							nonRender: BDFDB.ObjectUtils.toArray(pluginData.patchTypes).flat(10).filter(n => n && !InternalData.ModuleUtilsConfig.InstanceFunctions.includes(n)).length > 0,
 							mapped: InternalData.ModuleUtilsConfig.PatchMap[type]
@@ -1607,6 +1614,7 @@ module.exports = (_ => {
 						if (instance) {
 							instance = instance._reactInternalFiber && instance._reactInternalFiber.type ? instance._reactInternalFiber.type : instance;
 							let toBePatched = config.nonPrototype ? instance : instance.prototype;
+							toBePatched = config.subRender && toBePatched ? toBePatched.type : toBePatched;
 							for (let pluginData of pluginDataObjs) for (let patchType in pluginData.patchTypes) {
 								let patchMethods = {};
 								patchMethods[patchType] = e => {
@@ -1617,7 +1625,7 @@ module.exports = (_ => {
 										patchtypes: [patchType]
 									});
 								};
-								BDFDB.PatchUtils.patch(pluginData.plugin, toBePatched, pluginData.patchTypes[patchType], patchMethods);
+								BDFDB.PatchUtils.patch(pluginData.plugin, toBePatched, config.subRender ? "render" : pluginData.patchTypes[patchType], patchMethods);
 							}
 						}
 					}
@@ -7566,6 +7574,7 @@ module.exports = (_ => {
 				};
 
 				BDFDB.PluginUtils.load(BDFDB);
+				changeLogs = BDFDB.DataUtils.load(BDFDB, "changeLogs");
 				BDFDB.PluginUtils.checkChangeLog(BDFDB);
 				
 				InternalBDFDB.patchPlugin(BDFDB);
@@ -7620,7 +7629,7 @@ module.exports = (_ => {
 				};
 				
 				InternalBDFDB.forceUpdateAll = function () {
-					if (LibraryRequires.path) settings = BDFDB.DataUtils.get(this, "settings");
+					if (LibraryRequires.path) settings = BDFDB.DataUtils.get(BDFDB, "settings");
 					
 					BDFDB.MessageUtils.rerenderAll();
 					BDFDB.PatchUtils.forceAllUpdates(BDFDB);

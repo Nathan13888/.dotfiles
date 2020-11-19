@@ -32,7 +32,7 @@
 			"filedata": null,
 			"case": false,
 			"exact": true,
-			"autoc": false,
+			"autoc": true,
 			"regex": false,
 			"file": false
 		},

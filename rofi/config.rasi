@@ -148,3 +148,4 @@ configuration {
 /*	me-accept-entry: "MouseDPrimary";*/
 /*	me-accept-custom: "Control+MouseDPrimary";*/
 }
+@import "/usr/share/rofi/themes/Arc-Dark.rasi"

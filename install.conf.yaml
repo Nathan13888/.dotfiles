@@ -19,6 +19,7 @@
     ~/.config/fontconfig: fontconfig
     ~/.config/neofetch: neofetch
     ~/.config/nvim: .config/nvim
+    ~/.config/picom.conf: picom.conf
     ~/.config/polybar: polybar
     ~/.config/rofi: rofi
     ~/.exports: .exports

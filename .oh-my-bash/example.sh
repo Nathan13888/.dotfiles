@@ -8,3 +8,6 @@
 # brainstormr=~/workspace/projects/m2/brainstormr
 # cd $brainstormr
 #
+
+unalias -a
+

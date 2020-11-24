@@ -1,0 +1,20 @@
+- defaults:
+    link:
+      relink: true
+      create: true
+      force: true
+
+- clean: ['~']
+
+- link:
+    ~/.config/dunst: dunst
+    ~/.config/picom.conf: picom.conf
+    ~/.config/polybar: polybar
+    ~/.config/rofi: rofi
+    ~/.config/i3: i3
+
+- create:
+    - ~/Desktop/Wallpapers
+
+#- shell:
+#  - [git submodule update --init --recursive, Installing submodules]

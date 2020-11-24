@@ -2,8 +2,9 @@
 #         ALIAS         #
 #########################
 
-eval $(thefuck --alias) # thef***
-alias f="fuck"
+#eval $(thefuck --alias) # thef***
+#alias f="fuck"
+alias f="thefuck
 
 ### TYPOS
 #alias f='g' # NEED TO SAVE THIS FOR `THE F***`

@@ -4,7 +4,7 @@
 
 #eval $(thefuck --alias) # thef***
 #alias f="fuck"
-alias f="thefuck
+alias f="thefuck"
 
 ### TYPOS
 #alias f='g' # NEED TO SAVE THIS FOR `THE F***`
@@ -37,7 +37,10 @@ else
 fi
 alias vi="vim"
 alias t="todo.sh"
-alias g="git" git='hub' # eval "$(hub alias -s)" # what's the difference even??
+alias g="git"
+if [[ $ISSERVER != YES ]] ; then
+  alias git="hub"
+fi
 alias n="npm"
 alias p="pm2"
 alias h="heroku"

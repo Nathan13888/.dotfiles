@@ -28,7 +28,7 @@ alias tm="tmux"
 alias tma="tmux attach"
 alias tmr="tmux source-file ~/.tmux.conf"
 alias tmks="tmux kill-server"
-alias sv="sudo nvim"
+alias sv='sudo v'
 alias nv="nvim"
 if [[ $ISSERVER == YES ]] ; then
   alias v=$(which vim)

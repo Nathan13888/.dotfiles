@@ -15,7 +15,6 @@
     ~/.tmux.conf: .tmux.server.conf
     ~/.vim: .vim
     ~/.vimrc: .vimrc
-    ~/.zshrc: .zshrc
 
 #- create:
 #    - ~/.dotfiles

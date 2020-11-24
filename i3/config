@@ -1,21 +1,14 @@
+# Fcitx
+exec fcitx5
+
+# Flameshot screenshot tool
+exec flameshot
+
 # Picom
-exec_always picom -f
+exec --no-startup-id picom -f
 
 # Polybar
-exec_always source ~/.config/polybar/launch.sh
-
-# Feh
-exec --no-startup-id watch -n 900 feh --bg-scale --randomize ~/Desktop/Wallpapers/ &
-
-# Notifications - Dunst
-exec /usr/bin/dunst
-
-# Faster key repeat and delay
-exec_always --no-startup-id xset r rate 210 40
-
-# Remap CAPS LOCK key
-exec_always --no-startup-id /usr/bin/xmodmap -e "clear Lock"
-exec_always --no-startup-id /usr/bin/xmodmap -e "keycode 66 = Escape NoSymbol Escape"
+exec_always --no-startup-id source ~/.config/polybar/launch.sh
 
 # Hide cursor when typing
 exec --no-startup-id xbanish
@@ -23,14 +16,30 @@ exec --no-startup-id xbanish
 # Enable Numpad Lock
 exec_always --no-startup-id numlockx
 
-# Fcitx
-exec fcitx5
+# Wallpaper Timeout
+set $wpto 900
+# Feh
+# *optional* argument: --no-fehbg
+exec --no-startup-id watch -n $wpto feh --bg-scale --randomize ~/Desktop/Wallpapers/ &
+#watch -n $wpto exec ~/.fehbg
 
-# Flameshot screenshot tool
-exec flameshot
+# Notifications - Dunst
+exec --no-startup-id /usr/bin/dunst
 
-# Kwallet auto login
-exec /usr/lib/pam_kwallet_init
+# Faster key repeat and delay
+exec_always --no-startup-id xset r rate 210 40
+
+# Remap CAPS LOCK key
+exec_always xmodmap -e "clear lock"
+exec_always xmodmap -e "keycode 66 = Escape Caps_Lock NoSymbol NoSymbol"
+
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+# screen before suspend. Use loginctl lock-session to lock your screen.
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+# NetworkManager is the most popular way to manage wireless networks on Linux,
+# and nm-applet is a desktop environment-independent system tray GUI for it.
+exec --no-startup-id nm-applet
 
 ################################################################################
 
@@ -43,23 +52,21 @@ gaps inner 8
 # Does the window focus change when your mouse moves
 focus_follows_mouse no
 
-# Varibles
-set $terminal alacritty
+# Floating Window Sizes
+floating_minimum_size 75 x 50
+floating_maximum_size 0 x 0
 
-# MOD Key
+# Default Orientation (horizontal|vertical|auto)
+default_orientation vertical
+
+# Default Layout Mode (default|stacking|tabbed)
+workspace_layout default
+
+# Variables
+set $terminal alacritty
 set $mod Mod1
 
 font pango:DejaVu Sans Mono 9
-
-# The combination of xss-lock, nm-applet and pactl is a popular choice
-
-# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
-# screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
-
-# NetworkManager is the most popular way to manage wireless networks on Linux,
-# and nm-applet is a desktop environment-independent system tray GUI for it.
-exec --no-startup-id nm-applet
 
 # Use pactl to adjust volume in PulseAudio.
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
@@ -116,11 +123,12 @@ bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
-# split in horizontal orientation
-#bindsym $mod+h split h
-
-# split in vertical orientation
+# splitting
+bindsym $mod+z split h
+#;exec notify-send 'tile horizontally'
 bindsym $mod+v split v
+#;exec notify-send 'tile vertically'
+bindsym $mod+q split toggle
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -141,6 +149,8 @@ bindsym $mod+a focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
+
+
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -179,6 +189,9 @@ bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
+assign [class="^Firefox$"] 1
+assign [class="^Discord$"] 2
+
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
@@ -216,21 +229,24 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Set shut down, restart and locking features
-bindsym $mod+Shift+Delete mode "$mode_system"
+bindsym $mod+Control+Delete mode "$mode_system"
 set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown
+
+# [[ $(cat /proc/1/comm) == "systemd" ]] && logind=systemctl || logind=loginctl
+set $logind systemctl
+
+set $lockcommand i3lock
 mode "$mode_system" {
-    bindsym l exec --no-startup-id i3exit lock, mode "default"
-    bindsym s exec --no-startup-id i3exit suspend, mode "default"
-    bindsym u exec --no-startup-id i3exit switch_user, mode "default"
-    bindsym e exec --no-startup-id i3exit logout, mode "default"
-    bindsym h exec --no-startup-id i3exit hibernate, mode "default"
-    bindsym r exec --no-startup-id i3exit reboot, mode "default"
-    bindsym Shift+s exec --no-startup-id i3exit shutdown, mode "default"
+    bindsym l exec --no-startup-id $lockcommand, mode "default"
+    bindsym s exec --no-startup-id $lockcommand && $logind suspend, mode "default"
+    bindsym u exec --no-startup-id dm-tool switch-to-greeter, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym h exec --no-startup-id $lockcommand, mode "default"
+    bindsym r exec --no-startup-id $logind reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id $logind shutdown, mode "default"
 
     # exit system mode: "Enter" or "Escape"
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 
-# Startup Programs
-exec alacritty

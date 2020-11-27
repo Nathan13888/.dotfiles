@@ -27,7 +27,7 @@ font:
 
 window:
   dynamic_title: true
-live_config_reload: true
+live_config_reload: false
 
 
 # Colors (Snazzy)

@@ -29,7 +29,7 @@
     # the top and down respectively.
     # The width can be negative.  In this case the actual width is the
     # screen width minus the width defined in within the geometry option.
-    geometry = "300x5-30+20"
+    geometry = "500x5-50+60"
 
     # Show how many messages are currently hidden (because of geometry).
     indicate_hidden = yes
@@ -41,12 +41,12 @@
     # The transparency of the window.  Range: [0; 100].
     # This option will only work if a compositing window manager is
     # present (e.g. xcompmgr, compiz, etc.).
-    transparency = 0
+    transparency = 10
 
     # The height of the entire notification.  If the height is smaller
     # than the font height and padding combined, it will be raised
     # to the font height and padding.
-    notification_height = 0
+    notification_height = 5
 
     # Draw a line of "separator_height" pixel height between two
     # notifications.
@@ -64,7 +64,7 @@
     frame_width = 3
 
     # Defines color of the frame around the notification window.
-    frame_color = "#aaaaaa"
+    frame_color = "#2d2d2d"
 
     # Define a color for the separator.
     # possible values are:
@@ -86,7 +86,7 @@
 
     ### Text ###
 
-    font = Monospace 8
+    font = DejaVu Sans Mono Nerd Font 9
 
     # The spacing between lines.  If the height is smaller than the
     # font height, it will get raised to the font height.
@@ -126,7 +126,7 @@
     #   %n  progress value if set without any extra characters
     #   %%  Literal %
     # Markup is allowed
-    format = "<b>%s</b>\n%b"
+    format = "<b><u>%s</u></b>\n%b"
 
     # Alignment of message text.
     # Possible values are "left", "center" and "right".
@@ -175,7 +175,7 @@
     max_icon_size = 32
 
     # Paths to default icons.
-    icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
+    icon_path = /usr/share/icons/gnome/32x32/status/:/usr/share/icons/gnome/32x32/devices/
 
     ### History ###
 
@@ -184,7 +184,7 @@
     sticky_history = yes
 
     # Maximum amount of notifications kept in history
-    history_length = 20
+    history_length = 50
 
     ### Misc/Advanced ###
 
@@ -192,7 +192,7 @@
     dmenu = /usr/bin/dmenu -p dunst:
 
     # Browser for opening urls in context menu.
-    browser = /usr/bin/firefox -new-tab
+    browser = $BROWSER -new-tab
 
     # Always run rule-defined scripts, even if the notification is suppressed
     always_run_script = true
@@ -252,7 +252,7 @@
     # * close_current: Close current notification.
     # * close_all: Close all notifications.
     # These values can be strung together for each mouse event, and
-    # will be executed in sequence.
+    # will be executed in sequence.2d2d2d
     mouse_left_click = close_current
     mouse_middle_click = do_action, close_current
     mouse_right_click = close_all
@@ -292,26 +292,21 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#222222"
-    foreground = "#888888"
-    timeout = 10
-    # Icon for notifications with low urgency, uncomment to enable
-    #icon = /path/to/icon
+    frame_color = "#1D918B"
+    foreground = "#FFEE79"
+    background = "#18191E"
+    timeout = 5
 
 [urgency_normal]
-    background = "#285577"
-    foreground = "#ffffff"
+    frame_color = "#D16BB7"
+    foreground = "#FFEE79"
+    background = "#18191E"
     timeout = 10
-    # Icon for notifications with normal urgency, uncomment to enable
-    #icon = /path/to/icon
 
 [urgency_critical]
-    background = "#900000"
-    foreground = "#ffffff"
-    frame_color = "#ff0000"
-    timeout = 0
-    # Icon for notifications with critical urgency, uncomment to enable
-    #icon = /path/to/icon
+    frame_color = "#FC2929"
+    foreground = "#FFFF00"
+    background = "#18191E"
 
 # Every section that isn't one of the above is interpreted as a rules to
 # override settings for certain messages.

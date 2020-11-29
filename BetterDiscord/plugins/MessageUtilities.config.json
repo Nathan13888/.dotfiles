@@ -30,13 +30,6 @@
 				17
 			]
 		},
-		"Quote_Message": {
-			"click": 0,
-			"keycombo": [
-				17,
-				87
-			]
-		},
 		"React_to_Message": {
 			"click": 0,
 			"keycombo": [
@@ -44,10 +37,24 @@
 				83
 			]
 		},
+		"Reply_to_Message": {
+			"click": 0,
+			"keycombo": [
+				17,
+				84
+			]
+		},
 		"__Note_Message": {
 			"click": 0,
 			"keycombo": [
 				16
+			]
+		},
+		"__Quote_Message": {
+			"click": 0,
+			"keycombo": [
+				17,
+				87
 			]
 		},
 		"__Reveal_Spoilers": {
@@ -71,9 +78,10 @@
 		"Delete_Message": true,
 		"Edit_Message": true,
 		"Pin/Unpin_Message": true,
-		"Quote_Message": true,
 		"React_to_Message": true,
+		"Reply_to_Message": true,
 		"__Note_Message": false,
+		"__Quote_Message": false,
 		"__Reveal_Spoilers": false,
 		"__Translate_Message": false,
 		"addHints": true,
@@ -85,7 +93,7 @@
 		"Delete_Message": true,
 		"Edit_Message": false,
 		"Pin/Unpin_Message": true,
-		"Quote_Message": false,
-		"React_to_Message": false
+		"React_to_Message": false,
+		"Reply_to_Message": true
 	}
 }

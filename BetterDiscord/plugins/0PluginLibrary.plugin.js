@@ -2927,7 +2927,7 @@ class ReactTools {
     static getReactInstance(node) {
         if (!(node instanceof window.jQuery) && !(node instanceof Element)) return undefined;
         const domNode = node instanceof window.jQuery ? node[0] : node;
-        return domNode[Object.keys(domNode).find((key) => key.startsWith("__reactInternalInstance"))];
+        return domNode[Object.keys(domNode).find((key) => key.startsWith("__reactInternalInstance") || key.startsWith("__reactFiber"))];
     }
 
     /**
@@ -3036,7 +3036,7 @@ class Reflection {
     static reactInternalInstance(node) {
         if (!node) return null;
         if (!Object.keys(node) || !Object.keys(node).length) return null;
-        const riiKey = Object.keys(node).find(k => k.startsWith("__reactInternalInstance"));
+        const riiKey = Object.keys(node).find(k => k.startsWith("__reactInternalInstance") || k.startsWith("__reactFiber"));
         return riiKey ? node[riiKey] : null;
     }
 

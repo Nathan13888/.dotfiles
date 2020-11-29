@@ -1,19 +1,29 @@
-//META{"name":"OwnerTag","authorId":"278543574059057154","invite":"Jx3TjNS","donate":"https://www.paypal.me/MircoWittrien","patreon":"https://www.patreon.com/MircoWittrien","website":"https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/OwnerTag","source":"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/OwnerTag/OwnerTag.plugin.js"}*//
+/**
+ * @name OwnerTag
+ * @authorId 278543574059057154
+ * @invite Jx3TjNS
+ * @donate https://www.paypal.me/MircoWittrien
+ * @patreon https://www.patreon.com/MircoWittrien
+ * @website https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/OwnerTag
+ * @source https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/OwnerTag/OwnerTag.plugin.js
+ * @updateUrl https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/OwnerTag/OwnerTag.plugin.js
+ */
 
 module.exports = (_ => {
 	const config = {
 		"info": {
 			"name": "OwnerTag",
 			"author": "DevilBro",
-			"version": "1.3.4",
+			"version": "1.3.5",
 			"description": "Add a tag or crown to the server owner (or admins/management)"
 		},
 		"changeLog": {
 			"fixed": {
-				"Chat": "Works again in chat"
+				"New React Structure": "Fixed for new internal react structure"
 			}
 		}
 	};
+
 	return !window.BDFDB_Global || (!window.BDFDB_Global.loaded && !window.BDFDB_Global.started) ? class {
 		getName () {return config.info.name;}
 		getAuthor () {return config.info.author;}
@@ -21,7 +31,7 @@ module.exports = (_ => {
 		getDescription () {return config.info.description;}
 		
 		load() {
-			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue:[]});
+			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue: []});
 			if (!window.BDFDB_Global.downloadModal) {
 				window.BDFDB_Global.downloadModal = true;
 				BdApi.showConfirmationModal("Library Missing", `The library plugin needed for ${config.info.name} is missing. Please click "Download Now" to install it.`, {
@@ -31,7 +41,7 @@ module.exports = (_ => {
 					onConfirm: _ => {
 						delete window.BDFDB_Global.downloadModal;
 						require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
-							if (!e && b && b.indexOf(`//META{"name":"`) > -1) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => {});
+							if (!e && b && b.indexOf(`* @name BDFDB`) > -1) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => {});
 							else BdApi.alert("Error", "Could not download BDFDB library plugin, try again some time later.");
 						});
 					}
@@ -64,22 +74,22 @@ module.exports = (_ => {
 				
 				this.defaults = {
 					settings: {
-						addInChatWindow:		{value:true, 	inner:true,		description:"Messages"},
-						addInMemberList:		{value:true, 	inner:true,		description:"Member List"},
-						addInUserPopout:		{value:true, 	inner:true,		description:"User Popouts"},
-						addInUserProfile:		{value:true, 	inner:true,		description:"User Profile Modal"},
-						useRoleColor:			{value:true, 	inner:false,	description:"Use the Rolecolor instead of the default blue"},
-						useBlackFont:			{value:false, 	inner:false,	description:"Instead of darkening the Rolecolor on bright colors use black font"},
-						useCrown:				{value:false, 	inner:false,	description:"Use the Crown Icon instead of the Bot Tag Style"},
-						hideNativeCrown:		{value:true, 	inner:false,	description:"Hide the native Crown Icon (not the Plugin one)"},
-						addForAdmins:			{value:false, 	inner:false,	description:"Add an Admin Tag for users with admin permissions"},
-						addForManagement:		{value:false, 	inner:false,	description:"Add a Management Tag for users with management permissions"},
-						ignoreBotAdmins:		{value:false, 	inner:false,	description:"Do not add the Admin/Management tag for bots"}
+						addInChatWindow:		{value: true, 	inner: true,		description: "Messages"},
+						addInMemberList:		{value: true, 	inner: true,		description: "Member List"},
+						addInUserPopout:		{value: true, 	inner: true,		description: "User Popouts"},
+						addInUserProfile:		{value: true, 	inner: true,		description: "User Profile Modal"},
+						useRoleColor:			{value: true, 	inner: false,	description: "Use the Rolecolor instead of the default blue"},
+						useBlackFont:			{value: false, 	inner: false,	description: "Instead of darkening the Rolecolor on bright colors use black font"},
+						useCrown:				{value: false, 	inner: false,	description: "Use the Crown Icon instead of the Bot Tag Style"},
+						hideNativeCrown:		{value: true, 	inner: false,	description: "Hide the native Crown Icon (not the Plugin one)"},
+						addForAdmins:			{value: false, 	inner: false,	description: "Add an Admin Tag for users with admin permissions"},
+						addForManagement:		{value: false, 	inner: false,	description: "Add a Management Tag for users with management permissions"},
+						ignoreBotAdmins:		{value: false, 	inner: false,	description: "Do not add the Admin/Management tag for bots"}
 					},
 					inputs: {
-						ownTagName:				{value:"Owner", 		description:"Tag Text for Owners"},
-						ownAdminTagName:		{value:"Admin", 		description:"Tag Text for Admins"},
-						ownManagementTagName:	{value:"Management", 	description:"Tag Text for Management"}
+						ownTagName:				{value: "Owner", 		description: "Tag Text for Owners"},
+						ownAdminTagName:		{value: "Admin", 		description: "Tag Text for Admins"},
+						ownManagementTagName:	{value: "Management", 	description: "Tag Text for Management"}
 					}
 				};
 			
@@ -122,7 +132,7 @@ module.exports = (_ => {
 						label: this.defaults.settings[key].description,
 						value: settings[key],
 						onChange: key == "useCrown" ? (value, instance) => {
-							let hideNativeCrownInstance = BDFDB.ReactUtils.findOwner(instance._reactInternalFiber.return, {key: "hideNativeCrown"});
+							let hideNativeCrownInstance = BDFDB.ReactUtils.findOwner(BDFDB.ObjectUtils.get(instance, `${BDFDB.ReactUtils.instanceKey}.return`), {key: "hideNativeCrown"});
 							if (hideNativeCrownInstance) {
 								hideNativeCrownInstance.props.disabled = value;
 								BDFDB.ReactUtils.forceUpdate(hideNativeCrownInstance);
@@ -136,7 +146,7 @@ module.exports = (_ => {
 					children: [BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FormComponents.FormTitle, {
 						className: BDFDB.disCN.marginbottom4,
 						tag: BDFDB.LibraryComponents.FormComponents.FormTitle.Tags.H3,
-						children: "Add Tags in:"
+						children: "Add Tags in: "
 					})].concat(Object.keys(settings).map(key => this.defaults.settings[key].inner && BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
 						type: "Switch",
 						plugin: this,

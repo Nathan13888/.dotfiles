@@ -6,6 +6,7 @@
  * @patreon https://www.patreon.com/MircoWittrien
  * @website https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/MessageUtilities
  * @source https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/MessageUtilities/MessageUtilities.plugin.js
+ * @updateUrl https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/MessageUtilities/MessageUtilities.plugin.js
  */
 
 module.exports = (_ => {
@@ -13,15 +14,20 @@ module.exports = (_ => {
 		"info": {
 			"name": "MessageUtilities",
 			"author": "DevilBro",
-			"version": "1.7.9",
+			"version": "1.8.1",
 			"description": "Offer a number of useful message options. Remap the keybindings in the settings"
 		},
 		"changeLog": {
+			"added": {
+				"Replies": "Added option for replies",
+				"Quotes": "Now requires CustomQuoter plugin since Discord replaces Quotes with Replies"
+			},
 			"fixed": {
-				"Quick Action": "No longer interferes with quick action bar"
+				"Settings": "Fixed Settings"
 			}
 		}
 	};
+
 	return !window.BDFDB_Global || (!window.BDFDB_Global.loaded && !window.BDFDB_Global.started) ? class {
 		getName () {return config.info.name;}
 		getAuthor () {return config.info.author;}
@@ -29,7 +35,7 @@ module.exports = (_ => {
 		getDescription () {return config.info.description;}
 		
 		load() {
-			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue:[]});
+			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue: []});
 			if (!window.BDFDB_Global.downloadModal) {
 				window.BDFDB_Global.downloadModal = true;
 				BdApi.showConfirmationModal("Library Missing", `The library plugin needed for ${config.info.name} is missing. Please click "Download Now" to install it.`, {
@@ -51,28 +57,29 @@ module.exports = (_ => {
 		stop() {}
 	} : (([Plugin, BDFDB]) => {
 		const clickMap = ["CLICK", "DBLCLICK"];
-		var firedEvents = [];
+		var firedEvents = [], clickTimeout;
 		var settings = {}, bindings = {}, enabledBindings = {}, toasts = {};
 		
 		return class MessageUtilities extends Plugin {
 			onLoad() {
 				this.defaults = {
 					settings: {
-						"addHints":					{value:true, 	description:"Add keycombo hints to contextmenus:"},
-						"clearOnEscape":			{value:true, 	description:"Clear chat input when Escape is pressed:"}
+						"addHints":					{value: true, 	description: "Add keycombo hints to contextmenus: "},
+						"clearOnEscape":			{value: true, 	description: "Clear chat input when Escape is pressed: "}
 					},
 					toasts: {},
 					bindings: {
-						"Edit_Message":				{name:"Edit Message",			func:this.doEdit,			value:{click:1, 	keycombo:[]}		},
-						"Delete_Message":			{name:"Delete Message",			func:this.doDelete,			value:{click:0, 	keycombo:[46]}		},
-						"Pin/Unpin_Message":		{name:"Pin/Unpin Message",		func:this.doPinUnPin,		value:{click:0, 	keycombo:[17]}		},
-						"React_to_Message":			{name:"Open React Menu",		func:this.doOpenReact,		value:{click:0, 	keycombo:[17,83]}	},
-						"Copy_Raw":					{name:"Copy raw Message",		func:this.doCopyRaw,		value:{click:0, 	keycombo:[17,68]}	},
-						"Copy_Link":				{name:"Copy Message Link",		func:this.doCopyLink,		value:{click:0, 	keycombo:[17,81]}	},
-						"Quote_Message":			{name:"Quote Message",			func:this.doQuote,			value:{click:0, 	keycombo:[17,87]}	},
-						"__Note_Message":			{name:"Note Message",			func:this.doNote,			value:{click:0, 	keycombo:[16]}, 	plugin:"PersonalPins"},
-						"__Translate_Message":		{name:"Translate Message",		func:this.doTranslate,		value:{click:0, 	keycombo:[20]}, 	plugin:"GoogleTranslateOption"},
-						"__Reveal_Spoilers":		{name:"Reveal All Spoilers",	func:this.doReveal,			value:{click:0, 	keycombo:[17,74]}, 	plugin:"RevealAllSpoilersOption"}
+						"Edit_Message":				{name: "Edit Message",			func: this.doEdit,		value: {click: 1, 	keycombo: []}		},
+						"Delete_Message":			{name: "Delete Message",		func: this.doDelete,	value: {click: 0, 	keycombo: [46]}		},
+						"Pin/Unpin_Message":		{name: "Pin/Unpin Message",		func: this.doPinUnPin,	value: {click: 0, 	keycombo: [17]}		},
+						"Reply_to_Message":			{name: "Reply to Message",		func: this.doReply,		value: {click: 0, 	keycombo: [17,84]}	},
+						"React_to_Message":			{name: "Open React Menu",		func: this.doOpenReact,	value: {click: 0, 	keycombo: [17,83]}	},
+						"Copy_Raw":					{name: "Copy raw Message",		func: this.doCopyRaw,	value: {click: 0, 	keycombo: [17,68]}	},
+						"Copy_Link":				{name: "Copy Message Link",		func: this.doCopyLink,	value: {click: 0, 	keycombo: [17,81]}	},
+						"__Quote_Message":			{name: "Quote Message",			func: this.doQuote,		value: {click: 0, 	keycombo: [17,87]}, plugin: "CustomQuoter"},
+						"__Note_Message":			{name: "Note Message",			func: this.doNote,		value: {click: 0, 	keycombo: [16]}, 	plugin: "PersonalPins"},
+						"__Translate_Message":		{name: "Translate Message",		func: this.doTranslate,	value: {click: 0, 	keycombo: [20]}, 	plugin: "GoogleTranslateOption"},
+						"__Reveal_Spoilers":		{name: "Reveal All Spoilers",	func: this.doReveal,	value: {click: 0, 	keycombo: [17,74]}, plugin: "RevealAllSpoilersOption"}
 					}
 				};
 				
@@ -85,7 +92,7 @@ module.exports = (_ => {
 				for (let type in this.defaults.bindings) {
 					let nativeAction = type.indexOf("__") != 0;
 					this.defaults.settings[type] = {value: nativeAction};
-					if (nativeAction) this.defaults.toasts[type] = {value:type != "Edit_Message" && type != "React_to_Message" && type != "Quote_Message"};
+					if (nativeAction) this.defaults.toasts[type] = {value: type != "Edit_Message" && type != "React_to_Message" && type != "Quote_Message"};
 				}
 			}
 			
@@ -108,89 +115,92 @@ module.exports = (_ => {
 			}
 
 			getSettingsPanel (collapseStates = {}) {
-				let settingsPanel, settingsItems = [];
-				
-				for (let key in settings) if (this.defaults.settings[key].description) settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
-					className: BDFDB.disCN.marginbottom8,
-					type: "Switch",
-					plugin: this,
-					keys: ["settings", key],
-					label: this.defaults.settings[key].description,
-					value: settings[key]
-				}));
-				settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FormComponents.FormDivider, {
-					className: BDFDB.disCN.marginbottom8
-				}));
-				for (let action in bindings) if (!this.defaults.bindings[action].plugin || BDFDB.BDUtils.isPluginEnabled(this.defaults.bindings[action].plugin)) {
-					settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex, {
-						className: BDFDB.disCN.marginbottom8,
-						align: BDFDB.LibraryComponents.Flex.Align.CENTER,
-						direction: BDFDB.LibraryComponents.Flex.Direction.HORIZONTAL,
-						children: [
-							BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsLabel, {
-								label: this.defaults.bindings[action].name + (this.defaults.bindings[action].plugin ? ` (${this.defaults.bindings[action].plugin})` : "")
-							}),
-							toasts[action] != undefined ? BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
+				let settingsPanel;
+				return settingsPanel = BDFDB.PluginUtils.createSettingsPanel(this, {
+					collapseStates: collapseStates,
+					children: _ => {
+						let settingsItems = [];
+						
+						for (let key in settings) if (this.defaults.settings[key].description) settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
+							type: "Switch",
+							plugin: this,
+							keys: ["settings", key],
+							label: this.defaults.settings[key].description,
+							value: settings[key]
+						}));
+						settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FormComponents.FormDivider, {
+							className: BDFDB.disCN.marginbottom8
+						}));
+						for (let action in bindings) if (!this.defaults.bindings[action].plugin || BDFDB.BDUtils.isPluginEnabled(this.defaults.bindings[action].plugin)) {
+							settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex, {
+								className: BDFDB.disCN.marginbottom8,
+								align: BDFDB.LibraryComponents.Flex.Align.CENTER,
+								direction: BDFDB.LibraryComponents.Flex.Direction.HORIZONTAL,
+								children: [
+									BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsLabel, {
+										label: this.defaults.bindings[action].name + (this.defaults.bindings[action].plugin ? ` (${this.defaults.bindings[action].plugin})` : "")
+									}),
+									toasts[action] != undefined ? BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
+										type: "Switch",
+										mini: true,
+										plugin: this,
+										keys: ["toasts", action],
+										grow: 0,
+										label: "Toast:",
+										value: toasts[action]
+									}) : null
+								].filter(n => n)
+							}));
+							settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
 								type: "Switch",
+								dividerBottom: true,
 								mini: true,
 								plugin: this,
-								keys: ["toasts", action],
-								grow: 0,
-								label: "Toast:",
-								value: toasts[action]
-							}) : null
-						].filter(n => n)
-					}));
-					settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
-						className: BDFDB.disCN.marginbottom8,
-						type: "Switch",
-						dividerbottom: true,
-						mini: true,
-						plugin: this,
-						keys: ["settings", action],
-						value: settings[action],
-						labelchildren: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex, {
-							direction: BDFDB.LibraryComponents.Flex.Direction.HORIZONTAL,
-							children: [
-								BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.KeybindRecorder, {
-									defaultValue: bindings[action].keycombo.filter(n => n),
-									reset: true,
-									onChange: keycombo => {
-										bindings[action].keycombo = keycombo;
-										BDFDB.DataUtils.save(bindings, this, "bindings");
-										this.SettingsUpdated = true;
-									}
-								}),
-								BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Select, {
-									value: bindings[action].click,
-									options: clickMap.map((label, i) => {return {value:i, label:label}}),
-									onChange: choice => {
-										bindings[action].click = choice.value;
-										BDFDB.DataUtils.save(bindings, this, "bindings");
-										this.SettingsUpdated = true;
-									}
+								keys: ["settings", action],
+								value: settings[action],
+								labelchildren: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex, {
+									direction: BDFDB.LibraryComponents.Flex.Direction.HORIZONTAL,
+									children: [
+										BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.KeybindRecorder, {
+											defaultValue: bindings[action].keycombo.filter(n => n),
+											reset: true,
+											onChange: keycombo => {
+												bindings[action].keycombo = keycombo;
+												BDFDB.DataUtils.save(bindings, this, "bindings");
+												this.SettingsUpdated = true;
+											}
+										}),
+										BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Select, {
+											value: bindings[action].click,
+											options: clickMap.map((label, i) => {return {value: i, label: label}}),
+											onChange: choice => {
+												bindings[action].click = choice.value;
+												BDFDB.DataUtils.save(bindings, this, "bindings");
+												this.SettingsUpdated = true;
+											}
+										})
+									]
 								})
-							]
-						})
-					}));
-				}
-				settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsItem, {
-					type: "Button",
-					className: BDFDB.disCN.marginbottom8,
-					color: BDFDB.LibraryComponents.Button.Colors.RED,
-					label: "Reset all Key Bindings",
-					onClick: (e, instance) => {
-						BDFDB.ModalUtils.confirm(this, "Are you sure you want to reset all Key Bindings?", _ => {
-							BDFDB.DataUtils.remove(this, "bindings");
-							settingsPanel.parentElement.appendChild(this.getSettingsPanel());
-							settingsPanel.remove();
-							this.SettingsUpdated = true;
-						});
-					},
-					children: BDFDB.LanguageUtils.LanguageStrings.RESET
-				}));
-				
-				return settingsPanel = BDFDB.PluginUtils.createSettingsPanel(this, settingsItems);
+							}));
+						}
+						settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsItem, {
+							type: "Button",
+							color: BDFDB.LibraryComponents.Button.Colors.RED,
+							label: "Reset all Key Bindings",
+							onClick: (e, instance) => {
+								BDFDB.ModalUtils.confirm(this, "Are you sure you want to reset all Key Bindings?", _ => {
+									BDFDB.DataUtils.remove(this, "bindings");
+									settingsPanel.parentElement.appendChild(this.getSettingsPanel());
+									settingsPanel.remove();
+									this.SettingsUpdated = true;
+								});
+							},
+							children: BDFDB.LanguageUtils.LanguageStrings.RESET
+						}));
+						
+						return settingsItems;
+					}
+				});
 			}
 
 			onSettingsClosed () {
@@ -260,11 +270,11 @@ module.exports = (_ => {
 						let {messageDiv, message} = this.getMessageData(e.currentTarget);
 						if (messageDiv && message) {
 							BDFDB.ListenerUtils.stopEvent(e);
-							BDFDB.TimeUtils.clear(this.clickTimeout);
+							BDFDB.TimeUtils.clear(clickTimeout);
 							if (!this.hasDoubleClickOverwrite(enabledBindings[priorityAction])) {
 								this.defaults.bindings[priorityAction].func.apply(this, [{messageDiv, message}, priorityAction]);
 							}
-							else this.clickTimeout = BDFDB.TimeUtils.timeout(_ => {
+							else clickTimeout = BDFDB.TimeUtils.timeout(_ => {
 								this.defaults.bindings[priorityAction].func.apply(this, [{messageDiv, message}, priorityAction]);
 							}, 500);
 						}
@@ -297,7 +307,7 @@ module.exports = (_ => {
 					let channel = BDFDB.LibraryModules.ChannelStore.getChannel(message.channel_id);
 					if ((channel && BDFDB.UserUtils.can("MANAGE_MESSAGES")) || message.author.id == BDFDB.UserUtils.me.id && message.type != 1 && message.type != 2 && message.type != 3) {
 						BDFDB.LibraryModules.MessageUtils.deleteMessage(message.channel_id, message.id, message.state != "SENT");
-						if (toasts[action]) BDFDB.NotificationUtils.toast("Message has been deleted.", {type:"success"});
+						if (toasts[action]) BDFDB.NotificationUtils.toast("Message has been deleted", {type: "success"});
 					}
 				}
 			}
@@ -305,7 +315,7 @@ module.exports = (_ => {
 			doEdit ({messageDiv, message}, action) {
 				if (message.author.id == BDFDB.UserUtils.me.id && !messageDiv.querySelector("textarea")) {
 					BDFDB.LibraryModules.MessageUtils.startEditMessage(message.channel_id, message.id, message.content);
-					if (toasts[action]) BDFDB.NotificationUtils.toast("Started editing.", {type:"success"});
+					if (toasts[action]) BDFDB.NotificationUtils.toast("Started editing.", {type: "success"});
 				}
 			}
 
@@ -313,7 +323,7 @@ module.exports = (_ => {
 				let reactButton = messageDiv.querySelector(`${BDFDB.dotCN.messagetoolbarbutton}[aria-label="${BDFDB.LanguageUtils.LanguageStrings.ADD_REACTION}"]`);
 				if (reactButton) {
 					reactButton.click();
-					if (toasts[action]) BDFDB.NotificationUtils.toast("Reaction popout has been opened.", {type:"success"});
+					if (toasts[action]) BDFDB.NotificationUtils.toast("Reaction popout has been opened", {type: "success"});
 				}
 			}
 
@@ -323,20 +333,30 @@ module.exports = (_ => {
 					if (channel && (channel.type == 1 || channel.type == 3 || BDFDB.UserUtils.can("MANAGE_MESSAGES")) && message.type == 0) {
 						if (message.pinned) {
 							BDFDB.LibraryModules.MessagePinUtils.unpinMessage(channel, message.id);
-							if (toasts[action]) BDFDB.NotificationUtils.toast("Message has been unpinned.", {type:"error"});
+							if (toasts[action]) BDFDB.NotificationUtils.toast("Message has been unpinned", {type: "error"});
 						}
 						else {
 							BDFDB.LibraryModules.MessagePinUtils.pinMessage(channel, message.id);
-							if (toasts[action]) BDFDB.NotificationUtils.toast("Message has been pinned.", {type:"success"});
+							if (toasts[action]) BDFDB.NotificationUtils.toast("Message has been pinned", {type: "success"});
 						}
+					}
+				}
+			}
+			
+			doReply ({messageDiv, message}, action) {
+				if (message.state == "SENT") {
+					let channel = BDFDB.LibraryModules.ChannelStore.getChannel(message.channel_id);
+					if (channel && BDFDB.UserUtils.can("SEND_MESSAGES") && message.type == 0) {
+						BDFDB.LibraryModules.MessageManageUtils.replyToMessage(channel, message);
+						if (toasts[action]) BDFDB.NotificationUtils.toast("Added reply to message", {type: "success"});
 					}
 				}
 			}
 
 			doCopyRaw ({messageDiv, message}, action) {
 				if (message.content) {
-					BDFDB.LibraryRequires.electron.clipboard.write({text:message.content});
-					if (toasts[action]) BDFDB.NotificationUtils.toast("Raw message content has been copied.", {type:"success"});
+					BDFDB.LibraryRequires.electron.clipboard.write({text: message.content});
+					if (toasts[action]) BDFDB.NotificationUtils.toast("Raw message content has been copied", {type: "success"});
 				}
 			}
 
@@ -344,15 +364,14 @@ module.exports = (_ => {
 				let channel = BDFDB.LibraryModules.ChannelStore.getChannel(message.channel_id);
 				if (channel) {
 					BDFDB.LibraryModules.MessageManageUtils.copyLink(channel, message);
-					if (toasts[action]) BDFDB.NotificationUtils.toast("Messagelink has been copied.", {type:"success"});
+					if (toasts[action]) BDFDB.NotificationUtils.toast("Messagelink has been copied", {type: "success"});
 				}
 			}
 
 			doQuote ({messageDiv, message}, action) {
-				let channel = BDFDB.LibraryModules.ChannelStore.getChannel(message.channel_id);
-				if (channel && BDFDB.LibraryModules.QuoteUtils.canQuote(message, channel)) {
-					BDFDB.LibraryModules.MessageManageUtils.quoteMessage(channel, message);
-					if (toasts[action]) BDFDB.NotificationUtils.toast("Quote has been created.", {type:"success"});
+				if (BDFDB.BDUtils.isPluginEnabled(this.defaults.bindings.__Quote_Message.plugin)) {
+					let channel = BDFDB.LibraryModules.ChannelStore.getChannel(message.channel_id);
+					if (channel) BDFDB.BDUtils.getPlugin(this.defaults.bindings.__Quote_Message.plugin).quote(channel, message);
 				}
 			}
 
@@ -382,8 +401,8 @@ module.exports = (_ => {
 					if (key == 27 && settings.clearOnEscape) {
 						let chatform = BDFDB.DOMUtils.getParent(BDFDB.dotCN.chatform, target);
 						if (chatform) {
-							let instance = BDFDB.ReactUtils.findOwner(chatform, {name:"ChannelTextAreaForm"}) || BDFDB.ReactUtils.findOwner(chatform, {name:"ChannelTextAreaForm", up:true});
-							if (instance) instance.setState({textValue:"", richValue:BDFDB.LibraryModules.SlateUtils.deserialize("")});
+							let instance = BDFDB.ReactUtils.findOwner(chatform, {name: "ChannelTextAreaForm"}) || BDFDB.ReactUtils.findOwner(chatform, {name: "ChannelTextAreaForm", up: true});
+							if (instance) instance.setState({textValue: "", richValue: BDFDB.LibraryModules.SlateUtils.deserialize("")});
 						}
 					}
 					BDFDB.TimeUtils.timeout(_ => {BDFDB.ArrayUtils.remove(firedEvents, name, true)});
@@ -404,7 +423,7 @@ module.exports = (_ => {
 				let messageDiv = BDFDB.DOMUtils.getParent(BDFDB.dotCNC.message + BDFDB.dotCN.searchresultsgroupcozy, target);
 				if (messageDiv && messageDiv.querySelector(BDFDB.dotCN.textarea)) return {messageDiv: null, message: null};
 				let instance = BDFDB.ReactUtils.getInstance(messageDiv);
-				let message = instance && BDFDB.ReactUtils.findValue(instance, "message");
+				let message = instance && (BDFDB.ReactUtils.findValue(instance, "baseMessage") || BDFDB.ReactUtils.findValue(instance, "message"));
 				return {messageDiv, message};
 			}
 		};

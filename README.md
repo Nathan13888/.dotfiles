@@ -29,6 +29,7 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 - Install P10k:`git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k`
 ### Tmux
 - Installing TPM: `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
+- Install plugins: "Press prefix + I (capital i, as in Install) to fetch the plugin"
 ### Nvim
 - **Install Vim-Plug**: `sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'`
 - Inside neovim, run `:PlugInstall`

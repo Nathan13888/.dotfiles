@@ -15,17 +15,12 @@
     ~/.oh-my-bash/custom: .oh-my-bash
     ~/.config/BetterDiscord: BetterDiscord
     ~/.cht.sh/cht.sh.conf: cht.sh.conf
-    ~/.config/dunst: dunst
     ~/.config/fontconfig: fontconfig
     ~/.config/neofetch: neofetch
     ~/.config/nvim: .config/nvim
-    ~/.config/picom.conf: picom.conf
-    ~/.config/polybar: polybar
-    ~/.config/rofi: rofi
     ~/.exports: .exports
     ~/.gitconfig: .gitconfig
     ~/.gitmessage.txt: .gitmessage.txt
-    ~/.config/i3: i3
     ~/.oh-my-zsh/custom: .oh-my-zsh/custom
     ~/.p10k.zsh: .p10k.zsh
     ~/.todo: .todo

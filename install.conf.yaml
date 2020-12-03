@@ -18,6 +18,7 @@
     ~/.config/fontconfig: fontconfig
     ~/.config/neofetch: neofetch
     ~/.config/nvim: .config/nvim
+    ~/.config/vifm: vifm
     ~/.exports: .exports
     ~/.gitconfig: .gitconfig
     ~/.gitmessage.txt: .gitmessage.txt

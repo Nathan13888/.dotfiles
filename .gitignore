@@ -3,6 +3,9 @@
 log/
 TODO.md
 
+# VIFM
+vifm/vifminfo.json
+
 # NVIM
 .netrwhist
 

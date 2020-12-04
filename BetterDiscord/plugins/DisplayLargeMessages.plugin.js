@@ -6,6 +6,7 @@
  * @patreon https://www.patreon.com/MircoWittrien
  * @website https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/DisplayLargeMessages
  * @source https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/DisplayLargeMessages/DisplayLargeMessages.plugin.js
+ * @updateUrl https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/DisplayLargeMessages/DisplayLargeMessages.plugin.js
  */
 
 module.exports = (_ => {
@@ -13,10 +14,16 @@ module.exports = (_ => {
 		"info": {
 			"name": "DisplayLargeMessages",
 			"author": "DevilBro",
-			"version": "1.0.6",
+			"version": "1.0.7",
 			"description": "Inject the contents of large messages that were sent by discord via 'message.txt'"
+		},
+		"changelog": {
+			"added": {
+				"Open in popout": "Added an option to add a button that allows you to preview the contents of a 'message.txt' in a popup"
+			}
 		}
 	};
+
 	return !window.BDFDB_Global || (!window.BDFDB_Global.loaded && !window.BDFDB_Global.started) ? class {
 		getName () {return config.info.name;}
 		getAuthor () {return config.info.author;}
@@ -24,7 +31,7 @@ module.exports = (_ => {
 		getDescription () {return config.info.description;}
 		
 		load() {
-			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue:[]});
+			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue: []});
 			if (!window.BDFDB_Global.downloadModal) {
 				window.BDFDB_Global.downloadModal = true;
 				BdApi.showConfirmationModal("Library Missing", `The library plugin needed for ${config.info.name} is missing. Please click "Download Now" to install it.`, {
@@ -44,6 +51,17 @@ module.exports = (_ => {
 		}
 		start() {this.load();}
 		stop() {}
+		getSettingsPanel() {
+			let template = document.createElement("template");
+			template.innerHTML = `<div style="color: var(--header-primary); font-size: 16px; font-weight: 300; white-space: pre; line-height: 22px;">The library plugin needed for ${config.info.name} is missing.\nPlease click <a style="font-weight: 500;">Download Now</a> to install it.</div>`;
+			template.content.firstElementChild.querySelector("a").addEventListener("click", _ => {
+				require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
+					if (!e && b && b.indexOf(`* @name BDFDB`) > -1) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => {});
+					else BdApi.alert("Error", "Could not download BDFDB library plugin, try again some time later.");
+				});
+			});
+			return template.content.firstElementChild;
+		}
 	} : (([Plugin, BDFDB]) => {
 		var encodedMessages, requestedMessages, pendingRequests, oldMessages, updateTimeout;
 		var settings = {}, amounts = {};
@@ -52,10 +70,11 @@ module.exports = (_ => {
 			onLoad() {
 				this.defaults = {
 					settings: {
-						onDemand:				{value:false, 	description:"Inject the content of 'message.txt' on demand instead of automatically"}
+						onDemand:				{value: false, 	description: "Inject the content of 'message.txt' on demand and not automatically"},
+						addOpenButton:			{value: true, 	description: "Add a button to preview the contents of 'message.txt' in a popup"}
 					},
 					amounts: {
-						maxFileSize:			{value:10, 	min:0,		description:"Max Filesize a fill will be read automatically",	note: "in KB / 0 = inject all / ignored in On-Demand"}
+						maxFileSize:			{value: 10, 	min: 0,		description: "Max Filesize a file will be read automatically",	note: "in KB / 0 = inject all / ignored in On-Demand"}
 					}
 				};
 			
@@ -67,13 +86,27 @@ module.exports = (_ => {
 				};
 				
 				this.css = `
-					${BDFDB.dotCN._displaylargemessagesinjectbutton} {
+					${BDFDB.dotCN._displaylargemessagesinjectbuttonwrapper},
+					${BDFDB.dotCN._displaylargemessagespopoutbuttonwrapper} {
+						display: block;
+						width: 24px;
+						height: 24px;
+						margin-left: 4px;
+						margin-right: 4px;
+					}
+					${BDFDB.dotCN._displaylargemessagesinjectbutton},
+					${BDFDB.dotCN._displaylargemessagespopoutbutton} {
 						color: var(--interactive-normal);
 						cursor: pointer;
-						margin-left: 4px;
 					}
-					${BDFDB.dotCN._displaylargemessagesinjectbutton}:hover {
+					${BDFDB.dotCN._displaylargemessagesinjectbutton}:hover,
+					${BDFDB.dotCN._displaylargemessagespopoutbutton}:hover {
 						color: var(--interactive-hover);
+					}
+					${BDFDB.dotCN._displaylargemessagespreviewmessage} {
+						margin-top: 8px;
+						margin-bottom: 8px;
+						pointer-events: all;
 					}
 				`;
 			}
@@ -216,36 +249,80 @@ module.exports = (_ => {
 			
 			processAttachment (e) {
 				if (e.instance.props.filename == "message.txt" && (settings.onDemand || amounts.maxFileSize && (amounts.maxFileSize < e.instance.props.size/1024))) {
-					e.returnvalue.props.children.splice(2, 0, BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TooltipContainer, {
-						text: this.labels.button_injectattchment_text,
-						children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Anchor, {
-							rel: "noreferrer noopener",
-							target: "_blank",
-							children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SvgIcon, {
-								className: BDFDB.disCN._displaylargemessagesinjectbutton,
-								name: BDFDB.LibraryComponents.SvgIcon.Names.RAW_TEXT,
-								width: 20,
-								height: 20
-							}),
-							onClick: event => {
-								BDFDB.ListenerUtils.stopEvent(event);
-								let target = event.target;
-								let message = BDFDB.ReactUtils.findValue(target, "message", {up: true});
-								if (message) {
-									pendingRequests.push(message.id);
-									BDFDB.LibraryRequires.request(e.instance.props.url, (error, response, body) => {
-										BDFDB.ArrayUtils.remove(pendingRequests, message.id, true);
-										oldMessages[message.id] = new BDFDB.DiscordObjects.Message(message);
-										encodedMessages[message.id] = {
-											content: message.content || "",
-											attachment: body || ""
-										};
-										BDFDB.MessageUtils.rerenderAll(true);
-									});
+					e.returnvalue.props.children.splice(2, 0, [
+						BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TooltipContainer, {
+							text: this.labels.button_injectattchment_text,
+							children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Anchor, {
+								className: BDFDB.disCN._displaylargemessagesinjectbuttonwrapper,
+								rel: "noreferrer noopener",
+								target: "_blank",
+								children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SvgIcon, {
+									className: BDFDB.disCN._displaylargemessagesinjectbutton,
+									name: BDFDB.LibraryComponents.SvgIcon.Names.RAW_TEXT,
+									width: 22,
+									height: 22
+								}),
+								onClick: event => {
+									BDFDB.ListenerUtils.stopEvent(event);
+									let target = event.target;
+									let message = BDFDB.ReactUtils.findValue(target, "message", {up: true});
+									if (message && !pendingRequests.includes(message.id)) {
+										pendingRequests.push(message.id);
+										BDFDB.LibraryRequires.request(e.instance.props.url, (error, response, body) => {
+											BDFDB.ArrayUtils.remove(pendingRequests, message.id, true);
+											oldMessages[message.id] = new BDFDB.DiscordObjects.Message(message);
+											encodedMessages[message.id] = {
+												content: message.content || "",
+												attachment: body || ""
+											};
+											BDFDB.MessageUtils.rerenderAll(true);
+										});
+									}
 								}
-							}
+							})
+						}),
+						settings.addOpenButton && BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TooltipContainer, {
+							text: BDFDB.LanguageUtils.LanguageStrings.OPEN,
+							children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Anchor, {
+								className: BDFDB.disCN._displaylargemessagespopoutbuttonwrapper,
+								rel: "noreferrer noopener",
+								target: "_blank",
+								children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SvgIcon, {
+									className: BDFDB.disCN._displaylargemessagespopoutbutton,
+									name: BDFDB.LibraryComponents.SvgIcon.Names.OPEN_EXTERNAL
+								}),
+								onClick: event => {
+									BDFDB.ListenerUtils.stopEvent(event);
+									let target = event.target;
+									let message = BDFDB.ReactUtils.findValue(target, "message", {up: true});
+									let channel = message && BDFDB.LibraryModules.ChannelStore.getChannel(message.channel_id);
+									if (message && channel && !pendingRequests.includes(message.id)) {
+										pendingRequests.push(message.id);
+										BDFDB.LibraryRequires.request(e.instance.props.url, (error, response, body) => {
+											BDFDB.ArrayUtils.remove(pendingRequests, message.id, true);
+											BDFDB.ModalUtils.open(this, {
+												size: "LARGE",
+												header: BDFDB.LanguageUtils.LanguageStrings.MESSAGE_PREVIEW,
+												subheader: "",
+												children: BDFDB.ReactUtils.createElement("div", {
+													className: BDFDB.disCNS.messagepopout + BDFDB.disCN._displaylargemessagespreviewmessage,
+													children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.MessageGroup, {
+														message: new BDFDB.DiscordObjects.Message({
+															author: message.author,
+															channel_id: channel.id,
+															content: body
+														}),
+														channel: channel
+													})
+												})
+											});
+										});
+									}
+								}
+							})
 						})
-					}));
+					]);
+					e.returnvalue.props.children = e.returnvalue.props.children.flat(10).filter(n => n);
 				}
 			}
 

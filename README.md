@@ -13,6 +13,21 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 - remove any existing config files
 - install LS_COLORS
 - use `dos2unix` to fix any file ending problems
+### Arch
+- Connecting to wifi: `nmtui`
+- Update reflector: `reflector --country Canada --country US --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist`
+- Setup GPG: `gpg --list-keys` (init user files), add keyserver, import key
+- Add keyserver: `keyserver hkp://pool.sks-keyservers.net`
+- Populate keys: `sudo pacman-key --populate archlinux`
+- Yay: clone `https://aur.archlinux.org/yay.git` and `makepkg -si`
+- Install all the packages you need form `PACKAGES.md`
+- Configure .local files: git, aliases, exports
+### WM
+- Install all the WM packages
+- Link WM dotfiles
+- ~/.Xresources
+- ~/.xinitrc
+- 
 ### GPG
 - **Import Key**: `gpg --import private.key`
 - **Verify Key**: `gpg --edit-key {KEY} trust quit`
@@ -35,6 +50,12 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 - Inside neovim, run `:PlugInstall`
 - `CocInstall coc-css coc-json coc-python coc-discord coc-sh coc-yaml`
 - Install YCM using these instructions (https://github.com/ycm-core/YouCompleteMe#linux-64-bit)
+### Firefox
+- Download firefox (a gpg key server must be setup to install `firefox-nightly` from AUR)
+- Disable `dom.event.contextmenu.enabled` if there are problems with right-click
+- Sync settings
+- Disable telemetry and change search engine
+- Change device name to be more recognizable
 ### LS_COLORS
 Install options:
 1. run the **install** script inside the submodule

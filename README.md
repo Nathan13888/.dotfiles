@@ -56,6 +56,13 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 - Sync settings
 - Disable telemetry and change search engine
 - Change device name to be more recognizable
+### Discord
+- Install `discord` or `discord-ptb`
+- Install `betterdiscordctl`
+- Run `betterdiscordctl install [-f ptb]`
+- Connect dotfiles
+- Enable plugins and themes
+- Disable `Linux Settings/Minimize to tray` and enable `Settings/Developer Mode`
 ### LS_COLORS
 Install options:
 1. run the **install** script inside the submodule

@@ -14,6 +14,7 @@
     ~/.bash.d: .bash.d
     ~/.oh-my-bash/custom: .oh-my-bash
     ~/.config/BetterDiscord: BetterDiscord
+    ~/.config/starship.toml: starship.toml
     ~/.cht.sh/cht.sh.conf: cht.sh.conf
     ~/.config/fontconfig: fontconfig
     ~/.config/neofetch: neofetch

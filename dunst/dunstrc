@@ -41,7 +41,7 @@
     # The transparency of the window.  Range: [0; 100].
     # This option will only work if a compositing window manager is
     # present (e.g. xcompmgr, compiz, etc.).
-    transparency = 10
+    transparency = 20
 
     # The height of the entire notification.  If the height is smaller
     # than the font height and padding combined, it will be raised
@@ -292,21 +292,27 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    frame_color = "#1D918B"
-    foreground = "#FFEE79"
+    #frame_color = "#1D918B"
+    #foreground = "#FFEE79"
+    frame_color = "#18191E" # make the same as background
+    foreground = "#a0a0a0"
     background = "#18191E"
     timeout = 5
 
 [urgency_normal]
-    frame_color = "#D16BB7"
-    foreground = "#FFEE79"
+    #frame_color = "#FDAAAA"
+    #foreground = "#FFEE79"
+    frame_color = "#18191E" # make the same as background
+    foreground = "#FDAAAA"
     background = "#18191E"
     timeout = 10
 
 [urgency_critical]
-    frame_color = "#FC2929"
-    foreground = "#FFFF00"
+    #frame_color = "#FC2929"
+    frame_color = "#18191E" # make the same as background
+    foreground = "#f20040"
     background = "#18191E"
+    timeout = 15
 
 # Every section that isn't one of the above is interpreted as a rules to
 # override settings for certain messages.

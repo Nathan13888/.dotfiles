@@ -6,7 +6,7 @@ Three other Github repositories for fonts are included as a submodule of this re
 
 Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubuntu system.
 
-# Prep
+## Prep
 ### WSL
 - refer to this [link](https://askubuntu.com/questions/966488/how-do-i-fix-r-command-not-found-errors-running-bash-scripts-in-wsl)
 - fix powerline fonts
@@ -86,12 +86,12 @@ Install options:
 - `apt install wireguard`
 - configure wireguard
 
-# Scripts
+## Scripts
 - `install` --> regular install script for a desktop
 - `install-server` --> install script for a server
 - `UPDATE-SUBMODULES.sh` --> update submodules of this respository
 
-# Cloning (with submodules)
+## Cloning (with submodules)
 *Reference* https://git-scm.com/book/en/v2/Git-Tools-Submodules
 ### To clone this repository
 - `git clone --recurse-submodules https://github.com/Nathan13888/DotFiles`

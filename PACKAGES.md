@@ -1,4 +1,4 @@
-############
+###########
 # Packages #
 ############
 
@@ -32,6 +32,54 @@
 - qt
 - cmake
 - QMK
+- colorls (gem install colorls)
+
+# i3
+- i3-gaps
+- i3lock-color
+- xss-lock
+- *(xorg)*
+- X11 stuff --> xorg xorg-server
+- xorg-xinit
+- xdg-utils
+- lsdesktopf
+- display manager
+- lxappearance
+- dconf-editor
+- gtk2
+- *(input)*
+- numlockx
+- xbanish
+- *(services)*
+- fcitx5
+- picom
+- polybar
+- rofi
+- network-manager-applet
+- networkmanager-dmenu-git
+- dunst
+- feh
+- flameshot
+- autofs
+- xcolor
+- *(fonts)*
+- nerd-fonts-complete
+#- font-config
+- *(sound)*
+- pavucontrol (gtk gui)
+- pulseaudio-ctl (shell-based)
+- *(secrets)*
+- gnome-keyring
+- libsecret
+- seahorse
+- *(misc)*
+- lynx
+- *(battery)*
+- cbatticon
+
+## v4l2loopback
+- v4l2loopback-dkms
+- gstreamer
 
 ## Virtualization
 - VirtualBox
@@ -43,8 +91,10 @@
 - Docker (https://wiki.archlinux.org/index.php/Docker#Installation)
 
 ## Utilities
+- wol (wake on lan)
 - geekbench
 - android-file-transfer
+- mtpfs
 - go-mtpfs-git
 - traceroute
 - cht.sh (cheat.sh)
@@ -71,6 +121,8 @@
 - https://github.com/Huion-Linux/DIGImend-kernel-drivers-for-Huion
 
 ## Media
+- lyrebird
+- kodi-x11
 - Shutter
 - KRDC
 - libreoffice-fresh
@@ -78,7 +130,7 @@
 - lastpass
 - megasync
 - LBRY-app-bin
-- transmission
+- transmission-gtk (or -qt)
 - handbrake
 - Audacity
 - VLC/MPV
@@ -107,6 +159,7 @@
 - syzygy tables
 
 ## INFOSEC
+- clamav
 - wireguard
 - macchanger
 - hashcat
@@ -143,7 +196,4 @@
 - kwalletcli
 - kwallet-pam
 - ksshaskpass
-
-## GNOME
-- gnome-keyring
 

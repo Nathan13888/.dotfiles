@@ -12,6 +12,7 @@
     ~/.angular-config.json: .angular-config.json
     ~/.bashrc: .bashrc
     ~/.bash.d: .bash.d
+    ~/.doom.d: .doom.d
     ~/.oh-my-bash/custom: .oh-my-bash
     ~/.config/BetterDiscord: BetterDiscord
     ~/.config/starship.toml: starship.toml

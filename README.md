@@ -67,6 +67,11 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 - Connect dotfiles
 - Enable plugins and themes
 - Disable `Linux Settings/Minimize to tray` and enable `Settings/Developer Mode`
+### Emacs
+- Install `emacs`
+- Install DOOM:
+  - `git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d`
+  - `~/.emacs.d/bin/doom install`
 ### LS_COLORS
 Install options:
 1. run the **install** script inside the submodule

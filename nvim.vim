@@ -3,6 +3,7 @@ call plug#begin()
 
 " Aesthetics
 Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'joshdick/onedark.vim', { 'as': 'onedark' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ryanoasis/vim-devicons'
@@ -11,13 +12,14 @@ Plug 'junegunn/limelight.vim'
 "Plug 'yuttie/hydrangea-vim'
 
 " Functionalities
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tpope/vim-surround'
 Plug 'majutsushi/tagbar'
-Plug 'scrooloose/nerdtree'
+"Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+"Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+"Plug 'junegunn/fzf.vim'
 Plug 'chrisbra/Colorizer'
 Plug 'vim-scripts/loremipsum'
 "Plug 'SirVer/ultisnips'
@@ -185,6 +187,9 @@ autocmd filetype cpp nnoremap <F5> :w <bar> exec '!g++ '.shellescape('%').' -std
 
 """ Key Mappings
 
+" Map Ctrl-Backspace to delete the previous word in insert mode.
+inoremap <C-BS> <C-W>
+
 " Cut, Copy & Paste
 "noremap <Leader>d "*d
 "noremap <Leader>p "*p
@@ -217,7 +222,7 @@ noremap <silent> <A-0> 10gt
 
 """ Styling
 syntax on
-colorscheme dracula
+colorscheme onedark
 highlight Pmenu guibg=white guifg=black gui=bold
 highlight Comment gui=bold
 highlight Normal gui=none

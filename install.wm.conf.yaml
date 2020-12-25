@@ -12,6 +12,8 @@
     ~/.config/polybar: polybar
     ~/.config/rofi: rofi
     ~/.config/i3: i3
+    ~/.local/bin/lock.sh: lock.sh
+    ~/.local/bin/volume.sh: volume.sh
 
 - create:
     - ~/Desktop/Wallpapers

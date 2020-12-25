@@ -1,1 +1,7 @@
+configuration {
+  modi: "drun,ssh,window,combi";
+  combi-modi: "drun,run";
+}
+
 @import "~/.config/rofi/styles.css"
+

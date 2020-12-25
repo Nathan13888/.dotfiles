@@ -10,6 +10,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 "Plug 'yuttie/hydrangea-vim'
+Plug 'ap/vim-css-color'
 
 " Functionalities
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }

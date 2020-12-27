@@ -93,7 +93,7 @@ function unmac {
   iplsu $1
 }
 ### SYSTEM
-alias systemctl="sudo systemctl"
+#alias systemctl="sudo systemctl"
 alias mount="sudo mount"
 alias ipt="sudo iptables"
 alias resetlock="faillock --reset --user $USER"

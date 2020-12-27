@@ -100,3 +100,5 @@ HISTSIZE=10000
 
 [ -f ~/.aliases ] && source ~/.aliases
 [ -f ~/.exports ] && source ~/.exports
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

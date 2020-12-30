@@ -237,15 +237,16 @@ type = internal/pulseaudio
 
 format-volume = <ramp-volume> <label-volume>
 label-volume = VOL %percentage%%
-label-volume-foreground = ${colors.active}
+;label-volume-foreground = ${colors.active}
+format-volume-foreground = ${colors.active}
 
 label-muted =  muted
 label-muted-foreground = ${colors.alert}
 
 ; Only applies if <ramp-volume> is used
-ramp-volume-0 = 🔈
-ramp-volume-1 = 🔉
-ramp-volume-2 = 🔊
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
 
 click-left = pavucontrol &
 

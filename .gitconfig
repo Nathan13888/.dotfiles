@@ -1,3 +1,7 @@
+[user]
+	name = Nathan13888
+    email = 29968201+Nathan13888@users.noreply.github.com
+
 [alias] ## Useful GIT commands https://github.com/joshnh/Git-Commands
 ## INFO
 	st = status -sb -uall # shortened and more concise version of git status, -uall option isn't actually needed
@@ -89,9 +93,11 @@
 
 [core]
 	editor = /usr/bin/vim
-	#editor = /usr/bin/nvim # nano is a bit faster imo
 	filemode = true
 	ignorecase = true
+    autocrlf = input
+[credential]
+	helper = /usr/lib/git-core/git-credential-libsecret
 [include]
 	path = ~/.gitconfig.local
 [commit]

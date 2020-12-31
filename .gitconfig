@@ -153,16 +153,16 @@
 	plain = magenta dim
 [color "decorate"] # slots: branch, remoteBranch, tag, stash, HEAD (for git log --decorate)
 [color "interactive"] # slots: prompt, header, help, error (for git add --interactive)
-[hub]
-	protocol = https
+#[hub]
+#	protocol = https
 [help]
 	#autocorrect = 1 # basically instant, refer to git-config
 [gpg]
 	program = gpg
 
 [url "git@github.com:"]
-	insteadOf = "gh:"
-	pushInsteadOf = "gh:"
+	insteadOf = "https://github.com/"
+	pushInsteadOf = "https://github.com/"
 
 [url "git@gist.github.com:"]
 	insteadOf = "gist:"

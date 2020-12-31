@@ -10,8 +10,8 @@
     ~/.bashrc: .bashrc
     ~/.oh-my-bash/custom: .oh-my-bash
     ~/.exports: .exports
-    ~/.gitconfig: .gitconfig
-    ~/.gitmessage.txt: .gitmessage.txt
+    #~/.gitconfig: .gitconfig
+    #~/.gitmessage.txt: .gitmessage.txt
     ~/.tmux.conf: .tmux.server.conf
     ~/.vim: .vim
     ~/.vimrc: .vimrc

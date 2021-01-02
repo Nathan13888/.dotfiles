@@ -56,11 +56,11 @@
 - polybar
 - rofi
 - network-manager-applet
-- networkmanager-dmenu-git
+- networkmanager-dmenu-git?
+- pa-applet
 - dunst
 - feh
 - flameshot
-- autofs
 - xcolor
 - *(fonts)*
 - nerd-fonts-complete
@@ -68,12 +68,22 @@
 - *(sound)*
 - pavucontrol (gtk gui)
 - pulseaudio-ctl (shell-based)
+- pamixer
+- playerctl
 - *(secrets)*
 - gnome-keyring
 - libsecret
 - seahorse
+- pinentry-gnome3
+- gpg
 - *(misc)*
+- pcmanfm
+- calcurse
 - lynx
+- bottom
+- iotop
+- powertop
+- fetchcord-git (or from pip)
 - *(battery)*
 - cbatticon
 
@@ -91,6 +101,10 @@
 - Docker (https://wiki.archlinux.org/index.php/Docker#Installation)
 
 ## Utilities
+- Kicad
+- freecad
+- Blender
+- Cura
 - wol (wake on lan)
 - geekbench
 - android-file-transfer
@@ -119,8 +133,7 @@
 - Snap and Flatpak (eww)
 - zram-config --> setup https://github.com/StuartIanNaylor/zram-config
 - https://github.com/Huion-Linux/DIGImend-kernel-drivers-for-Huion
-
-## Media
+- davinci-resolve
 - lyrebird
 - kodi-x11
 - Shutter
@@ -142,8 +155,6 @@
 - DarkTable
 - filezilla
 - tigervnc
-- Kicad
-- Cura
 - Spectacle (KDE for screenshots)
 - Steam
 

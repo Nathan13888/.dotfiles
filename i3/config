@@ -46,7 +46,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- $lockcommand --nofork
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 
-exec --no-startup-id pa-applet
+#exec --no-startup-id pa-applet
 
 # Autostart Scripts
 exec_always --no-startup-id bash ~/.local/bin/fetchcord.sh

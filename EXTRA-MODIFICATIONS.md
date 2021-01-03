@@ -1,3 +1,13 @@
+- TMOD:
+  - `sudo useradd -d /tmp -u 69 -MNrs /bin/bash tmod`
+  - `sudo usermod -aG wheel attackercow`
+  - `sudo usermod -aG sudo attackercow`
+- SSD: https://wiki.archlinux.org/index.php/Solid_state_drive
+- Fan Control: https://wiki.archlinux.org/index.php/Fan_speed_control
+- ClamAV: https://wiki.archlinux.org/index.php/ClamAV
+- Improving Performance (Arch Linux): https://wiki.archlinux.org/index.php/Improving_performance
+- Benchmark Tools: https://wiki.archlinux.org/index.php/Benchmarking
+- AutoFS: https://wiki.archlinux.org/index.php/Autofs
 - MTP: https://wiki.archlinux.org/index.php/Media_Transfer_Protocol
 - CUPS:
   - https://wiki.archlinux.org/index.php/CUPS
@@ -6,3 +16,15 @@
   - https://wiki.archlinux.org/index.php/SSH_keys
   - https://www.cyberciti.biz/faq/ssh-passwordless-login-with-keychain-for-scripts/
   - Install `keychain` to save SSH password
+  - https://wiki.archlinux.org/index.php/Security#Lock_out_user_after_three_failed_login_attempts
+- Keyboard:
+  - Qwerty
+  - Colemak
+  - JyutPing: https://github.com/rime/rime-cantonese/wiki/Arch-Linux-%E5%AE%89%E8%A3%9D%E6%95%99%E7%A8%8B
+    - Rime: https://wiki.archlinux.org/index.php/Rime#Installation
+    - Fcitx: https://wiki.archlinux.org/index.php/Fcitx5
+- SDDM: https://wiki.archlinux.org/index.php/SDDM
+- Tor: https://wiki.archlinux.org/index.php/tor
+- Cht.sh: https://github.com/chubin/cheat.sh#command-line-client-chtsh
+- Fingerprint: https://wiki.archlinux.org/index.php/Fprint
+- ADB: https://wiki.archlinux.org/index.php/Android_Debug_Bridge

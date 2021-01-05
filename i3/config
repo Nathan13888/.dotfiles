@@ -237,7 +237,13 @@ bindsym $mod+Control+9 move container to workspace $ws9; workspace $ws9
 bindsym $mod+Control+0 move container to workspace $ws10; workspace $ws10
 
 #assign [class="^Firefox$"] 1
-#assign [class="^Discord$"] 2
+assign [class="^Joplin$"] 2
+assign [class="discord"] 4
+assign [class="FreeCAD"] 5
+assign [class="^Kicad$"] 5
+
+#no_focus [class=".*"]
+no_focus [class="discord"]
 
 # reload the configuration file
 bindsym Mod1+Shift+c reload

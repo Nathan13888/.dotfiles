@@ -33,8 +33,8 @@ exec_always --no-startup-id xset r rate 210 40
 exec_always --no-startup-id xset m 3/2
 
 # Remap CAPS LOCK key
-exec_always xmodmap -e "clear lock"
-exec_always xmodmap -e "keycode 66 = Escape Caps_Lock NoSymbol NoSymbol"
+#exec_always xmodmap -e "clear lock"
+#exec_always xmodmap -e "keycode 66 = Escape Caps_Lock NoSymbol NoSymbol"
 
 set $lockcommand ~/.local/bin/lock.sh
 

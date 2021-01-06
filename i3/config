@@ -94,6 +94,11 @@ bindsym $mod+F3 exec $notes
 bindsym $mod+F4 exec $filemanager
 bindsym $mod+F5 exec $editor
 
+set $prtscr flameshot gui
+
+bindsym Print exec --no-startup-id $prtscr
+bindsym $Mod+Shift+S exec --no-startup-id $prtscr
+
 font pango:SauceCodePro Nerd Font 9
 
 set $volcommand ~/.local/bin/volume.sh

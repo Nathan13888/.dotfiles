@@ -49,7 +49,7 @@ exec --no-startup-id nm-applet
 #exec --no-startup-id pa-applet
 
 # Autostart Scripts
-exec_always --no-startup-id bash ~/.local/bin/fetchcord.sh
+exec_always bash ~/.local/bin/fetchcord.sh
 
 ################################################################################
 

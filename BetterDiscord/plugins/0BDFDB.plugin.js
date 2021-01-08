@@ -16,15 +16,10 @@ module.exports = (_ => {
 		"info": {
 			"name": "BDFDB",
 			"author": "DevilBro",
-			"version": "1.2.5",
+			"version": "1.2.7",
 			"description": "Give other plugins utility functions"
 		},
-		"rawUrl": "https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js",
-		"changeLog": {
-			"improved": {
-				"Languages": "Added support for all languages used by discord"
-			}
-		}
+		"rawUrl": "https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js"
 	};
 	
 	const DiscordObjects = {};
@@ -49,8 +44,8 @@ module.exports = (_ => {
 		patchPriority: 0,
 		defaults: {
 			settings: {
-				showToasts:				{value: true,	description: "Show Plugin start and stop Toasts"},
-				showSupportBadges:		{value: true,	description: "Show little Badges for Users who support my Patreon"}
+				showToasts:				{value: true,		disableIfNative: true,		noteIfNative: true},
+				showSupportBadges:		{value: true,		disableIfNative: false,		noteIfNative: true}
 			}
 		},
 	});
@@ -64,11 +59,11 @@ module.exports = (_ => {
 	};
 	const Plugin = function(config) {
 		return class Plugin {
-			getName() {return config.info.name;}
-			getAuthor() {return config.info.author;}
-			getVersion() {return config.info.version;}
-			getDescription() {return config.info.description;}
-			load() {
+			getName () {return config.info.name;}
+			getAuthor () {return config.info.author;}
+			getVersion () {return config.info.version;}
+			getDescription () {return config.info.description;}
+			load () {
 				this.loaded = true;
 				if (window.BDFDB_Global.loading) {
 					if (!PluginStores.delayedLoad.includes(this)) PluginStores.delayedLoad.push(this);
@@ -82,7 +77,7 @@ module.exports = (_ => {
 					}, "Failed to load plugin!", config.info.name)();
 				}
 			}
-			start() {
+			start () {
 				if (!this.loaded) this.load();
 				if (window.BDFDB_Global.loading) {
 					if (!PluginStores.delayedStart.includes(this)) PluginStores.delayedStart.push(this);
@@ -97,7 +92,7 @@ module.exports = (_ => {
 					delete this.stopping;
 				}
 			}
-			stop() {
+			stop () {
 				if (this.stopping) return;
 				this.stopping = true;
 				BDFDB.TimeUtils.timeout(_ => {delete this.stopping;});
@@ -265,11 +260,11 @@ module.exports = (_ => {
 			return value;
 		}
 	};
-	BDFDB.ObjectUtils.map = function (obj, mapfunc) {
+	BDFDB.ObjectUtils.map = function (obj, mapFunc) {
 		if (!BDFDB.ObjectUtils.is(obj)) return {};
-		if (typeof mapfunc != "string" && typeof mapfunc != "function") return obj;
+		if (typeof mapFunc != "string" && typeof mapFunc != "function") return obj;
 		let newObj = {};
-		for (let key in obj) if (BDFDB.ObjectUtils.is(obj[key])) newObj[key] = typeof mapfunc == "string" ? obj[key][mapfunc] : mapfunc(obj[key], key);
+		for (let key in obj) if (BDFDB.ObjectUtils.is(obj[key])) newObj[key] = typeof mapFunc == "string" ? obj[key][mapFunc] : mapFunc(obj[key], key);
 		return newObj;
 	};
 	BDFDB.ObjectUtils.toArray = function (obj) {
@@ -455,7 +450,14 @@ module.exports = (_ => {
 	BDFDB.BDUtils.getSettings = function (key) {
 		if (!window.BdApi) return {};
 		if (typeof key == "string") return BdApi.isSettingEnabled(...key.split("."));
-		else return oldSettings ? BDFDB.ReactUtils.getValue(BdApi.getBDData("settings"), `${BDFDB.DiscordUtils.getBuilt()}.settings`) : BdApi.settings.map(n => n.settings.map(m => m.settings.map(l => ({id: [n.id, m.id, l.id].join("."), value: l.value})))).flat(10).reduce((newObj, setting) => (newObj[setting.id] = setting.value, newObj), {});
+		else return !isBeta ? BDFDB.ObjectUtils.get(BdApi.getBDData("settings"), `${BDFDB.DiscordUtils.getBuilt()}.settings`) : BdApi.settings.map(n => n.settings.map(m => m.settings.map(l => ({id: [n.id, m.id, l.id].join("."), value: l.value})))).flat(10).reduce((newObj, setting) => (newObj[setting.id] = setting.value, newObj), {});
+	};
+	BDFDB.BDUtils.getSettingsProperty = function (property, key) {
+		if (!window.BdApi || !isBeta) return key ? "" : {};
+		else {
+			let settingsMap = BdApi.settings.map(n => n.settings.map(m => m.settings.map(l => ({id: [n.id, m.id, l.id].join("."), value: l[property]})))).flat(10).reduce((newObj, setting) => (newObj[setting.id] = setting.value, newObj), {});
+			return key ? (settingsMap[key] != null ? settingsMap[key] : "") : "";
+		}
 	};
 	
 	
@@ -485,7 +487,9 @@ module.exports = (_ => {
 		
 		let startMsg = BDFDB.LanguageUtils.LibraryStringsFormat("toast_plugin_started", "v" + plugin.version);
 		BDFDB.LogUtils.log(startMsg, plugin.name);
-		if (settings.showToasts && !BDFDB.BDUtils.getSettings(BDFDB.BDUtils.settingsIds.showToasts)) BDFDB.NotificationUtils.toast(`${plugin.name} ${startMsg}`, {nopointer: true});
+		if (settings.showToasts && !BDFDB.BDUtils.getSettings(BDFDB.BDUtils.settingsIds.showToasts)) BDFDB.NotificationUtils.toast(`${plugin.name} ${startMsg}`, {
+			noPointer: true
+		});
 		
 		if (plugin.css) BDFDB.DOMUtils.appendLocalStyle(plugin.name, plugin.css);
 		
@@ -499,7 +503,9 @@ module.exports = (_ => {
 	BDFDB.PluginUtils.clear = function (plugin) {
 		let stopMsg = BDFDB.LanguageUtils.LibraryStringsFormat("toast_plugin_stopped", "v" + plugin.version);
 		BDFDB.LogUtils.log(stopMsg, plugin.name);
-		if (settings.showToasts && !BDFDB.BDUtils.getSettings(BDFDB.BDUtils.settingsIds.showToasts)) BDFDB.NotificationUtils.toast(`${plugin.name} ${stopMsg}`, {nopointer: true});
+		if (settings.showToasts && !BDFDB.BDUtils.getSettings(BDFDB.BDUtils.settingsIds.showToasts)) BDFDB.NotificationUtils.toast(`${plugin.name} ${stopMsg}`, {
+			noPointer: true
+		});
 
 		let url = plugin.rawUrl ||`https://mwittrien.github.io/BetterDiscordAddons/Plugins/${plugin.name}/${plugin.name}.plugin.js`;
 
@@ -564,9 +570,9 @@ module.exports = (_ => {
 				let newVersion = body.match(/['"][0-9]+\.[0-9]+\.[0-9]+['"]/i);
 				if (!newVersion) return callback(null);
 				if (pluginName == newName && BDFDB.NumberUtils.getVersionDifference(newVersion[0], window.PluginUpdates.plugins[url].version) > 0.2) {
-					BDFDB.NotificationUtils.toast(`${pluginName} will be force updated, because your version is heavily outdated.`, {
+					BDFDB.NotificationUtils.toast(BDFDB.LanguageUtils.LibraryStringsFormat("toast_plugin_force_updated", pluginName), {
 						type: "warn",
-						nopointer: true
+						noPointer: true
 					});
 					BDFDB.PluginUtils.downloadUpdate(pluginName, url);
 					return callback(2);
@@ -686,7 +692,10 @@ module.exports = (_ => {
 			if (error) {
 				let updateNotice = document.querySelector("#pluginNotice");
 				if (updateNotice) BDFDB.PluginUtils.removeUpdateNotice(pluginName, updateNotice);
-				BDFDB.LogUtils.warn("Unable to get update for " + pluginName);
+				BDFDB.NotificationUtils.toast(BDFDB.LanguageUtils.LibraryStringsFormat("toast_plugin_update_failed", pluginName), {
+					type: "error",
+					noPointer: true
+				});
 			}
 			else {
 				let wasEnabled = BDFDB.BDUtils.isPluginEnabled(pluginName);
@@ -705,7 +714,9 @@ module.exports = (_ => {
 						});
 						BDFDB.TimeUtils.timeout(_ => {if (wasEnabled && !BDFDB.BDUtils.isPluginEnabled(newName)) BDFDB.BDUtils.enablePlugin(newName);}, 3000);
 					}
-					BDFDB.NotificationUtils.toast(BDFDB.LanguageUtils.LibraryStringsFormat("toast_plugin_updated", pluginName, "v" + oldVersion, newName, "v" + newVersion), {nopointer: true, selector: "plugin-updated-toast"});
+					BDFDB.NotificationUtils.toast(BDFDB.LanguageUtils.LibraryStringsFormat("toast_plugin_updated", pluginName, "v" + oldVersion, newName, "v" + newVersion), {
+						noPointer: true
+					});
 					let updateNotice = document.querySelector("#pluginNotice");
 					if (updateNotice) {
 						if (updateNotice.querySelector(BDFDB.dotCN.noticebutton)) {
@@ -739,7 +750,7 @@ module.exports = (_ => {
 			type = type.toLowerCase();
 			let className = BDFDB.disCN["changelog" + type];
 			if (className) {
-				changeLogHTML += `<h1 class="${className} ${BDFDB.disCN.margintop20}"${changeLogHTML.indexOf("<h1") == -1 ? `style="margin-top: 0px !important;"` : ""}>${headers[type]}</h1><ul>`;
+				changeLogHTML += `<h1 class="${className} ${BDFDB.disCN.margintop20}"${changeLogHTML.indexOf("<h1") == -1 ? `style="margin-top: 0px !important;"` : ""}>${BDFDB.LanguageUtils && BDFDB.LanguageUtils.LibraryStrings ? BDFDB.LanguageUtils.LibraryStrings["changelog_" + type]  : headers[type]}</h1><ul>`;
 				for (let key in plugin.changeLog[type]) changeLogHTML += `<li><strong>${key}</strong>${plugin.changeLog[type][key] ? (": " + plugin.changeLog[type][key] + ".") : ""}</li>`;
 				changeLogHTML += `</ul>`
 			}
@@ -1069,7 +1080,7 @@ module.exports = (_ => {
 				var NotificationBars = [], DesktopNotificationQueue = {queue: [], running: false};
 				BDFDB.NotificationUtils = {};
 				BDFDB.NotificationUtils.toast = function (text, options = {}) {
-					let toasts = document.querySelector(".toasts, .bd-toasts");
+					let toasts = document.querySelector(BDFDB.dotCNC.toasts + ".bd-toasts");
 					if (!toasts) {
 						let channels = document.querySelector(BDFDB.dotCN.channels + " + div");
 						let channelRects = channels ? BDFDB.DOMUtils.getRects(channels) : null;
@@ -1078,48 +1089,48 @@ module.exports = (_ => {
 						let width = channelRects ? (members ? channelRects.width - BDFDB.DOMUtils.getRects(members).width : channelRects.width) : window.outerWidth - 0;
 						let form = channels ? channels.querySelector("form") : null;
 						let bottom = form ? BDFDB.DOMUtils.getRects(form).height : 80;
-						toasts = BDFDB.DOMUtils.create(`<div class="toasts bd-toasts" style="width: ${width}px; left: ${left}px; bottom: ${bottom}px;"></div>`);
+						toasts = BDFDB.DOMUtils.create(`<div class="${BDFDB.disCN.toasts} bd-toasts" style="width: ${width}px; left: ${left}px; bottom: ${bottom}px;"></div>`);
 						(document.querySelector(BDFDB.dotCN.app) || document.body).appendChild(toasts);
 					}
-					const {type = "", icon = true, timeout = 3000, html = false, selector = "", nopointer = false, color = ""} = options;
-					let toast = BDFDB.DOMUtils.create(`<div class="toast bd-toast">${html === true ? text : BDFDB.StringUtils.htmlEscape(text)}</div>`);
+					const {type = "", icon = true, timeout = 3000, html = false, selector = "", noPointer = false, color = ""} = options;
+					let toast = BDFDB.DOMUtils.create(`<div class="${BDFDB.disCN.toast} bd-toast">${html === true ? text : BDFDB.StringUtils.htmlEscape(text)}</div>`);
 					if (type) {
 						BDFDB.DOMUtils.addClass(toast, "toast-" + type);
-						if (icon) BDFDB.DOMUtils.addClass(toast, "icon");
+						if (icon) BDFDB.DOMUtils.addClass(toast, BDFDB.disCN.toasticon);
 					}
 					else if (color) {
 						let rgbColor = BDFDB.ColorUtils.convert(color, "RGB");
 						if (rgbColor) {
 							toast.style.setProperty("background-color", rgbColor);
-							BDFDB.DOMUtils.addClass(toast, "toast-custom");
+							BDFDB.DOMUtils.addClass(toast, BDFDB.disCN.toastcustom);
 						}
 					}
 					BDFDB.DOMUtils.addClass(toast, selector);
 					toasts.appendChild(toast);
 					toast.close = _ => {
 						if (document.contains(toast)) {
-							BDFDB.DOMUtils.addClass(toast, "closing");
+							BDFDB.DOMUtils.addClass(toast, BDFDB.disCN.toastclosing);
 							toast.style.setProperty("pointer-events", "none", "important");
 							BDFDB.TimeUtils.timeout(_ => {
 								toast.remove();
-								if (!toasts.querySelectorAll(".toast, .bd-toast").length) toasts.remove();
+								if (!toasts.querySelectorAll(BDFDB.dotCNC.toast + ".bd-toast").length) toasts.remove();
 							}, 3000);
 						}
 					};
-					if (nopointer) toast.style.setProperty("pointer-events", "none", "important");
+					if (noPointer) toast.style.setProperty("pointer-events", "none", "important");
 					else toast.addEventListener("click", toast.close);
 					BDFDB.TimeUtils.timeout(_ => {toast.close();}, timeout > 0 ? timeout : 600000);
 					return toast;
 				};
-				BDFDB.NotificationUtils.desktop = function (parsedcontent, parsedoptions = {}) {
+				BDFDB.NotificationUtils.desktop = function (parsedContent, parsedOptions = {}) {
 					const queue = _ => {
-						DesktopNotificationQueue.queue.push({parsedcontent, parsedoptions});
+						DesktopNotificationQueue.queue.push({parsedContent, parsedOptions});
 						runqueue();
 					};
 					const runqueue = _ => {
 						if (!DesktopNotificationQueue.running) {
 							let notification = DesktopNotificationQueue.queue.shift();
-							if (notification) notify(notification.parsedcontent, notification.parsedoptions);
+							if (notification) notify(notification.parsedContent, notification.parsedOptions);
 						}
 					};
 					const notify = (content, options) => {
@@ -1205,6 +1216,7 @@ module.exports = (_ => {
 							let backgroundcolor = BDFDB.ColorUtils.convert(comp, "HEX");
 							let filter = comp[0] > 180 && comp[1] > 180 && comp[2] > 180 ? "brightness(0%)" : "brightness(100%)";
 							BDFDB.DOMUtils.appendLocalStyle("BDFDBcustomNotificationBarColorCorrection" + id, `${BDFDB.dotCN.noticewrapper}[notice-id="${id}"]{background-color: ${backgroundcolor} !important;}${BDFDB.dotCN.noticewrapper}[notice-id="${id}"] .notice-message {color: ${fontColor} !important;}${BDFDB.dotCN.noticewrapper}[notice-id="${id}"] ${BDFDB.dotCN.noticebutton} {color: ${fontColor} !important;border-color: ${BDFDB.ColorUtils.setAlpha(fontColor, 0.25, "RGBA")} !important;}${BDFDB.dotCN.noticewrapper}[notice-id="${id}"] ${BDFDB.dotCN.noticebutton}:hover {color: ${backgroundcolor} !important;background-color: ${fontColor} !important;}${BDFDB.dotCN.noticewrapper}[notice-id="${id}"] ${BDFDB.dotCN.noticedismiss} {filter: ${filter} !important;}`);
+							BDFDB.DOMUtils.addClass(notice, BDFDB.disCN.noticecustom);
 						}
 						else BDFDB.DOMUtils.addClass(notice, BDFDB.disCN.noticedefault);
 					}
@@ -1802,7 +1814,7 @@ module.exports = (_ => {
 								}
 								else BDFDB.TimeUtils.suppress(data.callOriginalMethod, `originalMethod of ${methodName} in ${module.constructor ? module.constructor.displayName || module.constructor.name : "module"}`)();
 								callInstead = false, stopCall = false;
-								return methodName == "render" && data.returnValue === undefined ? null : data.returnValue;
+								return (methodName == "render" || methodName == "default") && data.returnValue === undefined ? null : data.returnValue;
 							};
 							for (let key of Object.keys(originalMethod)) module[methodName][key] = originalMethod[key];
 							if (!module[methodName].__originalFunction) {
@@ -3116,12 +3128,12 @@ module.exports = (_ => {
 				};
 				BDFDB.ColorUtils.setAlpha = function (color, a, conv) {
 					if (BDFDB.ObjectUtils.is(color)) {
-						var newcolor = {};
+						let newcolor = {};
 						for (let pos in color) newcolor[pos] = BDFDB.ColorUtils.setAlpha(color[pos], a, conv);
 						return newcolor;
 					}
 					else {
-						var comp = BDFDB.ColorUtils.convert(color, "RGBCOMP");
+						let comp = BDFDB.ColorUtils.convert(color, "RGBCOMP");
 						if (comp) {
 							a = a.toString();
 							a = (a.indexOf("%") > -1 ? 0.01 : 1) * parseFloat(a.replace(/[^0-9\.\-]/g, ""));
@@ -3135,7 +3147,7 @@ module.exports = (_ => {
 					return null;
 				};
 				BDFDB.ColorUtils.getAlpha = function (color) {
-					var comp = BDFDB.ColorUtils.convert(color, "RGBCOMP");
+					let comp = BDFDB.ColorUtils.convert(color, "RGBCOMP");
 					if (comp) {
 						if (comp.length == 3) return 1;
 						else if (comp.length == 4) {
@@ -3150,12 +3162,12 @@ module.exports = (_ => {
 					value = parseFloat(value);
 					if (color != null && typeof value == "number" && !isNaN(value)) {
 						if (BDFDB.ObjectUtils.is(color)) {
-							var newcolor = {};
-							for (let pos in color) newcolor[pos] = BDFDB.ColorUtils.change(color[pos], value, conv);
-							return newcolor;
+							let newColor = {};
+							for (let pos in color) newColor[pos] = BDFDB.ColorUtils.change(color[pos], value, conv);
+							return newColor;
 						}
 						else {
-							var comp = BDFDB.ColorUtils.convert(color, "RGBCOMP");
+							let comp = BDFDB.ColorUtils.convert(color, "RGBCOMP");
 							if (comp) {
 								if (parseInt(value) !== value) {
 									value = value.toString();
@@ -3171,12 +3183,12 @@ module.exports = (_ => {
 				};
 				BDFDB.ColorUtils.invert = function (color, conv) {
 					if (BDFDB.ObjectUtils.is(color)) {
-						var newcolor = {};
-						for (let pos in color) newcolor[pos] = BDFDB.ColorUtils.invert(color[pos], conv);
-						return newcolor;
+						let newColor = {};
+						for (let pos in color) newColor[pos] = BDFDB.ColorUtils.invert(color[pos], conv);
+						return newColor;
 					}
 					else {
-						var comp = BDFDB.ColorUtils.convert(color, "RGBCOMP");
+						let comp = BDFDB.ColorUtils.convert(color, "RGBCOMP");
 						if (comp) return BDFDB.ColorUtils.convert([255 - comp[0], 255 - comp[1], 255 - comp[2]], conv || BDFDB.ColorUtils.getType(color));
 					}
 					return null;
@@ -3205,7 +3217,7 @@ module.exports = (_ => {
 							else if (/^#[a-f\d]{4}$|^#[a-f\d]{8}$/i.test(color)) return "HEXA";
 							else {
 								color = color.toUpperCase();
-								var comp = color.replace(/[^0-9\.\-\,\%]/g, "").split(",");
+								let comp = color.replace(/[^0-9\.\-\,\%]/g, "").split(",");
 								if (color.indexOf("RGB(") == 0 && comp.length == 3 && isRGB(comp)) return "RGB";
 								else if (color.indexOf("RGBA(") == 0 && comp.length == 4 && isRGB(comp)) return "RGBA";
 								else if (color.indexOf("HSL(") == 0 && comp.length == 3 && isHSL(comp)) return "HSL";
@@ -3665,7 +3677,7 @@ module.exports = (_ => {
 				};
 				BDFDB.ModalUtils.confirm = function (plugin, text, callback) {
 					if (!BDFDB.ObjectUtils.is(plugin) || typeof text != "string") return;
-					BDFDB.ModalUtils.open(plugin, {text, header: "Are you sure?", className: BDFDB.disCN.modalconfirmmodal, scroller: false, buttons: [
+					BDFDB.ModalUtils.open(plugin, {text, header: BDFDB.LanguageUtils.LibraryStrings.confirm, className: BDFDB.disCN.modalconfirmmodal, scroller: false, buttons: [
 						{contents: BDFDB.LanguageUtils.LanguageStrings.OKAY, close: true, color: "RED", click: typeof callback == "function" ? callback : _ => {}},
 						{contents: BDFDB.LanguageUtils.LanguageStrings.CANCEL, close: true}
 					]});
@@ -4332,7 +4344,7 @@ module.exports = (_ => {
 					}
 				});
 				BDFDB.LanguageUtils.LibraryStringsFormat = function (item, ...values) {
-					if (item && values.length) {
+					if (item) {
 						let languageId = BDFDB.LanguageUtils.getLanguage().id, string = null;
 						if (LibraryStrings[languageId] && LibraryStrings[languageId][item]) string = LibraryStrings[languageId][item];
 						else if (LibraryStrings.default[item]) string = LibraryStrings.default[item];
@@ -4342,7 +4354,7 @@ module.exports = (_ => {
 						}
 						else BDFDB.LogUtils.warn(item + " not found in BDFDB.LanguageUtils.LibraryStrings");
 					}
-					else BDFDB.LogUtils.warn(item + " enter a valid key and at least one value to format the string in BDFDB.LanguageUtils.LibraryStrings");
+					else BDFDB.LogUtils.warn(item + " enter a valid key to format the string in BDFDB.LanguageUtils.LibraryStrings");
 					return "";
 				};
 				BDFDB.TimeUtils.interval(interval => {
@@ -4862,13 +4874,85 @@ module.exports = (_ => {
 				};
 				
 				InternalComponents.LibraryComponents.Checkbox = reactInitialized && class BDFDB_Checkbox extends LibraryModules.React.Component {
-					handleChange() {
-						this.props.value = !this.props.value;
+					handleClick(e) {if (typeof this.props.onClick == "function") this.props.onClick(e, this);}
+					handleContextMenu(e) {if (typeof this.props.onContextMenu == "function") this.props.onContextMenu(e, this);}
+					handleMouseDown(e) {if (typeof this.props.onMouseDown == "function") this.props.onMouseDown(e, this);}
+					handleMouseUp(e) {if (typeof this.props.onMouseUp == "function") this.props.onMouseUp(e, this);}
+					handleMouseEnter(e) {if (typeof this.props.onMouseEnter == "function") this.props.onMouseEnter(e, this);}
+					handleMouseLeave(e) {if (typeof this.props.onMouseLeave == "function") this.props.onMouseLeave(e, this);}
+					getInputMode() {
+						return this.props.disabled ? "disabled" : this.props.readOnly ? "readonly" : "default";
+					}
+					getStyle() {
+						let style = this.props.style || {};
+						if (!this.props.value) return style;
+						style = Object.assign({}, style);
+						this.props.color = typeof this.props.getColor == "function" ? this.props.getColor(this.props.value) : this.props.color;
+						switch (this.props.type) {
+							case InternalComponents.NativeSubComponents.Checkbox.Types.DEFAULT:
+								style.borderColor = this.props.color;
+								break;
+							case InternalComponents.NativeSubComponents.Checkbox.Types.GHOST:
+								let color = BDFDB.ColorUtils.setAlpha(this.props.color, 0.15, "RGB");
+								style.borderColor = color;
+								style.backgroundColor = color;
+								break;
+							case InternalComponents.NativeSubComponents.Checkbox.Types.INVERTED:
+								style.backgroundColor = this.props.color;
+								style.borderColor = this.props.color;
+						}
+						return style;
+					}
+					getColor() {
+						return this.props.value ? (this.props.type === InternalComponents.NativeSubComponents.Checkbox.Types.INVERTED ? BDFDB.DiscordConstants.Colors.WHITE : this.props.color) : "transparent";
+					}
+					handleChange(e) {
+						this.props.value = typeof this.props.getValue == "function" ? this.props.getValue(this.props.value, e) : !this.props.value;
 						if (typeof this.props.onChange == "function") this.props.onChange(this.props.value, this);
 						BDFDB.ReactUtils.forceUpdate(this);
 					}
 					render() {
-						return BDFDB.ReactUtils.createElement(InternalComponents.NativeSubComponents.Checkbox, Object.assign({}, this.props, {onChange: this.handleChange.bind(this)}));
+						let label = this.props.children ? BDFDB.ReactUtils.createElement("div", {
+							className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.checkboxlabel, this.props.disabled ? BDFDB.disCN.checkboxlabeldisabled : BDFDB.disCN.checkboxlabelclickable, this.props.reverse ? BDFDB.disCN.checkboxlabelreversed : BDFDB.disCN.checkboxlabelforward),
+							style: {
+								lineHeight: this.props.size + "px"
+							},
+							children: this.props.children
+						}) : null;
+						return BDFDB.ReactUtils.createElement("label", {
+							className: BDFDB.DOMUtils.formatClassName(this.props.disabled ? BDFDB.disCN.checkboxwrapperdisabled : BDFDB.disCN.checkboxwrapper, this.props.align, this.props.className),
+							children: [
+								this.props.reverse && label,
+								!this.props.displayOnly && BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.FocusRingScope, {
+									children: BDFDB.ReactUtils.createElement("input", {
+										className: BDFDB.disCN["checkboxinput" + this.getInputMode()],
+										type: "checkbox",
+										onClick: this.props.disabled || this.props.readOnly ? (_ => {}) : this.handleChange.bind(this),
+										onContextMenu: this.props.disabled || this.props.readOnly ? (_ => {}) : this.handleChange.bind(this),
+										checked: this.props.value,
+										style: {
+											width: this.props.size,
+											height: this.props.size
+										}
+									})
+								}),
+								BDFDB.ReactUtils.createElement("div", {
+									className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.checkbox, this.props.shape, this.props.value && BDFDB.disCN.checkboxchecked),
+									style: Object.assign({
+										width: this.props.size,
+										height: this.props.size,
+										borderColor: this.props.checkboxColor
+									}, this.getStyle()),
+									children: BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.Checkmark, {
+										width: 18,
+										height: 18,
+										color: this.getColor(),
+										"aria-hidden": true
+									})
+								}),
+								!this.props.reverse && label
+							].filter(n => n)
+						});
 					}
 				};
 				
@@ -5235,7 +5319,7 @@ module.exports = (_ => {
 										if (hexRegex.test(value)) this.handleColorChange(value);
 									},
 									inputChildren: this.props.gradient && BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.TooltipContainer, {
-										text: "Gradient",
+										text: BDFDB.LanguageUtils.LibraryStrings.gradient,
 										children: BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.Clickable, {
 											className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.colorpickergradientbutton, this.state.gradientBarEnabled && BDFDB.disCN.colorpickergradientbuttonenabled),
 											children: BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.SvgIcon, {
@@ -5753,7 +5837,7 @@ module.exports = (_ => {
 				};
 				
 				InternalComponents.LibraryComponents.ListRow = reactInitialized && class BDFDB_ListRow extends LibraryModules.React.Component {
-					render () {
+					render() {
 						return BDFDB.ReactUtils.createElement("div", BDFDB.ObjectUtils.exclude(Object.assign({}, this.props, {
 							className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.listrowwrapper, this.props.className, BDFDB.disCN.listrow),
 							children: [
@@ -6335,7 +6419,7 @@ module.exports = (_ => {
 						return BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.Flex, {
 							className: this.props.className,
 							wrap: InternalComponents.LibraryComponents.Flex.Wrap.WRAP,
-							children: [this.props.includeDMs && {name: "Direct Messages", acronym: "DMs", id: BDFDB.DiscordConstants.ME, getIconURL: _ => {}}].concat(BDFDB.LibraryModules.FolderStore.getFlattenedGuilds()).filter(n => n).map(guild => BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.TooltipContainer, {
+							children: [this.props.includeDMs && {name: BDFDB.LanguageUtils.LanguageStrings.DIRECT_MESSAGES, acronym: "DMs", id: BDFDB.DiscordConstants.ME, getIconURL: _ => {}}].concat(BDFDB.LibraryModules.FolderStore.getFlattenedGuilds()).filter(n => n).map(guild => BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.TooltipContainer, {
 								text: guild.name,
 								children: BDFDB.ReactUtils.createElement("div", {
 									className: BDFDB.DOMUtils.formatClassName(this.props.guildClassName, BDFDB.disCN.settingsguild, this.props.disabled.includes(guild.id) && BDFDB.disCN.settingsguilddisabled),
@@ -6557,13 +6641,16 @@ module.exports = (_ => {
 											settingId: setting,
 											shape: InternalComponents.LibraryComponents.Checkbox.Shapes.ROUND,
 											type: InternalComponents.LibraryComponents.Checkbox.Types.INVERTED,
+											color: this.props.checkboxColor,
+											getColor: this.props.getCheckboxColor,
 											value: props[setting],
+											getValue: this.props.getCheckboxValue,
 											onChange: this.props.onCheckboxChange
 										})
 									})).flat(10).filter(n => n)
 								})
 							]
-						}), "title", "data", "settings", "renderLabel", "cardClassName", "cardStyle", "onCheckboxChange", "maxWidth", "fullWidth", "biggestWidth", "pagination"));
+						}), "title", "data", "settings", "renderLabel", "cardClassName", "cardStyle", "checkboxColor", "getCheckboxColor",  "getCheckboxValue", "onCheckboxChange", "configWidth", "pagination"));
 					}
 					render() {
 						this.props.settings = BDFDB.ArrayUtils.is(this.props.settings) ? this.props.settings : [];
@@ -7313,7 +7400,7 @@ module.exports = (_ => {
 					if (window.PluginUpdates && window.PluginUpdates.plugins && typeof e.instance.props.title == "string" && e.instance.props.title.toUpperCase().indexOf("PLUGINS") == 0) {
 						let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {key: "folder-button"});
 						if (index > -1) children.splice(index + 1, 0, BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.TooltipContainer, {
-							text: "Only checks for updates of plugins, which support the updatecheck. Rightclick for a list of supported plugins. (Listed ≠ Outdated)",
+							text: BDFDB.LanguageUtils.LibraryStrings.update_check_info,
 							tooltipConfig: {
 								type: "bottom",
 								maxWidth: 420
@@ -7324,14 +7411,21 @@ module.exports = (_ => {
 							children: BDFDB.ReactUtils.createElement("button", {
 								className: `${BDFDB.disCNS._repobutton + BDFDB.disCN._repofolderbutton} bd-updatebtn`,
 								onClick: _ => {
-									let toast = BDFDB.NotificationUtils.toast("Plugin update check in progress", {type: "info", timeout: 0});
+									let toast = BDFDB.NotificationUtils.toast(BDFDB.LanguageUtils.LibraryStrings.update_check_inprogress, {
+										type: "info",
+										timeout: 0
+									});
 									BDFDB.PluginUtils.checkAllUpdates().then(outdated => {
 										toast.close();
-										if (outdated > 0) BDFDB.NotificationUtils.toast(`Plugin update check complete - ${outdated} outdated!`, {type: "error"});
-										else BDFDB.NotificationUtils.toast(`Plugin update check complete`, {type: "success"});
+										if (outdated > 0) BDFDB.NotificationUtils.toast(BDFDB.LanguageUtils.LibraryStringsFormat("update_check_complete_outdated", outdated), {
+											type: "error"
+										});
+										else BDFDB.NotificationUtils.toast(BDFDB.LanguageUtils.LibraryStrings.update_check_complete, {
+											type: "success"
+										});
 									});
 								},
-								children: "Check for Updates"
+								children: BDFDB.LanguageUtils.LibraryStrings.update_check
 							})
 						}));
 					}
@@ -7367,7 +7461,7 @@ module.exports = (_ => {
 						}
 						if (user.id == InternalData.myId) {
 							addBadge = true;
-							role = "Theme Developer";
+							role = `Theme ${BDFDB.LanguageUtils.LibraryStrings.developer}`;
 							className = BDFDB.DOMUtils.formatClassName(className, BDFDB.disCN.bdfdbhasbadge, BDFDB.disCN.bdfdbbadgeavatar, BDFDB.disCN.bdfdbdev);
 						}
 						if (role) {
@@ -7405,7 +7499,7 @@ module.exports = (_ => {
 						}
 						else if (user.id == InternalData.myId) {
 							addBadge = true;
-							role = "Theme Developer";
+							role = `Theme ${BDFDB.LanguageUtils.LibraryStrings.developer}`;
 							avatar.className = BDFDB.DOMUtils.formatClassName(avatar.className, addBadge && BDFDB.disCN.bdfdbhasbadge, BDFDB.disCN.bdfdbbadgeavatar, BDFDB.disCN.bdfdbdev);
 						}
 						if (role && !avatar.querySelector(BDFDB.dotCN.bdfdbbadge)) {
@@ -7436,10 +7530,10 @@ module.exports = (_ => {
 					}
 				};
 				InternalBDFDB.processMemberListItem = function (e) {
-					InternalBDFDB._processAvatarMount(e.instance.props.user, e.node.querySelector(BDFDB.dotCN.avatarwrapper));
+					InternalBDFDB._processAvatarMount(e.instance.props.user, e.node.querySelector(BDFDB.dotCN.avatarwrapper), e.node);
 				};
 				InternalBDFDB.processPrivateChannel = function (e) {
-					InternalBDFDB._processAvatarMount(e.instance.props.user, e.node.querySelector(BDFDB.dotCN.avatarwrapper));
+					InternalBDFDB._processAvatarMount(e.instance.props.user, e.node.querySelector(BDFDB.dotCN.avatarwrapper), e.node);
 				};
 				InternalBDFDB.processUserPopout = function (e) {
 					InternalBDFDB._processAvatarMount(e.instance.props.user, e.node.querySelector(BDFDB.dotCN.userpopoutavatarwrapper), e.node);
@@ -7804,7 +7898,7 @@ module.exports = (_ => {
 											let translation = Array.from(document.querySelectorAll("[data-language-to-translate-into] span:not([class])")).map(n => n.innerText).join("");
 											if (translation || count > 50) {
 												clearInterval(interval);
-												require("electron").ipcRenderer.sendTo(${BDFDB.LibraryRequires.electron.remote.getCurrentWindow().webContents.id}, "GTO-translation", [
+												require("electron").ipcRenderer.sendTo(${BDFDB.LibraryRequires.electron.remote.getCurrentWindow().webContents.id}, "BDFDB-translation", [
 													translation,
 													(document.querySelector("h2 ~ [lang]") || {}).lang
 												]);
@@ -7813,9 +7907,9 @@ module.exports = (_ => {
 									`);
 								}
 							});
-							BDFDB.WindowUtils.addListener(BDFDB, "GTO-translation", (event, messageData) => {
+							BDFDB.WindowUtils.addListener(BDFDB, "BDFDB-translation", (event, messageData) => {
 								BDFDB.WindowUtils.close(googleTranslateWindow);
-								BDFDB.WindowUtils.removeListener(BDFDB, "GTO-translation");
+								BDFDB.WindowUtils.removeListener(BDFDB, "BDFDB-translation");
 								callback(messageData[0]);
 							});
 						};
@@ -7827,12 +7921,16 @@ module.exports = (_ => {
 								}
 								else {
 									if (response.statusCode == 429) {
-										BDFDB.NotificationUtils.toast("Too many requests. Switching to backup.", {type: "error"});
+										BDFDB.NotificationUtils.toast("Too many requests, switching to backup", {
+											type: "error"
+										});
 										config.useBackup = true;
 										BDFDB.DevUtils.generateLanguageStrings(strings, config);
 									}
 									else {
-										BDFDB.NotificationUtils.toast("Failed to translate text.", {type: "error"});
+										BDFDB.NotificationUtils.toast("Failed to translate text", {
+											type: "error"
+										});
 										callback("");
 									}
 								}
@@ -7840,9 +7938,16 @@ module.exports = (_ => {
 						};
 						let fails = 0, next = lang => {
 							if (!lang) {
-								let result = Object.keys(translations).filter(n => n != "en").sort().map(l => `\n\t\t\t\t\tcase "${l}":${l.length > 2 ? "\t" : "\t\t"}// ${BDFDB.LanguageUtils.languages[l].name}\n\t\t\t\t\t\treturn {${translations[l].map((s, i) => `\n\t\t\t\t\t\t\t${Object.keys(strings)[i]}:${"\t".repeat(10 - ((Object.keys(strings)[i].length + 2) / 4))}"${translations[language][i][0] == translations[language][i][0].toUpperCase() ? BDFDB.LibraryModules.StringUtils.upperCaseFirstChar(s) : s}"`).join(",")}\n\t\t\t\t\t\t};`).join("");
-								if (translations.en) result += `\n\t\t\t\t\tdefault:\t\t// English\n\t\t\t\t\t\treturn {${translations.en.map((s, i) => `\n\t\t\t\t\t\t\t${Object.keys(strings)[i]}:${"\t".repeat(10 - ((Object.keys(strings)[i].length + 2) / 4))}"${translations[language][i][0] == translations[language][i][0].toUpperCase() ? BDFDB.LibraryModules.StringUtils.upperCaseFirstChar(s) : s}"`).join(",")}\n\t\t\t\t\t\t};`
-								BDFDB.NotificationUtils.toast("Translation copied to clipboard.", {type: "success"});
+								let format = config.asObject ? ((l, isNotFirst) => {
+									return `${isNotFirst ? "," : ""}\n\t\t"${l == "en" ? "default" : l}": {${translations[l].map((s, i) => `\n\t\t\t"${Object.keys(strings)[i]}": "${translations[language][i][0] == translations[language][i][0].toUpperCase() ? BDFDB.LibraryModules.StringUtils.upperCaseFirstChar(s) : s}"`).join(",")}\n\t\t}`;
+								}) : ((l, isNotFirst) => {
+									return `\n\t\t\t\t\t${l == "en" ? "default" : `case "${l}"`}:${l.length > 2 ? "\t" : "\t\t"}// ${BDFDB.LanguageUtils.languages[l].name}\n\t\t\t\t\t\treturn {${translations[l].map((s, i) => `\n\t\t\t\t\t\t\t${Object.keys(strings)[i]}:${"\t".repeat(10 - ((Object.keys(strings)[i].length + 2) / 4))}"${translations[language][i][0] == translations[language][i][0].toUpperCase() ? BDFDB.LibraryModules.StringUtils.upperCaseFirstChar(s) : s}"`).join(",")}\n\t\t\t\t\t\t};`;
+								});
+								let result = Object.keys(translations).filter(n => n != "en").sort().map((l, i) => format(l, i)).join("");
+								if (translations.en) result += format("en", result ? 1 : 0);
+								BDFDB.NotificationUtils.toast("Translation copied to clipboard", {
+									type: "success"
+								});
 								BDFDB.LibraryRequires.electron.clipboard.write({text: result});
 							}
 							else (config.useBackup ? gt : gt2)(lang, translation => {
@@ -7914,28 +8019,33 @@ module.exports = (_ => {
 			Object.assign(this, config.info, BDFDB.ObjectUtils.exclude(config, "info"));
 			if (!BDFDB.BDUtils.isPluginEnabled(config.info.name)) BDFDB.BDUtils.enablePlugin(config.info.name);
 		}
-		start() {}
-		stop() {
+		start () {}
+		stop () {
 			if (!BDFDB.BDUtils.isPluginEnabled(config.info.name)) BDFDB.BDUtils.enablePlugin(config.info.name);
 		}
 		
 		getSettingsPanel (collapseStates = {}) {
 			let settingsPanel;
+			let getString = (key, property) => {
+				return BDFDB.LanguageUtils.LibraryStringsCheck[`settings_${key}_${property}`] ? BDFDB.LanguageUtils.LibraryStringsFormat(`settings_${key}_${property}`, BDFDB.BDUtils.getSettingsProperty("name", BDFDB.BDUtils.settingsIds[key]) || BDFDB.LibraryModules.StringUtils.upperCaseFirstChar(key.replace(/([A-Z])/g, " $1"))) : InternalBDFDB.defaults.settings[key][property];
+			};
 			return settingsPanel = BDFDB.PluginUtils.createSettingsPanel(BDFDB, {
 				collapseStates: collapseStates,
 				children: _ => {
-					let bdToastSetting = BDFDB.BDUtils.getSettings(BDFDB.BDUtils.settingsIds.showToasts);
 					let settingsItems = [];
 					
-					for (let key in settings) settingsItems.push(BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.SettingsSaveItem, {
-						type: "Switch",
-						plugin: InternalBDFDB,
-						disabled: key == "showToasts" && bdToastSetting,
-						keys: ["settings", key],
-						label: InternalBDFDB.defaults.settings[key].description,
-						note: key == "showToasts" && bdToastSetting && "Disable BBDs general 'Show Toast' setting before disabling this",
-						value: settings[key] || key == "showToasts" && bdToastSetting
-					}));
+					for (let key in settings) {
+						let nativeSetting = BDFDB.BDUtils.getSettings(BDFDB.BDUtils.settingsIds[key]);
+						settingsItems.push(BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.SettingsSaveItem, {
+							type: "Switch",
+							plugin: InternalBDFDB,
+							disabled: InternalBDFDB.defaults.settings[key].disableIfNative && nativeSetting,
+							keys: ["settings", key],
+							label: getString(key, "description"),
+							note: (InternalBDFDB.defaults.settings[key].noteAlways || InternalBDFDB.defaults.settings[key].noteIfNative && nativeSetting) && getString(key, "note"),
+							value: settings[key] || key == "showToasts" && bdToastSetting
+						}));
+					}
 					
 					return settingsItems;
 				}

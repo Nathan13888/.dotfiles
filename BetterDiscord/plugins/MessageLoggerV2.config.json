@@ -1,7 +1,7 @@
 {
     "settings": {
         "obfuscateCSSClasses": true,
-        "autoBackup": false,
+        "autoBackup": true,
         "dontSaveData": false,
         "displayUpdateNotes": true,
         "ignoreMutedGuilds": true,

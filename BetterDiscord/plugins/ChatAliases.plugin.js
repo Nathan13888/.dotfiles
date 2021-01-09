@@ -14,12 +14,12 @@ module.exports = (_ => {
 		"info": {
 			"name": "ChatAliases",
 			"author": "DevilBro",
-			"version": "2.2.2",
+			"version": "2.2.3",
 			"description": "Allow the user to configure their own chat-aliases which will automatically be replaced before the message is being sent"
 		},
 		"changeLog": {
 			"fixed": {
-				"File aliases with replies": "Now properly adds the reply to a file alias if the rest of the message is empty"
+				"Command List": "Fixed issue where command list and autocomplete menu could be open at the same time on top of each other"
 			}
 		}
 	};
@@ -30,7 +30,7 @@ module.exports = (_ => {
 		getVersion () {return config.info.version;}
 		getDescription () {return config.info.description;}
 		
-		load() {
+		load () {
 			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue: []});
 			if (!window.BDFDB_Global.downloadModal) {
 				window.BDFDB_Global.downloadModal = true;
@@ -49,9 +49,9 @@ module.exports = (_ => {
 			}
 			if (!window.BDFDB_Global.pluginQueue.includes(config.info.name)) window.BDFDB_Global.pluginQueue.push(config.info.name);
 		}
-		start() {this.load();}
-		stop() {}
-		getSettingsPanel() {
+		start () {this.load();}
+		stop () {}
+		getSettingsPanel () {
 			let template = document.createElement("template");
 			template.innerHTML = `<div style="color: var(--header-primary); font-size: 16px; font-weight: 300; white-space: pre; line-height: 22px;">The library plugin needed for ${config.info.name} is missing.\nPlease click <a style="font-weight: 500;">Download Now</a> to install it.</div>`;
 			template.content.firstElementChild.querySelector("a").addEventListener("click", _ => {
@@ -66,7 +66,7 @@ module.exports = (_ => {
 		var settings = {}, amounts = {}, configs = {}, aliases = {}, commandAliases = {}, commandSentinel;
 	
 		return class ChatAliases extends Plugin {
-			onLoad() {
+			onLoad () {
 				this.defaults = {
 					configs: {
 						case: 				{value: false,		description: "Handle the wordvalue case sensitive"},
@@ -76,15 +76,15 @@ module.exports = (_ => {
 						file: 				{value: false,		description: "Handle the replacevalue as a filepath"}
 					},
 					settings: {
-						replaceBeforeSend:	{value: true, 		inner: false,	description: "Replace words with your aliases before a message is sent"},
-						addContextMenu:		{value: true, 		inner: false,	description: "Add a contextmenu entry to faster add new aliases"},
-						addAutoComplete:	{value: true, 		inner: false,	description: "Add an autocomplete-menu for non-RegExp aliases"},
+						replaceBeforeSend:	{value: true, 		inner: false,		description: "Replace words with your aliases before a message is sent"},
+						addContextMenu:		{value: true, 		inner: false,		description: "Add a contextmenu entry to faster add new aliases"},
+						addAutoComplete:	{value: true, 		inner: false,		description: "Add an autocomplete-menu for non-RegExp aliases"},
 						triggerNormal:		{value: true, 		inner: true,		description: "Normal Message Textarea"},
 						triggerEdit:		{value: true, 		inner: true,		description: "Edit Message Textarea"},
 						triggerUpload:		{value: true, 		inner: true,		description: "Upload Message Prompt"}
 					},
 					amounts: {
-						minAliasLength:		{value: 2, 			min: 1,	description: "Minimal Character Length to open Autocomplete-Menu: "}
+						minAliasLength:		{value: 2, 			min: 1,				description: "Minimal Character Length to open Autocomplete-Menu: "}
 					}
 				};
 				
@@ -103,7 +103,7 @@ module.exports = (_ => {
 				`;
 			}
 			
-			onStart() {
+			onStart () {
 				aliases = BDFDB.DataUtils.load(this, "words");
 				commandSentinel = BDFDB.LibraryModules.AutocompleteSentinels && BDFDB.LibraryModules.AutocompleteSentinels.COMMAND_SENTINEL || "/";
 				commandAliases = BDFDB.ObjectUtils.filter(aliases, key => key.startsWith(commandSentinel), true);
@@ -140,6 +140,7 @@ module.exports = (_ => {
 							return false;
 						},
 						queryResults: (channel, wordLowercase, config, rawValue) => {
+							if (rawValue == commandSentinel) return;
 							let currentLastWord = BDFDB.StringUtils.findMatchCaseless(wordLowercase, rawValue, true);
 							let matches = [];
 							for (let word in aliases) {
@@ -211,7 +212,7 @@ module.exports = (_ => {
 				this.forceUpdateAll();
 			}
 			
-			onStop() {
+			onStop () {
 				if (BDFDB.LibraryModules.AutocompleteOptions && BDFDB.LibraryModules.AutocompleteOptions.AUTOCOMPLETE_OPTIONS) {
 					delete BDFDB.LibraryModules.AutocompleteOptions.AUTOCOMPLETE_OPTIONS.ALIASES;
 				}
@@ -405,7 +406,7 @@ module.exports = (_ => {
 				let [children, index] = BDFDB.ContextMenuUtils.findItem(e.returnvalue, {id: "devmode-copy-id", group: true});
 				children.splice(index > -1 ? index : children.length, 0, BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuGroup, {
 					children: BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
-						label: "Add to ChatAliases",
+						label: BDFDB.LanguageUtils.LibraryStringsFormat("add_to", "ChatAliases"),
 						id: BDFDB.ContextMenuUtils.createItemId(this.name, "add-alias"),
 						action: _ => {
 							this.openAddModal(text.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t"));
@@ -429,7 +430,6 @@ module.exports = (_ => {
 			processUpload (e) {
 				if (!BDFDB.PatchUtils.isPatched(this, e.instance, "submitUpload")) BDFDB.PatchUtils.patch(this, e.instance, "submitUpload", {before: e2 => {
 					if (settings.triggerUpload) this.handleSubmit(e, e2, 1);
-					console.log(e, e2);
 				}}, {force: true, noCache: true});
 			}
 			
@@ -508,7 +508,7 @@ module.exports = (_ => {
 				};
 				BDFDB.ModalUtils.open(this, {
 					size: "MEDIUM",
-					header: "Add to ChatAliases",
+					header: BDFDB.LanguageUtils.LibraryStringsFormat("add_to", "ChatAliases"),
 					subheader: "",
 					children: [
 						this.createInputs(values),

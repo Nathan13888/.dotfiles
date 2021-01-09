@@ -132,8 +132,7 @@ client.background       #F8F8F2
 floating_modifier $mod
 
 # kill focused window
-#bindsym $mod+Shift+q kill
-bindsym $mod+q kill
+bindsym $mod+Shift+c kill
 
 # start the Rofi program launcher
 bindsym $mod+d exec --no-startup-id "rofi -show drun"

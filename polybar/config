@@ -78,13 +78,13 @@ height = ${var.bar-height}
 margin-top = 0
 margin-bottom = 0
 
-;separator = |
+separator = 
 
 border-size = 0
-padding-left = 2
-padding-right = 2
-module-margin-left = 2
-module-margin-right = 2
+padding-left = 1
+padding-right = 1
+module-margin-left = 1
+module-margin-right = 1
 
 ;radius = 6.0
 fixed-center = false
@@ -105,7 +105,7 @@ modules-left = i3 xwindow
 modules-right = kernel cpu memory filesystem pulseaudio pacman date
 
 tray-position = right
-tray-padding = 2
+tray-padding = 3
 tray-maxsize = ${var.tray-size}
 ;tray-background = #0063ff
 
@@ -159,7 +159,7 @@ index-sort = true
 wrapping-scroll = false
 
 ; Separator in between workspaces
-label-separator = ·
+;label-separator = 
 
 ; Only show workspaces on the same output as the bar
 ;pin-workspaces = true
@@ -173,7 +173,7 @@ label-focused = %index%
 label-focused-foreground = ${colors.highlight}
 label-focused-background = ${colors.background-alt}
 label-focused-underline= ${colors.secondary}
-label-focused-padding = 2
+label-focused-padding = ${self.label-mode-padding}
 
 ; unfocused = Inactive workspace on any monitor
 label-unfocused = %index%

@@ -44,6 +44,14 @@ foreground = #e0dede
 background-alt = #323B49
 foreground-alt = #9b8f8f
 
+kernel = #9aedfe
+cpu = #fc7d71
+memory = #7194fc
+filesystem = ${self.primary}
+pulseaudio = ${self.active}
+pacman = #fcc271
+date = #71fcad
+
 ;overline-size = 2
 ;overline-color = #bc92f8
 ;underline-size = 0
@@ -136,6 +144,7 @@ exec = uname -r
 interval = 69696969
 
 format-prefix = " "
+format-foreground = ${colors.kernel}
 
 [module/filesystem]
 type = internal/fs
@@ -148,7 +157,7 @@ mount-0 = /
 ;mount-1 = /home
 
 label-mounted =  %free% FREE
-label-mounted-foreground = ${colors.foreground}
+label-mounted-foreground = ${colors.filesystem}
 label-unmounted = %mountpoint%: not mounted
 label-unmounted-foreground = ${colors.foreground-alt}
 
@@ -197,7 +206,7 @@ interval = 1
 
 format = %{A1:$TERMINAL --hold -e btm:}<label>  <ramp-coreload>%{A}
 ;format-background = #66cc99
-format-foreground = ${colors.primary}
+format-foreground = ${colors.cpu}
 ;format-underline = ${colors.underline}
 format-padding = 2
 
@@ -232,6 +241,7 @@ ramp-coreload-7-foreground = ${colors.high-load}
 type = internal/memory
 interval = 2
 format-prefix = "﬙ "
+format-foreground = ${colors.memory}
 ;format-underline = ${colors.underline}
 label = %gb_used% of %gb_total%
 
@@ -247,7 +257,7 @@ time-alt = ${self.time}
 ;time-alt = "%I:%M %p"
 
 format-prefix = " "
-format-prefix-foreground = ${colors.icons}
+format-foreground = ${colors.date}
 ;format-underline = ${colors.underline}
 
 label = %date% %time%
@@ -259,6 +269,7 @@ interval = 3600
 click-left = $TERMINAL --hold -e neofetch
 
 format-prefix = "  "
+format-foreground = ${colors.pacman}
 ;format-underline = ${colors.underline}
 
 [module/pulseaudio]
@@ -268,7 +279,7 @@ format-volume = <ramp-volume> <label-volume>
 format-volume-font = 3
 label-volume = VOL %percentage%%
 ;label-volume-foreground = ${colors.active}
-format-volume-foreground = ${colors.active}
+format-volume-foreground = ${colors.pulseaudio}
 
 label-muted =  muted
 label-muted-foreground = ${colors.alert}

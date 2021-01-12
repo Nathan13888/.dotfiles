@@ -39,6 +39,7 @@ kernel = #9aedfe
 cpu = #fc7d71
 memory = #7194fc
 filesystem = ${self.primary}
+speedtest = #aaeeee
 pulseaudio = ${self.active}
 transmission = #eeee00
 pacman = #fcc271
@@ -102,7 +103,7 @@ font-3 = ${var.font3}
 font-4 = ${var.font4}
 
 modules-left = i3 xwindow
-modules-right = kernel cpu memory filesystem pulseaudio transmission pacman date
+modules-right = kernel cpu memory filesystem speedtest pulseaudio transmission pacman date
 
 tray-position = right
 tray-padding = 3
@@ -253,6 +254,12 @@ format-foreground = ${colors.date}
 ;format-underline = ${colors.underline}
 
 label = %date% %time%
+
+[module/speedtest]
+type = custom/script
+exec-if = hash speedtest
+exec = echo " Speedtest"
+format-foreground = ${colors.speedtest}
 
 [module/transmission]
 type = custom/script

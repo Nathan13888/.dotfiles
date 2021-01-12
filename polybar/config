@@ -14,17 +14,9 @@
 ; - NORDVPN
 ; - transmission
 ; - Calendar
-; - better colours
-; - fonts and coloured emojis
-; - firmware and distro
-; - xwindow
-; - kernel mem free
-; - disk free
 ; - network up and down
-; - shorter date
-; - padding
 [var]
-bar-height = 64
+bar-height = 60
 tray-size = 34
 
 ; default nerd font

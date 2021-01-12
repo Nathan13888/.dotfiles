@@ -12,7 +12,6 @@
 
 ; TODO
 ; - NORDVPN
-; - transmission
 ; - Calendar
 ; - network up and down
 [var]
@@ -41,6 +40,7 @@ cpu = #fc7d71
 memory = #7194fc
 filesystem = ${self.primary}
 pulseaudio = ${self.active}
+transmission = #eeee00
 pacman = #fcc271
 date = #71fcad
 
@@ -102,7 +102,7 @@ font-3 = ${var.font3}
 font-4 = ${var.font4}
 
 modules-left = i3 xwindow
-modules-right = kernel cpu memory filesystem pulseaudio pacman date
+modules-right = kernel cpu memory filesystem pulseaudio transmission pacman date
 
 tray-position = right
 tray-padding = 3
@@ -253,6 +253,15 @@ format-foreground = ${colors.date}
 ;format-underline = ${colors.underline}
 
 label = %date% %time%
+
+[module/transmission]
+type = custom/script
+exec-if = hash transmission-gtk
+exec = echo "Transmission"
+interval = 5
+click-left = transmission-gtk
+format-prefix = "ﯲ "
+format-foreground = ${colors.transmission}
 
 [module/pacman]
 type = custom/script

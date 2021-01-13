@@ -201,7 +201,7 @@ format = %{A1:$TERMINAL --hold -e btm:}<label>  <ramp-coreload>%{A}
 ;format-background = #66cc99
 format-foreground = ${colors.cpu}
 ;format-underline = ${colors.underline}
-format-padding = 2
+format-padding = 1
 
 label =  CPU %percentage%%
 

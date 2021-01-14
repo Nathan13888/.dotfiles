@@ -104,6 +104,8 @@ font pango:SauceCodePro Nerd Font 9
 
 set $volcommand ~/.local/bin/volume.sh
 
+bindsym $mod+Shift+M exec --no-startup-id $volcommand togmic
+
 bindsym XF86AudioRaiseVolume exec --no-startup-id $volcommand up
 bindsym XF86AudioLowerVolume exec --no-startup-id $volcommand dn
 bindsym XF86AudioMute exec --no-startup-id $volcommand togm

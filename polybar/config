@@ -41,6 +41,7 @@ memory = #7194fc
 filesystem = ${self.primary}
 speedtest = #aaeeee
 pulseaudio = ${self.active}
+microphone = #abcdef
 transmission = #eeee00
 pacman = #fcc271
 date = #71fcad
@@ -103,7 +104,7 @@ font-3 = ${var.font3}
 font-4 = ${var.font4}
 
 modules-left = i3 xwindow
-modules-right = cpu memory filesystem pulseaudio date
+modules-right = cpu memory filesystem pulseaudio microphone date
 #modules-right = kernel cpu memory filesystem speedtest pulseaudio transmission pacman date
 
 tray-position = right
@@ -299,6 +300,13 @@ ramp-volume-1 = 
 ramp-volume-2 = 
 
 click-left = pavucontrol &
+
+[module/microphone]
+type = custom/script
+#exec-if = 
+exec = bash ~/.local/bin/volume.sh isMMicon
+interval = 1
+format-foreground = ${colors.microphone}
 
 [module/temperature]
 type = internal/temperature

@@ -103,7 +103,8 @@ font-3 = ${var.font3}
 font-4 = ${var.font4}
 
 modules-left = i3 xwindow
-modules-right = kernel cpu memory filesystem speedtest pulseaudio transmission pacman date
+modules-right = cpu memory filesystem pulseaudio date
+#modules-right = kernel cpu memory filesystem speedtest pulseaudio transmission pacman date
 
 tray-position = right
 tray-padding = 3

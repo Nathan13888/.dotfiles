@@ -198,7 +198,7 @@ label-urgent-padding = ${self.label-focused-padding}
 type = internal/cpu
 interval = 1
 
-format = %{A1:$TERMINAL --hold -e btm:}<label>  <ramp-coreload>%{A}
+format = %{A1:$TERMINAL -e btm:}<label>  <ramp-coreload>%{A}
 ;format-background = #66cc99
 format-foreground = ${colors.cpu}
 ;format-underline = ${colors.underline}

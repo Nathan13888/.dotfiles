@@ -3,6 +3,32 @@
 INC="1"
 MAX="120"
 
+# TODO: check if system is using pulseaudio (`pulseaudio --check` returns exit code 0)
+
+# TODO: improve method of getting input sources; ie. loop through all lines, get sink number, mute or unmute depending on state of some variable
+function getMic {
+    echo $(pamixer --list-sources | grep "alsa_input" | cut -c1-1)
+}
+
+function isMicMuted {
+    echo $(pamixer --get-mute --source $(getMic))
+}
+
+function isMMicon {
+    if [ $(isMicMuted) == true ]
+    then
+        echo ""
+    else
+        echo ""
+    fi
+}
+
+function togmic {
+    MIC=$(getMic)
+    echo "Toggling volume of mic $MIC"
+    pactl set-source-mute $MIC toggle
+}
+
 function getCurVol {
     echo $(pamixer --get-volume)
 }
@@ -42,6 +68,15 @@ function mute {
 }
 
 case "$1" in
+    isMMicon)
+        isMMicon
+        ;;
+    isMicMuted)
+        isMicMuted
+        ;;
+    togmic)
+        togmic
+        ;;
     curv)
         echo $(getCurVol)
         ;;

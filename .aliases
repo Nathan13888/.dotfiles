@@ -50,6 +50,7 @@ alias vr='v -r'
 alias vm="v -M"
 alias l="less"
 alias m="more"
+alias ca="cat"
 alias su="sudo su -"
 alias c="cd"
 alias clear="clear -x"

@@ -60,8 +60,11 @@
 		"417816118095249408",
 		"524998132073758741"
 	],
-	"categorydata": [],
+	"categorydata": [
+		"760673053695934495_hidden"
+	],
 	"settings": {
+		"alwaysCollapse": false,
 		"showAnnouncement": true,
 		"showForNormal": true,
 		"showStore": true,

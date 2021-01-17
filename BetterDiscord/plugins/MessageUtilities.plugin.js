@@ -14,16 +14,12 @@ module.exports = (_ => {
 		"info": {
 			"name": "MessageUtilities",
 			"author": "DevilBro",
-			"version": "1.8.1",
+			"version": "1.8.2",
 			"description": "Offer a number of useful message options. Remap the keybindings in the settings"
 		},
 		"changeLog": {
-			"added": {
-				"Replies": "Added option for replies",
-				"Quotes": "Now requires CustomQuoter plugin since Discord replaces Quotes with Replies"
-			},
 			"fixed": {
-				"Settings": "Fixed Settings"
+				"Search Results": "Fixed for search results"
 			}
 		}
 	};
@@ -34,7 +30,7 @@ module.exports = (_ => {
 		getVersion () {return config.info.version;}
 		getDescription () {return config.info.description;}
 		
-		load() {
+		load () {
 			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue: []});
 			if (!window.BDFDB_Global.downloadModal) {
 				window.BDFDB_Global.downloadModal = true;
@@ -53,15 +49,26 @@ module.exports = (_ => {
 			}
 			if (!window.BDFDB_Global.pluginQueue.includes(config.info.name)) window.BDFDB_Global.pluginQueue.push(config.info.name);
 		}
-		start() {this.load();}
-		stop() {}
+		start () {this.load();}
+		stop () {}
+		getSettingsPanel () {
+			let template = document.createElement("template");
+			template.innerHTML = `<div style="color: var(--header-primary); font-size: 16px; font-weight: 300; white-space: pre; line-height: 22px;">The library plugin needed for ${config.info.name} is missing.\nPlease click <a style="font-weight: 500;">Download Now</a> to install it.</div>`;
+			template.content.firstElementChild.querySelector("a").addEventListener("click", _ => {
+				require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
+					if (!e && b && b.indexOf(`* @name BDFDB`) > -1) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => {});
+					else BdApi.alert("Error", "Could not download BDFDB library plugin, try again some time later.");
+				});
+			});
+			return template.content.firstElementChild;
+		}
 	} : (([Plugin, BDFDB]) => {
 		const clickMap = ["CLICK", "DBLCLICK"];
 		var firedEvents = [], clickTimeout;
 		var settings = {}, bindings = {}, enabledBindings = {}, toasts = {};
 		
 		return class MessageUtilities extends Plugin {
-			onLoad() {
+			onLoad () {
 				this.defaults = {
 					settings: {
 						"addHints":					{value: true, 	description: "Add keycombo hints to contextmenus: "},
@@ -96,11 +103,11 @@ module.exports = (_ => {
 				}
 			}
 			
-			onStart() {
-				BDFDB.ListenerUtils.add(this, document, "click", BDFDB.dotCNC.message + BDFDB.dotCN.searchresultsgroupcozy, e => {
+			onStart () {
+				BDFDB.ListenerUtils.add(this, document, "click", BDFDB.dotCNC.message + BDFDB.dotCN.searchresultsmessage, e => {
 					if (!BDFDB.DOMUtils.getParent(BDFDB.dotCN.messagetoolbarbutton, e.target)) this.onClick(e, 0, "onSglClick");
 				});
-				BDFDB.ListenerUtils.add(this, document, "dblclick", BDFDB.dotCNC.message + BDFDB.dotCN.searchresultsgroupcozy, e => {
+				BDFDB.ListenerUtils.add(this, document, "dblclick", BDFDB.dotCNC.message + BDFDB.dotCN.searchresultsmessage, e => {
 					if (!BDFDB.DOMUtils.getParent(BDFDB.dotCN.messagetoolbarbutton, e.target)) this.onClick(e, 1, "onDblClick");
 				});
 				BDFDB.ListenerUtils.add(this, document, "keydown", e => {
@@ -110,7 +117,7 @@ module.exports = (_ => {
 				this.forceUpdateAll();
 			}
 			
-			onStop() {
+			onStop () {
 				this.forceUpdateAll();
 			}
 
@@ -234,15 +241,15 @@ module.exports = (_ => {
 									case "edit":
 										action = "Edit_Message";
 										break;
+									case "reply":
+										action = "Reply_to_Message";
+										break;
 									case "pin":
 									case "unpin":
 										action = "Pin/Unpin_Message";
 										break;
 									case "delete":
 										action = "Delete_Message";
-										break;
-									case "quote":
-										action = "Quote_Message";
 										break;
 								}
 								if (action) hint = this.getActiveShortcutString(action);
@@ -346,7 +353,7 @@ module.exports = (_ => {
 			doReply ({messageDiv, message}, action) {
 				if (message.state == "SENT") {
 					let channel = BDFDB.LibraryModules.ChannelStore.getChannel(message.channel_id);
-					if (channel && BDFDB.UserUtils.can("SEND_MESSAGES") && message.type == 0) {
+					if (channel && (BDFDB.DMUtils.isDMChannel(channel) || BDFDB.UserUtils.can("SEND_MESSAGES")) && message.type == 0) {
 						BDFDB.LibraryModules.MessageManageUtils.replyToMessage(channel, message);
 						if (toasts[action]) BDFDB.NotificationUtils.toast("Added reply to message", {type: "success"});
 					}
@@ -420,7 +427,7 @@ module.exports = (_ => {
 			}
 
 			getMessageData (target) {
-				let messageDiv = BDFDB.DOMUtils.getParent(BDFDB.dotCNC.message + BDFDB.dotCN.searchresultsgroupcozy, target);
+				let messageDiv = BDFDB.DOMUtils.getParent(BDFDB.dotCNC.message + BDFDB.dotCN.searchresultsmessage, target);
 				if (messageDiv && messageDiv.querySelector(BDFDB.dotCN.textarea)) return {messageDiv: null, message: null};
 				let instance = BDFDB.ReactUtils.getInstance(messageDiv);
 				let message = instance && (BDFDB.ReactUtils.findValue(instance, "baseMessage") || BDFDB.ReactUtils.findValue(instance, "message"));

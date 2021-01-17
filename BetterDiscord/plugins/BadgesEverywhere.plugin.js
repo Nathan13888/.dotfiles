@@ -1,17 +1,25 @@
-//META{"name":"BadgesEverywhere","authorId":"278543574059057154","invite":"Jx3TjNS","donate":"https://www.paypal.me/MircoWittrien","patreon":"https://www.patreon.com/MircoWittrien","website":"https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/BadgesEverywhere","source":"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/BadgesEverywhere/BadgesEverywhere.plugin.js"}*//
+/**
+ * @name BadgesEverywhere
+ * @authorId 278543574059057154
+ * @invite Jx3TjNS
+ * @donate https://www.paypal.me/MircoWittrien
+ * @patreon https://www.patreon.com/MircoWittrien
+ * @website https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/BadgesEverywhere
+ * @source https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/BadgesEverywhere/BadgesEverywhere.plugin.js
+ * @updateUrl https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/BadgesEverywhere/BadgesEverywhere.plugin.js
+ */
 
 module.exports = (_ => {
 	const config = {
 		"info": {
 			"name": "BadgesEverywhere",
 			"author": "DevilBro",
-			"version": "1.6.3",
+			"version": "1.6.5",
 			"description": "Display Badges (Nitro, HypeSquad, etc...) in the chat/memberlist/userpopout"
 		},
 		"changeLog": {
 			"fixed": {
-				"Chat Margin": "Added margin between username and badges",
-				"Colored Badges": "Work again"
+				"Styling Replies": "Fixed position and margins for badges in replied messages"
 			}
 		}
 	};
@@ -21,8 +29,8 @@ module.exports = (_ => {
 		getVersion () {return config.info.version;}
 		getDescription () {return config.info.description;}
 		
-		load() {
-			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue:[]});
+		load () {
+			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue: []});
 			if (!window.BDFDB_Global.downloadModal) {
 				window.BDFDB_Global.downloadModal = true;
 				BdApi.showConfirmationModal("Library Missing", `The library plugin needed for ${config.info.name} is missing. Please click "Download Now" to install it.`, {
@@ -32,7 +40,7 @@ module.exports = (_ => {
 					onConfirm: _ => {
 						delete window.BDFDB_Global.downloadModal;
 						require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
-							if (!e && b && b.indexOf(`//META{"name":"`) > -1) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => {});
+							if (!e && b && b.indexOf(`* @name BDFDB`) > -1) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => {});
 							else BdApi.alert("Error", "Could not download BDFDB library plugin, try again some time later.");
 						});
 					}
@@ -40,17 +48,28 @@ module.exports = (_ => {
 			}
 			if (!window.BDFDB_Global.pluginQueue.includes(config.info.name)) window.BDFDB_Global.pluginQueue.push(config.info.name);
 		}
-		start() {this.load();}
-		stop() {}
+		start () {this.load();}
+		stop () {}
+		getSettingsPanel () {
+			let template = document.createElement("template");
+			template.innerHTML = `<div style="color: var(--header-primary); font-size: 16px; font-weight: 300; white-space: pre; line-height: 22px;">The library plugin needed for ${config.info.name} is missing.\nPlease click <a style="font-weight: 500;">Download Now</a> to install it.</div>`;
+			template.content.firstElementChild.querySelector("a").addEventListener("click", _ => {
+				require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
+					if (!e && b && b.indexOf(`* @name BDFDB`) > -1) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => {});
+					else BdApi.alert("Error", "Could not download BDFDB library plugin, try again some time later.");
+				});
+			});
+			return template.content.firstElementChild;
+		}
 	} : (([Plugin, BDFDB]) => {
-		var badgeClasses, requestedUsers = {}, loadedUsers = {}, requestQueue = {queue:[], timeout:null, id:null}, cacheTimeout;
+		var badgeClasses, requestedUsers = {}, loadedUsers = {}, requestQueue = {queue: [], timeout: null, id: null}, cacheTimeout;
 		var nitroFlag, boostFlag;
 		var settings = {}, badges = {}, indicators = {};
 		
 		const miniTypes = ["list", "chat"];
 		
 		return class BadgesEverywhere extends Plugin {
-			onLoad() {
+			onLoad () {
 				this.patchedModules = {
 					after: {
 						MemberListItem: "render",
@@ -61,11 +80,11 @@ module.exports = (_ => {
 				
 				this.defaults = {
 					settings: {
-						showInPopout:		{value:true, 	description:"Show Badge in User Popout"},
-						showInChat:			{value:true, 	description:"Show Badge in Chat Window"},
-						showInMemberList:	{value:true, 	description:"Show Badge in Member List"},
-						useColoredVersion:	{value:true, 	description:"Use colored version of the Badges for Chat and Members"},
-						showNitroDate:		{value:true, 	description:"Show the subscription date for Nitro/Boost Badges"}
+						showInPopout:		{value: true, 	description: "Show Badge in User Popout"},
+						showInChat:			{value: true, 	description: "Show Badge in Chat Window"},
+						showInMemberList:	{value: true, 	description: "Show Badge in Member List"},
+						useColoredVersion:	{value: true, 	description: "Use colored version of the Badges for Chat and Members"},
+						showNitroDate:		{value: true, 	description: "Show the subscription date for Nitro/Boost Badges"}
 					},
 					badges: {
 						"STAFF": {
@@ -172,12 +191,19 @@ module.exports = (_ => {
 						position: relative;
 						top: 2px;
 					}
+					${BDFDB.dotCNS.messagerepliedmessage + BDFDB.dotCN._badgeseverywherebadgeschat} {
+						top: 0;
+					}
 					${BDFDB.dotCN._badgeseverywheremini} {
 						margin-left: 5px;
 					}
-					${BDFDB.dotCNS.messagecompact + BDFDB.dotCN.messageusername} ~ ${BDFDB.dotCN._badgeseverywherebadges} {
+					${BDFDB.dotCNS.messagecompact + BDFDB.dotCN.messageusername} ~ ${BDFDB.dotCN._badgeseverywherebadges},
+					${BDFDB.dotCNS.messagerepliedmessage + BDFDB.dotCN.messageusername} ~ ${BDFDB.dotCN._badgeseverywherebadges} {
 						margin-right: .25rem;
 						text-indent: 0;
+					}
+					${BDFDB.dotCNS.messagerepliedmessage + BDFDB.dotCN.messageusername} ~ ${BDFDB.dotCN._badgeseverywherebadges} {
+						margin-left: 0;
 					}
 					
 					${BDFDB.dotCN._badgeseverywherebadgesinner} {
@@ -187,6 +213,10 @@ module.exports = (_ => {
 					}
 					${BDFDB.dotCNS._badgeseverywheremini + BDFDB.dotCN._badgeseverywherebadgesinner} {
 						grid-gap: 4px;
+					}
+					
+					${BDFDB.dotCN._badgeseverywherebadgessettings} {
+						color: var(--header-primary);
 					}
 					
 					${BDFDB.dotCN._badgeseverywherebadge} {
@@ -267,11 +297,11 @@ module.exports = (_ => {
 				for (let flag in this.defaults.badges) if (!this.defaults.badges[flag].icon || isNaN(parseInt(flag))) delete this.defaults.badges[flag];
 			}
 			
-			onStart() {
+			onStart () {
 				badgeClasses = BDFDB.DiscordClassModules.UserBadges || {};
 
 				requestedUsers = {}, loadedUsers = {};
-				requestQueue = {queue:[], timeout:null, id:null};
+				requestQueue = {queue: [], timeout: null, id: null};
 				
 				let badgeCache = BDFDB.DataUtils.load(this, "badgeCache");
 				if (badgeCache) {
@@ -307,7 +337,7 @@ module.exports = (_ => {
 				this.forceUpdateAll();
 			}
 			
-			onStop() {
+			onStop () {
 				BDFDB.TimeUtils.clear(requestQueue.timeout);
 
 				this.forceUpdateAll();
@@ -339,10 +369,8 @@ module.exports = (_ => {
 					value: indicators[flag],
 					labelchildren: this.createSettingsBadges(flag)
 				}));
-				settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsPanelInner, {
+				settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsPanelList, {
 					title: "Display Badges:",
-					first: settingsItems.length == 0,
-					last: true,
 					children: innerItems
 				}));
 				
@@ -356,7 +384,7 @@ module.exports = (_ => {
 				}
 			}
 			
-			forceUpdateAll() {
+			forceUpdateAll () {
 				settings = BDFDB.DataUtils.get(this, "settings");
 				badges = BDFDB.DataUtils.get(this, "badges");
 				indicators = BDFDB.DataUtils.get(this, "indicators");
@@ -414,7 +442,7 @@ module.exports = (_ => {
 				return BDFDB.ReactUtils.createElement("div", {
 					className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN._badgeseverywherebadges, BDFDB.disCN[`_badgeseverywherebadges${type}`], miniTypes.includes(type) && BDFDB.disCN._badgeseverywheremini), 
 					children: BDFDB.ReactUtils.createElement("div", {
-						className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN._badgeseverywherebadgesinner, !uncolored && BDFDB.disCN.userbadgescolored),
+						className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN._badgeseverywherebadgesinner, BDFDB.disCN.userbadges, !uncolored && BDFDB.disCN.userbadgescolored),
 						children: renderedBadges
 					})
 				});

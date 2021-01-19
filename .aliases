@@ -177,6 +177,11 @@ alias smkd="sudo mkdir -vp"
 alias rs="rsync -avzh --progress"
 alias cp='cp -v'
 alias mv='mv -v'
+function garb {
+    # TODO: do the same for all other arguements
+    mv $1 ~/ws/gt/garb/
+}
+alias ga="garb"
 alias rm='rm -v'
 alias rmf="rm -f" # removes all prompts
 alias rmd='rmdir -v'

@@ -22,7 +22,7 @@ export PATH=$PATH:$GOROOT/bin
 
 export GOPATH=$HOME/go # the first path in GOPATH is always used to install external packages
 export PATH=$PATH:GOPATH/bin
-export GOPATH=$GOPATH:$HOME/workspace/scripts
+export GOPATH=$GOPATH:$HOME/ws/scripts:$HOME/ws/gt
 
 [ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
 

@@ -27,6 +27,7 @@ GoogleTranslateOption.config.json
 MLV2_IMAGE_CACHE
 MessageLoggerV2Data.config.json
 BetterDiscord/plugins/MessageLoggerV2DataBackup.config.json
+BetterDiscord/plugins/ImageUtilities.config.json
 BetterDiscord/bdstorage.json
 
 # Vim Swap Files

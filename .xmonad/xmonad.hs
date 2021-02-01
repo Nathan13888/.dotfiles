@@ -1,80 +1,38 @@
---
--- xmonad example config file for xmonad-0.9
---
--- A template showing all available configuration hooks,
--- and how to override the defaults in your own xmonad.hs conf file.
---
--- Normally, you'd only override those defaults you care about.
---
--- NOTE: Those updating from earlier xmonad versions, who use
--- EwmhDesktops, safeSpawn, WindowGo, or the simple-status-bar
--- setup functions (dzen, xmobar) probably need to change
--- xmonad.hs, please see the notes below, or the following
--- link for more details:
---
--- http://www.haskell.org/haskellwiki/Xmonad/Notable_changes_since_0.8
---
-
+-- Imports
 import XMonad
 import Data.Monoid
+
+import XMonad.Util.SpawnOnce
+
+import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.SetWMName
+
+import XMonad.Layout.Gaps
+
+import Graphics.X11.ExtraTypes.XF86
 import System.Exit
 
+--import qualified DBus as D
+--import qualified DBus.Client as D
+--import qualified Codec.Binary.UTF8.String as UTF8
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
--- The preferred terminal program, which is used in a binding below and by
--- certain contrib modules.
---
-myTerminal      = "xterm"
-
--- Whether focus follows the mouse pointer.
+myTerminal      = "alacritty"
 myFocusFollowsMouse :: Bool
-myFocusFollowsMouse = True
+myFocusFollowsMouse = False -- default: True
+myBorderWidth   = 2
 
--- Width of the window border in pixels.
---
-myBorderWidth   = 1
-
--- modMask lets you specify which modkey you want to use. The default
--- is mod1Mask ("left alt").  You may also consider using mod3Mask
--- ("right alt"), which does not conflict with emacs keybindings. The
--- "windows key" is usually mod4Mask.
---
-myModMask       = mod1Mask
-
--- NOTE: from 0.9.1 on numlock mask is set automatically. The numlockMask
--- setting should be removed from configs.
---
--- You can safely remove this even on earlier xmonad versions unless you
--- need to set it to something other than the default mod2Mask, (e.g. OSX).
---
--- The mask for the numlock key. Numlock status is "masked" from the
--- current modifier status, so the keybindings will work with numlock on or
--- off. You may need to change this on some systems.
---
--- You can find the numlock modifier by running "xmodmap" and looking for a
--- modifier with Num_Lock bound to it:
---
--- > $ xmodmap | grep Num
--- > mod2        Num_Lock (0x4d)
---
--- Set numlockMask = 0 if you don't have a numlock key, or want to treat
--- numlock status separately.
---
--- myNumlockMask   = mod2Mask -- deprecated in xmonad-0.9.1
-------------------------------------------------------------
-
+myModMask       = mod4Mask
 
 -- The default number of workspaces (virtual screens) and their names.
 -- By default we use numeric strings, but any string may be used as a
 -- workspace name. The number of workspaces is determined by the length
 -- of this list.
---
--- A tagging example:
---
--- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
---
-myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
+
+myWorkspaces    = ["1","2","3","4","5","6","7","8","9","10"]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
@@ -85,75 +43,60 @@ myFocusedBorderColor = "#ff0000"
 -- Key bindings. Add, modify or remove key bindings here.
 --
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
-
     -- launch a terminal
-    [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
-
+    [ ((modm,               xK_Return), spawn $ XMonad.terminal conf)
     -- launch dmenu
-    , ((modm,               xK_p     ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
-
-    -- launch gmrun
-    , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
-
+    , ((modm,               xK_d     ), spawn "rofi -show drun")
+    -- take a screenshot
+    , ((modm .|. shiftMask, xK_s     ), spawn "flameshot gui")
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
-
      -- Rotate through the available layout algorithms
-    , ((modm,               xK_space ), sendMessage NextLayout)
-
+    , ((modm,               xK_e     ), sendMessage NextLayout)
     --  Reset the layouts on the current workspace to default
-    , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
-
+    , ((modm .|. shiftMask, xK_e     ), setLayout $ XMonad.layoutHook conf)
     -- Resize viewed windows to the correct size
     , ((modm,               xK_n     ), refresh)
-
-    -- Move focus to the next window
-    , ((modm,               xK_Tab   ), windows W.focusDown)
-
     -- Move focus to the next window
     , ((modm,               xK_j     ), windows W.focusDown)
-
     -- Move focus to the previous window
     , ((modm,               xK_k     ), windows W.focusUp  )
-
     -- Move focus to the master window
     , ((modm,               xK_m     ), windows W.focusMaster  )
-
     -- Swap the focused window and the master window
-    , ((modm,               xK_Return), windows W.swapMaster)
-
+    , ((modm,               xK_space), windows W.swapMaster)
     -- Swap the focused window with the next window
     , ((modm .|. shiftMask, xK_j     ), windows W.swapDown  )
-
     -- Swap the focused window with the previous window
     , ((modm .|. shiftMask, xK_k     ), windows W.swapUp    )
-
     -- Shrink the master area
     , ((modm,               xK_h     ), sendMessage Shrink)
-
     -- Expand the master area
     , ((modm,               xK_l     ), sendMessage Expand)
-
     -- Push window back into tiling
     , ((modm,               xK_t     ), withFocused $ windows . W.sink)
-
     -- Increment the number of windows in the master area
     , ((modm              , xK_comma ), sendMessage (IncMasterN 1))
-
     -- Deincrement the number of windows in the master area
     , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
-
+-- https://hackage.haskell.org/package/X11-1.9/docs/Graphics-X11-ExtraTypes-XF86.html
+    -- Volume MUTE
+    , ((0, xF86XK_AudioMute)        , spawn "$HOME/.local/bin/volume.sh togm")
+    -- Volume UP
+    , ((0, xF86XK_AudioRaiseVolume) , spawn "$HOME/.local/bin/volume.sh up")
+    -- VOlume DOWN
+    , ((0, xF86XK_AudioLowerVolume) , spawn "$HOME/.local/bin/volume.sh dn")
     -- Toggle the status bar gap
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
     -- See also the statusBar function from Hooks.DynamicLog.
     --
-    -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
+    , ((modm              , xK_b     ), sendMessage ToggleStruts)
 
     -- Quit xmonad
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
 
     -- Restart xmonad
-    , ((modm              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
+    , ((modm .|. shiftMask, xK_r     ), spawn "notify-send \"XMonad\" \"Restarting...\" -u low; xmonad --recompile; xmonad --restart; notify-send \"XMonad\" \"Restarted.\" -u low")
     ]
     ++
 
@@ -213,7 +156,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = tiled ||| Mirror tiled ||| Full
+myLayout = gaps [(U,68),(L,8),(R,8),(D,10)] $ Tall 10 (3/100) (1/2) ||| tiled ||| Mirror tiled ||| Full
   where
     -- default tiling algorithm partitions the screen into two panes
     tiled   = Tall nmaster delta ratio
@@ -243,10 +186,14 @@ myLayout = tiled ||| Mirror tiled ||| Full
 -- 'className' and 'resource' are used below.
 --
 myManageHook = composeAll
-    [ className =? "MPlayer"        --> doFloat
+    [ className =? "feh"            --> doFloat
+    , className =? "polybar"        --> doFloat
     , className =? "Gimp"           --> doFloat
     , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore ]
+    --, isFullscreen                  --> doFullFloat
+    , role      =? "pop-up"         --> doFloat ]
+  where
+    role = stringProperty "WM_WINDOW_ROLE"
 
 ------------------------------------------------------------------------
 -- Event handling
@@ -290,14 +237,28 @@ myLogHook = return ()
 -- It will add initialization of EWMH support to your custom startup
 -- hook by combining it with ewmhDesktopsStartup.
 --
-myStartupHook = return ()
+
+myStartupHook :: X()
+myStartupHook = do
+        setWMName "NCWM (xmonad)"
+        spawnOnce "bash $HOME/.config/polybar/launch.sh bar-xmonad"
+        spawnOnce "picom -b"
+        spawnOnce "watch -n 900 feh --bg-scale --randomize ~/Desktop/Wallpapers/ &"
+        spawnOnce "dunst &"
+        spawnOnce "fcitx5 -d"
+        spawnOnce "flameshot"
+        spawnOnce "xbanish"
+        spawnOnce "numlockx"
+        spawnOnce "xset r rate 210 40"
+        spawnOnce "xset m 3/2"
+        spawnOnce "nm-applet"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
 
 -- Run xmonad with the settings you specify. No need to modify this.
 --
-main = xmonad defaults
+main = xmonad $ ewmh defaults
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will
@@ -311,8 +272,6 @@ defaults = defaultConfig {
         focusFollowsMouse  = myFocusFollowsMouse,
         borderWidth        = myBorderWidth,
         modMask            = myModMask,
-        -- numlockMask deprecated in 0.9.1
-        -- numlockMask        = myNumlockMask,
         workspaces         = myWorkspaces,
         normalBorderColor  = myNormalBorderColor,
         focusedBorderColor = myFocusedBorderColor,

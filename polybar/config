@@ -10,10 +10,6 @@
 ;
 ;==========================================================
 
-; TODO
-; - NORDVPN
-; - Calendar
-; - network up and down
 [var]
 bar-height = 60
 tray-size = 34
@@ -30,7 +26,7 @@ font3 = MesloLGS Nerd Font:style=Regular:size=20;-1
 font4 = MesloLGS Nerd Font:style=Regular:size=24;-3
 
 [colors]
-background = #0B090A
+background = #cc0B090A
 foreground = #e0dede
 background-alt = #323B49
 foreground-alt = #9b8f8f
@@ -52,8 +48,8 @@ date = #71fcad
 underline = #47424C
 
 primary = #fdaaaa
-secondary = #8ae552
-highlight = #92DCE5
+secondary = #fcd5ce
+highlight = #e8e8e4
 
 active = #33ffcc
 alert = #bd2c40
@@ -67,14 +63,55 @@ high-load = ${self.alert}
 screenchange-reload = true
 ;compositing-background = xor
 ;compositing-background = screen
-;compositing-foreground = source
+compositing-foreground = source
 ;compositing-border = over
 ;pseudo-transparency = false
 
-[bar/bar-i3]
+[bar/base]
 monitor = ${env:MONITOR:DP-0}
 width = 100%
 height = ${var.bar-height}
+
+[bar/bar-xmonad]
+inherit = bar/base
+tray-position = right
+tray-padding = 3
+tray-maxsize = ${var.tray-size}
+
+font-0 = ${var.font0}
+font-1 = ${var.font1}
+font-2 = ${var.font2}
+font-3 = ${var.font3}
+font-4 = ${var.font4}
+
+fixed-center = false
+margin-top = 0
+margin-left = 0
+margin-bottom = 0
+
+monitor-strict = false
+override-redirect = true
+
+separator = 
+
+border-size = 0
+border-color = #00000000
+padding-left = 1
+padding-right = 1
+module-margin-left = 1
+module-margin-right = 1
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 3
+line-color = #f00
+
+modules-left = xmonad xwindow
+modules-right = cpu memory filesystem pulseaudio microphone date
+
+[bar/bar-i3]
+inherit = bar/base
 ;offset-x = 0
 ;offset-y = 0
 margin-top = 0
@@ -89,7 +126,7 @@ module-margin-left = 1
 module-margin-right = 1
 
 ;radius = 6.0
-fixed-center = false
+fixed-center = true
 
 background = ${colors.background}
 foreground = ${colors.foreground}
@@ -121,6 +158,16 @@ override-redirect = false
 
 cursor-click = pointer
 cursor-scroll = ns-resize
+
+[module/xmonad]
+type = custom/script
+exec = xmonad-log
+tail = true
+
+#type = internal/xworkspaces
+#pin-workspaces = true
+#enable-click = true
+#enable-scroll = false
 
 [module/xwindow]
 type = internal/xwindow
@@ -167,6 +214,8 @@ wrapping-scroll = false
 
 ; Only show workspaces on the same output as the bar
 ;pin-workspaces = true
+
+format-font = 3
 
 label-mode-padding = 2
 label-mode-foreground = ${colors.foreground}

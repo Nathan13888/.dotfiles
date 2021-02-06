@@ -19,7 +19,7 @@ font0 = JetBrains Mono Nerd Font:style=Medium:size=20;0
 ; xwindow title
 font1 = DejaVuSansMono Nerd Font Mono:style=Oblique:size=20;1
 ; important labels
-font2 = MesloLGS Nerd Font:style=Bold:size=22;0
+font2 = MesloLGS Nerd Font:style=Bold:size=22;2
 ; emojis
 font3 = MesloLGS Nerd Font:style=Regular:size=20;-1
 ; rampcore

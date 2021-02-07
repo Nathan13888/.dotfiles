@@ -38,6 +38,9 @@ max-cache-ttl 34560000
 pinentry-program /usr/bin/pinentry-gnome3
 ```
 - (pinentry-gnome is needed for gnome-keyring to work)
+### Gnome Keyring
+
+### SSH Keys
 
 ### Git
 - install `git`, `git-lfs`, `hub`, [`git-extras`](https://github.com/tj/git-extras)
@@ -49,11 +52,12 @@ pinentry-program /usr/bin/pinentry-gnome3
 ### ZSH
 - install `zsh`: `sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"` and [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)
 - remove `~/.oh-my-zsh/custom`
-### PowerLevel10k
+#### PowerLevel10k
 - Install P10k:`git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k`
-### Starship Prompt
+#### Starship Prompt
 - Installing using curl: `curl -fsSL https://starship.rs/install.sh | bash`
 - Alternative, you could get starship from AUR: `starship, starship-bin, starship-git`
+
 ### Tmux
 - Installing TPM: `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
 - Install plugins: "Press prefix + I (capital i, as in Install) to fetch the plugin"

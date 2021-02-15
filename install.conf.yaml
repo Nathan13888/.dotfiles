@@ -27,7 +27,6 @@
     ~/.oh-my-zsh/custom: .oh-my-zsh/custom
     ~/.p10k.zsh: .p10k.zsh
     ~/.todo: .todo
-    ~/.scidvspc: .scidvspc
     ~/.tmux.conf: .tmux.conf
     ~/.vim: .vim
     ~/.vimrc: .vimrc

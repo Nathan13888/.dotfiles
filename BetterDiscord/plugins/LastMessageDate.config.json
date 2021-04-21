@@ -5,8 +5,18 @@
 	"choices": {
 		"lastMessageDateLang": "$discord"
 	},
+	"dates": {
+		"lastMessageDate": {}
+	},
 	"formats": {
 		"ownFormat": "$hour:$minute:$second, $day.$month.$year"
+	},
+	"general": {
+		"displayText": true
+	},
+	"places": {
+		"userPopout": true,
+		"userProfile": true
 	},
 	"settings": {
 		"addInUserPopout": true,

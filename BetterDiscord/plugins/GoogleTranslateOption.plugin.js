@@ -1,12 +1,15 @@
 /**
  * @name GoogleTranslateOption
+ * @author DevilBro
  * @authorId 278543574059057154
+ * @version 2.1.9
+ * @description Allows you to translate Messages and your outgoing Message within Discord
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
  * @patreon https://www.patreon.com/MircoWittrien
- * @website https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/GoogleTranslateOption
- * @source https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/GoogleTranslateOption/GoogleTranslateOption.plugin.js
- * @updateUrl https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/GoogleTranslateOption/GoogleTranslateOption.plugin.js
+ * @website https://mwittrien.github.io/
+ * @source https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/GoogleTranslateOption/
+ * @updateUrl https://mwittrien.github.io/BetterDiscordAddons/Plugins/GoogleTranslateOption/GoogleTranslateOption.plugin.js
  */
 
 module.exports = (_ => {
@@ -14,8 +17,8 @@ module.exports = (_ => {
 		"info": {
 			"name": "GoogleTranslateOption",
 			"author": "DevilBro",
-			"version": "2.1.3",
-			"description": "Add a Google Translate option to your context menu, which shows a preview of the translated text and on click will open the selected text in Google Translate. Also adds a translation button to your textareas, which will automatically translate the text for you before it is being send"
+			"version": "2.1.9",
+			"description": "Allows you to translate Messages and your outgoing Message within Discord"
 		}
 	};
 	
@@ -23,45 +26,177 @@ module.exports = (_ => {
 		getName () {return config.info.name;}
 		getAuthor () {return config.info.author;}
 		getVersion () {return config.info.version;}
-		getDescription () {return config.info.description;}
+		getDescription () {return `The Library Plugin needed for ${config.info.name} is missing. Open the Plugin Settings to download it. \n\n${config.info.description}`;}
 		
-		load() {
+		downloadLibrary () {
+			require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
+				if (!e && b && r.statusCode == 200) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => BdApi.showToast("Finished downloading BDFDB Library", {type: "success"}));
+				else BdApi.alert("Error", "Could not download BDFDB Library Plugin. Try again later or download it manually from GitHub: https://mwittrien.github.io/downloader/?library");
+			});
+		}
+		
+		load () {
 			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue: []});
 			if (!window.BDFDB_Global.downloadModal) {
 				window.BDFDB_Global.downloadModal = true;
-				BdApi.showConfirmationModal("Library Missing", `The library plugin needed for ${config.info.name} is missing. Please click "Download Now" to install it.`, {
+				BdApi.showConfirmationModal("Library Missing", `The Library Plugin needed for ${config.info.name} is missing. Please click "Download Now" to install it.`, {
 					confirmText: "Download Now",
 					cancelText: "Cancel",
 					onCancel: _ => {delete window.BDFDB_Global.downloadModal;},
 					onConfirm: _ => {
 						delete window.BDFDB_Global.downloadModal;
-						require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
-							if (!e && b && b.indexOf(`* @name BDFDB`) > -1) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => {});
-							else BdApi.alert("Error", "Could not download BDFDB library plugin, try again some time later.");
-						});
+						this.downloadLibrary();
 					}
 				});
 			}
 			if (!window.BDFDB_Global.pluginQueue.includes(config.info.name)) window.BDFDB_Global.pluginQueue.push(config.info.name);
 		}
-		start() {this.load();}
-		stop() {}
-		getSettingsPanel() {
+		start () {this.load();}
+		stop () {}
+		getSettingsPanel () {
 			let template = document.createElement("template");
-			template.innerHTML = `<div style="color: var(--header-primary); font-size: 16px; font-weight: 300; white-space: pre; line-height: 22px;">The library plugin needed for ${config.info.name} is missing.\nPlease click <a style="font-weight: 500;">Download Now</a> to install it.</div>`;
-			template.content.firstElementChild.querySelector("a").addEventListener("click", _ => {
-				require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
-					if (!e && b && b.indexOf(`* @name BDFDB`) > -1) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => {});
-					else BdApi.alert("Error", "Could not download BDFDB library plugin, try again some time later.");
-				});
-			});
+			template.innerHTML = `<div style="color: var(--header-primary); font-size: 16px; font-weight: 300; white-space: pre; line-height: 22px;">The Library Plugin needed for ${config.info.name} is missing.\nPlease click <a style="font-weight: 500;">Download Now</a> to install it.</div>`;
+			template.content.firstElementChild.querySelector("a").addEventListener("click", this.downloadLibrary);
 			return template.content.firstElementChild;
 		}
 	} : (([Plugin, BDFDB]) => {
-		const translateIconGeneral = `<svg x="0" y="0" aria-hidden="false" width="22" height="22" viewBox="0 -1 24 24" fill="currentColor"><mask/><g mask="url(#translateIconMask)"><path d="M 19.794, 3.299 H 9.765 L 8.797, 0 h -6.598 C 0.99, 0, 0, 0.99, 0, 2.199 V 16.495 c 0, 1.21, 0.99, 2.199, 2.199, 2.199 H 9.897 l 1.1, 3.299 H 19.794 c 1.21, 0, 2.199 -0.99, 2.199 -2.199 V 5.498 C 21.993, 4.289, 21.003, 3.299, 19.794, 3.299 z M 5.68, 13.839 c -2.48, 0 -4.492 -2.018 -4.492 -4.492 s 2.018 -4.492, 4.492 -4.492 c 1.144, 0, 2.183, 0.407, 3.008, 1.171 l 0.071, 0.071 l -1.342, 1.298 l -0.066 -0.06 c -0.313 -0.297 -0.858 -0.643 -1.671 -0.643 c -1.441, 0 -2.612, 1.193 -2.612, 2.661 c 0, 1.468, 1.171, 2.661, 2.612, 2.661 c 1.507, 0, 2.161 -0.962, 2.337 -1.606 h -2.43 v -1.704 h 4.344 l 0.016, 0.077 c 0.044, 0.231, 0.06, 0.434, 0.06, 0.665 C 10.001, 12.036, 8.225, 13.839, 5.68, 13.839 z M 11.739, 9.979 h 4.393 c 0, 0 -0.374, 1.446 -1.715, 3.008 c -0.588 -0.676 -0.995 -1.336 -1.254 -1.864 h -1.089 L 11.739, 9.979 z M 13.625, 13.839 l -0.588, 0.583 l -0.72 -2.452 C 12.685, 12.63, 13.13, 13.262, 13.625, 13.839 z M 20.893, 19.794 c 0, 0.605 -0.495, 1.1 -1.1, 1.1 H 12.096 l 2.199 -2.199 l -0.896 -3.041 l 1.012 -1.012 l 2.953, 2.953 l 0.803 -0.803 l -2.975 -2.953 c 0.99 -1.138, 1.759 -2.474, 2.106 -3.854 h 1.397 V 8.841 H 14.697 v -1.144 h -1.144 v 1.144 H 11.398 l -1.309 -4.443 H 19.794 c 0.605, 0, 1.1, 0.495, 1.1, 1.1 V 19.794 z"/></g><extra/></svg>`;
-		const translateIconMask = `<mask id="translateIconMask" fill="black"><path d="M 0 0 H 24 V 24 H 0 Z" fill="white"></path><path d="M24 12 H 12 V 24 H 24 Z" fill="black"></path></mask>`;
+		var _this;
+		
+		const translateIconGeneral = `<svg name="Translate" width="24" height="24" viewBox="0 0 24 24"><mask/><path fill="currentColor" mask="url(#translateIconMask)" d="M 4 2 C 2.9005593 2 2 2.9005593 2 4 L 2 17 C 2 18.10035 2.9005593 19 4 19 L 11 19 L 12 22 L 20 22 C 21.10035 22 22 21.099441 22 20 L 22 7 C 22 5.9005592 21.099441 5 20 5 L 10.880859 5 L 10 2 L 4 2 z M 11.173828 6 L 20 6 C 20.550175 6 21 6.4498249 21 7 L 21 20 C 21 20.550175 20.550176 21 20 21 L 13 21 L 15 19 L 14.185547 16.236328 L 15.105469 15.314453 L 17.791016 18 L 18.521484 17.269531 L 15.814453 14.583984 C 16.714739 13.54911 17.414914 12.335023 17.730469 11.080078 L 19 11.080078 L 19 10.039062 L 15.365234 10.039062 L 15.365234 9 L 14.324219 9 L 14.324219 10.039062 L 12.365234 10.039062 L 11.173828 6 z M 7.1660156 6.4160156 C 8.2063466 6.4160156 9.1501519 6.7857022 9.9003906 7.4804688 L 9.9648438 7.5449219 L 8.7441406 8.7246094 L 8.6855469 8.6699219 C 8.4009108 8.3998362 7.9053417 8.0859375 7.1660156 8.0859375 C 5.8555986 8.0859375 4.7890625 9.1708897 4.7890625 10.505859 C 4.7890625 11.84083 5.8555986 12.925781 7.1660156 12.925781 C 8.5364516 12.925781 9.1309647 12.050485 9.2910156 11.464844 L 7.0800781 11.464844 L 7.0800781 9.9160156 L 11.03125 9.9160156 L 11.044922 9.984375 C 11.084932 10.194442 11.099609 10.379777 11.099609 10.589844 C 11.094109 12.945139 9.4803883 14.583984 7.1660156 14.583984 C 4.9107525 14.583984 3.0800781 12.749807 3.0800781 10.5 C 3.0800781 8.2501934 4.9162088 6.4160156 7.1660156 6.4160156 z M 12.675781 11.074219 L 16.669922 11.074219 C 16.669922 11.074219 16.330807 12.390095 15.111328 13.810547 C 14.576613 13.195806 14.206233 12.595386 13.970703 12.115234 L 12.980469 12.115234 L 12.675781 11.074219 z M 13.201172 12.884766 C 13.535824 13.484957 13.940482 14.059272 14.390625 14.583984 L 13.855469 15.115234 L 13.201172 12.884766 z"/><extra/></svg>`;
+		const translateIconMask = `<mask id="translateIconMask" fill="black"><path fill="white" d="M 0 0 H 24 V 24 H 0 Z"/><path fill="black" d="M24 12 H 12 V 24 H 24 Z"/></mask>`;
 		const translateIcon = translateIconGeneral.replace(`<extra/>`, ``).replace(`<mask/>`, ``).replace(` mask="url(#translateIconMask)"`, ``);
-		const translateIconUntranslate = translateIconGeneral.replace(`<extra/>`, `<path transform="translate(10, 8)" stroke="#f04747" stroke-width="2" fill="none" d="M 4 4 l 8.666 8.666 m 0 -8.667 l -8.667 8.666 Z"/>`).replace(`<mask/>`, translateIconMask);
+		const translateIconUntranslate = translateIconGeneral.replace(`<extra/>`, `<path fill="none" stroke="#f04747" stroke-width="2" d="m 14.702359,14.702442 8.596228,8.596148 m 0,-8.597139 -8.59722,8.596147 z"/>`).replace(`<mask/>`, translateIconMask);
+		
+		var settingsModal;
+		
+		const TranslateButtonComponent = class TranslateButton extends BdApi.React.Component {
+			render() {
+				return BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.ChannelTextAreaButton, {
+					className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN._googletranslateoptiontranslatebutton, translationEnabled && BDFDB.disCN._googletranslateoptiontranslating, BDFDB.disCN.textareapickerbutton),
+					isActive: this.props.isActive,
+					iconSVG: translateIcon,
+					nativeClass: true,
+					onClick: _ => {
+						this.props.isActive = true;
+						BDFDB.ReactUtils.forceUpdate(this);
+						
+						BDFDB.ModalUtils.open(_this, {
+							size: "MEDIUM",
+							header: BDFDB.LanguageUtils.LanguageStrings.SETTINGS,
+							subHeader: "",
+							onOpen: instance => {
+								settingsModal = instance;
+							},
+							onClose: _ => {
+								settingsModal = null;
+								this.props.isActive = false;
+								BDFDB.ReactUtils.forceUpdate(this);
+							},
+							children: [
+								BDFDB.ArrayUtils.is(_this.settings.exceptions.wordStart) && _this.settings.exceptions.wordStart.length && [
+									BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex, {
+										className: BDFDB.disCN.marginbottom8,
+										children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsLabel, {
+											label: `Words starting with ${_this.settings.exceptions.wordStart.map(n => '"' + n + '"').join(", ")} will be ignored`
+										})
+									}),
+									BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FormComponents.FormDivider, {
+										className: BDFDB.disCN.marginbottom8
+									})
+								],
+								_this.createSelects(true),
+								BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
+									type: "Switch",
+									plugin: _this,
+									keys: ["general", "sendOriginalMessage"],
+									label: _this.defaults.general.sendOriginalMessage.description,
+									tag: BDFDB.LibraryComponents.FormComponents.FormTitle.Tags.H5,
+									value: _this.settings.general.sendOriginalMessage
+								}),
+								BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsItem, {
+									type: "Switch",
+									label: "Translate your Messages before sending",
+									tag: BDFDB.LibraryComponents.FormComponents.FormTitle.Tags.H5,
+									value: translationEnabled,
+									onChange: value => {
+										translationEnabled = value;
+										BDFDB.ReactUtils.forceUpdate(this);
+									}
+								})
+							].flat(10).filter(n => n)
+						});
+					},
+					onContextMenu: _ => {
+						translationEnabled = !translationEnabled;
+						BDFDB.ReactUtils.forceUpdate(this);
+					}
+				});
+			}
+		};
+		
+		const selectInstances = {};
+		const TranslationSelectionComponent = class TranslationSelection extends BdApi.React.Component {
+			render() {
+				const direction = _this.defaults.choices[this.props.id].direction;
+				const place = _this.defaults.choices[this.props.id].place;
+				const isOutput = direction == "output"
+				return BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FormComponents.FormItem, {
+					title: _this.defaults.choices[this.props.id].description,
+					titleChildren: isOutput ? BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Button, {
+						look: BDFDB.LibraryComponents.Button.Looks.BLANK,
+						size: BDFDB.LibraryComponents.Button.Sizes.NONE,
+						onClick: _ => {
+							let input = _this.getLanguageChoice("input", place);
+							let output = _this.getLanguageChoice("output", place);
+							input = input == "auto" ? "en" : input;
+							
+							_this.settings.choices["input" + place] = output;
+							_this.settings.choices["output" + place] = input;
+							BDFDB.DataUtils.save(_this.settings.choices, _this, "choices");
+							
+							for (let key in selectInstances) if (selectInstances[key] && selectInstances[key].place == place) {
+								selectInstances[key].instance.props.value = selectInstances[key].direction == "input" ? output : input;
+								BDFDB.ReactUtils.forceUpdate(selectInstances[key].instance);
+							}
+							
+							_this.setLanguages();
+						},
+						children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SvgIcon, {
+							className: BDFDB.disCN._googletranslateoptionreversebutton,
+							iconSVG: `<svg width="21" height="21" fill="currentColor"><path d="M 0, 10.515 c 0, 2.892, 1.183, 5.521, 3.155, 7.361 L 0, 21.031 h 7.887 V 13.144 l -2.892, 2.892 C 3.549, 14.722, 2.629, 12.75, 2.629, 10.515 c 0 -3.418, 2.235 -6.309, 5.258 -7.492 v -2.629 C 3.418, 1.577, 0, 5.652, 0, 10.515 z M 21.031, 0 H 13.144 v 7.887 l 2.892 -2.892 C 17.482, 6.309, 18.402, 8.281, 18.402, 10.515 c 0, 3.418 -2.235, 6.309 -5.258, 7.492 V 20.768 c 4.469 -1.183, 7.887 -5.258, 7.887 -10.121 c 0 -2.892 -1.183 -5.521 -3.155 -7.361 L 21.031, 0 z"/></svg>`
+						})
+					}) : null,
+					className: BDFDB.disCN.marginbottom8,
+					children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Select, {
+						ref: instance => {if (instance) selectInstances[this.props.id] = {instance, direction, place};},
+						value: _this.getLanguageChoice(this.props.id),
+						options: BDFDB.ObjectUtils.toArray(BDFDB.ObjectUtils.map(isOutput ? BDFDB.ObjectUtils.filter(languages, lang => lang.id != "auto") : languages, (lang, id) => ({value: id, label: _this.getLanguageName(lang)}))),
+						optionRenderer: lang => languages[lang.value] ? BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex, {
+							align: BDFDB.LibraryComponents.Flex.Align.CENTER,
+							children: [
+								BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex.Child, {
+									grow: 1,
+									children: lang.label
+								}),
+								this.props.addFavButton ? BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FavButton, {
+									isFavorite: languages[lang.value].fav == 0,
+									onClick: value => {
+										if (value) favorites[lang.value] = true;
+										else delete favorites[lang.value];
+										BDFDB.DataUtils.save(favorites, _this, "favorites");
+										_this.setLanguages();
+									}
+								}) : null
+							]
+						}) : null,
+						onChange: value => {
+							_this.settings.choices[this.props.id] = value;
+							BDFDB.DataUtils.save(_this.settings.choices, _this, "choices");
+						}
+					})
+				});
+			}
+		};
 
 		const brailleConverter = {
 			"0":"⠴", "1":"⠂", "2":"⠆", "3":"⠒", "4":"⠲", "5":"⠢", "6":"⠖", "7":"⠶", "8":"⠦", "9":"⠔", "!":"⠮", "\"":"⠐", "#":"⠼", "$":"⠫", "%":"⠩", "&":"⠯", "'":"⠄", "(":"⠷", ")":"⠾", "*":"⠡", "+":"⠬", ",":"⠠", "-":"⠤", ".":"⠨", "/":"⠌", ":":"⠱", ";":"⠰", "<":"⠣", "=":"⠿", ">":"⠜", "?":"⠹", "@":"⠈", "a":"⠁", "b":"⠃", "c":"⠉", "d":"⠙", "e":"⠑", "f":"⠋", "g":"⠛", "h":"⠓", "i":"⠊", "j":"⠚", "k":"⠅", "l":"⠇", "m":"⠍", "n":"⠝", "o":"⠕", "p":"⠏", "q":"⠟", "r":"⠗", "s":"⠎", "t":"⠞", "u":"⠥", "v":"⠧", "w":"⠺", "x":"⠭", "y":"⠽", "z":"⠵", "[":"⠪", "\\":"⠳", "]":"⠻", "^":"⠘", "⠁":"a", "⠂":"1", "⠃":"b", "⠄":"'", "⠅":"k", "⠆":"2", "⠇":"l", "⠈":"@", "⠉":"c", "⠊":"i", "⠋":"f", "⠌":"/", "⠍":"m", "⠎":"s", "⠏":"p", "⠐":"\"", "⠑":"e", "⠒":"3", "⠓":"h", "⠔":"9", "⠕":"o", "⠖":"6", "⠗":"r", "⠘":"^", "⠙":"d", "⠚":"j", "⠛":"g", "⠜":">", "⠝":"n", "⠞":"t", "⠟":"q", "⠠":", ", "⠡":"*", "⠢":"5", "⠣":"<", "⠤":"-", "⠥":"u", "⠦":"8", "⠧":"v", "⠨":".", "⠩":"%", "⠪":"[", "⠫":"$", "⠬":"+", "⠭":"x", "⠮":"!", "⠯":"&", "⠰":";", "⠱":":", "⠲":"4", "⠳":"\\", "⠴":"0", "⠵":"z", "⠶":"7", "⠷":"(", "⠸":"_", "⠹":"?", "⠺":"w", "⠻":"]", "⠼":"#", "⠽":"y", "⠾":")", "⠿":"=", "_":"⠸"
@@ -73,41 +208,42 @@ module.exports = (_ => {
 		
 		const googleLanguages = ["af","am","ar","az","be","bg","bn","bs","ca","ceb","co","cs","cy","da","de","el","en","eo","es","et","eu","fa","fi","fr","fy","ga","gd","gl","gu","ha","haw","hi","hmn","hr","ht","hu","hy","id","ig","is","it","iw","ja","jw","ka","kk","km","kn","ko","ku","ky","la","lb","lo","lt","lv","mg","mi","mk","ml","mn","mr","ms","mt","my","ne","nl","no","ny","or","pa","pl","ps","pt","ro","ru","rw","sd","si","sk","sl","sm","sn","so","sq","sr","st","su","sv","sw","ta","te","tg","th","tk","tl","tr","tt","ug","uk","ur","uz","vi","xh","yi","yo","zh-CN","zu"];
 		const translationEngines = {
-			googleapi: 					{name: "GoogleApi",		auto: true,	funcName: "googleApiTranslate",		languages: googleLanguages},
+			googleapi: 					{name: "GoogleApi",			auto: true,	funcName: "googleApiTranslate",			languages: googleLanguages},
 			google: 					{name: "Google",			auto: true,	funcName: "googleTranslate",			languages: googleLanguages},
 			itranslate: 				{name: "iTranslate",		auto: true,	funcName: "iTranslateTranslate",		languages: [...new Set(["af","ar","az","be","bg","bn","bs","ca","ceb","cs","cy","da","de","el","en","eo","es","et","eu","fa","fi","fil","fr","ga","gl","gu","ha","he","hi","hmn","hr","ht","hu","hy","id","ig","is","it","ja","jw","ka","kk","km","kn","ko","la","lo","lt","lv","mg","mi","mk","ml","mn","mr","ms","mt","my","ne","nl","no","ny","pa","pl","pt-BR","pt-PT","ro","ru","si","sk","sl","so","sq","sr","st","su","sv","sw","ta","te","tg","th","tr","uk","ur","uz","vi","we","yi","yo","zh-CN","zh-TW","zu"].concat(googleLanguages))].sort()},
 			yandex: 					{name: "Yandex",			auto: true,	funcName: "yandexTranslate",			languages: ["af","am","ar","az","ba","be","bg","bn","bs","ca","ceb","cs","cy","da","de","el","en","eo","es","et","eu","fa","fi","fr","ga","gd","gl","gu","he","hi","hr","ht","hu","hy","id","is","it","ja","jv","ka","kk","km","kn","ko","ky","la","lb","lo","lt","lv","mg","mhr","mi","mk","ml","mn","mr","ms","mt","my","ne","nl","no","pa","pap","pl","pt","ro","ru","si","sk","sl","sq","sr","su","sv","sw","ta","te","tg","th","tl","tr","tt","udm","uk","ur","uz","vi","xh","yi","zh"]},
 			papago: 					{name: "Papago",			auto: false,	funcName: "papagoTranslate",			languages: ["en","es","fr","id","ja","ko","th","vi","zh-CN","zh-TW"]}
 		};
 		
-		var languages, translating, isTranslating, translatedMessages, oldMessages;
-		var settings = {}, choices = {}, exceptions = {}, engines = {}, favorites = {};
+		var favorites, languages, translationEnabled, isTranslating, translatedMessages, oldMessages;
 	
 		return class GoogleTranslateOption extends Plugin {
-			onLoad() {
+			onLoad () {
+				_this = this;
+				
+				favorites = {};
 				languages = {};
-				translating = false;
+				translationEnabled = false;
 				isTranslating = false;	
 				translatedMessages = {};
 				oldMessages = {};
 				
 				this.defaults = {
-					settings: {
-						useChromium: 			{value: false,			description: "Use an inbuilt browser window instead of opening your default browser"},
-						addTranslateButton:		{value: true, 			description: "Add an translate button to the chatbar"},
-						sendOriginalMessage:	{value: false, 			description: "Send the original message together with the translation"}
+					general: {
+						addTranslateButton:		{value: true, 			description: "Add a Translate Button to the Channel Textarea"},
+						sendOriginalMessage:	{value: false, 			description: "Send the Original Message together with the Translation"}
 					},
 					choices: {
-						inputContext:			{value: "auto", 			direction: "input",		place: "Context", 		description: "Input Language in received Messages: "},
-						outputContext:			{value: "$discord", 		direction: "output",		place: "Context", 		description: "Output Language in received Messages: "},
-						inputMessage:			{value: "auto", 			direction: "input",		place: "Message", 		description: "Input Language in sent Messages: "},
-						outputMessage:			{value: "$discord", 		direction: "output",		place: "Message", 		description: "Output Language in sent Messages: "}
+						inputContext:			{value: "auto", 		direction: "input",		place: "Context", 		description: "Input Language in received Messages: "},
+						outputContext:			{value: "$discord", 	direction: "output",	place: "Context", 		description: "Output Language in received Messages: "},
+						inputMessage:			{value: "auto", 		direction: "input",		place: "Message", 		description: "Input Language in sent Messages: "},
+						outputMessage:			{value: "$discord", 	direction: "output",	place: "Message", 		description: "Output Language in sent Messages: "}
 					},
 					exceptions: {
 						wordStart:				{value: ["!"],			max: 1,		description: "Words starting with any of these will be ignored"}
 					},
 					engines: {
-						translator:				{value: "googleapi", 	description: "Translation Engine: "}
+						translator:				{value: "googleapi", 	description: "Translation Engine"}
 					}
 				};
 			
@@ -141,48 +277,54 @@ module.exports = (_ => {
 				`;
 			}
 			
-			onStart() {
+			onStart () {
 				this.forceUpdateAll();
 			}
 			
-			onStop() {
-				translating = false;
+			onStop () {
+				translationEnabled = false;
 				
 				this.forceUpdateAll();
 			}
 
 			getSettingsPanel (collapseStates = {}) {
-				let settingsPanel, settingsItems = [];
-				
-				settingsItems = settingsItems.concat(this.createSelects(false));
-				
-				for (let key in settings) settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
-					type: "Switch",
-					plugin: this,
-					keys: ["settings", key],
-					label: this.defaults.settings[key].description,
-					value: settings[key]
-				}));
-				
-				settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FormComponents.FormDivider, {
-					className: BDFDB.disCNS.dividerdefault + BDFDB.disCN.marginbottom8
-				}));
-				
-				for (let key in exceptions) settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FormComponents.FormItem, {
-					title: this.defaults.exceptions[key].description,
-					className: BDFDB.disCN.marginbottom8,
-					children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.ListInput, {
-						placeholder: "New Exception",
-						maxLength: this.defaults.exceptions[key].max,
-						items: exceptions[key],
-						onChange: newExceptions => {
-							this.SettingsUpdated = true;
-							BDFDB.DataUtils.save(newExceptions, this, "exceptions", key);
-						}
-					})
-				}));
-				
-				return settingsPanel = BDFDB.PluginUtils.createSettingsPanel(this, settingsItems);
+				let settingsPanel;
+				return settingsPanel = BDFDB.PluginUtils.createSettingsPanel(this, {
+					collapseStates: collapseStates,
+					children: _ => {
+						let settingsItems = [];
+						
+						settingsItems = settingsItems.concat(this.createSelects(false));
+						
+						for (let key in this.defaults.general) settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
+							type: "Switch",
+							plugin: this,
+							keys: ["general", key],
+							label: this.defaults.general[key].description,
+							value: this.settings.general[key]
+						}));
+						
+						settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FormComponents.FormDivider, {
+							className: BDFDB.disCNS.dividerdefault + BDFDB.disCN.marginbottom8
+						}));
+						
+						for (let key in this.defaults.exceptions) settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FormComponents.FormItem, {
+							title: this.defaults.exceptions[key].description,
+							className: BDFDB.disCN.marginbottom8,
+							children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.ListInput, {
+								placeholder: "New Exception",
+								maxLength: this.defaults.exceptions[key].max,
+								items: this.settings.exceptions[key],
+								onChange: value => {
+									this.SettingsUpdated = true;
+									BDFDB.DataUtils.save(value, this, "exceptions", key);
+								}
+							})
+						}));
+						
+						return settingsItems.flat(10);
+					}
+				});
 			}
 		
 			onSettingsClosed () {
@@ -193,10 +335,6 @@ module.exports = (_ => {
 			}
 		
 			forceUpdateAll () {
-				settings = BDFDB.DataUtils.get(this, "settings");
-				choices = BDFDB.DataUtils.get(this, "choices");
-				exceptions = BDFDB.DataUtils.get(this, "exceptions");
-				engines = BDFDB.DataUtils.get(this, "engines");
 				favorites = BDFDB.DataUtils.load(this, "favorites");
 				
 				this.setLanguages();
@@ -250,12 +388,16 @@ module.exports = (_ => {
 								let item = BDFDB.DOMUtils.getParent(BDFDB.dotCN.menuitem, event.target);
 								if (item) {
 									let createTooltip = _ => {
-										BDFDB.TooltipUtils.create(item, `From ${foundInput.name}:\n${text}\n\nTo ${foundOutput.name}:\n${foundTranslation}`, {type: "right", selector: "googletranslate-tooltip"});
+										BDFDB.TooltipUtils.create(item, `${BDFDB.LanguageUtils.LibraryStrings.from} ${foundInput.name}:\n${text}\n\n${BDFDB.LanguageUtils.LibraryStrings.to} ${foundOutput.name}:\n${foundTranslation}`, {
+											type: "right",
+											color: "brand",
+											className: "googletranslate-tooltip"
+										});
 									};
 									if (foundTranslation && foundInput && foundOutput) {
 										if (document.querySelector(".googletranslate-tooltip")) {
 											BDFDB.ContextMenuUtils.close(e.instance);
-											BDFDB.DiscordUtils.openLink(this.getGoogleTranslatePageURL(foundInput.id, foundOutput.id, text), settings.useChromium);
+											BDFDB.DiscordUtils.openLink(this.getGoogleTranslatePageURL(foundInput.id, foundOutput.id, text));
 										}
 										else createTooltip();
 									}
@@ -317,10 +459,10 @@ module.exports = (_ => {
 			
 			processChannelTextAreaForm (e) {
 				BDFDB.PatchUtils.patch(this, e.instance, "handleSendMessage", {instead: e2 => {
-					if (translating) {
+					if (translationEnabled) {
 						e2.stopOriginalMethodCall();
 						this.translateText(e2.methodArguments[0], "message", (translation, input, output) => {
-							translation = !translation ? e2.methodArguments[0] : (settings.sendOriginalMessage ? (e2.methodArguments[0] + "\n\n" + translation) : translation);
+							translation = !translation ? e2.methodArguments[0] : (this.settings.general.sendOriginalMessage ? (e2.methodArguments[0] + "\n\n" + translation) : translation);
 							e2.originalMethod(translation);
 						});
 						return Promise.resolve({
@@ -333,77 +475,15 @@ module.exports = (_ => {
 			}
 
 			processChannelEditorContainer (e) {
-				if (translating && isTranslating) e.instance.props.disabled = true;
+				if (translationEnabled && isTranslating) e.instance.props.disabled = true;
 			}
 			
 			processChannelTextAreaContainer (e) {
-				if (settings.addTranslateButton) {
+				if (this.settings.general.addTranslateButton) {
 					let editor = BDFDB.ReactUtils.findChild(e.returnvalue, {name: "ChannelEditorContainer"});
 					if (editor && editor.props.type == BDFDB.DiscordConstants.TextareaTypes.NORMAL && !editor.props.disabled) {
 						let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {props: [["className", BDFDB.disCN.textareapickerbuttons]]});
-						if (index > -1 && children[index].props && children[index].props.children) children[index].props.children.unshift(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.PopoutContainer, {
-							children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.ChannelTextAreaButton, {
-								key: "translate-button",
-								className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN._googletranslateoptiontranslatebutton, translating && BDFDB.disCN._googletranslateoptiontranslating, BDFDB.disCN.textareapickerbutton),
-								nativeClass: true,
-								iconSVG: translateIconGeneral
-							}),
-							width: 400,
-							padding: 10,
-							animation: BDFDB.LibraryComponents.PopoutContainer.Animation.SCALE,
-							position: BDFDB.LibraryComponents.PopoutContainer.Positions.TOP,
-							align: BDFDB.LibraryComponents.PopoutContainer.Align.RIGHT,
-							onClose: instance => {
-								let channelTextareaButtonIns = BDFDB.ReactUtils.findOwner(instance, {key: "translate-button"});
-								if (channelTextareaButtonIns) {
-									channelTextareaButtonIns.props.isActive = false;
-									BDFDB.ReactUtils.forceUpdate(channelTextareaButtonIns);
-								}
-							},
-							onContextMenu: (e, instance) => {
-								translating = !translating;
-								let channelTextareaButtonIns = BDFDB.ReactUtils.findOwner(instance, {key: "translate-button"});
-								if (channelTextareaButtonIns) {
-									channelTextareaButtonIns.props.className = BDFDB.DOMUtils.formatClassName(BDFDB.disCN._googletranslateoptiontranslatebutton, translating && BDFDB.disCN._googletranslateoptiontranslating, BDFDB.disCN.textareapickerbutton);
-									BDFDB.ReactUtils.forceUpdate(channelTextareaButtonIns);
-									instance.close();
-								}
-							},
-							renderPopout: instance => {
-								let channelTextareaButtonIns = BDFDB.ReactUtils.findOwner(instance, {key: "translate-button"});
-								if (channelTextareaButtonIns) {
-									channelTextareaButtonIns.props.isActive = true;
-									BDFDB.ReactUtils.forceUpdate(channelTextareaButtonIns);
-								}
-								let popoutelements = [];
-								if (BDFDB.ArrayUtils.is(exceptions.wordStart) && exceptions.wordStart.length) {
-									popoutelements.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex, {
-										className: BDFDB.disCN.marginbottom8,
-										children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsLabel, {
-											label: `Words starting with ${exceptions.wordStart.map(n => '"' + n + '"').join(", ")} will be ignored`
-										})
-									}));
-									popoutelements.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FormComponents.FormDivider, {
-										className: BDFDB.disCN.marginbottom8
-									}));
-								}
-								popoutelements = popoutelements.concat(this.createSelects(true));
-								popoutelements.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsItem, {
-									type: "Switch",
-									label: "Translate your Messages before sending",
-									tag: BDFDB.LibraryComponents.FormComponents.FormTitle.Tags.H5,
-									value: translating,
-									onChange: value => {
-										translating = value;
-										if (channelTextareaButtonIns) {
-											channelTextareaButtonIns.props.className = BDFDB.DOMUtils.formatClassName(BDFDB.disCN._googletranslateoptiontranslatebutton, translating && BDFDB.disCN._googletranslateoptiontranslating, BDFDB.disCN.textareapickerbutton);
-											BDFDB.ReactUtils.forceUpdate(channelTextareaButtonIns);
-										}
-									}
-								}));
-								return popoutelements;
-							}
-						}));
+						if (index > -1 && children[index].props && children[index].props.children) children[index].props.children.unshift(BDFDB.ReactUtils.createElement(TranslateButtonComponent, {}));
 					}
 				}
 			}
@@ -435,7 +515,7 @@ module.exports = (_ => {
 				if (e.instance.props.message) {
 					let translation = translatedMessages[e.instance.props.message.id];
 					if (translation) e.returnvalue.props.children.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TooltipContainer, {
-						text: `From: ${this.getLanguageName(translation.input)}\nTo: ${this.getLanguageName(translation.output)}`,
+						text: `${BDFDB.LanguageUtils.LibraryStrings.from}: ${this.getLanguageName(translation.input)}\n${BDFDB.LanguageUtils.LibraryStrings.to}: ${this.getLanguageName(translation.output)}`,
 						tooltipConfig: {style: "max-width: 400px"},
 						children: BDFDB.ReactUtils.createElement("time", {
 							className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.messageedited, BDFDB.disCN._googletranslateoptiontranslated),
@@ -446,8 +526,8 @@ module.exports = (_ => {
 			}
 
 			processEmbed (e) {
-				if (e.instance.props.embed && e.instance.props.embed.messageId) {
-					let translation = translatedMessages[e.instance.props.embed.messageId];
+				if (e.instance.props.embed && e.instance.props.embed.message_id) {
+					let translation = translatedMessages[e.instance.props.embed.message_id];
 					if (translation) {
 						if (!e.returnvalue) e.instance.props.embed = Object.assign({}, e.instance.props.embed, {
 							rawDescription: translation.embeds[e.instance.props.embed.id],
@@ -456,7 +536,7 @@ module.exports = (_ => {
 						else {
 							let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {props: [["className", BDFDB.disCN.embeddescription]]});
 							if (index > -1) children[index].props.children.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TooltipContainer, {
-								text: `From: ${this.getLanguageName(translation.input)}\nTo: ${this.getLanguageName(translation.output)}`,
+								text: `${BDFDB.LanguageUtils.LibraryStrings.from}: ${this.getLanguageName(translation.input)}\n${BDFDB.LanguageUtils.LibraryStrings.to}: ${this.getLanguageName(translation.output)}`,
 								tooltipConfig: {style: "max-width: 400px"},
 								children: BDFDB.ReactUtils.createElement("time", {
 									className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.messageedited, BDFDB.disCN._googletranslateoptiontranslated),
@@ -475,88 +555,26 @@ module.exports = (_ => {
 			createSelects (inPopout) {
 				let selects = [];
 				for (let key in this.defaults.choices) {
-					let isOutput = this.defaults.choices[key].direction == "output";
-					selects.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FormComponents.FormItem, {
-						title: this.defaults.choices[key].description,
-						titlechildren: isOutput ? BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Button, {
-							look: BDFDB.LibraryComponents.Button.Looks.BLANK,
-							size: BDFDB.LibraryComponents.Button.Sizes.NONE,
-							onClick: e => {
-								let place = this.defaults.choices[key].place;
-								let input = this.getLanguageChoice("input", place);
-								let output = this.getLanguageChoice("output", place);
-								input = input == "auto" ? "en" : input;
-								
-								choices["input" + place] = output;
-								choices["output" + place] = input;
-								BDFDB.DataUtils.save(choices, this, "choices");
-								
-								for (let selectIns of BDFDB.ReactUtils.findOwner(BDFDB.ReactUtils.findOwner(e._targetInst, {name: ["BDFDB_Popout", "BDFDB_SettingsPanel"], up: true}), {name: "BDFDB_Select", all: true, noCopies: true})) if (selectIns && selectIns.props && selectIns.props.id && this.defaults.choices[selectIns.props.id] && this.defaults.choices[selectIns.props.id].place == place) {
-									selectIns.props.value = this.defaults.choices[selectIns.props.id].direction == "input" ? output : input;
-									BDFDB.ReactUtils.forceUpdate(selectIns);
-								}
-								this.setLanguages();
-							},
-							children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SvgIcon, {
-								className: BDFDB.disCN._googletranslateoptionreversebutton,
-								iconSVG: `<svg width="21" height="21" fill="currentColor"><path d="M 0, 10.515 c 0, 2.892, 1.183, 5.521, 3.155, 7.361 L 0, 21.031 h 7.887 V 13.144 l -2.892, 2.892 C 3.549, 14.722, 2.629, 12.75, 2.629, 10.515 c 0 -3.418, 2.235 -6.309, 5.258 -7.492 v -2.629 C 3.418, 1.577, 0, 5.652, 0, 10.515 z M 21.031, 0 H 13.144 v 7.887 l 2.892 -2.892 C 17.482, 6.309, 18.402, 8.281, 18.402, 10.515 c 0, 3.418 -2.235, 6.309 -5.258, 7.492 V 20.768 c 4.469 -1.183, 7.887 -5.258, 7.887 -10.121 c 0 -2.892 -1.183 -5.521 -3.155 -7.361 L 21.031, 0 z"/></svg>`
-							})
-						}) : null,
-						className: BDFDB.disCN.marginbottom8,
-						children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Select, {
-							menuPlacement: inPopout ? BDFDB.LibraryComponents.Select.MenuPlacements.TOP : BDFDB.LibraryComponents.Select.MenuPlacements.BOTTOM,
-							value: this.getLanguageChoice(key),
-							id: key,
-							options: BDFDB.ObjectUtils.toArray(BDFDB.ObjectUtils.map(isOutput ? BDFDB.ObjectUtils.filter(languages, lang => lang.id != "auto") : languages, (lang, id) => {return {value: id, label: this.getLanguageName(lang)}})),
-							searchable: true,
-							optionRenderer: lang => {
-								return languages[lang.value] ? BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex, {
-									align: BDFDB.LibraryComponents.Flex.Align.CENTER,
-									children: [
-										BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex.Child, {
-											grow: 1,
-											children: lang.label
-										}),
-										inPopout ? BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FavButton, {
-											isFavorite: languages[lang.value].fav == 0,
-											onClick: value => {
-												if (value) favorites[lang.value] = true;
-												else delete favorites[lang.value];
-												BDFDB.DataUtils.save(favorites, this, "favorites");
-												this.setLanguages();
-											}
-										}) : null
-									]
-								}) : null;
-							},
-							onChange: lang => {
-								choices[key] = lang.value;
-								BDFDB.DataUtils.save(choices, this, "choices");
-							}
-						})
+					selects.push(BDFDB.ReactUtils.createElement(TranslationSelectionComponent, {
+						id: key,
+						addFavButton: inPopout
 					}));
-					if (isOutput) selects.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FormComponents.FormDivider, {
+					if (this.defaults.choices[key].direction == "output") selects.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FormComponents.FormDivider, {
 						className: BDFDB.disCN.marginbottom8
 					}));
 				}
-				for (let key in engines) selects.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FormComponents.FormItem, {
+				for (let key in this.defaults.engines) selects.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FormComponents.FormItem, {
 					title: this.defaults.engines[key].description,
 					className: BDFDB.disCN.marginbottom8,
 					children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Select, {
-						menuPlacement: inPopout ? BDFDB.LibraryComponents.Select.MenuPlacements.TOP : BDFDB.LibraryComponents.Select.MenuPlacements.BOTTOM,
-						value: engines[key],
-						id: key,
-						options: Object.keys(translationEngines).map(engineKey => {return {value: engineKey, label: translationEngines[engineKey].name}}),
-						searchable: true,
-						onChange: (engine, instance) => {
-							engines[key] = engine.value;
-							BDFDB.DataUtils.save(engines, this, "engines");
+						value: this.settings.engines[key],
+						options: Object.keys(translationEngines).map(engineKey => ({value: engineKey, label: translationEngines[engineKey].name})),
+						maxVisibleItems: 4,
+						onChange: value => {
+							this.settings.engines[key] = value;
+							BDFDB.DataUtils.save(this.settings.engines, this, "engines");
 							this.setLanguages();
-							let popoutInstance = BDFDB.ReactUtils.findOwner(instance, {name: "BDFDB_PopoutContainer", up: true});
-							if (popoutInstance) {
-								popoutInstance.close();
-								popoutInstance.handleClick();
-							}
+							if (settingsModal) settingsModal.props.onClose();
 						}
 					})
 				}));
@@ -564,7 +582,7 @@ module.exports = (_ => {
 			}
 
 			setLanguages () {
-				let engine = translationEngines[engines.translator] || {};
+				let engine = translationEngines[this.settings.engines.translator] || {};
 				let languageIds = engine.languages || [];
 				languages = BDFDB.ObjectUtils.deepAssign(
 					!engine.auto ? {} : {
@@ -596,7 +614,7 @@ module.exports = (_ => {
 			getLanguageChoice (direction, place) {
 				this.setLanguages();
 				let type = place === undefined ? direction : direction.toLowerCase() + place.charAt(0).toUpperCase() + place.slice(1).toLowerCase();
-				let choice = choices[type];
+				let choice = this.settings.choices[type];
 				choice = languages[choice] ? choice : Object.keys(languages)[0];
 				choice = type.indexOf("output") > -1 && choice == "auto" ? "en" : choice;
 				return choice;
@@ -617,7 +635,7 @@ module.exports = (_ => {
 							let strings = translation.split("\n__________________ __________________ __________________\n");
 							let content = strings.shift().trim(), embeds = {};
 							for (let i in message.embeds) {
-								message.embeds[i].messageId = message.id;
+								message.embeds[i].message_id = message.id;
 								embeds[message.embeds[i].id] = (strings.shift() || message.embeds[i].rawDescription).trim();
 							}
 							translatedMessages[message.id] = {content, embeds, input, output};
@@ -628,13 +646,10 @@ module.exports = (_ => {
 			}
 
 			translateText (text, type, callback) {
-				let toast = null, finishTranslation = translation => {
+				let toast = null, toastInterval, finishTranslation = translation => {
 					isTranslating = false;
 					if (translation) translation = this.addExceptions(translation, excepts);
-					if (toast) {
-						BDFDB.TimeUtils.clear(toast.interval);
-						toast.close();
-					}
+					if (toast) toast.close();
 					callback(translation == text ? "" : translation, input, output);
 				};
 				let [newText, excepts, translate] = this.removeExceptions(text.trim(), type);
@@ -642,13 +657,25 @@ module.exports = (_ => {
 				let output = Object.assign({}, languages[this.getLanguageChoice("output", type)]);
 				if (translate && input.id != output.id) {
 					let timer = 0;
-					toast = BDFDB.NotificationUtils.toast("Translating. Please wait", {timeout: 0});
-					toast.interval = BDFDB.TimeUtils.interval(_ => {
+					let loadingString = `${this.labels.toast_translating} - ${BDFDB.LanguageUtils.LibraryStrings.please_wait}`;
+					let currentLoadingString = loadingString;
+					toast = BDFDB.NotificationUtils.toast(loadingString, {
+						timeout: 0,
+						position: "center",
+						onClose: _ => {BDFDB.TimeUtils.clear(toastInterval);}
+					});
+					toastInterval = BDFDB.TimeUtils.interval(_ => {
 						if (timer++ > 40) {
 							finishTranslation("");
-							BDFDB.NotificationUtils.toast("Failed to translate text. Try another Translate Engine.", {type: "error"});
+							BDFDB.NotificationUtils.toast(`${this.labels.toast_translating_failed} - ${this.labels.toast_translating_tryanother}`, {
+								type: "danger",
+								position: "center"
+							});
 						}
-						else toast.textContent = toast.textContent.indexOf(".....") > -1 ? "Translating. Please wait" : toast.textContent + ".";
+						else {
+							currentLoadingString = currentLoadingString.endsWith(".....") ? loadingString : currentLoadingString + ".";
+							toast.update(currentLoadingString);
+						}
 					}, 500);
 					let specialCase = this.checkForSpecialCase(newText, input);
 					if (specialCase) {
@@ -668,9 +695,9 @@ module.exports = (_ => {
 						finishTranslation(newText);
 					}
 					else {
-						if (translationEngines[engines.translator] && typeof this[translationEngines[engines.translator].funcName] == "function") {
+						if (translationEngines[this.settings.engines.translator] && typeof this[translationEngines[this.settings.engines.translator].funcName] == "function") {
 							isTranslating = true;
-							this[translationEngines[engines.translator].funcName].apply(this, [{input, output, text: newText, specialCase, engine: translationEngines[engines.translator]}, finishTranslation]);
+							this[translationEngines[this.settings.engines.translator].funcName].apply(this, [{input, output, text: newText, specialCase, engine: translationEngines[this.settings.engines.translator]}, finishTranslation]);
 						}
 						else finishTranslation();
 					}
@@ -689,7 +716,7 @@ module.exports = (_ => {
 						`);
 					}
 				});
-				BDFDB.WindowUtils.addListener(this, "GTO-translation", (event, messageData) => {
+				if (googleTranslateWindow) BDFDB.WindowUtils.addListener(this, "GTO-translation", (event, messageData) => {
 					BDFDB.WindowUtils.close(googleTranslateWindow);
 					BDFDB.WindowUtils.removeListener(this, "GTO-translation");
 					if (!data.specialCase && messageData[1] && languages[messageData[1]]) {
@@ -698,6 +725,7 @@ module.exports = (_ => {
 					}
 					callback(messageData[0]);
 				});
+				else this.googleApiTranslate(data, callback);
 			}
 			
 			googleApiTranslate (data, callback) {
@@ -714,8 +742,14 @@ module.exports = (_ => {
 						catch (err) {callback("");}
 					}
 					else {
-						if (response.statusCode == 429) BDFDB_Global.NotificationUtils.toast("Failed to translate text. Request Limit per Hour is reached. Choose another Translate Engine.", {type: "error"});
-						else BDFDB.NotificationUtils.toast("Failed to translate text. Translation Server might be down. Try another Translate Engine.", {type: "error"});
+						if (response.statusCode == 429) BDFDB.NotificationUtils.toast(`${this.labels.toast_translating_failed}. ${this.labels.toast_translating_tryanother}. Request Limit per Hour is reached.`, {
+							type: "danger",
+							position: "center"
+						});
+						else BDFDB.NotificationUtils.toast(`${this.labels.toast_translating_failed}. ${this.labels.toast_translating_tryanother}. Translation Server might be down.`, {
+							type: "danger",
+							position: "center"
+						});
 						callback("");
 					}
 				});
@@ -751,7 +785,10 @@ module.exports = (_ => {
 							catch (err) {callback("");}
 						}
 						else {
-							BDFDB.NotificationUtils.toast("Failed to translate text. Translation Server is down or API-key outdated. Try another Translate Engine.", {type: "error"});
+							BDFDB.NotificationUtils.toast(`${this.labels.toast_translating_failed}. ${this.labels.toast_translating_tryanother}. Translation Server is down or API-key outdated.`, {
+								type: "danger",
+								position: "center"
+							});
 							callback("");
 						}
 					});
@@ -787,11 +824,17 @@ module.exports = (_ => {
 						else callback("");
 					}
 					if (result && result.indexOf('code="408"') > -1) {
-						BDFDB.NotificationUtils.toast("Failed to translate text. Monthly rate limit reached. Choose another Translate Engine", {type: "error"});
+						BDFDB.NotificationUtils.toast(`${this.labels.toast_translating_failed}. ${this.labels.toast_translating_tryanother}. Monthly rate limit reached.`, {
+							type: "danger",
+							position: "center"
+						});
 						callback("");
 					}
 					else {
-						BDFDB.NotificationUtils.toast("Failed to translate text. Translation Server is down or API-key outdated. Try another Translate Engine.", {type: "error"});
+						BDFDB.NotificationUtils.toast(`${this.labels.toast_translating_failed}. ${this.labels.toast_translating_tryanother}. Translation Server is down or API-key outdated.`, {
+							type: "danger",
+							position: "center"
+						});
 						callback("");
 					}
 				});
@@ -819,7 +862,14 @@ module.exports = (_ => {
 						catch (err) {callback("");}
 					}
 					else {
-						BDFDB.NotificationUtils.toast("Failed to translate text. Translation Server is down, daily limited reached or API-key outdated. Try another Translate Engine.", {type: "error"});
+						if (response.statusCode == 429) BDFDB.NotificationUtils.toast(`${this.labels.toast_translating_failed}. ${this.labels.toast_translating_tryanother}. Request Limit per Hour is reached.`, {
+							type: "danger",
+							position: "center"
+						});
+						else BDFDB.NotificationUtils.toast(`${this.labels.toast_translating_failed}. ${this.labels.toast_translating_tryanother}. Translation Server is down or API-key outdated.`, {
+							type: "danger",
+							position: "center"
+						});
 						callback("");
 					}
 				});
@@ -866,19 +916,22 @@ module.exports = (_ => {
 				let string = "";
 				binary = binary.replace(/\n/g, "00001010").replace(/\r/g, "00001101").replace(/\t/g, "00001001").replace(/\s/g, "");
 				if (/^[0-1]*$/.test(binary)) {
-					let eightdigits = "";
+					let eightDigits = "";
 					let counter = 0;
 					for (let digit of binary) {
-						eightdigits += digit;
+						eightDigits += digit;
 						counter++;
 						if (counter > 7) {
-							string += String.fromCharCode(parseInt(eightdigits,2).toString(10));
-							eightdigits = "";
+							string += String.fromCharCode(parseInt(eightDigits, 2).toString(10));
+							eightDigits = "";
 							counter = 0;
 						}
 					}
 				}
-				else BDFDB.NotificationUtils.toast("Invalid binary format. Only use 0s and 1s.", {type: "error"});
+				else BDFDB.NotificationUtils.toast("Invalid binary format. Only use 0s and 1s.", {
+					type: "danger",
+					position: "center"
+				});
 				return string;
 			}
 
@@ -899,10 +952,10 @@ module.exports = (_ => {
 
 			addExceptions (string, excepts) {
 				for (let count in excepts) {
-					let exception = BDFDB.ArrayUtils.is(exceptions.wordStart) && exceptions.wordStart.some(n => excepts[count].indexOf(n) == 0) ? excepts[count].slice(1) : excepts[count];
-					let newstring = string.replace(new RegExp(`\[/////[ ]*${count}\]`), exception);
-					if (newstring == string) string = newstring + " " + exception;
-					else string = newstring;
+					let exception = BDFDB.ArrayUtils.is(this.settings.exceptions.wordStart) && this.settings.exceptions.wordStart.some(n => excepts[count].indexOf(n) == 0) ? excepts[count].slice(1) : excepts[count];
+					let newString = string.replace(new RegExp(BDFDB.StringUtils.regEscape(`{{${count}}}`)), exception);
+					if (newString == string) string = newString + " " + exception;
+					else string = newString;
 				}
 				return string;
 			}
@@ -918,7 +971,7 @@ module.exports = (_ => {
 					});
 					for (let j in text) {
 						if (text[j].indexOf("<") == 0) {
-							newString.push(`[/////${count}]`);
+							newString.push(`{{${count}}}`);
 							excepts[count] = text[j];
 							count++;
 						}
@@ -926,10 +979,10 @@ module.exports = (_ => {
 					}
 				}
 				else {
-					let usedExceptions = BDFDB.ArrayUtils.is(exceptions.wordStart) ? exceptions.wordStart : [];
+					let usedExceptions = BDFDB.ArrayUtils.is(this.settings.exceptions.wordStart) ? this.settings.exceptions.wordStart : [];
 					string.split(" ").forEach(word => {
-						if (word.indexOf("<@!") == 0 || word.indexOf("<#") == 0 || word.indexOf(":") == 0 || word.indexOf("<:") == 0 || word.indexOf("<a: ") == 0 || word.indexOf("@") == 0 || word.indexOf("#") == 0 || usedExceptions.some(n => word.indexOf(n) == 0 && word.length > 1)) {
-							newString.push(`[/////${count}]`);
+						if (word.indexOf("<@!") == 0 || word.indexOf("<#") == 0 || word.indexOf(":") == 0 || word.indexOf("<:") == 0 || word.indexOf("<a:") == 0 || word.indexOf("@") == 0 || word.indexOf("#") == 0 || usedExceptions.some(n => word.indexOf(n) == 0 && word.length > 1)) {
+							newString.push(`{{${count}}}`);
 							excepts[count] = word;
 							count++;
 						}
@@ -957,6 +1010,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Превод на съобщението",
 							popout_translateoption:				"Превод",
 							popout_untranslateoption:			"Непревод",
+							toast_translating:					"Превод",
+							toast_translating_failed:			"Преводът не бе успешен",
+							toast_translating_tryanother:		"Опитайте друг преводач",
 							translated_watermark:				"преведено"
 						};
 					case "da":		// Danish
@@ -966,6 +1022,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Ikke-oversat besked",
 							popout_translateoption:				"Oversætte",
 							popout_untranslateoption:			"Untranslate",
+							toast_translating:					"Oversætter",
+							toast_translating_failed:			"Kunne ikke oversætte",
+							toast_translating_tryanother:		"Prøv en anden oversætter",
 							translated_watermark:				"oversat"
 						};
 					case "de":		// German
@@ -975,6 +1034,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Nachricht unübersetzen",
 							popout_translateoption:				"Übersetzen",
 							popout_untranslateoption:			"Unübersetzen",
+							toast_translating:					"Übersetzen",
+							toast_translating_failed:			"Übersetzung fehlgeschlagen",
+							toast_translating_tryanother:		"Versuch einen anderen Übersetzer",
 							translated_watermark:				"übersetzt"
 						};
 					case "el":		// Greek
@@ -984,6 +1046,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Μη μετάφραση μηνύματος",
 							popout_translateoption:				"Μεταφράζω",
 							popout_untranslateoption:			"Μη μετάφραση",
+							toast_translating:					"Μετάφραση",
+							toast_translating_failed:			"Αποτυχία μετάφρασης",
+							toast_translating_tryanother:		"Δοκιμάστε έναν άλλο Μεταφραστή",
 							translated_watermark:				"μεταφρασμένο"
 						};
 					case "es":		// Spanish
@@ -993,6 +1058,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Mensaje sin traducir",
 							popout_translateoption:				"Traducir",
 							popout_untranslateoption:			"No traducir",
+							toast_translating:					"Traductorio",
+							toast_translating_failed:			"No se pudo traducir",
+							toast_translating_tryanother:		"Prueba con otro traductor",
 							translated_watermark:				"traducido"
 						};
 					case "fi":		// Finnish
@@ -1002,6 +1070,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Käännä viesti",
 							popout_translateoption:				"Kääntää",
 							popout_untranslateoption:			"Käännä",
+							toast_translating:					"Kääntäminen",
+							toast_translating_failed:			"Käännös epäonnistui",
+							toast_translating_tryanother:		"Kokeile toista kääntäjää",
 							translated_watermark:				"käännetty"
 						};
 					case "fr":		// French
@@ -1011,6 +1082,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Message non traduit",
 							popout_translateoption:				"Traduire",
 							popout_untranslateoption:			"Non traduit",
+							toast_translating:					"Traduction en cours",
+							toast_translating_failed:			"Échec de la traduction",
+							toast_translating_tryanother:		"Essayez un autre traducteur",
 							translated_watermark:				"traduit"
 						};
 					case "hr":		// Croatian
@@ -1020,6 +1094,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Prevedi poruku",
 							popout_translateoption:				"Prevedi",
 							popout_untranslateoption:			"Neprevedi",
+							toast_translating:					"Prevođenje",
+							toast_translating_failed:			"Prijevod nije uspio",
+							toast_translating_tryanother:		"Pokušajte s drugim prevoditeljem",
 							translated_watermark:				"prevedeno"
 						};
 					case "hu":		// Hungarian
@@ -1029,6 +1106,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Az üzenet lefordítása",
 							popout_translateoption:				"fordít",
 							popout_untranslateoption:			"Fordítás le",
+							toast_translating:					"Fordítás",
+							toast_translating_failed:			"Nem sikerült lefordítani",
+							toast_translating_tryanother:		"Próbálkozzon másik fordítóval",
 							translated_watermark:				"lefordított"
 						};
 					case "it":		// Italian
@@ -1038,6 +1118,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Annulla traduzione messaggio",
 							popout_translateoption:				"Tradurre",
 							popout_untranslateoption:			"Non tradurre",
+							toast_translating:					"Tradurre",
+							toast_translating_failed:			"Impossibile tradurre",
+							toast_translating_tryanother:		"Prova un altro traduttore",
 							translated_watermark:				"tradotto"
 						};
 					case "ja":		// Japanese
@@ -1047,6 +1130,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"メッセージの翻訳解除",
 							popout_translateoption:				"翻訳する",
 							popout_untranslateoption:			"翻訳しない",
+							toast_translating:					"翻訳",
+							toast_translating_failed:			"翻訳に失敗しました",
+							toast_translating_tryanother:		"別の翻訳者を試す",
 							translated_watermark:				"翻訳済み"
 						};
 					case "ko":		// Korean
@@ -1056,6 +1142,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"메시지 번역 취소",
 							popout_translateoption:				"옮기다",
 							popout_untranslateoption:			"번역 취소",
+							toast_translating:					"번역 중",
+							toast_translating_failed:			"번역하지 못했습니다.",
+							toast_translating_tryanother:		"다른 번역기 시도",
 							translated_watermark:				"번역"
 						};
 					case "lt":		// Lithuanian
@@ -1065,6 +1154,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Išversti pranešimą",
 							popout_translateoption:				"Išversti",
 							popout_untranslateoption:			"Neišversti",
+							toast_translating:					"Vertimas",
+							toast_translating_failed:			"Nepavyko išversti",
+							toast_translating_tryanother:		"Išbandykite kitą vertėją",
 							translated_watermark:				"išverstas"
 						};
 					case "nl":		// Dutch
@@ -1074,6 +1166,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Bericht onvertalen",
 							popout_translateoption:				"Vertalen",
 							popout_untranslateoption:			"Onvertalen",
+							toast_translating:					"Vertalen",
+							toast_translating_failed:			"Kan niet vertalen",
+							toast_translating_tryanother:		"Probeer een andere vertaler",
 							translated_watermark:				"vertaald"
 						};
 					case "no":		// Norwegian
@@ -1083,6 +1178,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Ikke oversett melding",
 							popout_translateoption:				"Oversette",
 							popout_untranslateoption:			"Ikke oversett",
+							toast_translating:					"Oversetter",
+							toast_translating_failed:			"Kunne ikke oversette",
+							toast_translating_tryanother:		"Prøv en annen oversetter",
 							translated_watermark:				"oversatt"
 						};
 					case "pl":		// Polish
@@ -1092,6 +1190,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Nieprzetłumacz wiadomość",
 							popout_translateoption:				"Tłumaczyć",
 							popout_untranslateoption:			"Nie przetłumacz",
+							toast_translating:					"Tłumaczenie",
+							toast_translating_failed:			"Nie udało się przetłumaczyć",
+							toast_translating_tryanother:		"Wypróbuj innego tłumacza",
 							translated_watermark:				"przetłumaczony"
 						};
 					case "pt-BR":	// Portuguese (Brazil)
@@ -1101,6 +1202,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Mensagem não traduzida",
 							popout_translateoption:				"Traduzir",
 							popout_untranslateoption:			"Não traduzido",
+							toast_translating:					"Traduzindo",
+							toast_translating_failed:			"Falha ao traduzir",
+							toast_translating_tryanother:		"Tente outro tradutor",
 							translated_watermark:				"traduzido"
 						};
 					case "ro":		// Romanian
@@ -1110,6 +1214,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Untraduceți mesajul",
 							popout_translateoption:				"Traduceți",
 							popout_untranslateoption:			"Netradus",
+							toast_translating:					"Traducere",
+							toast_translating_failed:			"Nu s-a putut traduce",
+							toast_translating_tryanother:		"Încercați un alt traducător",
 							translated_watermark:				"tradus"
 						};
 					case "ru":		// Russian
@@ -1119,6 +1226,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Непереведенное сообщение",
 							popout_translateoption:				"Переведите",
 							popout_untranslateoption:			"Неперевести",
+							toast_translating:					"Идет перевод",
+							toast_translating_failed:			"Не удалось перевести",
+							toast_translating_tryanother:		"Попробуйте другой переводчик",
 							translated_watermark:				"переведено"
 						};
 					case "sv":		// Swedish
@@ -1128,6 +1238,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Untranslate meddelande",
 							popout_translateoption:				"Översätt",
 							popout_untranslateoption:			"Untranslate",
+							toast_translating:					"Översätter",
+							toast_translating_failed:			"Det gick inte att översätta",
+							toast_translating_tryanother:		"Prova en annan översättare",
 							translated_watermark:				"översatt"
 						};
 					case "th":		// Thai
@@ -1137,6 +1250,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"ยกเลิกการแปลข้อความ",
 							popout_translateoption:				"แปลภาษา",
 							popout_untranslateoption:			"ไม่แปล",
+							toast_translating:					"กำลังแปล",
+							toast_translating_failed:			"แปลไม่สำเร็จ",
+							toast_translating_tryanother:		"ลองใช้นักแปลคนอื่น",
 							translated_watermark:				"แปล"
 						};
 					case "tr":		// Turkish
@@ -1146,6 +1262,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Çeviriyi Kaldır Mesajı",
 							popout_translateoption:				"Çevirmek",
 							popout_untranslateoption:			"Çevirmeyi kaldır",
+							toast_translating:					"Çeviri",
+							toast_translating_failed:			"Tercüme edilemedi",
+							toast_translating_tryanother:		"Başka bir Çevirmen deneyin",
 							translated_watermark:				"tercüme"
 						};
 					case "uk":		// Ukrainian
@@ -1155,6 +1274,9 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Неперекладене повідомлення",
 							popout_translateoption:				"Перекласти",
 							popout_untranslateoption:			"Неперекласти",
+							toast_translating:					"Переклад",
+							toast_translating_failed:			"Не вдалося перекласти",
+							toast_translating_tryanother:		"Спробуйте іншого перекладача",
 							translated_watermark:				"переклав"
 						};
 					case "vi":		// Vietnamese
@@ -1164,33 +1286,45 @@ module.exports = (_ => {
 							context_messageuntranslateoption:	"Thư chưa dịch",
 							popout_translateoption:				"Phiên dịch",
 							popout_untranslateoption:			"Chưa dịch",
+							toast_translating:					"Phiên dịch",
+							toast_translating_failed:			"Không dịch được",
+							toast_translating_tryanother:		"Thử một Trình dịch khác",
 							translated_watermark:				"đã dịch"
 						};
-					case "zh":		// Chinese
+					case "zh-CN":	// Chinese (China)
 						return {
 							context_googletranslateoption:		"搜索翻译",
-							context_messagetranslateoption:		"翻译讯息",
-							context_messageuntranslateoption:	"取消翻译邮件",
+							context_messagetranslateoption:		"翻译消息",
+							context_messageuntranslateoption:	"取消翻译消息",
 							popout_translateoption:				"翻译",
 							popout_untranslateoption:			"取消翻译",
+							toast_translating:					"正在翻译",
+							toast_translating_failed:			"翻译失败",
+							toast_translating_tryanother:		"尝试其他翻译器",
 							translated_watermark:				"已翻译"
 						};
-					case "zh-TW":	// Chinese (Traditional)
+					case "zh-TW":	// Chinese (Taiwan)
 						return {
 							context_googletranslateoption:		"搜索翻譯",
 							context_messagetranslateoption:		"翻譯訊息",
-							context_messageuntranslateoption:	"取消翻譯郵件",
+							context_messageuntranslateoption:	"取消翻譯訊息",
 							popout_translateoption:				"翻譯",
 							popout_untranslateoption:			"取消翻譯",
+							toast_translating:					"正在翻譯",
+							toast_translating_failed:			"翻譯失敗",
+							toast_translating_tryanother:		"嘗試其他翻譯器",
 							translated_watermark:				"已翻譯"
 						};
 					default:		// English
 						return {
-							context_googletranslateoption:		"Search translation",
+							context_googletranslateoption:		"Search Translation",
 							context_messagetranslateoption:		"Translate Message",
 							context_messageuntranslateoption:	"Untranslate Message",
 							popout_translateoption:				"Translate",
 							popout_untranslateoption:			"Untranslate",
+							toast_translating:					"Translating",
+							toast_translating_failed:			"Failed to translate",
+							toast_translating_tryanother:		"Try another Translator",
 							translated_watermark:				"translated"
 						};
 				}

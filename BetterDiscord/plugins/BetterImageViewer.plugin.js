@@ -1,4 +1,11 @@
-//META{"name":"BetterImageViewer","source":"https://github.com/1Lighty/BetterDiscordPlugins/blob/master/Plugins/BetterImageViewer/BetterImageViewer.plugin.js","website":"https://1lighty.github.io/BetterDiscordStuff/?plugin=BetterImageViewer","authorId":"239513071272329217","invite":"NYvWdN5","donate":"https://paypal.me/lighty13"}*//
+/**
+ * @name BetterImageViewer
+ * @version 1.5.10
+ * @invite NYvWdN5
+ * @donate https://paypal.me/lighty13
+ * @website https://1lighty.github.io/BetterDiscordStuff/?plugin=BetterImageViewer
+ * @source https://github.com/1Lighty/BetterDiscordPlugins/blob/master/Plugins/BetterImageViewer/BetterImageViewer.plugin.js
+ */
 /*@cc_on
 @if (@_jscript)
 
@@ -37,16 +44,21 @@ module.exports = (() => {
           twitter_username: ''
         }
       ],
-      version: '1.5.2',
+      version: '1.5.10',
       description: 'Move between images in the entire channel with arrow keys, image zoom enabled by clicking and holding, scroll wheel to zoom in and out, hold shift to change lens size. Image previews will look sharper no matter what scaling you have, and will take up as much space as possible.',
       github: 'https://github.com/1Lighty',
       github_raw: 'https://raw.githubusercontent.com/1Lighty/BetterDiscordPlugins/master/Plugins/BetterImageViewer/BetterImageViewer.plugin.js'
     },
     changelog: [
       {
-        title: 'fixed',
+        title: 'Fixed',
         type: 'fixed',
-        items: ['Fixed chat rescale (beta feature) causing embed images to go beyond their borders.', 'Fixed issue with Zere not consistently coding BdApi.getPlugin between BBD and BBD Beta.']
+        items: ['Fixed not being able to zoom in when using the Powercord plugin `Smooth Scrolling` by `Hot Tutorials`.']
+      },
+      {
+        title: 'Meow',
+        type: 'fixed',
+        items: ['Contact Avkhy and say they\'re cute! :heart:']
       }
     ],
     defaultConfig: [
@@ -214,8 +226,10 @@ module.exports = (() => {
 
   /* Build */
   const buildPlugin = ([Plugin, Api]) => {
-    const { Utilities, WebpackModules, DiscordModules, ReactComponents, DiscordAPI, Logger, Patcher, PluginUtilities, PluginUpdater, Structs } = Api;
+    const { Utilities, WebpackModules, DiscordModules, ReactComponents, DiscordAPI, Logger, PluginUtilities, PluginUpdater, Structs } = Api;
     const { React, ReactDOM, DiscordConstants, Dispatcher, GuildStore, GuildMemberStore, MessageStore, APIModule, NavigationUtils, SelectedChannelStore } = DiscordModules;
+
+    const Patcher = XenoLib.createSmartPatcher(Api.Patcher);
 
     const ChannelStore = WebpackModules.getByProps('getChannel', 'getDMFromUserId');
 
@@ -328,7 +342,7 @@ module.exports = (() => {
         if (this.__BIV_crash) return;
         window.addEventListener('mouseup', this.handleMouseUp);
         window.addEventListener('mousemove', this.handleMouseMove);
-        window.addEventListener('mousewheel', this.handleMouseWheel);
+        window.addEventListener('wheel', this.handleMouseWheel);
         this.getRawImage();
       }
       componentWillUnmount() {
@@ -336,7 +350,7 @@ module.exports = (() => {
         if (this.__BIV_crash) return;
         window.removeEventListener('mouseup', this.handleMouseUp);
         window.removeEventListener('mousemove', this.handleMouseMove);
-        window.removeEventListener('mousewheel', this.handleMouseWheel);
+        window.removeEventListener('wheel', this.handleMouseWheel);
         this._handleSaveLensWHChangeDC.cancel();
         this._handleSaveLensWHChange();
         this._controller.dispose();
@@ -555,7 +569,8 @@ module.exports = (() => {
                       style: {
                         opacity: ea.opacity
                       },
-                      className: 'BIV-zoom-backdrop'
+                      className: 'BIV-zoom-backdrop',
+                      onMouseDown: this.handleMouseDown
                     }),
                     this.renderLens(ea, {
                       imgContainerLeft: this._controller.springs.panelX,
@@ -680,7 +695,8 @@ module.exports = (() => {
 
     const MessageTimestamp = (() => {
       try {
-        const MessageTimestamp = WebpackModules.getByProps('MessageTimestamp').MessageTimestamp;
+        const a = WebpackModules.getByProps('MessageTimestamp');
+        const MessageTimestamp = (a && a.MessageTimestamp) || WebpackModules.getByDisplayName('MessageTimestamp');
         if (!MessageTimestamp) throw 'MessageTimestamp is undefined';
         return MessageTimestamp;
       } catch (e) {
@@ -807,33 +823,38 @@ module.exports = (() => {
             this._followNew = ChannelMessages[currentChannel().id]._after._wasAtEdge;
             this._searchId = DiscordAPI.currentGuild ? DiscordAPI.currentGuild.id : currentChannel().id;
           } else {
-            this._followNew = false;
-            this._searchCache = [];
-            this._forwardSearchCache = [];
-            const images = [];
-            this._searchId = SearchStore.getCurrentSearchId();
-            const searchResults = SearchStore.getResults(this._searchId);
-            this._includeNonHits = !searchResults.some(m => m.findIndex(e => e.id === props.__BIV_data.messageId && e.isSearchHit) !== -1);
-            searchResults.forEach(group => {
-              group.forEach(iMessage => {
-                if ((!this._includeNonHits && !iMessage.isSearchHit) || images.findIndex(e => e.id === iMessage.id) !== -1) return;
-                if (!extractImages(iMessage).length) return;
-                images.push(iMessage);
+            try {
+              this._followNew = false;
+              this._searchCache = [];
+              this._forwardSearchCache = [];
+              const images = [];
+              this._searchId = SearchStore.getCurrentSearchId();
+              const searchResults = SearchStore.getResults(this._searchId);
+              this._includeNonHits = !searchResults.some(m => m.findIndex(e => e.id === props.__BIV_data.messageId && e.isSearchHit) !== -1);
+              searchResults.forEach(group => {
+                group.forEach(iMessage => {
+                  if ((!this._includeNonHits && !iMessage.isSearchHit) || images.findIndex(e => e.id === iMessage.id) !== -1) return;
+                  if (!extractImages(iMessage).length) return;
+                  images.push(iMessage);
+                });
               });
-            });
-            images.sort((a, b) => a.timestamp.unix() - b.timestamp.unix());
-            /* discord search is le broken lol */
-            /* if (Utilities.getNestedProp(ZeresPluginLibrary.ReactTools.getOwnerInstance(document.querySelector(`.${SearchResultsWrap}`)), 'state.searchMode') === DiscordConstants.SearchModes.OLDEST) images.reverse(); */
-            this._searchCache._totalResults = SearchStore.getTotalResults(this._searchId);
-            this._searchCache.unshift(...images);
-            let searchString = EditorTools.getFirstTextBlock(SearchStore.getEditorState(this._searchId));
-            let searchquery;
-            let o;
-            let s;
-            for (o = SearchTools.tokenizeQuery(searchString), searchquery = SearchTools.getSearchQueryFromTokens(o), s = 0; s < o.length; s++) {
-              SearchTools.filterHasAnswer(o[s], o[s + 1]) || (searchString = searchString.substring(0, o[s].start) + searchString.substring(o[s].end));
+              images.sort((a, b) => a.timestamp.unix() - b.timestamp.unix());
+              /* discord search is le broken lol */
+              /* if (Utilities.getNestedProp(ZeresPluginLibrary.ReactTools.getOwnerInstance(document.querySelector(`.${SearchResultsWrap}`)), 'state.searchMode') === DiscordConstants.SearchModes.OLDEST) images.reverse(); */
+              this._searchCache._totalResults = SearchStore.getTotalResults(this._searchId);
+              this._searchCache.unshift(...images);
+              let searchString = EditorTools.getFirstTextBlock(SearchStore.getEditorState(this._searchId));
+              let searchquery;
+              let o;
+              let s;
+              for (o = SearchTools.tokenizeQuery(searchString), searchquery = SearchTools.getSearchQueryFromTokens(o), s = 0; s < o.length; s++) {
+                SearchTools.filterHasAnswer(o[s], o[s + 1]) || (searchString = searchString.substring(0, o[s].start) + searchString.substring(o[s].end));
+              }
+              this._searchProps = searchquery;
+            } catch {
+              // silently error out, no solution for it just yet
+              this.state.internalError = true;
             }
-            this._searchProps = searchquery;
           }
           this._searchType = GuildStore.getGuild(this._searchId) ? DiscordConstants.SearchTypes.GUILD : DiscordConstants.SearchTypes.CHANNEL;
           this._imageCounter = {};
@@ -1156,9 +1177,10 @@ module.exports = (() => {
           return ret;
         } else this.__couldNotFindMessage = false;
         const currentImage = this._imageCounter[this.state.__BIV_data.messageId] + (this.state.__BIV_data.images.length - 1 - this.state.__BIV_index);
-        ret.props.children[0].type = LazyImage;
-        ret.props.children[0].props.id = message.id + currentImage;
-        ret.props.children[0].props.__BIV_original = this.props.original;
+        const imageComponent = Utilities.findInReactTree(ret, e => e?.type?.displayName === 'LazyImage');
+        imageComponent.type = LazyImage;
+        imageComponent.props.id = message.id + currentImage;
+        imageComponent.props.__BIV_original = this.props.original;
         const iMember = DiscordAPI.currentGuild && GuildMemberStore.getMember(DiscordAPI.currentGuild.id, message.author.id);
         ret.props.children.push(
           ReactDOM.createPortal(
@@ -1364,7 +1386,15 @@ module.exports = (() => {
     return class BetterImageViewer extends Plugin {
       constructor() {
         super();
-        XenoLib.changeName(__filename, this.name);
+        /*
+         * why are we letting Zere, the braindead American let control BD when he can't even
+         * fucking read clearly documented and well known standards, such as __filename being
+         * the files full fucking path and not just the filename itself, IS IT REALLY SO HARD
+         * TO FUCKING READ?! https://nodejs.org/api/modules.html#modules_filename
+         */
+        const _zerecantcode_path = require('path');
+        const theActualFileNameZere = _zerecantcode_path.join(__dirname, _zerecantcode_path.basename(__filename));
+        XenoLib.changeName(theActualFileNameZere, this.name);
         this.handleWHChange = this.handleWHChange.bind(this);
         this.showChangelog = this.showChangelog.bind(this);
         const oOnStart = this.onStart.bind(this);
@@ -1397,6 +1427,7 @@ module.exports = (() => {
         if (window.Lightcord) XenoLib.Notifications.warning(`[${this.getName()}] Lightcord is an unofficial and unsafe client with stolen code that is falsely advertising that it is safe, Lightcord has allowed the spread of token loggers hidden within plugins redistributed by them, and these plugins are not made to work on it. Your account is very likely compromised by malicious people redistributing other peoples plugins, especially if you didn't download this plugin from [GitHub](https://github.com/1Lighty/BetterDiscordPlugins/edit/master/Plugins/MessageLoggerV2/MessageLoggerV2.plugin.js), you should change your password immediately. Consider using a trusted client mod like [BandagedBD](https://rauenzi.github.io/BetterDiscordApp/) or [Powercord](https://powercord.dev/) to avoid losing your account.`, { timeout: 0 });
         if (PluginBrokenFatal) return this._startFailure('Plugin is in a broken state.');
         if (NoImageZoom) this._startFailure('Image zoom is broken.');
+        if (window.powercord?.pluginManager?.get('image-tools')?.ready) XenoLib.Notifications.warning(`[${this.getName()}] **Image Tools** may conflict and cause issues, it is unsupported.`);
         if (this.settings.zoom.enabled && !NoImageZoom && BdApi.Plugins.get('ImageZoom') && BdApi.Plugins.isEnabled('ImageZoom')) XenoLib.Notifications.warning(`[**${this.name}**] Using **ImageZoom** while having the zoom function in **${this.name}** enabled is unsupported! Please disable one or the other.`, { timeout: 15000 });
         if (BdApi.Plugins.get('Better Image Popups') && BdApi.Plugins.isEnabled('Better Image Popups')) XenoLib.Notifications.warning(`[**${this.name}**] Using **Better Image Popups** with **${this.name}** is completely unsupported and will cause issues. **${this.name}** fully supersedes it in terms of features as well, please either disable **Better Image Popups** or delete it to avoid issues.`, { timeout: 0 });
         if (this.settings.zoom.enabled && BdApi.Plugins.get('ImageGallery') && BdApi.Plugins.isEnabled('ImageGallery')) XenoLib.Notifications.warning(`[**${this.name}**] Using **ImageGallery** with **${this.name}** is completely unsupported and will cause issues, mainly, zoom breaks. **${this.name}** fully supersedes it in terms of features as well, please either disable **ImageGallery** or delete it to avoid issues.`, { timeout: 0 });
@@ -1640,8 +1671,8 @@ module.exports = (() => {
           if (_this.onZoom.__BIV_patched !== patchKey) {
             _this.onZoom = (e, n) => {
               let isSearch = e.target;
-              while (isSearch && typeof isSearch.className === 'string' && isSearch.className.indexOf('searchResultMessage') === -1) isSearch = isSearch.parentElement;
-              isSearch = !!isSearch;
+              while (isSearch && typeof isSearch.className === 'string' && isSearch.className.indexOf('searchResult') === -1) isSearch = isSearch.parentElement;
+              isSearch = isSearch && typeof isSearch.className === 'string' && isSearch.className.indexOf('searchResult') !== -1;
               e.preventDefault();
               if (e.currentTarget instanceof HTMLElement) e.currentTarget.blur();
               e = null;
@@ -1944,7 +1975,7 @@ module.exports = (() => {
         const SEARCH_SIDEBAR = 0.3601756956193265;
         const MEMBERS_SIDEBAR = 0.49048316246120055;
         Patcher.instead(LazyImage.prototype, 'handleSidebarChange', (_this, [forced]) => {
-          if (!this.settings.chat.resize) return;
+          if (!this.settings.chat.resize || !SectionStore) return;
           const { state } = _this;
           if (!currentChannel()) {
             state.__BIV_sidebarMultiplier = null;
@@ -1964,14 +1995,14 @@ module.exports = (() => {
             return;
           }
           _this.handleSidebarChange = _this.handleSidebarChange.bind(_this);
-          SectionStore.addChangeListener(_this.handleSidebarChange);
+          if (SectionStore) SectionStore.addChangeListener(_this.handleSidebarChange);
         });
         Patcher.after(LazyImage.prototype, 'componentWillUnmount', _this => {
           if (!_this.handleSidebarChange) return;
-          SectionStore.removeChangeListener(_this.handleSidebarChange);
+          if (SectionStore) SectionStore.removeChangeListener(_this.handleSidebarChange);
         });
         Patcher.before(LazyImage.prototype, 'getRatio', _this => {
-          if (!this.settings.chat.resize || _this.props.__BIV_embed) return;
+          if ((!this.settings.chat.resize || !SectionStore) || _this.props.__BIV_embed) return;
           if (!_this.handleSidebarChange || typeof _this.props.__BIV_index !== 'undefined' /*  || _this.props.__BIV_isVideo */ || (_this.props.className && _this.props.className.indexOf('embedThumbnail') !== -1)) return;
           if (typeof _this.state.__BIV_sidebarType === 'undefined') _this.handleSidebarChange(true);
           if (_this.state.__BIV_sidebarMultiplier === null) return;
@@ -2078,7 +2109,7 @@ module.exports = (() => {
       n = (n, e) => n && n._config && n._config.info && n._config.info.version && i(n._config.info.version, e),
       e = BdApi.Plugins.get('ZeresPluginLibrary'),
       o = BdApi.Plugins.get('XenoLib');
-    n(e, '1.2.27') && (ZeresPluginLibraryOutdated = !0), n(o, '1.3.32') && (XenoLibOutdated = !0);
+    n(e, '1.2.29') && (ZeresPluginLibraryOutdated = !0), n(o, '1.3.36') && (XenoLibOutdated = !0);
   } catch (i) {
     console.error('Error checking if libraries are out of date', i);
   }

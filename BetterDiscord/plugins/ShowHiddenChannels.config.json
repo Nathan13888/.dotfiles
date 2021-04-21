@@ -70,6 +70,7 @@
 		"showStore": true,
 		"showText": true,
 		"showVoice": true,
+		"showVoiceUsers": true,
 		"sortNative": false
 	}
 }

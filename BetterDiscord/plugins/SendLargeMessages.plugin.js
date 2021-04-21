@@ -6,6 +6,7 @@
  * @patreon https://www.patreon.com/MircoWittrien
  * @website https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/SendLargeMessages
  * @source https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/SendLargeMessages/SendLargeMessages.plugin.js
+ * @updateUrl https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/SendLargeMessages/SendLargeMessages.plugin.js
  */
 
 module.exports = (_ => {
@@ -13,42 +14,66 @@ module.exports = (_ => {
 		"info": {
 			"name": "SendLargeMessages",
 			"author": "DevilBro",
-			"version": "1.6.5",
-			"description": "Split messages into several smaller messages when your message exceeds the limit"
+			"version": "1.6.6",
+			"description": "Allows you to enter larger messages in the chattextarea, which allows you to automatically send the message in several smaller messages"
+		},
+		"changeLog": {
+			"improved": {
+				"New Line instead of Spaces": "Added an option to check for newlines instead of spaces to split messages"
+			}
 		}
 	};
+
 	return !window.BDFDB_Global || (!window.BDFDB_Global.loaded && !window.BDFDB_Global.started) ? class {
 		getName () {return config.info.name;}
 		getAuthor () {return config.info.author;}
 		getVersion () {return config.info.version;}
-		getDescription () {return config.info.description;}
+		getDescription () {return `The Library Plugin needed for ${config.info.name} is missing. Open the Plugin Settings to download it. \n\n${config.info.description}`;}
 		
-		load() {
-			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue:[]});
+		downloadLibrary () {
+			require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
+				if (!e && b && b.indexOf(`* @name BDFDB`) > -1) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => BdApi.showToast("Finished downloading BDFDB Library", {type: "success"}));
+				else BdApi.alert("Error", "Could not download BDFDB Library Plugin, try again later or download it manually from GitHub: https://github.com/mwittrien/BetterDiscordAddons/tree/master/Library/");
+			});
+		}
+		
+		load () {
+			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue: []});
 			if (!window.BDFDB_Global.downloadModal) {
 				window.BDFDB_Global.downloadModal = true;
-				BdApi.showConfirmationModal("Library Missing", `The library plugin needed for ${config.info.name} is missing. Please click "Download Now" to install it.`, {
+				BdApi.showConfirmationModal("Library Missing", `The Library Plugin needed for ${config.info.name} is missing. Please click "Download Now" to install it.`, {
 					confirmText: "Download Now",
 					cancelText: "Cancel",
 					onCancel: _ => {delete window.BDFDB_Global.downloadModal;},
 					onConfirm: _ => {
 						delete window.BDFDB_Global.downloadModal;
-						require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
-							if (!e && b && b.indexOf(`* @name BDFDB`) > -1) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => {});
-							else BdApi.alert("Error", "Could not download BDFDB library plugin, try again some time later.");
-						});
+						this.downloadLibrary();
 					}
 				});
 			}
 			if (!window.BDFDB_Global.pluginQueue.includes(config.info.name)) window.BDFDB_Global.pluginQueue.push(config.info.name);
 		}
-		start() {this.load();}
-		stop() {}
+		start () {this.load();}
+		stop () {}
+		getSettingsPanel () {
+			let template = document.createElement("template");
+			template.innerHTML = `<div style="color: var(--header-primary); font-size: 16px; font-weight: 300; white-space: pre; line-height: 22px;">The Library Plugin needed for ${config.info.name} is missing.\nPlease click <a style="font-weight: 500;">Download Now</a> to install it.</div>`;
+			template.content.firstElementChild.querySelector("a").addEventListener("click", this.downloadLibrary);
+			return template.content.firstElementChild;
+		}
 	} : (([Plugin, BDFDB]) => {
 		const messageDelay = 1000; //changing at own risk, might result in bans or mutes
+		
+		let settings = {};
 	
 		return class SendLargeMessages extends Plugin {
-			onLoad() {
+			onLoad () {
+				this.defaults = {
+					settings: {
+						byNewlines:		{value: false, 	description: "Try to split messages on newlines instead of spaces",		note: "This will stop sentences from being cut, but might result in more messages being sent"},
+					}
+				};
+				
 				this.patchedModules = {
 					before: {
 						ChannelTextAreaForm: "render",
@@ -60,11 +85,39 @@ module.exports = (_ => {
 				};
 			}
 			
-			onStart() {
-				BDFDB.PatchUtils.forceAllUpdates(this);
+			onStart () {
+				this.forceUpdateAll();
 			}
 			
-			onStop() {
+			onStop () {
+				this.forceUpdateAll();
+			}
+
+			getSettingsPanel (collapseStates = {}) {
+				let settingsPanel, settingsItems = [];
+				
+				for (let key in settings) settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
+					type: "Switch",
+					plugin: this,
+					keys: ["settings", key],
+					label: this.defaults.settings[key].description,
+					note: this.defaults.settings[key].note,
+					value: settings[key]
+				}));
+				
+				return settingsPanel = BDFDB.PluginUtils.createSettingsPanel(this, settingsItems);
+			}
+
+			onSettingsClosed (e) {
+				if (this.SettingsUpdated) {
+					delete this.SettingsUpdated;
+					this.forceUpdateAll();
+				}
+			}
+		
+			forceUpdateAll () {
+				settings = BDFDB.DataUtils.get(this, "settings");
+				
 				BDFDB.PatchUtils.forceAllUpdates(this);
 			}
 
@@ -76,7 +129,7 @@ module.exports = (_ => {
 						messages.filter(n => n).forEach((message, i) => {
 							BDFDB.TimeUtils.timeout(_ => {
 								e2.originalMethod(message);
-								if (i >= messages.length-1) BDFDB.NotificationUtils.toast(this.labels.toast_allsent_text, {type:"success"});
+								if (i >= messages.length-1) BDFDB.NotificationUtils.toast(this.labels.toast_allsent, {type: "success"});
 							}, messageDelay * i);
 						});
 						return Promise.resolve({
@@ -111,8 +164,10 @@ module.exports = (_ => {
 			}
 
 			formatText (text) {
+				const separator = settings.byNewlines ? "\n" : " ";
+				
 				text = text.replace(/\t/g, "	");
-				let longWords = text.match(new RegExp(`[^ ]{${BDFDB.DiscordConstants.MAX_MESSAGE_LENGTH * (19/20)},}`, "gm"));
+				let longWords = text.match(new RegExp(`[^${separator.replace("\n", "\\n")}]{${BDFDB.DiscordConstants.MAX_MESSAGE_LENGTH * (19/20)},}`, "gm"));
 				if (longWords) for (let longWord of longWords) {
 					let count1 = 0;
 					let shortWords = [];
@@ -120,13 +175,13 @@ module.exports = (_ => {
 						if (shortWords[count1] && (shortWords[count1].length >= BDFDB.DiscordConstants.MAX_MESSAGE_LENGTH * (19/20) || (c == "\n" && shortWords[count1].length >= BDFDB.DiscordConstants.MAX_MESSAGE_LENGTH * (19/20) - 100))) count1++;
 						shortWords[count1] = shortWords[count1] ? shortWords[count1] + c : c;
 					});
-					text = text.replace(longWord, shortWords.join(" "));
+					text = text.replace(longWord, shortWords.join(separator));
 				}
 				let messages = [];
 				let count2 = 0;
-				text.split(" ").forEach((word) => {
+				text.split(separator).forEach((word) => {
 					if (messages[count2] && (messages[count2] + "" + word).length > BDFDB.DiscordConstants.MAX_MESSAGE_LENGTH * (39/40)) count2++;
-					messages[count2] = messages[count2] ? messages[count2] + " " + word : word;
+					messages[count2] = messages[count2] ? messages[count2] + separator + word : word;
 				});
 
 				let insertCodeBlock = null, insertCodeLine = null;
@@ -157,89 +212,113 @@ module.exports = (_ => {
 
 			setLabelsByLanguage () {
 				switch (BDFDB.LanguageUtils.getLanguage().id) {
-					case "hr":		//croatian
+					case "bg":		// Bulgarian
 						return {
-							toast_allsent_text:					"Sve veliku poslane."
+							toast_allsent:						"Всички изпратени съобщения"
 						};
-					case "da":		//danish
+					case "da":		// Danish
 						return {
-							toast_allsent_text:					"Alle beskeder sendes."
+							toast_allsent:						"Alle beskeder sendt"
 						};
-					case "de":		//german
+					case "de":		// German
 						return {
-							toast_allsent_text:					"Alle Nachrichten versendet."
+							toast_allsent:						"Alle Nachrichten gesendet"
 						};
-					case "es":		//spanish
+					case "el":		// Greek
 						return {
-							toast_allsent_text:					"Todos los mensajes enviados."
+							toast_allsent:						"Όλα τα μηνύματα εστάλησαν"
 						};
-					case "fr":		//french
+					case "es":		// Spanish
 						return {
-							toast_allsent_text:					"Tous les messages envoyés"
+							toast_allsent:						"Todos los mensajes enviados"
 						};
-					case "it":		//italian
+					case "fi":		// Finnish
 						return {
-							toast_allsent_text:					"Tutti i messaggi inviati."
+							toast_allsent:						"Kaikki viestit lähetetty"
 						};
-					case "nl":		//dutch
+					case "fr":		// French
 						return {
-							toast_allsent_text:					"Alle berichten verzonden."
+							toast_allsent:						"Tous les messages envoyés"
 						};
-					case "no":		//norwegian
+					case "hr":		// Croatian
 						return {
-							toast_allsent_text:					"Alle meldinger sendt."
+							toast_allsent:						"Sve poruke poslane"
 						};
-					case "pl":		//polish
+					case "hu":		// Hungarian
 						return {
-							toast_allsent_text:					"Wszystkie wiadomości zostały wysłane."
+							toast_allsent:						"Minden üzenet elküldve"
 						};
-					case "pt-BR":	//portuguese (brazil)
+					case "it":		// Italian
 						return {
-							toast_allsent_text:					"Todas as mensagens enviadas."
+							toast_allsent:						"Tutti i messaggi inviati"
 						};
-					case "fi":		//finnish
+					case "ja":		// Japanese
 						return {
-							toast_allsent_text:					"Kaikki lähetetyt viestit."
+							toast_allsent:						"送信されたすべてのメッセージ"
 						};
-					case "sv":		//swedish
+					case "ko":		// Korean
 						return {
-							toast_allsent_text:					"Alla meddelanden skickade."
+							toast_allsent:						"보낸 모든 메시지"
 						};
-					case "tr":		//turkish
+					case "lt":		// Lithuanian
 						return {
-							toast_allsent_text:					"Tüm mesajlar gönderildi."
+							toast_allsent:						"Visi pranešimai išsiųsti"
 						};
-					case "cs":		//czech
+					case "nl":		// Dutch
 						return {
-							toast_allsent_text:					"Všechny zprávy byly odeslány."
+							toast_allsent:						"Alle berichten zijn verzonden"
 						};
-					case "bg":		//bulgarian
+					case "no":		// Norwegian
 						return {
-							toast_allsent_text:					"Всички изпратени съобщения."
+							toast_allsent:						"Alle meldinger sendt"
 						};
-					case "ru":		//russian
+					case "pl":		// Polish
 						return {
-							toast_allsent_text:					"Все отправленные сообщения."
+							toast_allsent:						"Wszystkie wiadomości wysłane"
 						};
-					case "uk":		//ukrainian
+					case "pt-BR":	// Portuguese (Brazil)
 						return {
-							toast_allsent_text:					"Всі повідомлення надіслано."
+							toast_allsent:						"Todas as mensagens enviadas"
 						};
-					case "ja":		//japanese
+					case "ro":		// Romanian
 						return {
-							toast_allsent_text:					"すべてのメッセージが送信されました。"
+							toast_allsent:						"Toate mesajele trimise"
 						};
-					case "zh-TW":	//chinese (traditional)
+					case "ru":		// Russian
 						return {
-							toast_allsent_text:					"發送的所有消息。"
+							toast_allsent:						"Все сообщения отправлены"
 						};
-					case "ko":		//korean
+					case "sv":		// Swedish
 						return {
-							toast_allsent_text:					"모든 메시지가 전송되었습니다."
+							toast_allsent:						"Alla meddelanden skickade"
 						};
-					default:		//default: english
+					case "th":		// Thai
 						return {
-							toast_allsent_text:					"All messages sent."
+							toast_allsent:						"ส่งข้อความทั้งหมดแล้ว"
+						};
+					case "tr":		// Turkish
+						return {
+							toast_allsent:						"Tüm mesajlar gönderildi"
+						};
+					case "uk":		// Ukrainian
+						return {
+							toast_allsent:						"Усі повідомлення надіслано"
+						};
+					case "vi":		// Vietnamese
+						return {
+							toast_allsent:						"Tất cả tin nhắn đã gửi"
+						};
+					case "zh-CN":	// Chinese (China)
+						return {
+							toast_allsent:						"已发送所有消息"
+						};
+					case "zh-TW":	// Chinese (Taiwan)
+						return {
+							toast_allsent:						"已發送所有消息"
+						};
+					default:		// English
+						return {
+							toast_allsent:						"All messages sent"
 						};
 				}
 			}

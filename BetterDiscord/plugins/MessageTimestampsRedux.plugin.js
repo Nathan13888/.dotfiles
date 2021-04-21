@@ -1,4 +1,13 @@
-//META{"name":"MessageTimestampsRedux","displayName":"MessageTimestampsRedux","website":"https://github.com/Arashiryuu","source":"https://github.com/Arashiryuu/crap/blob/master/ToastIntegrated/MessageTimestampsRedux/MessageTimestampsRedux.plugin.js"}*//
+/**
+ * @name MessageTimestampsRedux
+ * @author Arashiryuu
+ * @version 1.0.15
+ * @description Displays the timestamp for a message, simply right-click and select "Show Timestamp."
+ * @authorId 238108500109033472
+ * @authorLink https://github.com/Arashiryuu
+ * @website https://github.com/Arashiryuu/crap
+ * @source https://github.com/Arashiryuu/crap/blob/master/ToastIntegrated/MessageTimestampsRedux/MessageTimestampsRedux.plugin.js
+ */
 
 /*@cc_on
 @if (@_jscript)
@@ -40,17 +49,18 @@ var MessageTimestampsRedux = (() => {
 					twitter_username: ''
 				}
 			],
-			version: '1.0.13',
+			version: '1.0.15',
 			description: 'Displays the timestamp for a message, simply right-click and select "Show Timestamp."',
 			github: 'https://github.com/Arashiryuu',
 			github_raw: 'https://raw.githubusercontent.com/Arashiryuu/crap/master/ToastIntegrated/MessageTimestampsRedux/MessageTimestampsRedux.plugin.js'
 		},
 		changelog: [
 			{
-				title: 'Bugs Squashed!',
-				type: 'fixed',
+				title: 'Evolving?',
+				type: 'improved',
 				items: [
-					'Displays in the context-menu again.'
+					'Using React again.',
+					'Fix potential conflict with ImageUtilities plugin.'
 				]
 			}
 		]
@@ -72,48 +82,32 @@ var MessageTimestampsRedux = (() => {
 		const { SettingPanel, SettingGroup, RadioGroup, Slider, Switch } = Settings;
 		const { React, ReactDOM, ContextMenuActions: MenuActions } = DiscordModules;
 		
-		const MenuItem = WebpackModules.getByString('disabled', 'danger', 'brand');
+		/**
+		 * Context Menu Modules
+		 */
+		const Menu = WebpackModules.getByProps('MenuItem', 'MenuGroup', 'MenuSeparator');
+		const ContextMenuClasses = WebpackModules.getByProps('menu', 'scroller');
+		const MessageContextMenu = WebpackModules.find((mod) => mod && mod.default && mod.default.displayName === 'MessageContextMenu');
 
-		const ErrorBoundary = class ErrorBoundary extends React.PureComponent {
-			constructor(props) {
-				super(props);
-				this.state = { hasError: false };
-			}
+		/**
+		 * Unique item key for our React MenuGroup.
+		 * @type {string}
+		 */
+		const key = 'MessageTimestampsRedux-GroupItem';
 
-			static getDerivedStateFromError(error) {
-				return { hasError: true };
-			}
+		/**
+		 * Method which checks whether it was given undefined or null and returns a boolean.
+		 * @param {*} anything 
+		 * @returns {boolean}
+		 */
+		const isNil = (anything) => typeof anything === 'undefined' || anything === null;
 
-			componentDidCatch(error, info) {
-				console.group(`%c[${config.info.name}]`, 'color: #3A71C1; font-weight: 700;');
-				console.error(error);
-				console.groupEnd();
-			}
-
-			render() {
-				if (this.state.hasError) return React.createElement('div', { className: 'react-error' }, 'Component Error!');
-				return this.props.children;
-			}
-		};
-
-		const WrapBoundary = (Original) => class Boundary extends React.PureComponent {
-			render() {
-				return React.createElement(ErrorBoundary, null, React.createElement(Original, this.props));
-			}
-		};
-
-		const ItemGroup = class ItemGroup extends React.PureComponent {
-			constructor(props) {
-				super(props);
-			}
-
-			render() {
-				return React.createElement('div', {
-					role: 'group',
-					children: this.props.children || []
-				});
-			}
-		};
+		/**
+		 * Predicate for deciding whether we should add our GroupItem to the current MessageContextMenu.
+		 * @param {*} item The current child item from a list of children.
+		 * @returns {boolean}
+		 */
+		const fn = (item) => !isNil(item) && item.key === key;
 		
 		return class MessageTimestampsRedux extends Plugin {
 			constructor() {
@@ -136,79 +130,86 @@ var MessageTimestampsRedux = (() => {
 
 			/**
 			 * Called when the plugin instance starts.
-			 * @returns {Void}
+			 * @returns {void}
 			 */
 			onStart() {
 				this.promises.restore();
 				this.settings = this.loadSettings(this.default);
-				// this.getContextMenu(this.promises.state).catch(this.didError);
-				Toasts.info(`${this.name} ${this.version} has started!`, { timeout: 2e3 });
+				this.patchContextMenu(this.promises.state);
 			}
 
 			/**
 			 * Called when the plugin instance stops.
-			 * @returns {Void}
+			 * @returns {void}
 			 */
 			onStop() {
 				this.promises.cancel();
 				Patcher.unpatchAll();
-				Toasts.info(`${this.name} ${this.version} has stopped!`, { timeout: 2e3 });
 			}
 
 			/**
 			 * @param {Error} error
-			 * @returns {Void}
+			 * @returns {void}
 			 */
 			didError(error) {
 				Toasts.error(error.message, { timeout: 2e3 });
 				Logger.err(error);
 			}
-			
+
 			/**
-			 * Asynchronously gets the MessageContextMenu component as it renders, then patches it.
-			 * @returns {Promise<Void>}
+			 * Asserts that every item of the passed iterable is not null or undefined.
+			 * Works like Array#some except with a fixed predicate.
+			 * @param {any[]} items 
+			 * @returns {boolean}
 			 */
-			async getContextMenu(promiseState) {
-				const ContextMenu = await ReactComponents.getComponent('MessageContextMenu', DiscordSelectors.ContextMenu.value.trim(), (n) => {
-					return n.displayName && n.displayName === 'MessageContextMenu';
-				});
-				if (promiseState.cancelled) return;
-				log(ContextMenu);
-				// this.patchContextMenu(ContextMenu);
+			allExists(items = []) {
+				for (const item of items) {
+					if (isNil(item)) return false;
+				}
+				return true;
 			}
 
 			/**
-			 * Patches the render of the MessageContextMenu react component which is passed to it.
-			 * @param {ReactComponent} ContextMenu
-			 * @returns {Void}
+			 * Patches the render of the MessageContextMenu react component.
+			 * @param {object} state
+			 * @returns {void}
 			 */
-			patchContextMenu(ContextMenu) {
-				if (!ContextMenu) return;
+			patchContextMenu(state) {
+				if (state.cancelled || !MessageContextMenu) return;
 
-				const key = 'MessageTimestampsRedux-GroupItem';
-				Patcher.after(ContextMenu, 'default', (that, args, value) => {
+				Patcher.after(MessageContextMenu, 'default', (that, args, value) => {
 					const [props] = args;
-					if (!props.message) return value;
+					if (!props || !props.message) return value;
 					
-					const { message, target } = props, children = this.getProps(value, 'props.children');
+					const { message, target } = props;
+					const children = this.getProps(value, 'props.children');
 
 					if (!Array.isArray(children)) return value;
 
-					const item = new MenuItem({
+					const firstGroup = children.find((child) => child && child.props && Array.isArray(child.props.children));
+					if (!firstGroup) return value;
+
+					const separator = React.createElement(Menu.MenuSeparator, {});
+					const bottomSeparator = React.cloneElement(separator);
+					const topSeparator = this.allExists(firstGroup.props.children.slice(0, 2))
+						? separator
+						: null;
+
+					const item = React.createElement(Menu.MenuItem, {
 						label: 'Show Timestamp',
+						id: 'show-timestamp',
 						action: () => this.action(message, target)
 					});
-
-					const group = React.createElement(WrapBoundary(ItemGroup), {
-						children: [item],
-						key
+					const group = React.createElement(Menu.MenuGroup, {
+						key,
+						children: [
+							topSeparator,
+							item,
+							bottomSeparator
+						]
 					});
 
-					const fn = (item) => item && item.key && item.key === key;
-					if (!children.find(fn)) children.unshift(group);
-					
-					setImmediate(() => this.updateContextPosition(that));
-
+					if (!firstGroup.props.children.some(fn)) firstGroup.props.children.splice(2, 0, group);
 					return value;
 				});
 
@@ -218,7 +219,7 @@ var MessageTimestampsRedux = (() => {
 			/**
 			 * Manually hide the context menu on our context menu item being clicked.
 			 * @param {HTMLElement} node The context menu element.
-			 * @returns {Boolean}
+			 * @returns {boolean}
 			 */
 			hideMenu(node) {
 				if (!node) return;
@@ -229,14 +230,14 @@ var MessageTimestampsRedux = (() => {
 			/**
 			 * Displays a tooltip over the message that was right-clicked with its timestamp.
 			 * @param {object} message 
-			 * @param {ReactComponent} that
+			 * @param {HTMLElement} target
 			 * @returns {void}
 			 */
 			showTooltip(message, target) {
 				if (!target) return Toasts.error('Unable to find the message.', { timeout: 2e3 });
 
 				/**
-				 * @type {String}
+				 * @type {string}
 				 */
 				const ts = String(this.getProps(message, 'timestamp._d'));
 				const time = !this.settings.shortened
@@ -251,13 +252,13 @@ var MessageTimestampsRedux = (() => {
 			/**
 			 * Displays a toast notification of the clicked message's timestamp.
 			 * @param {object} message 
-			 * @param {ReactComponent} that
+			 * @param {HTMLElement} target
 			 * @returns {void}
 			 */
 			showTimestamp(message, target) {
 				if (!message) return;
 				/**
-				 * @type {String}
+				 * @type {string}
 				 */
 				const ts = String(this.getProps(message, 'timestamp._d'));
 
@@ -266,8 +267,21 @@ var MessageTimestampsRedux = (() => {
 			}
 
 			/**
+			 * Decides which action to take, and closes the currently open MessageContextMenu.
+			 * @param {object} message A Discord message object 
+			 * @param {HTMLElement} target The DOM node related to the Discord message
+			 * @returns {void}
+			 */
+			action(message, target) {
+				MenuActions.closeContextMenu();
+				!this.settings.tooltips
+					? this.showTimestamp(message, target)
+					: this.showTooltip(message, target);
+			}
+
+			/**
 			 * Forces the react component for our Context Menu to update.
-			 * @returns {Void}
+			 * @returns {void}
 			 */
 			updateContextMenu() {
 				const menu = document.querySelectorAll(DiscordSelectors.ContextMenu.contextMenu.toString());
@@ -277,22 +291,34 @@ var MessageTimestampsRedux = (() => {
 
 			/**
 			 * Uses the component's own onHeightUpdate function to manage screen position after being newly rendered post-patch.
-			 * @param {ReactComponent} that The Context Menu's react component.
+			 * @param {object} m The owner instance/object of a React component.
+			 * @returns {void}
 			 */
 			updateContextPosition(m) {
 				if (!m) return;
 	
-				let height = this.getProps(m, 'props.onHeightUpdate');
+				let height = this.getProps(m, 'updatePosition');
+				if (!height) height = this.getProps(m, 'props.onHeightUpdate');
 				if (!height) height = this.getProps(m, '_reactInternalFiber.return.memoizedProps.onHeightUpdate');
 				if (!height) height = this.getProps(m, '_reactInternalFiber.child.child.memoizedProps.onHeightUpdate');
 	
-				height && height();
+				if (typeof height === 'function') height();
 			}
 
+			/**
+			 * Method for adding our context menu item to the current message context menu via DOM manipulation.
+			 * @param {HTMLElement} menu 
+			 * @param {object} instance 
+			 * @param {object} owner 
+			 * @param {object} props 
+			 * @returns {void}
+			 */
 			addContextMenuItem(menu, instance, owner, props) {
 				const { message, target } = props;
 				const group = new ContextMenu.ItemGroup();
-				const item = new ContextMenu.TextItem('Show Timestamp', { callback: () => this.action(message, target) });
+				const item = new ContextMenu.TextItem('Show Timestamp', {
+					callback: () => this.action(message, target)
+				});
 				const elements = item.getElement();
 				group.getElement().setAttribute('role', 'group');
 				elements.classList.add(
@@ -300,16 +326,24 @@ var MessageTimestampsRedux = (() => {
 					...DiscordClasses.ContextMenu.colorDefault.value.split(' ')
 				);
 				elements.firstChild.classList.add(...DiscordClasses.ContextMenu.label.value.split(' '));
+				elements.addEventListener('mouseenter', (e) => {
+					if (elements.classList.contains(ContextMenuClasses.focused)) return;
+					elements.classList.add(ContextMenuClasses.focused);
+				});
+				elements.addEventListener('mouseleave', (e) => {
+					if (!elements.classList.contains(ContextMenuClasses.focused)) return;
+					elements.classList.remove(ContextMenuClasses.focused);
+				});
 				group.addItems(item);
 				menu.querySelector('div[role="group"]').insertAdjacentElement('afterend', group.getElement());
 				setImmediate(() => this.updateContextPosition(owner));
 			}
 
-			action(message, target) {
-				MenuActions.closeContextMenu();
-				!this.settings.tooltips ? this.showTimestamp(message, target) : this.showTooltip(message, target);
-			}
-
+			/**
+			 * Discerns whether the context menu is a MessageContextMenu, if it is we add our menu items.
+			 * @param {HTMLElement} cm
+			 * @returns {void}
+			 */
 			processContextMenu(cm) {
 				if (!cm) return;
 				const inst = ReactTools.getReactInstance(cm);
@@ -320,22 +354,30 @@ var MessageTimestampsRedux = (() => {
 				this.addContextMenuItem(cm, inst, own, ref.props);
 			}
 
-			/* Observer */
-			observer({ addedNodes }) {
-				for (const node of addedNodes.values()) {
-					if (!node) continue;
-					if (node.firstChild && node.firstChild.className && typeof node.firstChild.className === 'string' && node.firstChild.className.split(' ')[0] === DiscordClasses.ContextMenu.menu.value.split(' ')[0]) {
-						this.processContextMenu(node.firstChild);
-					}
-				}
-			}
+			/**
+			 * Observer callback for the main MutationObserver watching the document.
+			 * @alias observer
+			 * @param {MutationRecord} mutations
+			 * @returns {void}
+			 */
+			// observer(mutations) {
+			//  const { addedNodes } = mutations;
+			// 	for (const node of addedNodes.values()) {
+			// 		if (!node) continue;
+			// 		if (node.firstChild && node.firstChild.className && typeof node.firstChild.className === 'string' && node.firstChild.className.split(' ')[0] === DiscordClasses.ContextMenu.menu.value.split(' ')[0]) {
+			// 			this.processContextMenu(node.firstChild);
+			// 		}
+			// 	}
+			// }
 
 			/**
 			 * Safely traverses or accesses an object's properties via the provided path.
 			 * @name safelyGetNestedProps
-			 * @param {Object} obj
-			 * @param {String} path
+			 * @alias getProps
 			 * @author Zerebos
+			 * @param {object} obj
+			 * @param {string} path
+			 * @returns {boolean}
 			 */
 			getProps(obj, path) {
 				return path.split(/\s?\.\s?/).reduce((object, prop) => object && object[prop], obj);
@@ -355,9 +397,9 @@ var MessageTimestampsRedux = (() => {
 						], (i) => {
 							this.settings.tooltips = i;
 						}),
-						new Slider('Timestamp Display Length', 'How long to display the timestamps for. Default is 2000ms which is 2 seconds. Minimum is 1000ms, maximum is 10000ms.', 1000, 10000, this.settings.displayTime, (i) => {
+						new Slider('Timestamp Display Length', 'How long to display the timestamps for. Default is 2000ms which is 2 seconds. Minimum is 1000ms, maximum is 10000ms.', 1000, 10000, this.settings.displayTime, Utilities.debounce((i) => {
 							this.settings.displayTime = i;
-						}, {
+						}, 250), {
 							markers: [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000],
 							stickToMarkers: true
 						})
@@ -435,17 +477,45 @@ var MessageTimestampsRedux = (() => {
 			}
 
 			load() {
+				const { BdApi, BdApi: { React } } = window;
 				const title = 'Library Missing';
-				const ModalStack = window.BdApi.findModuleByProps('push', 'update', 'pop', 'popWithKey');
-				const TextElement = window.BdApi.findModuleByProps('Sizes', 'Weights');
-				const ConfirmationModal = window.BdApi.findModule((m) => m.defaultProps && m.key && m.key() === 'confirm-modal');
-				if (!ModalStack || !ConfirmationModal || !TextElement) return window.BdApi.getCore().alert(title, `The library plugin needed for ${config.info.name} is missing.<br /><br /> <a href="https://betterdiscord.net/ghdl?url=https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js" target="_blank">Click here to download the library!</a>`);
+				const ModalStack = BdApi.findModuleByProps('push', 'update', 'pop', 'popWithKey');
+				const TextElement = BdApi.findModuleByDisplayName('Text');
+				const ConfirmationModal = BdApi.findModule((m) => m.defaultProps && m.key && m.key() === 'confirm-modal');
+				const children = [];
+				if (!TextElement) {
+					children.push(
+						React.createElement('span', {
+							children: [`The library plugin needed for ${config.info.name} is missing.`]
+						}),
+						React.createElement('br', {}),
+						React.createElement('a', {
+							target: '_blank',
+							href: 'https://betterdiscord.net/ghdl?url=https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js',
+							children: ['Click here to download the library!']
+						})
+					);
+					return BdApi.alert(title, React.createElement('span', { children }));
+				}
+				children.push(
+					React.createElement(TextElement, {
+						color: TextElement.Colors.STANDARD,
+						children: [`The library plugin needed for ${config.info.name} is missing.`]
+					}),
+					React.createElement('br', {}),
+					React.createElement('a', {
+						target: '_blank',
+						href: 'https://betterdiscord.net/ghdl?url=https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js',
+						children: ['Click here to download the library!']
+					})
+				);
+				if (!ModalStack || !ConfirmationModal) return BdApi.alert(title, children);
 				ModalStack.push(function(props) {
-					return window.BdApi.React.createElement(ConfirmationModal, Object.assign({
+					return React.createElement(ConfirmationModal, Object.assign({
 						header: title,
 						children: [
-							window.BdApi.React.createElement(TextElement, {
-								color: TextElement.Colors.PRIMARY,
+							React.createElement(TextElement, {
+								color: TextElement.Colors.STANDARD,
 								children: [`The library plugin needed for ${config.info.name} is missing. Please click Download Now to install it.`]
 							})
 						],
@@ -455,7 +525,7 @@ var MessageTimestampsRedux = (() => {
 						onConfirm: () => {
 							require('request').get('https://rauenzi.github.io/BDPluginLibrary/release/0PluginLibrary.plugin.js', async (error, response, body) => {
 								if (error) return require('electron').shell.openExternal('https://betterdiscord.net/ghdl?url=https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js');
-								await new Promise(r => require('fs').writeFile(require('path').join(window.ContentManager.pluginsFolder, '0PluginLibrary.plugin.js'), body, r));
+								await new Promise((r) => require('fs').writeFile(require('path').join(window.ContentManager.pluginsFolder, '0PluginLibrary.plugin.js'), body, r));
 							});
 						}
 					}, props));
@@ -503,3 +573,5 @@ var MessageTimestampsRedux = (() => {
 })();
 
 module.exports = MessageTimestampsRedux;
+
+/*@end@*/

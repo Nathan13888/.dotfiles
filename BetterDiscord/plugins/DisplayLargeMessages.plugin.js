@@ -1,12 +1,15 @@
 /**
  * @name DisplayLargeMessages
+ * @author DevilBro
  * @authorId 278543574059057154
+ * @version 1.0.9
+ * @description Injects 'message.txt' into Discord or open any '.txt' File in a Window
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
  * @patreon https://www.patreon.com/MircoWittrien
- * @website https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/DisplayLargeMessages
- * @source https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/DisplayLargeMessages/DisplayLargeMessages.plugin.js
- * @updateUrl https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/DisplayLargeMessages/DisplayLargeMessages.plugin.js
+ * @website https://mwittrien.github.io/
+ * @source https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/DisplayLargeMessages/
+ * @updateUrl https://mwittrien.github.io/BetterDiscordAddons/Plugins/DisplayLargeMessages/DisplayLargeMessages.plugin.js
  */
 
 module.exports = (_ => {
@@ -14,12 +17,12 @@ module.exports = (_ => {
 		"info": {
 			"name": "DisplayLargeMessages",
 			"author": "DevilBro",
-			"version": "1.0.7",
-			"description": "Inject the contents of large messages that were sent by discord via 'message.txt'"
+			"version": "1.0.9",
+			"description": "Injects 'message.txt' into Discord or open any '.txt' File in a Window"
 		},
-		"changelog": {
-			"added": {
-				"Open in popout": "Added an option to add a button that allows you to preview the contents of a 'message.txt' in a popup"
+		"changeLog": {
+			"improved": {
+				"Open in Popout": "The Open in extra Window now gets added for any plain text file and tries to wrap it in a code block with syntax highlighting"
 			}
 		}
 	};
@@ -28,53 +31,53 @@ module.exports = (_ => {
 		getName () {return config.info.name;}
 		getAuthor () {return config.info.author;}
 		getVersion () {return config.info.version;}
-		getDescription () {return config.info.description;}
+		getDescription () {return `The Library Plugin needed for ${config.info.name} is missing. Open the Plugin Settings to download it. \n\n${config.info.description}`;}
 		
-		load() {
+		downloadLibrary () {
+			require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
+				if (!e && b && r.statusCode == 200) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => BdApi.showToast("Finished downloading BDFDB Library", {type: "success"}));
+				else BdApi.alert("Error", "Could not download BDFDB Library Plugin. Try again later or download it manually from GitHub: https://mwittrien.github.io/downloader/?library");
+			});
+		}
+		
+		load () {
 			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue: []});
 			if (!window.BDFDB_Global.downloadModal) {
 				window.BDFDB_Global.downloadModal = true;
-				BdApi.showConfirmationModal("Library Missing", `The library plugin needed for ${config.info.name} is missing. Please click "Download Now" to install it.`, {
+				BdApi.showConfirmationModal("Library Missing", `The Library Plugin needed for ${config.info.name} is missing. Please click "Download Now" to install it.`, {
 					confirmText: "Download Now",
 					cancelText: "Cancel",
 					onCancel: _ => {delete window.BDFDB_Global.downloadModal;},
 					onConfirm: _ => {
 						delete window.BDFDB_Global.downloadModal;
-						require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
-							if (!e && b && b.indexOf(`* @name BDFDB`) > -1) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => {});
-							else BdApi.alert("Error", "Could not download BDFDB library plugin, try again some time later.");
-						});
+						this.downloadLibrary();
 					}
 				});
 			}
 			if (!window.BDFDB_Global.pluginQueue.includes(config.info.name)) window.BDFDB_Global.pluginQueue.push(config.info.name);
 		}
-		start() {this.load();}
-		stop() {}
-		getSettingsPanel() {
+		start () {this.load();}
+		stop () {}
+		getSettingsPanel () {
 			let template = document.createElement("template");
-			template.innerHTML = `<div style="color: var(--header-primary); font-size: 16px; font-weight: 300; white-space: pre; line-height: 22px;">The library plugin needed for ${config.info.name} is missing.\nPlease click <a style="font-weight: 500;">Download Now</a> to install it.</div>`;
-			template.content.firstElementChild.querySelector("a").addEventListener("click", _ => {
-				require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
-					if (!e && b && b.indexOf(`* @name BDFDB`) > -1) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => {});
-					else BdApi.alert("Error", "Could not download BDFDB library plugin, try again some time later.");
-				});
-			});
+			template.innerHTML = `<div style="color: var(--header-primary); font-size: 16px; font-weight: 300; white-space: pre; line-height: 22px;">The Library Plugin needed for ${config.info.name} is missing.\nPlease click <a style="font-weight: 500;">Download Now</a> to install it.</div>`;
+			template.content.firstElementChild.querySelector("a").addEventListener("click", this.downloadLibrary);
 			return template.content.firstElementChild;
 		}
 	} : (([Plugin, BDFDB]) => {
+		const plainFileTypes = ["ada", "adb", "ads", "applescript", "as", "asc", "ascii", "ascx", "asm", "asmx", "asp", "aspx", "atom", "au3", "awk", "bas", "bash", "bashrc", "bat", "bbcolors", "bcp", "bdsgroup", "bdsproj", "bib", "bowerrc", "c", "cbl", "cc", "cfc", "cfg", "cfm", "cfml", "cgi", "cjs", "clj", "cljs", "cls", "cmake", "cmd", "cnf", "cob", "code-snippets", "coffee", "coffeekup", "conf", "cp", "cpp", "cpt", "cpy", "crt", "cs", "csh", "cson", "csproj", "csr", "css", "csslintrc", "csv", "ctl", "curlrc", "cxx", "d", "dart", "dfm", "diff", "dof", "dpk", "dpr", "dproj", "dtd", "eco", "editorconfig", "ejs", "el", "elm", "emacs", "eml", "ent", "erb", "erl", "eslintignore", "eslintrc", "ex", "exs", "f", "f03", "f77", "f90", "f95", "fish", "for", "fpp", "frm", "fs", "fsproj", "fsx", "ftn", "gemrc", "gemspec", "gitattributes", "gitconfig", "gitignore", "gitkeep", "gitmodules", "go", "gpp", "gradle", "graphql", "groovy", "groupproj", "grunit", "gtmpl", "gvimrc", "h", "haml", "hbs", "hgignore", "hh", "hpp", "hrl", "hs", "hta", "htaccess", "htc", "htm", "html", "htpasswd", "hxx", "iced", "iml", "inc", "inf", "info", "ini", "ino", "int", "irbrc", "itcl", "itermcolors", "itk", "jade", "java", "jhtm", "jhtml", "js", "jscsrc", "jshintignore", "jshintrc", "json", "json5", "jsonld", "jsp", "jspx", "jsx", "ksh", "less", "lhs", "lisp", "log", "ls", "lsp", "lua", "m", "m4", "mak", "map", "markdown", "master", "md", "mdown", "mdwn", "mdx", "metadata", "mht", "mhtml", "mjs", "mk", "mkd", "mkdn", "mkdown", "ml", "mli", "mm", "mxml", "nfm", "nfo", "noon", "npmignore", "npmrc", "nuspec", "nvmrc", "ops", "pas", "pasm", "patch", "pbxproj", "pch", "pem", "pg", "php", "php3", "php4", "php5", "phpt", "phtml", "pir", "pl", "pm", "pmc", "pod", "pot", "prettierrc", "properties", "props", "pt", "pug", "purs", "py", "pyx", "r", "rake", "rb", "rbw", "rc", "rdoc", "rdoc_options", "resx", "rexx", "rhtml", "rjs", "rlib", "ron", "rs", "rss", "rst", "rtf", "rvmrc", "rxml", "s", "sass", "scala", "scm", "scss", "seestyle", "sh", "shtml", "sln", "sls", "spec", "sql", "sqlite", "sqlproj", "srt", "ss", "sss", "st", "strings", "sty", "styl", "stylus", "sub", "sublime-build", "sublime-commands", "sublime-completions", "sublime-keymap", "sublime-macro", "sublime-menu", "sublime-project", "sublime-settings", "sublime-workspace", "sv", "svc", "svg", "swift", "t", "tcl", "tcsh", "terminal", "tex", "text", "textile", "tg", "tk", "tmLanguage", "tmpl", "tmTheme", "tpl", "ts", "tsv", "tsx", "tt", "tt2", "ttml", "twig", "txt", "v", "vb", "vbproj", "vbs", "vcproj", "vcxproj", "vh", "vhd", "vhdl", "vim", "viminfo", "vimrc", "vm", "vue", "webapp", "webmanifest", "wsc", "x-php", "xaml", "xht", "xhtml", "xml", "xs", "xsd", "xsl", "xslt", "y", "yaml", "yml", "zsh", "zshrc"];
+		
 		var encodedMessages, requestedMessages, pendingRequests, oldMessages, updateTimeout;
-		var settings = {}, amounts = {};
 	
 		return class DisplayLargeMessages extends Plugin {
-			onLoad() {
+			onLoad () {
 				this.defaults = {
-					settings: {
-						onDemand:				{value: false, 	description: "Inject the content of 'message.txt' on demand and not automatically"},
-						addOpenButton:			{value: true, 	description: "Add a button to preview the contents of 'message.txt' in a popup"}
+					general: {
+						onDemand:				{value: false, 	description: "Inject the Content of 'Message.txt' On-Demand and not automatically"},
+						addOpenButton:			{value: true, 	description: "Add a Button to Preview the Contents of Plain Files in an extra Window"}
 					},
 					amounts: {
-						maxFileSize:			{value: 10, 	min: 0,		description: "Max Filesize a file will be read automatically",	note: "in KB / 0 = inject all / ignored in On-Demand"}
+						maxFileSize:			{value: 10, 	min: 0,		description: "Max File Size a File will be read automatically",	note: "in KB / 0 = inject all / ignored in On-Demand"}
 					}
 				};
 			
@@ -111,7 +114,7 @@ module.exports = (_ => {
 				`;
 			}
 			
-			onStart() {
+			onStart () {
 				encodedMessages = {};
 				requestedMessages = [];
 				pendingRequests = [];
@@ -132,40 +135,44 @@ module.exports = (_ => {
 				this.forceUpdateAll();
 			}
 			
-			onStop() {
+			onStop () {
 				this.forceUpdateAll();
 			}
 
 			getSettingsPanel (collapseStates = {}) {
-				let settingsPanel, settingsItems = [];
+				let settingsPanel;
+				return settingsPanel = BDFDB.PluginUtils.createSettingsPanel(this, {
+					collapseStates: collapseStates,
+					children: _ => {
+						let settingsItems = [];
 				
-				for (let key in settings) settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
-					type: "Switch",
-					plugin: this,
-					keys: ["settings", key],
-					label: this.defaults.settings[key].description,
-					value: settings[key],
-					onChange: _ => {
-						if (key == "onDemand") BDFDB.PluginUtils.refreshSettingsPanel(this, settingsPanel, collapseStates);
+						for (let key in this.defaults.general) settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
+							type: "Switch",
+							plugin: this,
+							keys: ["general", key],
+							label: this.defaults.general[key].description,
+							value: this.settings.general[key],
+							onChange: key == "onDemand" && (_ => BDFDB.PluginUtils.refreshSettingsPanel(this, settingsPanel, collapseStates))
+						}));
+						for (let key in this.defaults.amounts) settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
+							type: "TextInput",
+							childProps: {
+								type: "number"
+							},
+							plugin: this,
+							keys: ["amounts", key],
+							disabled: key == "maxFileSize" && this.settings.general.onDemand,
+							label: this.defaults.amounts[key].description,
+							note: this.defaults.amounts[key].note,
+							basis: "20%",
+							min: this.defaults.amounts[key].min,
+							max: this.defaults.amounts[key].max,
+							value: this.settings.amounts[key]
+						}));
+						
+						return settingsItems.flat(10);
 					}
-				}));
-				for (let key in amounts) settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
-					type: "TextInput",
-					childProps: {
-						type: "number"
-					},
-					plugin: this,
-					keys: ["amounts", key],
-					disabled: key == "maxFileSize" && settings.onDemand,
-					label: this.defaults.amounts[key].description,
-					note: this.defaults.amounts[key].note,
-					basis: "20%",
-					min: this.defaults.amounts[key].min,
-					max: this.defaults.amounts[key].max,
-					value: amounts[key]
-				}));
-				
-				return settingsPanel = BDFDB.PluginUtils.createSettingsPanel(this, settingsItems);
+				});
 			}
 
 			onSettingsClosed () {
@@ -178,10 +185,7 @@ module.exports = (_ => {
 				}
 			}
 		
-			forceUpdateAll () {
-				settings = BDFDB.DataUtils.get(this, "settings");
-				amounts = BDFDB.DataUtils.get(this, "amounts");
-				
+			forceUpdateAll () {				
 				BDFDB.PatchUtils.forceAllUpdates(this);
 				BDFDB.MessageUtils.rerenderAll();
 			}
@@ -193,7 +197,7 @@ module.exports = (_ => {
 						let [children, index] = BDFDB.ContextMenuUtils.findItem(e.returnvalue, {id: "devmode-copy-id", group: true});
 						children.splice(index > -1 ? index : 0, 0, BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuGroup, {
 							children: BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
-								label: this.labels.context_uninjectattchment_text,
+								label: this.labels.context_uninjectattachment,
 								id: BDFDB.ContextMenuUtils.createItemId(this.name, "uninject-attachment"),
 								action: _ => {
 									delete encodedMessages[e.instance.props.message.id];
@@ -232,8 +236,8 @@ module.exports = (_ => {
 					stream.content.attachments = oldMessages[message.id].attachments;
 					delete oldMessages[message.id];
 				}
-				else if (!settings.onDemand && !requestedMessages.includes(message.id)) for (let attachment of message.attachments) {
-					if (attachment.filename == "message.txt" && (!amounts.maxFileSize || (amounts.maxFileSize >= attachment.size/1024))) {
+				else if (!this.settings.general.onDemand && !requestedMessages.includes(message.id)) for (let attachment of message.attachments) {
+					if (attachment.filename == "message.txt" && (!this.settings.amounts.maxFileSize || (this.settings.amounts.maxFileSize >= attachment.size/1024))) {
 						requestedMessages.push(message.id);
 						BDFDB.LibraryRequires.request(attachment.url, (error, response, body) => {
 							encodedMessages[message.id] = {
@@ -248,10 +252,11 @@ module.exports = (_ => {
 			}
 			
 			processAttachment (e) {
-				if (e.instance.props.filename == "message.txt" && (settings.onDemand || amounts.maxFileSize && (amounts.maxFileSize < e.instance.props.size/1024))) {
+				if (typeof e.instance.props.filename == "string") {
+					let fileType = (e.instance.props.filename.split(".").pop() || "").toLowerCase();
 					e.returnvalue.props.children.splice(2, 0, [
-						BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TooltipContainer, {
-							text: this.labels.button_injectattchment_text,
+						e.instance.props.filename == "message.txt" && (this.settings.general.onDemand || this.settings.amounts.maxFileSize && (this.settings.amounts.maxFileSize < e.instance.props.size/1024)) && BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TooltipContainer, {
+							text: this.labels.button_injectattachment,
 							children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Anchor, {
 								className: BDFDB.disCN._displaylargemessagesinjectbuttonwrapper,
 								rel: "noreferrer noopener",
@@ -281,7 +286,7 @@ module.exports = (_ => {
 								}
 							})
 						}),
-						settings.addOpenButton && BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TooltipContainer, {
+						fileType && plainFileTypes.includes(fileType) && this.settings.general.addOpenButton && BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TooltipContainer, {
 							text: BDFDB.LanguageUtils.LanguageStrings.OPEN,
 							children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Anchor, {
 								className: BDFDB.disCN._displaylargemessagespopoutbuttonwrapper,
@@ -303,14 +308,14 @@ module.exports = (_ => {
 											BDFDB.ModalUtils.open(this, {
 												size: "LARGE",
 												header: BDFDB.LanguageUtils.LanguageStrings.MESSAGE_PREVIEW,
-												subheader: "",
+												subHeader: "",
 												children: BDFDB.ReactUtils.createElement("div", {
 													className: BDFDB.disCNS.messagepopout + BDFDB.disCN._displaylargemessagespreviewmessage,
 													children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.MessageGroup, {
 														message: new BDFDB.DiscordObjects.Message({
 															author: message.author,
 															channel_id: channel.id,
-															content: body
+															content: e.instance.props.filename == "message.txt" ? body : `\`\`\`${fileType}\n${body}\`\`\``
 														}),
 														channel: channel
 													})
@@ -328,110 +333,140 @@ module.exports = (_ => {
 
 			setLabelsByLanguage () {
 				switch (BDFDB.LanguageUtils.getLanguage().id) {
-					case "hr":		//croatian
+					case "bg":		// Bulgarian
 						return {
-							context_uninjectattchment_text:		"Uklonite učitani sadržaj poruke",
-							button_injectattchment_text:		"Učitajte sadržaj poruke"
+							button_injectattachmenty:			"Заредете съдържанието на съобщението",
+							context_uninjectattachment:			"Премахнете зареденото съдържание на съобщението"
 						};
-					case "da":		//danish
+					case "da":		// Danish
 						return {
-							context_uninjectattchment_text:		"Fjern indlæst meddelelsesindhold",
-							button_injectattchment_text:		"Indlæs meddelelsesindhold"
+							button_injectattachmenty:			"Indlæs beskedindhold",
+							context_uninjectattachment:			"Fjern indlæst beskedindhold"
 						};
-					case "de":		//german
+					case "de":		// German
 						return {
-							context_uninjectattchment_text:		"Geladenen Nachrichteninhalt entfernen",
-							button_injectattchment_text:		"Nachrichteninhalt laden"
+							button_injectattachment:			"Nachrichteninhalt laden",
+							context_uninjectattachment:			"Geladenen Nachrichteninhalt entfernen",
 						};
-					case "es":		//spanish
+					case "el":		// Greek
 						return {
-							context_uninjectattchment_text:		"Eliminar contenido del mensaje cargado",
-							button_injectattchment_text:		"Cargar contenido del mensaje"
+							button_injectattachmenty:			"Φόρτωση περιεχομένου μηνύματος",
+							context_uninjectattachment:			"Καταργήστε το φορτωμένο περιεχόμενο μηνυμάτων"
 						};
-					case "fr":		//french
+					case "es":		// Spanish
 						return {
-							context_uninjectattchment_text:		"Supprimer le contenu du message chargé",
-							button_injectattchment_text:		"Charger le contenu du message"
+							button_injectattachmenty:			"Cargar el contenido del mensaje",
+							context_uninjectattachment:			"Eliminar el contenido del mensaje cargado"
 						};
-					case "it":		//italian
+					case "fi":		// Finnish
 						return {
-							context_uninjectattchment_text:		"Rimuovi il contenuto del messaggio caricato",
-							button_injectattchment_text:		"Carica il contenuto del messaggio"
+							button_injectattachmenty:			"Lataa viestin sisältö",
+							context_uninjectattachment:			"Poista ladattu viestin sisältö"
 						};
-					case "nl":		//dutch
+					case "fr":		// French
 						return {
-							context_uninjectattchment_text:		"Verwijder geladen berichtinhoud",
-							button_injectattchment_text:		"Laad berichtinhoud"
+							button_injectattachmenty:			"Charger le contenu du message",
+							context_uninjectattachment:			"Supprimer le contenu du message chargé"
 						};
-					case "no":		//norwegian
+					case "hr":		// Croatian
 						return {
-							context_uninjectattchment_text:		"Fjern lastet meldingens innhold",
-							button_injectattchment_text:		"Last inn meldingens innhold"
+							button_injectattachmenty:			"Učitaj sadržaj poruke",
+							context_uninjectattachment:			"Uklonite učitani sadržaj poruke"
 						};
-					case "pl":		//polish
+					case "hu":		// Hungarian
 						return {
-							context_uninjectattchment_text:		"Usuń załadowaną treść wiadomości",
-							button_injectattchment_text:		"Załaduj treść wiadomości"
+							button_injectattachmenty:			"Üzenet tartalmának betöltése",
+							context_uninjectattachment:			"Távolítsa el a betöltött üzenet tartalmát"
 						};
-					case "pt-BR":	//portuguese (brazil)
+					case "it":		// Italian
 						return {
-							context_uninjectattchment_text:		"Remover o conteúdo da mensagem carregada",
-							button_injectattchment_text:		"Carregar conteúdo da mensagem"
+							button_injectattachmenty:			"Carica il contenuto del messaggio",
+							context_uninjectattachment:			"Rimuovi il contenuto del messaggio caricato"
 						};
-					case "fi":		//finnish
+					case "ja":		// Japanese
 						return {
-							context_uninjectattchment_text:		"Poista ladattu viestin sisältö",
-							button_injectattchment_text:		"Lataa viestin sisältö"
+							button_injectattachmenty:			"メッセージコンテンツをロードする",
+							context_uninjectattachment:			"ロードされたメッセージコンテンツを削除する"
 						};
-					case "sv":		//swedish
+					case "ko":		// Korean
 						return {
-							context_uninjectattchment_text:		"Ta bort laddat meddelandeinnehåll",
-							button_injectattchment_text:		"Ladda meddelandets innehåll"
+							button_injectattachmenty:			"메시지 내용로드",
+							context_uninjectattachment:			"로드 된 메시지 내용 제거"
 						};
-					case "tr":		//turkish
+					case "lt":		// Lithuanian
 						return {
-							context_uninjectattchment_text:		"Yüklenen mesaj içeriğini kaldır",
-							button_injectattchment_text:		"Mesaj içeriğini yükle"
+							button_injectattachmenty:			"Įkelti pranešimo turinį",
+							context_uninjectattachment:			"Pašalinkite įkeltą pranešimo turinį"
 						};
-					case "cs":		//czech
+					case "nl":		// Dutch
 						return {
-							context_uninjectattchment_text:		"Odebrat načtený obsah zprávy",
-							button_injectattchment_text:		"Načíst obsah zprávy"
+							button_injectattachmenty:			"Laad berichtinhoud",
+							context_uninjectattachment:			"Verwijder de geladen berichtinhoud"
 						};
-					case "bg":		//bulgarian
+					case "no":		// Norwegian
 						return {
-							context_uninjectattchment_text:		"Премахнете зареденото съдържание на съобщението",
-							button_injectattchment_text:		"Заредете съдържание на съобщението"
+							button_injectattachmenty:			"Last inn meldingsinnhold",
+							context_uninjectattachment:			"Fjern innlastet meldingsinnhold"
 						};
-					case "ru":		//russian
+					case "pl":		// Polish
 						return {
-							context_uninjectattchment_text:		"Удалить загруженное содержимое сообщения",
-							button_injectattchment_text:		"Загрузить содержимое сообщения"
+							button_injectattachmenty:			"Załaduj treść wiadomości",
+							context_uninjectattachment:			"Usuń wczytaną treść wiadomości"
 						};
-					case "uk":		//ukrainian
+					case "pt-BR":	// Portuguese (Brazil)
 						return {
-							context_uninjectattchment_text:		"Видаліть завантажений вміст повідомлення",
-							button_injectattchment_text:		"Завантажте вміст повідомлення"
+							button_injectattachmenty:			"Carregar o conteúdo da mensagem",
+							context_uninjectattachment:			"Remover o conteúdo da mensagem carregada"
 						};
-					case "ja":		//japanese
+					case "ro":		// Romanian
 						return {
-							context_uninjectattchment_text:		"ロードされたメッセージコンテンツを削除する",
-							button_injectattchment_text:		"メッセージの内容を読み込む"
+							button_injectattachmenty:			"Încărcați conținutul mesajului",
+							context_uninjectattachment:			"Eliminați conținutul mesajului încărcat"
 						};
-					case "zh-TW":	//chinese (traditional)
+					case "ru":		// Russian
 						return {
-							context_uninjectattchment_text:		"刪除已加載的郵件內容",
-							button_injectattchment_text:		"加載消息內容"
+							button_injectattachmenty:			"Загрузить содержимое сообщения",
+							context_uninjectattachment:			"Удалить загруженное содержимое сообщения"
 						};
-					case "ko":		//korean
+					case "sv":		// Swedish
 						return {
-							context_uninjectattchment_text:		"로드 된 메시지 내용 제거",
-							button_injectattchment_text:		"메시지 내용로드"
+							button_injectattachmenty:			"Ladda meddelandens innehåll",
+							context_uninjectattachment:			"Ta bort laddat meddelandeinnehåll"
 						};
-					default:		//default: english
+					case "th":		// Thai
 						return {
-							context_uninjectattchment_text:		"Remove loaded message content",
-							button_injectattchment_text:		"Load message content"
+							button_injectattachmenty:			"โหลดเนื้อหาข้อความ",
+							context_uninjectattachment:			"ลบเนื้อหาข้อความที่โหลด"
+						};
+					case "tr":		// Turkish
+						return {
+							button_injectattachmenty:			"Mesaj içeriğini yükle",
+							context_uninjectattachment:			"Yüklenen mesaj içeriğini kaldırın"
+						};
+					case "uk":		// Ukrainian
+						return {
+							button_injectattachmenty:			"Завантажити вміст повідомлення",
+							context_uninjectattachment:			"Видалити завантажений вміст повідомлення"
+						};
+					case "vi":		// Vietnamese
+						return {
+							button_injectattachmenty:			"Tải nội dung tin nhắn",
+							context_uninjectattachment:			"Xóa nội dung tin nhắn đã tải"
+						};
+					case "zh-CN":	// Chinese (China)
+						return {
+							button_injectattachmenty:			"加载消息内容",
+							context_uninjectattachment:			"删除已加载的邮件内容"
+						};
+					case "zh-TW":	// Chinese (Taiwan)
+						return {
+							button_injectattachmenty:			"加載消息內容",
+							context_uninjectattachment:			"刪除已加載的郵件內容"
+						};
+					default:		// English
+						return {
+							button_injectattachmenty:			"Load message content",
+							context_uninjectattachment:			"Remove loaded message content"
 						};
 				}
 			}

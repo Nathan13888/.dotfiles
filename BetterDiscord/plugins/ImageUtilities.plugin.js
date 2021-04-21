@@ -1,6 +1,9 @@
 /**
  * @name ImageUtilities
+ * @author DevilBro
  * @authorId 278543574059057154
+ * @version 4.3.4
+ * @description Adds several Utilities for Images/Videos (Gallery, Download, Reverse Search, Zoom, Copy, etc.)
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
  * @patreon https://www.patreon.com/MircoWittrien
@@ -14,17 +17,15 @@ module.exports = (_ => {
 		"info": {
 			"name": "ImageUtilities",
 			"author": "DevilBro",
-			"version": "4.2.4",
-			"description": "Add a handful of options for images/emotes/avatars (direct download, reverse image search, zoom, copy image link, copy image to clipboard, gallery mode)"
+			"version": "4.3.4",
+			"description": "Adds several Utilities for Images/Videos (Gallery, Download, Reverse Search, Zoom, Copy, etc.)"
 		},
 		"changeLog": {
 			"improved": {
-				"Download locations": "Merged 'save' and 'save as' entry, clicking it opens the save as modal, and hovering over it opens a submenu for preset paths, you can add your own download locations in the plugin settings",
-				"Toggle": "You can now toggle the download locations"
+				"Video File Types": "Added 10 additional video file types"
 			},
 			"fixed": {
-				"Slow modal transitions": "Fixed issue where the css of the plugin would cause render slow downds for modals",
-				"New download locations": "Fixed issue where you needed to restart plugin for new locations to be editable"
+				"Twitter Gallery": "Fixed an issue where gallery mode wouldn't work with some twitter embedded images"
 			}
 		}
 	};
@@ -33,44 +34,69 @@ module.exports = (_ => {
 		getName () {return config.info.name;}
 		getAuthor () {return config.info.author;}
 		getVersion () {return config.info.version;}
-		getDescription () {return config.info.description;}
+		getDescription () {return `The Library Plugin needed for ${config.info.name} is missing. Open the Plugin Settings to download it. \n\n${config.info.description}`;}
 		
-		load() {
+		downloadLibrary () {
+			require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
+				if (!e && b && r.statusCode == 200) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => BdApi.showToast("Finished downloading BDFDB Library", {type: "success"}));
+				else BdApi.alert("Error", "Could not download BDFDB Library Plugin. Try again later or download it manually from GitHub: https://mwittrien.github.io/downloader/?library");
+			});
+		}
+		
+		load () {
 			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue: []});
 			if (!window.BDFDB_Global.downloadModal) {
 				window.BDFDB_Global.downloadModal = true;
-				BdApi.showConfirmationModal("Library Missing", `The library plugin needed for ${config.info.name} is missing. Please click "Download Now" to install it.`, {
+				BdApi.showConfirmationModal("Library Missing", `The Library Plugin needed for ${config.info.name} is missing. Please click "Download Now" to install it.`, {
 					confirmText: "Download Now",
 					cancelText: "Cancel",
 					onCancel: _ => {delete window.BDFDB_Global.downloadModal;},
 					onConfirm: _ => {
 						delete window.BDFDB_Global.downloadModal;
-						require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
-							if (!e && b && b.indexOf(`* @name BDFDB`) > -1) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => {});
-							else BdApi.alert("Error", "Could not download BDFDB library plugin, try again some time later.");
-						});
+						this.downloadLibrary();
 					}
 				});
 			}
 			if (!window.BDFDB_Global.pluginQueue.includes(config.info.name)) window.BDFDB_Global.pluginQueue.push(config.info.name);
 		}
-		start() {this.load();}
-		stop() {}
-		getSettingsPanel() {
+		start () {this.load();}
+		stop () {}
+		getSettingsPanel () {
 			let template = document.createElement("template");
-			template.innerHTML = `<div style="color: var(--header-primary); font-size: 16px; font-weight: 300; white-space: pre; line-height: 22px;">The library plugin needed for ${config.info.name} is missing.\nPlease click <a style="font-weight: 500;">Download Now</a> to install it.</div>`;
-			template.content.firstElementChild.querySelector("a").addEventListener("click", _ => {
-				require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
-					if (!e && b && b.indexOf(`* @name BDFDB`) > -1) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => {});
-					else BdApi.alert("Error", "Could not download BDFDB library plugin, try again some time later.");
-				});
-			});
+			template.innerHTML = `<div style="color: var(--header-primary); font-size: 16px; font-weight: 300; white-space: pre; line-height: 22px;">The Library Plugin needed for ${config.info.name} is missing.\nPlease click <a style="font-weight: 500;">Download Now</a> to install it.</div>`;
+			template.content.firstElementChild.querySelector("a").addEventListener("click", this.downloadLibrary);
 			return template.content.firstElementChild;
 		}
 	} : (([Plugin, BDFDB]) => {
-		const imgUrlReplaceString = "DEVILBRO_BD_REVERSEIMAGESEARCH_REPLACE_IMAGEURL";
 		var firedEvents = [], clickedImage;
 		var settings = {}, amounts = {}, zoomSettings = {}, engines = {}, enabledEngines = {}, ownLocations = {}, downloadsFolder;
+		
+		const imgUrlReplaceString = "DEVILBRO_BD_REVERSEIMAGESEARCH_REPLACE_IMAGEURL";
+			
+		const fileTypes = {
+			"3gp":		{copyable: false,	searchable: false,	video: true},
+			"3g2":		{copyable: false,	searchable: false,	video: true},
+			"amv":		{copyable: false,	searchable: false,	video: true},
+			"apng":		{copyable: false,	searchable: true,	video: false},
+			"avi":		{copyable: false,	searchable: false,	video: true},
+			"flv":		{copyable: false,	searchable: false,	video: true},
+			"jpeg":		{copyable: true,	searchable: true,	video: false},
+			"jpg":		{copyable: true,	searchable: true,	video: false},
+			"gif":		{copyable: false,	searchable: true,	video: false},
+			"m4v":		{copyable: false,	searchable: false,	video: true},
+			"mkv":		{copyable: false,	searchable: false,	video: true},
+			"mov":		{copyable: false,	searchable: false,	video: true},
+			"mp4":		{copyable: false,	searchable: false,	video: true},
+			"mpeg-1":	{copyable: false,	searchable: false,	video: true},
+			"mpeg-2":	{copyable: false,	searchable: false,	video: true},
+			"ogg":		{copyable: false,	searchable: false,	video: true},
+			"ogv":		{copyable: false,	searchable: false,	video: true},
+			"png":		{copyable: true,	searchable: true,	video: false},
+			"svg":		{copyable: false,	searchable: false,	video: false},
+			"webm":		{copyable: false,	searchable: false,	video: true},
+			"webp":		{copyable: true,	searchable: true,	video: false},
+			"wmv":		{copyable: false,	searchable: false,	video: true}
+		};
 		
 		const ImageDetails = class ImageDetails extends BdApi.React.Component {
 			componentDidMount() {
@@ -115,31 +141,32 @@ module.exports = (_ => {
 		};
 		
 		return class ImageUtilities extends Plugin {
-			onLoad() {
+			onLoad () {
 				firedEvents = [];
 				clickedImage = null;
 					
 				this.defaults = {
 					settings: {
-						resizeImage: 			{value: true,	inner: false,		description: "Always resize image to fit the whole image modal"},
-						addDetails: 			{value: true,	inner: false,		description: "Add image details (name, size, amount) in the image modal"},
-						showAsHeader:			{value: true, 	inner: false,		description: "Show image details as a details header above the image in the chat"},
-						showOnHover:			{value: false, 	inner: false,		description: "Show image details as Tooltip in the chat"},
-						enableGallery: 			{value: true,	inner: false,		description: "Display previous/next Images in the same message in the image modal"},
-						enableZoom: 			{value: true,	inner: false,		description: "Create a zoom lens if you press down on an image in the image modal"},
-						enableCopyImg: 			{value: true,	inner: false,		description: "Add a copy image option in the image modal"},
-						enableSaveImg: 			{value: true,	inner: false,		description: "Add a save image as option in the image modal"},
-						useChromium: 			{value: false, 	inner: false,		description: "Use an inbuilt browser window instead of opening your default browser"},
+						resizeImage: 			{value: true,	inner: false,		description: "Always resize Image to fit the whole Image Modal"},
+						addDetails: 			{value: true,	inner: false,		description: "Add Image Details (Name, Size, Amount) in the Image Modal"},
+						showAsHeader:			{value: true, 	inner: false,		description: "Show Image Details as a Details Header above the Image in the Chat"},
+						showOnHover:			{value: false, 	inner: false,		description: "Show Image Details as Tooltip in the Chat"},
+						enableGallery: 			{value: true,	inner: false,		description: "Display previous/next Images in the same message in the Image Modal"},
+						enableZoom: 			{value: true,	inner: false,		description: "Create a Zoom Lens if you press down on an Image in the Image Modal"},
+						pixelZoom: 				{value: false,	inner: false,		description: "Zoom Lens will be pixelated instead of blurry"},
+						enableCopyImg: 			{value: true,	inner: false,		description: "Add a copy Image option in the Image Modal"},
+						enableSaveImg: 			{value: true,	inner: false,		description: "Add a save Image as option in the Image Modal"},
 						addUserAvatarEntry: 	{value: true, 	inner: true,		description: "User Avatars"},
+						addGroupIconEntry: 		{value: true, 	inner: true,		description: "Group Icons"},
 						addGuildIconEntry: 		{value: true, 	inner: true,		description: "Server Icons"},
 						addEmojiEntry: 			{value: true, 	inner: true,		description: "Custom Emojis/Emotes"}
 					},
 					amounts: {
-						hoverDelay:				{value: 0, 		min: 0,				description: "Image Tooltip delay (in millisec)"}
+						hoverDelay:				{value: 0, 		min: 0,				description: "Image Tooltip Delay (in ms)"}
 					},
 					zoomSettings: {
 						zoomlevel:				{value: 2,		digits: 1,			minValue: 1,	maxValue: 20,		unit: "x",	label: "ACCESSIBILITY_ZOOM_LEVEL_LABEL"},
-						lensesize:				{value: 200,	digits: 0,			minValue: 50, 	maxValue: 5000,		unit: "px",	label: "context_lenssize_text"}
+						lensesize:				{value: 200,	digits: 0,			minValue: 50, 	maxValue: 5000,		unit: "px",	label: "context_lenssize"}
 					},
 					engines: {
 						_all: 		{value: true, 	name: BDFDB.LanguageUtils.LanguageStrings.FORM_LABEL_ALL, 	url: null},
@@ -246,15 +273,7 @@ module.exports = (_ => {
 				`;
 			}
 			
-			onStart() {
-				// REMOVE 16.12.2020
-				let oL = BDFDB.DataUtils.load(this, "ownLocations"), c = false;
-				for (let i in oL) if (!BDFDB.ObjectUtils.is(oL[i])) {
-					oL[i] = {enabled: true, location: oL[i]};
-					c = true;
-				}
-				if (c) BDFDB.DataUtils.save(oL, this, "ownLocations")
-				
+			onStart () {
 				BDFDB.ListenerUtils.add(this, document.body, "click", BDFDB.dotCNS.message + BDFDB.dotCNS.imagewrapper + "img", e => {
 					clickedImage = e.target;
 					BDFDB.TimeUtils.timeout(_ => {clickedImage = null;});
@@ -267,7 +286,7 @@ module.exports = (_ => {
 				this.forceUpdateAll();
 			}
 			
-			onStop() {
+			onStop () {
 				this.cleanupListeners("Gallery");
 				this.cleanupListeners("Zoom");
 
@@ -340,11 +359,11 @@ module.exports = (_ => {
 										BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Button, {
 											style: {marginBottom: 1},
 											onClick: _ => {
-												for (let input of settingsPanel.props._node.querySelectorAll(".input-newlocation " + BDFDB.dotCN.input)) if (!input.value || input.value.length == 0 || input.value.trim().length == 0) return BDFDB.NotificationUtils.toast("Fill out all fields to add a new location.", {type: "danger"});
+												for (let input of settingsPanel.props._node.querySelectorAll(".input-newlocation " + BDFDB.dotCN.input)) if (!input.value || input.value.length == 0 || input.value.trim().length == 0) return BDFDB.NotificationUtils.toast("Fill out all fields to add a new Location.", {type: "danger"});
 												let name = settingsPanel.props._node.querySelector(".input-name " + BDFDB.dotCN.input).value.trim();
 												let location = settingsPanel.props._node.querySelector(".input-location " + BDFDB.dotCN.input).value.trim();
-												if (ownLocations[name] || name == "Downloads") return BDFDB.NotificationUtils.toast("A location with the choosen name already exists, please choose another name", {type: "danger"});
-												else if (!BDFDB.LibraryRequires.fs.existsSync(location)) return BDFDB.NotificationUtils.toast("The choosen download location is not a valid path to a folder", {type: "danger"});
+												if (ownLocations[name] || name == "Downloads") return BDFDB.NotificationUtils.toast("A Location with the choosen Name already exists, please choose another Name", {type: "danger"});
+												else if (!BDFDB.LibraryRequires.fs.existsSync(location)) return BDFDB.NotificationUtils.toast("The choosen download Location is not a valid Path to a Folder", {type: "danger"});
 												else {
 													ownLocations[name] = {enabled: true, location: location};
 													BDFDB.DataUtils.save(ownLocations, this, "ownLocations");
@@ -359,6 +378,7 @@ module.exports = (_ => {
 								title: "Your own Download Locations:",
 								dividerTop: true,
 								children: Object.keys(ownLocations).map(name => {
+									let locationName = name;
 									let editable = name != "Downloads";
 									return BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Card, {
 										horizontal: true,
@@ -367,39 +387,38 @@ module.exports = (_ => {
 												grow: 0,
 												basis: "180px",
 												children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TextInput, {
-													value: name,
-													placeholder: name,
+													value: locationName,
+													placeholder: locationName,
 													size: BDFDB.LibraryComponents.TextInput.Sizes.MINI,
 													maxLength: 100000000000000000000,
-													style: {marginRight: 6},
 													disabled: !editable,
 													onChange: !editable ? null : value => {
-														ownLocations[value] = ownLocations[name];
-														delete ownLocations[name];
+														ownLocations[value] = ownLocations[locationName];
+														delete ownLocations[locationName];
+														locationName = value;
 														BDFDB.DataUtils.save(ownLocations, this, "ownLocations");
 													}
 												})
 											}),
 											BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex.Child, {
 												children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TextInput, {
-													value: ownLocations[name].location,
-													placeholder: ownLocations[name].location,
+													value: ownLocations[locationName].location,
+													placeholder: ownLocations[locationName].location,
 													size: BDFDB.LibraryComponents.TextInput.Sizes.MINI,
 													maxLength: 100000000000000000000,
-													style: {marginRight: 10},
 													disabled: !editable,
 													onChange: !editable ? null : value => {
-														ownLocations[name].location = value;
+														ownLocations[locationName].location = value;
 														BDFDB.DataUtils.save(ownLocations, this, "ownLocations");
 													}
 												})
 											}),
 											BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex.Child, {
 												children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Switch, {
-													value: ownLocations[name].enabled,
+													value: ownLocations[locationName].enabled,
 													size: BDFDB.LibraryComponents.Switch.Sizes.MINI,
 													onChange: value => {
-														ownLocations[name].enabled = value;
+														ownLocations[locationName].enabled = value;
 														BDFDB.DataUtils.save(ownLocations, this, "ownLocations");
 													}
 												})
@@ -407,7 +426,7 @@ module.exports = (_ => {
 										],
 										noRemove: !editable,
 										onRemove: !editable ? null : _ => {
-											delete ownLocations[name];
+											delete ownLocations[locationName];
 											BDFDB.DataUtils.save(ownLocations, this, "ownLocations");
 											BDFDB.PluginUtils.refreshSettingsPanel(this, settingsPanel);
 										}
@@ -484,6 +503,10 @@ module.exports = (_ => {
 				if (e.instance.props.user && settings.addUserAvatarEntry) this.injectItem(e, e.instance.props.user.getAvatarURL("png"), BDFDB.LibraryModules.IconUtils.hasAnimatedAvatar(e.instance.props.user) && e.instance.props.user.getAvatarURL("gif"))
 			}
 
+			onGroupDMContextMenu (e) {
+				if (e.instance.props.channel && e.instance.props.channel.isGroupDM() && settings.addGroupIconEntry) this.injectItem(e, BDFDB.DMUtils.getIcon(e.instance.props.channel.id));
+			}
+
 			onNativeContextMenu (e) {
 				if (e.type == "NativeImageContextMenu" && (e.instance.props.href || e.instance.props.src)) {
 					this.injectItem(e, e.instance.props.href || e.instance.props.src);
@@ -493,11 +516,14 @@ module.exports = (_ => {
 			onMessageContextMenu (e) {
 				if (e.instance.props.message && e.instance.props.channel && e.instance.props.target) {
 					if (e.instance.props.attachment) this.injectItem(e, e.instance.props.attachment.url);
-					else if (e.instance.props.target.tagName == "A" && e.instance.props.message.embeds && e.instance.props.message.embeds[0] && e.instance.props.message.embeds[0].type == "image") this.injectItem(e, e.instance.props.target.href);
+					else if (e.instance.props.target.tagName == "A" && e.instance.props.message.embeds && e.instance.props.message.embeds[0] && (e.instance.props.message.embeds[0].type == "image" || e.instance.props.message.embeds[0].type == "video")) this.injectItem(e, e.instance.props.target.href);
 					else if (e.instance.props.target.tagName == "IMG") {
 						if (BDFDB.DOMUtils.containsClass(e.instance.props.target.parentElement, BDFDB.disCN.imagewrapper)) this.injectItem(e, e.instance.props.target.src);
 						else if (BDFDB.DOMUtils.containsClass(e.instance.props.target, BDFDB.disCN.embedauthoricon) && settings.addUserAvatarEntry) this.injectItem(e, e.instance.props.target.src);
 						else if (BDFDB.DOMUtils.containsClass(e.instance.props.target, BDFDB.disCN.emojiold, "emote", false) && settings.addEmojiEntry) this.injectItem(e, e.instance.props.target.src);
+					}
+					else if (e.instance.props.target.tagName == "VIDEO") {
+						if (BDFDB.DOMUtils.containsClass(e.instance.props.target, BDFDB.disCN.embedvideo) || BDFDB.DOMUtils.getParent(BDFDB.dotCN.attachmentvideo, e.instance.props.target)) this.injectItem(e, e.instance.props.target.src);
 					}
 					else {
 						let reaction = BDFDB.DOMUtils.getParent(BDFDB.dotCN.messagereaction, e.instance.props.target);
@@ -507,138 +533,173 @@ module.exports = (_ => {
 			}
 
 			injectItem (e, ...urls) {
-				let types = [];
-				let validUrls = urls.filter(n => this.isValidImg(n)).map(n => {
-					let url = n.replace(/^url\(|\)$|"|'/g, "").replace(/\?size\=\d+$/, "?size=4096").replace(/[\?\&](height|width)=\d+/g, "");
-					if (url.indexOf("https://images-ext-1.discordapp.net/external/") > -1) {
+				let fileTypes = [];
+				let validUrls = urls.filter(n => this.isValid(n)).map(n => {
+					let srcUrl = n.replace(/^url\(|\)$|"|'/g, "").replace(/\?size\=\d+$/, "?size=4096");
+					let url = srcUrl.replace(/[\?\&](height|width)=\d+/g, "").split("%3A")[0];
+					if (url.indexOf("https://images-ext-1.discordapp.net/external/") > -1 || url.indexOf("https://images-ext-2.discordapp.net/external/") > -1) {
 						if (url.split("/https/").length > 1) url = "https://" + url.split("/https/").pop();
 						else if (url.split("/http/").length > 1) url = "http://" + url.split("/http/").pop();
 					}
 					const file = url && (BDFDB.LibraryModules.URLParser.parse(url).pathname || "").toLowerCase();
-					const type = file && file.split(".").pop();
-					return url && type && !types.includes(type) && types.push(type) && {url, type};
+					const fileType = file && (file.split(".").pop() || "");
+					return url && fileType && !fileTypes.includes(fileType) && fileTypes.push(fileType) && {url, srcUrl, fileType};
 				}).filter(n => n);
 				if (!validUrls.length) return;
-				let [children, index] = BDFDB.ContextMenuUtils.findItem(e.returnvalue, {id: "devmode-copy-id", group: true});
-				children.splice(index > -1 ? index : children.length, 0, BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuGroup, {
+				
+				let [removeParent, removeIndex] = BDFDB.ContextMenuUtils.findItem(e.returnvalue, {id: "copy-native-link", group: true});
+				if (removeIndex > -1) {
+					removeParent.splice(removeIndex, 1);
+					removeIndex -= 1;
+				}
+				let [removeParent2, removeIndex2] = BDFDB.ContextMenuUtils.findItem(e.returnvalue, {id: "copy-image", group: true});
+				if (removeIndex2 > -1) removeParent2.splice(removeIndex2, 1);
+				
+				let type = this.isValid(validUrls[0].url, "video") ? BDFDB.LanguageUtils.LanguageStrings.VIDEO : BDFDB.LanguageUtils.LanguageStrings.IMAGE;
+				let isNative = validUrls.length == 1 && removeIndex > -1;
+				let subMenu = validUrls.length == 1 ? this.createUrlMenu(e, validUrls[0].url, validUrls[0].srcUrl) : validUrls.map((urlData, i) => BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
+					label: urlData.fileType.toUpperCase(),
+					id: BDFDB.ContextMenuUtils.createItemId(this.name, "subitem", i),
+					children: this.createUrlMenu(e, urlData.url, urlData.srcUrl)
+				}));
+				
+				let [children, index] = isNative ? [removeParent, removeIndex] : BDFDB.ContextMenuUtils.findItem(e.returnvalue, {id: "devmode-copy-id", group: true});
+				children.splice(index > -1 ? index : children.length, 0, isNative ? subMenu : BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuGroup, {
 					children: BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
-						label: "Image Utilities",
+						label: type + " " + BDFDB.LanguageUtils.LanguageStrings.ACTIONS,
 						id: BDFDB.ContextMenuUtils.createItemId(this.name, "main-subitem"),
-						children: validUrls.length == 1 ? this.createUrlMenu(e, validUrls[0].url) : validUrls.map((urlData, i) => BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
-							label: urlData.type.toUpperCase(),
-							id: BDFDB.ContextMenuUtils.createItemId(this.name, "subitem", i),
-							children: this.createUrlMenu(e, urlData.url)
-						}))
+						children: subMenu
 					})
 				}));
 			}
 			
-			createUrlMenu (e, url) {
+			createUrlMenu (e, url, srcUrl) {
 				let enginesWithoutAll = BDFDB.ObjectUtils.filter(enabledEngines, n => n != "_all", true);
 				let engineKeys = Object.keys(enginesWithoutAll);
 				let locations = Object.keys(ownLocations).filter(n => ownLocations[n].enabled);
-				return [
-					BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
-						label: this.labels.context_viewimage_text,
-						id: BDFDB.ContextMenuUtils.createItemId(this.name, "view-image"),
-						action: _ => {
-							let img = new Image();
-							img.onload = function() {
-								BDFDB.LibraryModules.ModalUtils.openModal(modalData => {
-									return BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.ModalComponents.ModalRoot, Object.assign({
-										className: BDFDB.disCN.imagemodal
-									}, modalData, {
-										size: BDFDB.LibraryComponents.ModalComponents.ModalSize.DYNAMIC,
-										"aria-label": BDFDB.LanguageUtils.LanguageStrings.IMAGE,
-										children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.ImageModal, {
-											src: url,
-											original: url,
-											width: this.width,
-											height: this.height,
-											className: BDFDB.disCN.imagemodalimage,
-											shouldAnimate: true,
-											renderLinkComponent: props => BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Anchor, props)
-										})
-									}), true);
+				let isVideo = this.isValid(url, "video");
+				let type = isVideo ? BDFDB.LanguageUtils.LanguageStrings.VIDEO : BDFDB.LanguageUtils.LanguageStrings.IMAGE;
+				return BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuGroup, {
+					children: [
+						BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
+							label: BDFDB.LanguageUtils.LanguageStrings.OPEN_LINK,
+							id: BDFDB.ContextMenuUtils.createItemId(this.name, "open-link"),
+							action: _ => {BDFDB.DiscordUtils.openLink(url);}
+						}),
+						BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
+							label: BDFDB.LanguageUtils.LanguageStrings.COPY_LINK,
+							id: BDFDB.ContextMenuUtils.createItemId(this.name, "copy-link"),
+							action: _ => {
+								BDFDB.LibraryRequires.electron.clipboard.write({text: url});
+								BDFDB.NotificationUtils.toast(BDFDB.LanguageUtils.LanguageStrings.LINK_COPIED, {type: "success"});
+							}
+						}),
+						BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
+							label: this.labels.context_view.replace("{{var0}}", type),
+							id: BDFDB.ContextMenuUtils.createItemId(this.name, "view-file"),
+							action: _ => {
+								let img = document.createElement(isVideo ? "video" : "img");
+								img.addEventListener(isVideo ? "loadedmetadata" : "load", function() {
+									BDFDB.LibraryModules.ModalUtils.openModal(modalData => {
+										return BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.ModalComponents.ModalRoot, Object.assign({
+											className: BDFDB.disCN.imagemodal
+										}, modalData, {
+											size: BDFDB.LibraryComponents.ModalComponents.ModalSize.DYNAMIC,
+											"aria-label": BDFDB.LanguageUtils.LanguageStrings.IMAGE,
+											children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.ImageModal, {
+												animated: !!isVideo,
+												src: srcUrl || url,
+												original: url,
+												width: isVideo ? this.videoWidth : this.width,
+												height: isVideo ? this.videoHeight : this.height,
+												className: BDFDB.disCN.imagemodalimage,
+												shouldAnimate: true,
+												renderLinkComponent: props => BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Anchor, props),
+												children: !isVideo ? null : (videoData => BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Video, {
+													src: srcUrl || url,
+													width: videoData.size.width,
+													height: videoData.size.height,
+													naturalWidth: this.videoWidth,
+													naturalHeight: this.videoHeight,
+													play: true
+												}))
+											})
+										}), true);
+									});
 								});
-							};
-							img.src = url;
-						}
-					}),
-					BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
-						label: this.labels.context_saveimageas_text,
-						id: BDFDB.ContextMenuUtils.createItemId(this.name, "download-image-as"),
-						action: _ => {
-							this.downloadImageAs(url);
-						},
-						children: locations.length && BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuGroup, {
-							children: locations.map((name, i) => BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
-								id: BDFDB.ContextMenuUtils.createItemId(this.name, "download", name, i),
-								label: name,
-								action: _ => {
-									this.downloadImage(url, ownLocations[name].location);
-								}
-							}))
-						})
-					}),
-					!this.isCopyable(url) ? null : BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
-						label: this.labels.context_copyimage_text,
-						id: BDFDB.ContextMenuUtils.createItemId(this.name, "copy-image"),
-						action: _ => {
-							this.copyImage(url);
-						}
-					}),
-					BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
-						label: this.labels.context_copyimagelink_text,
-						id: BDFDB.ContextMenuUtils.createItemId(this.name, "copy-src"),
-						action: _ => {
-							BDFDB.LibraryRequires.electron.clipboard.write({text: url});
-							BDFDB.NotificationUtils.toast(this.labels.toast_copyimagelink_success, {type: "success"});
-						}
-					}),
-					!this.isSearchable(url) ? null : engineKeys.length == 1 ? BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
-						label: this.labels.context_reverseimagesearch_text.replace("...", this.defaults.engines[engineKeys[0]].name),
-						id: BDFDB.ContextMenuUtils.createItemId(this.name, "single-search"),
-						persisting: true,
-						action: event => {
-							if (!event.shiftKey) BDFDB.ContextMenuUtils.close(e.instance);
-							BDFDB.DiscordUtils.openLink(this.defaults.engines[engineKeys[0]].url.replace(imgUrlReplaceString, encodeURIComponent(url)), settings.useChromium, event.shiftKey);
-						}
-					}) : BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
-						label: this.labels.context_reverseimagesearch_text,
-						id: BDFDB.ContextMenuUtils.createItemId(this.name, "submenu-search"),
-						children: !engineKeys.length ? BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
-							label: this.labels.submenu_disabled_text,
-							id: BDFDB.ContextMenuUtils.createItemId(this.name, "disabled"),
-							disabled: true
-						}) : Object.keys(enabledEngines).map(key => BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
-							label: this.defaults.engines[key].name,
-							id: BDFDB.ContextMenuUtils.createItemId(this.name, "search", key),
-							color: key == "_all" ? BDFDB.LibraryComponents.MenuItems.Colors.DANGER : BDFDB.LibraryComponents.MenuItems.Colors.DEFAULT,
+								img.src = url;
+							}
+						}),
+						!this.isValid(url, "copyable") ? null : BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
+							label: this.labels.context_copy.replace("{{var0}}", type),
+							id: BDFDB.ContextMenuUtils.createItemId(this.name, "copy-file"),
+							action: _ => this.copyFile(url)
+						}),
+						BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
+							label: this.labels.context_saveas.replace("{{var0}}", type),
+							id: BDFDB.ContextMenuUtils.createItemId(this.name, "download-file-as"),
+							action: _ => {
+								this.downloadFileAs(url);
+							},
+							children: locations.length && BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuGroup, {
+								children: locations.map((name, i) => BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
+									id: BDFDB.ContextMenuUtils.createItemId(this.name, "download", name, i),
+									label: name,
+									action: _ => {
+										this.downloadFile(url, ownLocations[name].location);
+									}
+								}))
+							})
+						}),
+						!this.isValid(url, "searchable") ? null : engineKeys.length == 1 ? BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
+							label: this.labels.context_searchwith.replace("{{var0}}", type).replace("...", this.defaults.engines[engineKeys[0]].name),
+							id: BDFDB.ContextMenuUtils.createItemId(this.name, "single-search"),
 							persisting: true,
 							action: event => {
 								if (!event.shiftKey) BDFDB.ContextMenuUtils.close(e.instance);
-								if (key == "_all") {
-									for (let key2 in enginesWithoutAll) BDFDB.DiscordUtils.openLink(this.defaults.engines[key2].url.replace(imgUrlReplaceString, encodeURIComponent(url)), settings.useChromium, event.shiftKey);
-								}
-								else BDFDB.DiscordUtils.openLink(this.defaults.engines[key].url.replace(imgUrlReplaceString, encodeURIComponent(url)), settings.useChromium, event.shiftKey);
+								BDFDB.DiscordUtils.openLink(this.defaults.engines[engineKeys[0]].url.replace(imgUrlReplaceString, encodeURIComponent(url)), {
+									minimized: event.shiftKey
+								});
 							}
-						}))
-					})
-				].filter(n => n);
+						}) : BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
+							label: this.labels.context_searchwith.replace("{{var0}}", type),
+							id: BDFDB.ContextMenuUtils.createItemId(this.name, "submenu-search"),
+							children: !engineKeys.length ? BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
+								label: this.labels.submenu_disabled,
+								id: BDFDB.ContextMenuUtils.createItemId(this.name, "disabled"),
+								disabled: true
+							}) : Object.keys(enabledEngines).map(key => BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
+								label: this.defaults.engines[key].name,
+								id: BDFDB.ContextMenuUtils.createItemId(this.name, "search", key),
+								color: key == "_all" ? BDFDB.LibraryComponents.MenuItems.Colors.DANGER : BDFDB.LibraryComponents.MenuItems.Colors.DEFAULT,
+								persisting: true,
+								action: event => {
+									if (!event.shiftKey) BDFDB.ContextMenuUtils.close(e.instance);
+									if (key == "_all") {
+										for (let key2 in enginesWithoutAll) BDFDB.DiscordUtils.openLink(this.defaults.engines[key2].url.replace(imgUrlReplaceString, encodeURIComponent(url)), {
+											minimized: event.shiftKey
+										});
+									}
+									else BDFDB.DiscordUtils.openLink(this.defaults.engines[key].url.replace(imgUrlReplaceString, encodeURIComponent(url)), {
+										minimized: event.shiftKey
+									});
+								}
+							}))
+						})
+					].filter(n => n)
+				});
 			}
 
 			processImageModal (e) {
 				if (clickedImage) e.instance.props.cachedImage = clickedImage;
-				let url = e.instance.props.cachedImage && e.instance.props.cachedImage.src ? e.instance.props.cachedImage : e.instance.props.src;
-				url = url.src || url;
+				let url = this.getImageSrc(e.instance.props.cachedImage && e.instance.props.cachedImage.src ? e.instance.props.cachedImage : e.instance.props.src);
+				url = this.getImageSrc(typeof e.instance.props.children == "function" && e.instance.props.children(Object.assign({}, e.instance.props, {size: e.instance.props})).props.src) || url;
+				let isVideo = this.isValid(url, "video");
 				let messages = this.getMessageGroupOfImage(url);
 				if (e.returnvalue) {
 					let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {props: [["className", BDFDB.disCN.downloadlink]]});
 					if (index > -1) {
-						children[index].props.onClick = event => {
-							return event.shiftKey;
-						};
+						let type = isVideo ? BDFDB.LanguageUtils.LanguageStrings.VIDEO : BDFDB.LanguageUtils.LanguageStrings.IMAGE;
 						let openContext = event => {
 							BDFDB.ContextMenuUtils.open(this, event, BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuGroup, {
 								children: Object.keys(zoomSettings).map(type => BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuSliderItem, Object.assign({
@@ -657,12 +718,11 @@ module.exports = (_ => {
 								}, BDFDB.ObjectUtils.extract(this.defaults.zoomSettings[type], "digits", "minValue", "maxValue"))))
 							}));
 						};
-						let isVideo = (typeof e.instance.props.children == "function" && e.instance.props.children(Object.assign({}, e.instance.props, {size: e.instance.props})) || {type: {}}).type.displayName == "Video";
 						children[index] = BDFDB.ReactUtils.createElement("span", {
 							className: BDFDB.disCN._imageutilitiesoperations,
 							children: [
 								children[index],
-								settings.enableSaveImg && !isVideo && [
+								settings.enableSaveImg && [
 									BDFDB.ReactUtils.createElement("span", {
 										className: BDFDB.disCN.downloadlink,
 										children: "|",
@@ -670,26 +730,24 @@ module.exports = (_ => {
 									}),
 									BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Anchor, {
 										className: BDFDB.disCN.downloadlink, 
-										children: this.labels.context_saveimageas_text,
+										children: this.labels.context_saveas.replace("{{var0}}", type),
 										onClick: event => {
 											BDFDB.ListenerUtils.stopEvent(event);
-											this.downloadImageAs(url);
+											this.downloadFileAs(url);
 										},
 										onContextMenu: event => {
 											let locations = Object.keys(ownLocations).filter(n => ownLocations[n].enabled);
 											if (locations.length) BDFDB.ContextMenuUtils.open(this, event, BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuGroup, {
-												children: Object.keys(locations).map((name, i) => BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
+												children: locations.map((name, i) => BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
 													id: BDFDB.ContextMenuUtils.createItemId(this.name, "download", name, i),
 													label: name,
-													action: _ => {
-														this.downloadImage(url, ownLocations[name].location);
-													}
+													action: _ => this.downloadFile(url, ownLocations[name].location)
 												}))
 											}));
 										}
 									})
 								],
-								settings.enableCopyImg && this.isCopyable(url) && !isVideo && [
+								settings.enableCopyImg && this.isValid(url, "copyable") && [
 									BDFDB.ReactUtils.createElement("span", {
 										className: BDFDB.disCN.downloadlink,
 										children: "|",
@@ -697,10 +755,10 @@ module.exports = (_ => {
 									}),
 									BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Anchor, {
 										className: BDFDB.disCN.downloadlink, 
-										children: this.labels.context_copyimage_text,
+										children: this.labels.context_copy.replace("{{var0}}", type),
 										onClick: event => {
 											BDFDB.ListenerUtils.stopEvent(event);
-											this.copyImage(url);
+											this.copyFile(url);
 										}
 									})
 								],
@@ -737,8 +795,8 @@ module.exports = (_ => {
 					if (settings.addDetails) e.returnvalue.props.children.push(BDFDB.ReactUtils.createElement("div", {
 						className: BDFDB.disCN._imageutilitiesdetailswrapper,
 						children: [
-							{label: "Source", text: e.instance.props.src},
-							{label: "Size", text: `${e.instance.props.width} x ${e.instance.props.height}px`},
+							{label: "Source", text: url},
+							{label: "Size", text: `${e.instance.props.width}x${e.instance.props.height}px`},
 							{label: "Image", text: `${imageIndex + 1} of ${amount}`}
 						].map(data => BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TextElement, {
 							className: BDFDB.disCN._imageutilitiesdetails,
@@ -780,14 +838,17 @@ module.exports = (_ => {
 			processLazyImage (e) {
 				if (e.node) {
 					if (e.instance.props.resized) e.instance.state.readyState = BDFDB.LibraryComponents.Image.ImageReadyStates.READY;
-					if (settings.enableZoom && !e.node.querySelector("video") && !BDFDB.DOMUtils.containsClass(e.node.parentElement, BDFDB.disCN._imageutilitiessibling) && BDFDB.DOMUtils.getParent(BDFDB.dotCN.imagemodal, e.node)) {
+					let isVideo = (typeof e.instance.props.children == "function" && e.instance.props.children(Object.assign({}, e.instance.props, {size: e.instance.props})) || {type: {}}).type.displayName == "Video";
+					if (settings.enableZoom && !isVideo && !BDFDB.DOMUtils.containsClass(e.node.parentElement, BDFDB.disCN._imageutilitiessibling) && BDFDB.DOMUtils.getParent(BDFDB.dotCN.imagemodal, e.node)) {
 						e.node.addEventListener("mousedown", event => {
 							if (event.which != 1) return;
 							BDFDB.ListenerUtils.stopEvent(event);
 
+							let vanishObserver;
+							
 							let imgRects = BDFDB.DOMUtils.getRects(e.node.firstElementChild);
 
-							let lens = BDFDB.DOMUtils.create(`<div class="${BDFDB.disCN._imageutilitieslense}" style="border-radius: 50% !important; pointer-events: none !important; z-index: 10000 !important; width: ${zoomSettings.lensesize}px !important; height: ${zoomSettings.lensesize}px !important; position: fixed !important;"><div style="position: absolute !important; top: 0 !important; right: 0 !important; bottom: 0 !important; left: 0 !important;"><${e.node.firstElementChild.tagName} src="${e.instance.props.src}" style="width: ${imgRects.width * zoomSettings.zoomlevel}px; height: ${imgRects.height * zoomSettings.zoomlevel}px; position: fixed !important;"${e.node.firstElementChild.tagName == "VIDEO" ? " loop autoplay" : ""}></${e.node.firstElementChild.tagName}></div></div>`);
+							let lens = BDFDB.DOMUtils.create(`<div class="${BDFDB.disCN._imageutilitieslense}" style="border-radius: 50% !important; pointer-events: none !important; z-index: 10000 !important; width: ${zoomSettings.lensesize}px !important; height: ${zoomSettings.lensesize}px !important; position: fixed !important;"><div style="position: absolute !important; top: 0 !important; right: 0 !important; bottom: 0 !important; left: 0 !important;"><${e.node.firstElementChild.tagName} src="${e.instance.props.src}" style="width: ${imgRects.width * zoomSettings.zoomlevel}px; height: ${imgRects.height * zoomSettings.zoomlevel}px; position: fixed !important;${settings.pixelZoom ? " image-rendering: pixelated !important;" : ""}"${e.node.firstElementChild.tagName == "VIDEO" ? " loop autoplay" : ""}></${e.node.firstElementChild.tagName}></div></div>`);
 							let pane = lens.firstElementChild.firstElementChild;
 							let backdrop = BDFDB.DOMUtils.create(`<div class="${BDFDB.disCN._imageutilitieslensebackdrop}" style="background: rgba(0, 0, 0, 0.3) !important; position: absolute !important; top: 0 !important; right: 0 !important; bottom: 0 !important; left: 0 !important; pointer-events: none !important; z-index: 8000 !important;"></div>`);
 							let appMount = document.querySelector(BDFDB.dotCN.appmount);
@@ -824,10 +885,7 @@ module.exports = (_ => {
 								this.cleanupListeners("Zoom");
 								document.removeEventListener("mousemove", dragging);
 								document.removeEventListener("mouseup", releasing);
-								if (document.removeImageUtilitiesZoomObserver) {
-									document.removeImageUtilitiesZoomObserver.disconnect();
-									delete document.removeImageUtilitiesZoomObserver;
-								}
+								if (vanishObserver) vanishObserver.disconnect();
 								BDFDB.DOMUtils.remove(lens, backdrop);
 								BDFDB.DataUtils.save(zoomSettings, this, "zoomSettings");
 							};
@@ -870,13 +928,8 @@ module.exports = (_ => {
 							document.addEventListener("keydown", document.keydownImageUtilitiesZoomListener);
 							document.addEventListener("keyup", document.keyupImageUtilitiesZoomListener);
 							
-							document.removeImageUtilitiesZoomObserver = new MutationObserver(changes => changes.forEach(change => {
-								let nodes = Array.from(change.removedNodes);
-								if (nodes.indexOf(appMount) > -1 || nodes.some(n => n.contains(appMount)) || nodes.indexOf(e.node) > -1 || nodes.some(n => n.contains(e.node))) {
-									releasing();
-								}
-							}));
-							document.removeImageUtilitiesZoomObserver.observe(document.body, {subtree: true, childList: true});
+							vanishObserver = new MutationObserver(changes => {if (!document.contains(e.node)) releasing();});
+							vanishObserver.observe(appMount, {childList: true, subtree: true});
 						});
 					}
 				}
@@ -936,49 +989,42 @@ module.exports = (_ => {
 				return child;
 			}
 			
-			isValidImg (url) {
-				const file = url && (BDFDB.LibraryModules.URLParser.parse(url).pathname || "").toLowerCase();
-				return file && (url.startsWith("https://images-ext-2.discordapp.net/") || file.endsWith(".jpg") || file.endsWith(".jpeg") || file.endsWith(".png") || file.endsWith(".gif") || file.endsWith(".apng") || file.endsWith(".webp") || file.endsWith(".svg"));
+			isValid (url, type) {
+				if (!url) return false;
+				const file = url && (BDFDB.LibraryModules.URLParser.parse(url).pathname || "").split("%3A")[0].toLowerCase();
+				return file && (!type && (url.startsWith("https://images-ext-1.discordapp.net/") || url.startsWith("https://images-ext-2.discordapp.net/") || Object.keys(fileTypes).some(t => file.endsWith(`/${t}`) || file.endsWith(`.${t}`))) || type && Object.keys(fileTypes).filter(t => fileTypes[t][type]).some(t => file.endsWith(`/${t}`) || file.endsWith(`.${t}`)));
 			}
 			
-			isCopyable (url) {
-				const file = url && (BDFDB.LibraryModules.URLParser.parse(url).pathname || "").toLowerCase();
-				return file && (url.startsWith("https://images-ext-2.discordapp.net/") || file.endsWith(".jpg") || file.endsWith(".jpeg") || file.endsWith(".png"));
-			}
-			
-			isSearchable (url) {
-				const file = url && (BDFDB.LibraryModules.URLParser.parse(url).pathname || "").toLowerCase();
-				return file && (url.startsWith("https://images-ext-2.discordapp.net/") || file.endsWith(".jpg") || file.endsWith(".jpeg") || file.endsWith(".png") || file.endsWith(".gif") || file.endsWith(".apng") || file.endsWith(".webp"));
-			}
-			
-			downloadImage (url, path) {
+			downloadFile (url, path) {
 				url = url.startsWith("/assets") ? (window.location.origin + url) : url;
 				BDFDB.LibraryRequires.request(url, {encoding: null}, (error, response, body) => {
-					if (error) BDFDB.NotificationUtils.toast(this.labels.toast_saveimage_failed.replace("{{path}}", path), {type: "error"});
+					let type = this.isValid(url, "video") ? BDFDB.LanguageUtils.LanguageStrings.VIDEO : BDFDB.LanguageUtils.LanguageStrings.IMAGE;
+					if (error) BDFDB.NotificationUtils.toast(this.labels.toast_save_failed.replace("{{var0}}", type).replace("{{var1}}", path), {type: "danger"});
 					else {
 						BDFDB.LibraryRequires.fs.writeFile(this.getFileName(path, url.split("/").pop().split(".").slice(0, -1).join("."), response.headers["content-type"].split("/").pop().split("+")[0], 0), body, error => {
-							if (error) BDFDB.NotificationUtils.toast(this.labels.toast_saveimage_failed.replace("{{path}}", path), {type: "error"});
-							else BDFDB.NotificationUtils.toast(this.labels.toast_saveimage_success.replace("{{path}}", path), {type: "success"});
+							if (error) BDFDB.NotificationUtils.toast(this.labels.toast_save_failed.replace("{{var0}}", type).replace("{{var1}}", path), {type: "danger"});
+							else BDFDB.NotificationUtils.toast(this.labels.toast_save_success.replace("{{var0}}", type).replace("{{var1}}", path), {type: "success"});
 						});
 					}
 				});
 			}
 			
-			downloadImageAs (url) {
+			downloadFileAs (url) {
 				url = url.startsWith("/assets") ? (window.location.origin + url) : url;
 				BDFDB.LibraryRequires.request(url, {encoding: null}, (error, response, body) => {
 					let hrefURL = window.URL.createObjectURL(new Blob([body]));
 					let tempLink = document.createElement("a");
 					tempLink.href = hrefURL;
-					tempLink.download = `${url.split("/").pop().split(".").slice(0, -1).join(".")}.${response.headers["content-type"].split("/").pop().split("+")[0]}`;
+					tempLink.download = `${url.split("/").pop().split(".").slice(0, -1).join(".") || "unknown"}.${response.headers["content-type"].split("/").pop().split("+")[0]}`;
 					tempLink.click();
 					window.URL.revokeObjectURL(hrefURL);
 				});
 			}
 			
-			copyImage (url) {
+			copyFile (url) {
 				BDFDB.LibraryRequires.request(url, {encoding: null}, (error, response, buffer) => {
-					if (error) BDFDB.NotificationUtils.toast(this.labels.toast_copyimage_failed, {type: "error"});
+					let type = this.isValid(url, "video") ? BDFDB.LanguageUtils.LanguageStrings.VIDEO : BDFDB.LanguageUtils.LanguageStrings.IMAGE;
+					if (error) BDFDB.NotificationUtils.toast(this.labels.toast_copy_failed.replace("{{var0}}", type), {type: "danger"});
 					else if (buffer) {
 						if (BDFDB.LibraryRequires.process.platform === "win32" || BDFDB.LibraryRequires.process.platform === "darwin") {
 							BDFDB.LibraryRequires.electron.clipboard.write({image: BDFDB.LibraryRequires.electron.nativeImage.createFromBuffer(buffer)});
@@ -989,7 +1035,7 @@ module.exports = (_ => {
 							BDFDB.LibraryRequires.electron.clipboard.write({image: file});
 							BDFDB.LibraryRequires.fs.unlinkSync(file);
 						}
-						BDFDB.NotificationUtils.toast(this.labels.toast_copyimage_success, {type: "success"});
+						BDFDB.NotificationUtils.toast(this.labels.toast_copy_success.replace("{{var0}}", type), {type: "success"});
 					}
 				});
 			}
@@ -1113,320 +1159,356 @@ module.exports = (_ => {
 
 			setLabelsByLanguage () {
 				switch (BDFDB.LanguageUtils.getLanguage().id) {
-					case "hr":		//croatian
+					case "bg":		// Bulgarian
 						return {
-							toast_copyimage_success:			"Kopirana je slika u međuspremnik",
-							toast_copyimage_failed:				"Kopiranje slike u međuspremnik nije uspjelo",
-							toast_copyimagelink_success:		"Kopirana slika povezana na međuspremnik",
-							toast_saveimage_success:			"Slika je spremljena u '{{path}}'",
-							toast_saveimage_failed:				"Spremanje slike na '{{path}}' nije uspjelo",
-							context_viewimage_text:				"Pogledati sliku",
-							context_saveimageas_text:			"Spremi sliku kao ...",
-							context_copyimage_text:				"Kopiraj sliku",
-							context_copyimagelink_text:			"Kopirajte vezu slike",
-							context_reverseimagesearch_text:	"Traži sliku ...",
-							context_lenssize_text:				"Veličina leće",
-							submenu_disabled_text:				"Svi su onemogućeni"
+							context_copy:						"Копирайте {{var0}}",
+							context_lenssize:					"Размер на обектива",
+							context_saveas:						"Запазете {{var0}} като ...",
+							context_searchwith:					"Търсете {{var0}} с ...",
+							context_view:						"Преглед {{var0}}",
+							submenu_disabled:					"Всички инвалиди",
+							toast_copy_failed:					"{{var0}} не можа да бъде копиран в клипборда",
+							toast_copy_success:					"{{var0}} беше копиран в клипборда",
+							toast_save_failed:					"{{var0}} не можа да бъде запазен в '{{var1}}'",
+							toast_save_success:					"{{var0}} бе запазено в '{{var1}}'"
 						};
-					case "da":		//danish
+					case "da":		// Danish
 						return {
-							toast_copyimage_success:			"Kopieret billede til udklipsholder",
-							toast_copyimage_failed:				"Kunne ikke kopiere billedet til udklipsholderen",
-							toast_copyimagelink_success:		"Kopieret billedlink til udklipsholder",
-							toast_saveimage_success:			"Billedet er gemt i '{{path}}'",
-							toast_saveimage_failed:				"Kunne ikke gemme billedet i '{{path}}'",
-							context_viewimage_text:				"Se billede",
-							context_saveimageas_text:			"Gem billede som ...",
-							context_copyimage_text:				"Kopier billede",
-							context_copyimagelink_text:			"Kopier billedlink",
-							context_reverseimagesearch_text:	"Søg billede med ...",
-							context_lenssize_text:				"Linsestørrelse",
-							submenu_disabled_text:				"Alle deaktiveret"
+							context_copy:						"Kopiér {{var0}}",
+							context_lenssize:					"Objektivstørrelse",
+							context_saveas:						"Gem {{var0}} som ...",
+							context_searchwith:					"Søg i {{var0}} med ...",
+							context_view:						"Se {{var0}}",
+							submenu_disabled:					"Alle handicappede",
+							toast_copy_failed:					"{{var0}} kunne ikke kopieres til udklipsholderen",
+							toast_copy_success:					"{{var0}} blev kopieret til udklipsholderen",
+							toast_save_failed:					"{{var0}} kunne ikke gemmes i '{{var1}}'",
+							toast_save_success:					"{{var0}} blev gemt i '{{var1}}'"
 						};
-					case "de":		//german
+					case "de":		// German
 						return {
-							toast_copyimage_success:			"Bild in Zwischenablage kopiert",
-							toast_copyimage_failed:				"Bild konnte nicht in die Zwischenablage kopiert werden",
-							toast_copyimagelink_success:		"Bildadresse in Zwischenablage kopiert",
-							toast_saveimage_success:			"Bild wurde in '{{path}}' gespeichert",
-							toast_saveimage_failed:				"Bild konnte nicht in '{{path}}' gespeichert werden",
-							context_viewimage_text:				"Bild ansehen",
-							context_saveimageas_text:			"Bild speichern unter ...",
-							context_copyimage_text:				"Bild kopieren",
-							context_copyimagelink_text:			"Bildadresse kopieren",
-							context_reverseimagesearch_text:	"Bild suchen mit ...",
-							context_lenssize_text:				"Linsengröße",
-							submenu_disabled_text:				"Alle deaktiviert"
+							context_copy:						"{{var0}} kopieren",
+							context_lenssize:					"Linsengröße",
+							context_saveas:						"{{var0}} speichern als ...",
+							context_searchwith:					"{{var0}} suchen mit ...",
+							context_view:						"{{var0}} ansehen",
+							submenu_disabled:					"Alle deaktiviert",
+							toast_copy_failed:					"{{var0}} konnte nicht in die Zwischenablage kopiert werden",
+							toast_copy_success:					"{{var0}} wurde in die Zwischenablage kopiert",
+							toast_save_failed:					"{{var0}} konnte nicht in '{{var1}}' gespeichert werden",
+							toast_save_success:					"{{var0}} wurde in '{{var1}}' gespeichert"
 						};
-					case "es":		//spanish
+					case "el":		// Greek
 						return {
-							toast_copyimage_success:			"Imagen copiada al portapapeles",
-							toast_copyimage_failed:				"No se pudo copiar la imagen al portapapeles",
-							toast_copyimagelink_success:		"Enlace de imagen copiado al portapapeles",
-							toast_saveimage_success:			"Imagen guardada en '{{path}}'",
-							toast_saveimage_failed:				"No se pudo guardar la imagen en '{{path}}'",
-							context_viewimage_text:				"Ver imagen",
-							context_saveimageas_text:			"Guardar imagen como ...",
-							context_copyimage_text:				"Copiar imagen",
-							context_copyimagelink_text:			"Copiar enlace de imagen",
-							context_reverseimagesearch_text:	"Buscar imagen con ...",
-							context_lenssize_text:				"Tamaño de la lente",
-							submenu_disabled_text:				"Todo desactivado"
+							context_copy:						"Αντιγραφή {{var0}}",
+							context_lenssize:					"Μέγεθος φακού",
+							context_saveas:						"Αποθήκευση {{var0}} ως ...",
+							context_searchwith:					"Αναζήτηση {{var0}} με ...",
+							context_view:						"Προβολή {{var0}}",
+							submenu_disabled:					"Όλα τα άτομα με ειδικές ανάγκες",
+							toast_copy_failed:					"Δεν ήταν δυνατή η αντιγραφή του {{var0}} στο πρόχειρο",
+							toast_copy_success:					"Το {{var0}} αντιγράφηκε στο πρόχειρο",
+							toast_save_failed:					"Δεν ήταν δυνατή η αποθήκευση του {{var0}} στο '{{var1}}'",
+							toast_save_success:					"Το {{var0}} αποθηκεύτηκε στο '{{var1}}'"
 						};
-					case "fr":		//french
+					case "es":		// Spanish
 						return {
-							toast_copyimage_success:			"Image copiée dans le presse-papiers",
-							toast_copyimage_failed:				"Échec de la copie de l'image dans le presse-papiers",
-							toast_copyimagelink_success:		"Lien d'image copié dans le presse-papiers",
-							toast_saveimage_success:			"Image enregistrée dans '{{path}}'",
-							toast_saveimage_failed:				"Échec de l'enregistrement de l'image dans '{{path}}'",
-							context_viewimage_text:				"Voir l'image",
-							context_saveimageas_text:			"Enregistrer l'image sous ...",
-							context_copyimage_text:				"Copier l'image",
-							context_copyimagelink_text:			"Copier le lien de l'image",
-							context_reverseimagesearch_text:	"Rechercher une image avec ...",
-							context_lenssize_text:				"Taille de la lentille",
-							submenu_disabled_text:				"Tous désactivés"
+							context_copy:						"Copiar {{var0}}",
+							context_lenssize:					"Tamaño de la lente",
+							context_saveas:						"Guardar {{var0}} como ...",
+							context_searchwith:					"Buscar {{var0}} con ...",
+							context_view:						"Ver {{var0}}",
+							submenu_disabled:					"Todos discapacitados",
+							toast_copy_failed:					"{{var0}} no se pudo copiar al portapapeles",
+							toast_copy_success:					"{{var0}} se copió en el portapapeles",
+							toast_save_failed:					"{{var0}} no se pudo guardar en '{{var1}}'",
+							toast_save_success:					"{{var0}} se guardó en '{{var1}}'"
 						};
-					case "it":		//italian
+					case "fi":		// Finnish
 						return {
-							toast_copyimage_success:			"Immagine copiata negli appunti",
-							toast_copyimage_failed:				"Impossibile copiare l'immagine negli appunti",
-							toast_copyimagelink_success:		"Collegamento dell'immagine copiato negli appunti",
-							toast_saveimage_success:			"Immagine salvata in '{{path}}'",
-							toast_saveimage_failed:				"Impossibile salvare l'immagine in '{{path}}'",
-							context_viewimage_text:				"Guarda l'immagine",
-							context_saveimageas_text:			"Salva l'immagine come ...",
-							context_copyimage_text:				"Copia l'immagine",
-							context_copyimagelink_text:			"Copia link immagine",
-							context_reverseimagesearch_text:	"Cerca immagine con ...",
-							context_lenssize_text:				"Dimensione dell'obiettivo",
-							submenu_disabled_text:				"Tutto disattivato"
+							context_copy:						"Kopioi {{var0}}",
+							context_lenssize:					"Linssin koko",
+							context_saveas:						"Tallenna {{var0}} nimellä ...",
+							context_searchwith:					"Tee haku {{var0}} ...",
+							context_view:						"Näytä {{var0}}",
+							submenu_disabled:					"Kaikki vammaiset",
+							toast_copy_failed:					"Kohdetta {{var0}} ei voitu kopioida leikepöydälle",
+							toast_copy_success:					"{{var0}} kopioitiin leikepöydälle",
+							toast_save_failed:					"Kohdetta {{var0}} ei voitu tallentaa kansioon '{{var1}}'",
+							toast_save_success:					"{{var0}} tallennettiin kansioon '{{var1}}'"
 						};
-					case "nl":		//dutch
+					case "fr":		// French
 						return {
-							toast_copyimage_success:			"Gekopieerde afbeelding naar klembord",
-							toast_copyimage_failed:				"Kan afbeelding niet naar klembord kopiëren",
-							toast_copyimagelink_success:		"Gekopieerde afbeeldingslink naar klembord",
-							toast_saveimage_success:			"Afbeelding opgeslagen in '{{path}}'",
-							toast_saveimage_failed:				"Kan afbeelding niet opslaan in '{{path}}'",
-							context_viewimage_text:				"Bekijk afbeelding",
-							context_saveimageas_text:			"Sla afbeelding op als ...",
-							context_copyimage_text:				"Kopieer afbeelding",
-							context_copyimagelink_text:			"Kopieer afbeeldingslink",
-							context_reverseimagesearch_text:	"Afbeelding zoeken met ...",
-							context_lenssize_text:				"Lensgrootte",
-							submenu_disabled_text:				"Alles gedeactiveerd"
+							context_copy:						"Copier {{var0}}",
+							context_lenssize:					"Taille de l'objectif",
+							context_saveas:						"Enregistrer {{var0}} sous ...",
+							context_searchwith:					"Rechercher {{var0}} avec ...",
+							context_view:						"Afficher {{var0}}",
+							submenu_disabled:					"Tout désactivé",
+							toast_copy_failed:					"{{var0}} n'a pas pu être copié dans le presse-papiers",
+							toast_copy_success:					"{{var0}} a été copié dans le presse-papiers",
+							toast_save_failed:					"{{var0}} n'a pas pu être enregistré dans '{{var1}}'",
+							toast_save_success:					"{{var0}} a été enregistré dans '{{var1}}'"
 						};
-					case "no":		//norwegian
+					case "hr":		// Croatian
 						return {
-							toast_copyimage_success:			"Kopiert bilde til utklippstavlen",
-							toast_copyimage_failed:				"Kunne ikke kopiere bildet til utklippstavlen",
-							toast_copyimagelink_success:		"Kopiert bildelink til utklippstavlen",
-							toast_saveimage_success:			"Bilde lagret i '{{path}}'",
-							toast_saveimage_failed:				"Kunne ikke lagre bildet i '{{path}}'",
-							context_viewimage_text:				"Vis bilde",
-							context_saveimageas_text:			"Lagre bildet som ...",
-							context_copyimage_text:				"Kopier bilde",
-							context_copyimagelink_text:			"Kopier bildelink",
-							context_reverseimagesearch_text:	"Søk på bilde med ...",
-							context_lenssize_text:				"Linsestørrelse",
-							submenu_disabled_text:				"Alle deaktivert"
+							context_copy:						"Kopiraj {{var0}}",
+							context_lenssize:					"Veličina leće",
+							context_saveas:						"Spremi {{var0}} kao ...",
+							context_searchwith:					"Traži {{var0}} sa ...",
+							context_view:						"Pogledajte {{var0}}",
+							submenu_disabled:					"Svi invalidi",
+							toast_copy_failed:					"{{var0}} nije moguće kopirati u međuspremnik",
+							toast_copy_success:					"{{var0}} je kopirano u međuspremnik",
+							toast_save_failed:					"{{var0}} nije moguće spremiti u '{{var1}}'",
+							toast_save_success:					"{{var0}} spremljeno je u '{{var1}}'"
 						};
-					case "pl":		//polish
+					case "hu":		// Hungarian
 						return {
-							toast_copyimage_success:			"Skopiowany obraz do schowka",
-							toast_copyimage_failed:				"Nie udało się skopiować obrazu do schowka",
-							toast_copyimagelink_success:		"Link do skopiowanego obrazu do schowka",
-							toast_saveimage_success:			"Obraz zapisany w '{{path}}'",
-							toast_saveimage_failed:				"Nie udało się zapisać obrazu w '{{path}}'",
-							context_viewimage_text:				"Zobacz obraz",
-							context_saveimageas_text:			"Zapisz obraz jako ...",
-							context_copyimage_text:				"Skopiuj obraz",
-							context_copyimagelink_text:			"Kopiuj łącze do obrazu",
-							context_reverseimagesearch_text:	"Wyszukaj obraz za pomocą ...",
-							context_lenssize_text:				"Rozmiar obiektywu",
-							submenu_disabled_text:				"Wszystkie wyłączone"
+							context_copy:						"{{var0}} másolása",
+							context_lenssize:					"Lencse mérete",
+							context_saveas:						"{{var0}} mentése másként ...",
+							context_searchwith:					"Keresés a következőben: {{var0}} a következővel:",
+							context_view:						"Megtekintés: {{var0}}",
+							submenu_disabled:					"Minden fogyatékkal él",
+							toast_copy_failed:					"A {{var0}} fájl nem másolható a vágólapra",
+							toast_copy_success:					"A {{var0}} elemet a vágólapra másolta",
+							toast_save_failed:					"A {{var0}} fájl mentése nem sikerült a '{{var1}}' mappába",
+							toast_save_success:					"{{var0}} mentve a '{{var1}}' mappába"
 						};
-					case "pt-BR":	//portuguese (brazil)
+					case "it":		// Italian
 						return {
-							toast_copyimage_success:			"Imagem copiada para a área de transferência",
-							toast_copyimage_failed:				"Falha ao copiar imagem para a área de transferência",
-							toast_copyimagelink_success:		"Link da imagem copiada para a área de transferência",
-							toast_saveimage_success:			"Imagem salva em '{{path}}'",
-							toast_saveimage_failed:				"Falha ao salvar imagem em '{{path}}'",
-							context_viewimage_text:				"Ver imagem",
-							context_saveimageas_text:			"Salvar imagem como ...",
-							context_copyimage_text:				"Copiar imagem",
-							context_copyimagelink_text:			"Copiar link da imagem",
-							context_reverseimagesearch_text:	"Pesquisar imagem com ...",
-							context_lenssize_text:				"Tamanho da lente",
-							submenu_disabled_text:				"Todos desativados"
+							context_copy:						"Copia {{var0}}",
+							context_lenssize:					"Dimensione della lente",
+							context_saveas:						"Salva {{var0}} come ...",
+							context_searchwith:					"Cerca {{var0}} con ...",
+							context_view:						"Visualizza {{var0}}",
+							submenu_disabled:					"Tutti disabilitati",
+							toast_copy_failed:					"{{var0}} non può essere copiato negli appunti",
+							toast_copy_success:					"{{var0}} è stato copiato negli appunti",
+							toast_save_failed:					"Impossibile salvare {{var0}} in '{{var1}}'",
+							toast_save_success:					"{{var0}} è stato salvato in '{{var1}}'"
 						};
-					case "fi":		//finnish
+					case "ja":		// Japanese
 						return {
-							toast_copyimage_success:			"Kopioitu kuva leikepöydälle",
-							toast_copyimage_failed:				"Kuvan kopiointi leikepöydälle epäonnistui",
-							toast_copyimagelink_success:		"Kopioitu kuvan linkki leikepöydälle",
-							toast_saveimage_success:			"Kuva tallennettu '{{path}}'",
-							toast_saveimage_failed:				"Kuvan tallentaminen epäonnistui '{{path}}'",
-							context_viewimage_text:				"Näytä kuva",
-							context_saveimageas_text:			"Tallenna kuva nimellä ...",
-							context_copyimage_text:				"Kopioi kuva",
-							context_copyimagelink_text:			"Kopioi kuvan linkki",
-							context_reverseimagesearch_text:	"Hae kuvaa ...",
-							context_lenssize_text:				"Linssin koko",
-							submenu_disabled_text:				"Kaikki on poistettu käytöstä"
+							context_copy:						"{{var0}} をコピーします",
+							context_lenssize:					"レンズサイズ",
+							context_saveas:						"{{var0}} を...として保存します",
+							context_searchwith:					"{{var0}} を...で検索",
+							context_view:						"{{var0}} を表示",
+							submenu_disabled:					"すべて無効",
+							toast_copy_failed:					"{{var0}} をクリップボードにコピーできませんでした",
+							toast_copy_success:					"{{var0}} がクリップボードにコピーされました",
+							toast_save_failed:					"{{var0}} を「'{{var1}}'」に保存できませんでした",
+							toast_save_success:					"{{var0}} は「'{{var1}}'」に保存されました"
 						};
-					case "sv":		//swedish
+					case "ko":		// Korean
 						return {
-							toast_copyimage_success:			"Kopierad bild till urklipp",
-							toast_copyimage_failed:				"Det gick inte att kopiera bilden till urklipp",
-							toast_copyimagelink_success:		"Kopierad bildlänk till urklipp",
-							toast_saveimage_success:			"Bild sparad i '{{path}}'",
-							toast_saveimage_failed:				"Det gick inte att spara bilden i '{{path}}'",
-							context_viewimage_text:				"Se bild",
-							context_saveimageas_text:			"Spara bild som ...",
-							context_copyimage_text:				"Kopiera bild",
-							context_copyimagelink_text:			"Kopiera bildlänk",
-							context_reverseimagesearch_text:	"Sök bild med ...",
-							context_lenssize_text:				"Linsstorlek",
-							submenu_disabled_text:				"Alla avaktiverade"
+							context_copy:						"{{var0}} 복사",
+							context_lenssize:					"렌즈 크기",
+							context_saveas:						"{{var0}} 을 다른 이름으로 저장 ...",
+							context_searchwith:					"{{var0}} 검색 ...",
+							context_view:						"{{var0}} 보기",
+							submenu_disabled:					"모두 비활성화 됨",
+							toast_copy_failed:					"{{var0}} 을 클립 보드에 복사 할 수 없습니다.",
+							toast_copy_success:					"{{var0}} 이 클립 보드에 복사되었습니다.",
+							toast_save_failed:					"{{var0}} 을 '{{var1}}'에 저장할 수 없습니다.",
+							toast_save_success:					"{{var0}} 이 '{{var1}}'에 저장되었습니다."
 						};
-					case "tr":		//turkish
+					case "lt":		// Lithuanian
 						return {
-							toast_copyimage_success:			"Görüntü panoya kopyalandı",
-							toast_copyimage_failed:				"Görüntü panoya kopyalanamadı",
-							toast_copyimagelink_success:		"Görsel bağlantısı panoya kopyalandı",
-							toast_saveimage_success:			"Resim '{{path}}' konumuna kaydedildi",
-							toast_saveimage_failed:				"'{{path}}' konumuna resim kaydedilemedi",
-							context_viewimage_text:				"Resmi görüntüle",
-							context_saveimageas_text:			"Resmi farklı kaydet ...",
-							context_copyimage_text:				"Resmi kopyala",
-							context_copyimagelink_text:			"Görüntü Bağlantısını kopyala",
-							context_reverseimagesearch_text:	"Görüntüyü şununla ara ...",
-							context_lenssize_text:				"Lens boyutu",
-							submenu_disabled_text:				"Hepsi deaktive"
+							context_copy:						"Kopijuoti {{var0}}",
+							context_lenssize:					"Objektyvo dydis",
+							context_saveas:						"Išsaugoti '{{var0}}' kaip ...",
+							context_searchwith:					"Ieškoti {{var0}} naudojant ...",
+							context_view:						"Žiūrėti {{var0}}",
+							submenu_disabled:					"Visi neįgalūs",
+							toast_copy_failed:					"{{var0}} nepavyko nukopijuoti į mainų sritį",
+							toast_copy_success:					"{{var0}} buvo nukopijuota į mainų sritį",
+							toast_save_failed:					"Nepavyko išsaugoti {{var0}} aplanke '{{var1}}'",
+							toast_save_success:					"{{var0}} išsaugotas aplanke '{{var1}}'"
 						};
-					case "cs":		//czech
+					case "nl":		// Dutch
 						return {
-							toast_copyimage_success:			"Zkopírován obrázek do schránky",
-							toast_copyimage_failed:				"Nepodařilo se kopírovat obrázek do schránky",
-							toast_copyimagelink_success:		"Odkaz na zkopírovaný obrázek do schránky",
-							toast_saveimage_success:			"Obrázek uložený v '{{path}}'",
-							toast_saveimage_failed:				"Nepodařilo se uložit obrázek do '{{path}}'",
-							context_viewimage_text:				"Zobrazit obrázek",
-							context_saveimageas_text:			"Uložit obrázek jako ...",
-							context_copyimage_text:				"Kopírovat obrázek",
-							context_copyimagelink_text:			"Kopírovat odkaz na obrázek",
-							context_reverseimagesearch_text:	"Vyhledat obrázek pomocí ...",
-							context_lenssize_text:				"Velikost objektivu",
-							submenu_disabled_text:				"Všechny deaktivované"
+							context_copy:						"Kopieer {{var0}}",
+							context_lenssize:					"Lens Maat",
+							context_saveas:						"Bewaar {{var0}} als ...",
+							context_searchwith:					"Zoek {{var0}} met ...",
+							context_view:						"Bekijk {{var0}}",
+							submenu_disabled:					"Allemaal uitgeschakeld",
+							toast_copy_failed:					"{{var0}} kan niet naar het klembord worden gekopieerd",
+							toast_copy_success:					"{{var0}} is naar het klembord gekopieerd",
+							toast_save_failed:					"{{var0}} kan niet worden opgeslagen in '{{var1}}'",
+							toast_save_success:					"{{var0}} is opgeslagen in '{{var1}}'"
 						};
-					case "bg":		//bulgarian
+					case "no":		// Norwegian
 						return {
-							toast_copyimage_success:			"Копирано изображение в клипборда",
-							toast_copyimage_failed:				"Копирането на изображение в буферната памет не бе успешно",
-							toast_copyimagelink_success:		"Копирано изображение за връзка в клипборда",
-							toast_saveimage_success:			"Изображението е запазено в '{{path}}'",
-							toast_saveimage_failed:				"Неуспешно запазване на изображението в '{{path}}'",
-							context_viewimage_text:				"Вижте изображението",
-							context_saveimageas_text:			"Запази изображението като ...",
-							context_copyimage_text:				"Копирай изображение",
-							context_copyimagelink_text:			"Копиране на изображението",
-							context_reverseimagesearch_text:	"Търсене на изображение с ...",
-							context_lenssize_text:				"Размер на обектива",
-							submenu_disabled_text:				"Всички са деактивирани"
+							context_copy:						"Kopier {{var0}}",
+							context_lenssize:					"Linsestørrelse",
+							context_saveas:						"Lagre {{var0}} som ...",
+							context_searchwith:					"Søk på {{var0}} med ...",
+							context_view:						"Vis {{var0}}",
+							submenu_disabled:					"Alle funksjonshemmede",
+							toast_copy_failed:					"{{var0}} kunne ikke kopieres til utklippstavlen",
+							toast_copy_success:					"{{var0}} ble kopiert til utklippstavlen",
+							toast_save_failed:					"{{var0}} kunne ikke lagres i '{{var1}}'",
+							toast_save_success:					"{{var0}} ble lagret i '{{var1}}'"
 						};
-					case "ru":		//russian
+					case "pl":		// Polish
 						return {
-							toast_copyimage_success:			"Изображение скопировано в буфер обмена",
-							toast_copyimage_failed:				"Не удалось скопировать изображение в буфер обмена",
-							toast_copyimagelink_success:		"Ссылка на скопированное изображение в буфер обмена",
-							toast_saveimage_success:			"Изображение сохранено в '{{path}}'",
-							toast_saveimage_failed:				"Не удалось сохранить изображение в '{{path}}'",
-							context_viewimage_text:				"Просмотр изображения",
-							context_saveimageas_text:			"Сохранить изображение как ...",
-							context_copyimage_text:				"Копировать изображение",
-							context_copyimagelink_text:			"Копировать ссылку на изображение",
-							context_reverseimagesearch_text:	"Поиск изображения с ...",
-							context_lenssize_text:				"Размер объектива",
-							submenu_disabled_text:				"Все деактивированные"
+							context_copy:						"Kopiuj {{var0}}",
+							context_lenssize:					"Rozmiar soczewki",
+							context_saveas:						"Zapisz {{var0}} jako ...",
+							context_searchwith:					"Wyszukaj {{var0}} za pomocą ...",
+							context_view:						"Wyświetl {{var0}}",
+							submenu_disabled:					"Wszystkie wyłączone",
+							toast_copy_failed:					"Nie można skopiować {{var0}} do schowka",
+							toast_copy_success:					"{{var0}} został skopiowany do schowka",
+							toast_save_failed:					"Nie można zapisać {{var0}} w '{{var1}}'",
+							toast_save_success:					"{{var0}} został zapisany w '{{var1}}'"
 						};
-					case "uk":		//ukrainian
+					case "pt-BR":	// Portuguese (Brazil)
 						return {
-							toast_copyimage_success:			"Скопійоване зображення в буфер обміну",
-							toast_copyimage_failed:				"Не вдалося скопіювати зображення в буфер обміну",
-							toast_copyimagelink_success:		"Скопійоване зображення посилання на буфер обміну",
-							toast_saveimage_success:			"Зображення збережено на '{{path}}'",
-							toast_saveimage_failed:				"Не вдалося зберегти зображення на '{{path}}'",
-							context_viewimage_text:				"Переглянути зображення",
-							context_saveimageas_text:			"Зберегти зображення як ...",
-							context_copyimage_text:				"Скопіювати зображення",
-							context_copyimagelink_text:			"Скопіюйте посилання на зображення",
-							context_reverseimagesearch_text:	"Шукати зображення за допомогою ...",
-							context_lenssize_text:				"Розмір об'єктива",
-							submenu_disabled_text:				"Всі вимкнені"
+							context_copy:						"Copiar {{var0}}",
+							context_lenssize:					"Tamanho da lente",
+							context_saveas:						"Salve {{var0}} como ...",
+							context_searchwith:					"Pesquise {{var0}} com ...",
+							context_view:						"Veja {{var0}}",
+							submenu_disabled:					"Todos desativados",
+							toast_copy_failed:					"{{var0}} não pôde ser copiado para a área de transferência",
+							toast_copy_success:					"{{var0}} foi copiado para a área de transferência",
+							toast_save_failed:					"{{var0}} não pôde ser salvo em '{{var1}}'",
+							toast_save_success:					"{{var0}} foi salvo em '{{var1}}'"
 						};
-					case "ja":		//japanese
+					case "ro":		// Romanian
 						return {
-							toast_copyimage_success:			"画像をクリップボードにコピー",
-							toast_copyimage_failed:				"画像をクリップボードにコピーできませんでした",
-							toast_copyimagelink_success:		"クリップボードへの画像リンクのコピー",
-							toast_saveimage_success:			"画像は'{{path}}'に保存されました",
-							toast_saveimage_failed:				"画像を'{{path}}'に保存できませんでした",
-							context_viewimage_text:				"画像を見る",
-							context_saveimageas_text:			"画像を保存します ...",
-							context_copyimage_text:				"画像をコピー",
-							context_copyimagelink_text:			"画像リンクをコピー",
-							context_reverseimagesearch_text:	"で画像を検索 ...",
-							context_lenssize_text:				"レンズサイズ",
-							submenu_disabled_text:				"すべて非アクティブ化"
+							context_copy:						"Copiați {{var0}}",
+							context_lenssize:					"Dimensiunea obiectivului",
+							context_saveas:						"Salvați {{var0}} ca ...",
+							context_searchwith:					"Căutați {{var0}} cu ...",
+							context_view:						"Vizualizați {{var0}}",
+							submenu_disabled:					"Toate sunt dezactivate",
+							toast_copy_failed:					"{{var0}} nu a putut fi copiat în clipboard",
+							toast_copy_success:					"{{var0}} a fost copiat în clipboard",
+							toast_save_failed:					"{{var0}} nu a putut fi salvat în '{{var1}}'",
+							toast_save_success:					"{{var0}} a fost salvat în '{{var1}}'"
 						};
-					case "zh-TW":	//chinese (traditional)
+					case "ru":		// Russian
 						return {
-							toast_copyimage_success:			"複製的圖像到剪貼板",
-							toast_copyimage_failed:				"無法將圖像複製到剪貼板",
-							toast_copyimagelink_success:		"複製的圖像鏈接到剪貼板",
-							toast_saveimage_success:			"圖片保存在'{{path}}'中",
-							toast_saveimage_failed:				"無法將圖像保存到'{{path}}'中",
-							context_viewimage_text:				"看圖片",
-							context_saveimageas_text:			"將圖像另存為...",
-							context_copyimage_text:				"複製圖片",
-							context_copyimagelink_text:			"複製圖像鏈接",
-							context_lenssize_text:				"鏡片尺寸",
-							context_reverseimagesearch_text:	"搜尋圖片...",
-							submenu_disabled_text:				"全部停用"
+							context_copy:						"Скопируйте {{var0}}",
+							context_lenssize:					"Размер линзы",
+							context_saveas:						"Сохранить {{var0}} как ...",
+							context_searchwith:					"Искать {{var0}} с помощью ...",
+							context_view:						"Посмотреть {{var0}}",
+							submenu_disabled:					"Все отключены",
+							toast_copy_failed:					"{{var0}} не удалось скопировать в буфер обмена",
+							toast_copy_success:					"{{var0}} скопирован в буфер обмена",
+							toast_save_failed:					"{{var0}} не удалось сохранить в '{{var1}}'",
+							toast_save_success:					"{{var0}} был сохранен в '{{var1}}'"
 						};
-					case "ko":		//korean
+					case "sv":		// Swedish
 						return {
-							toast_copyimage_success:			"클립 보드에 복사 된 이미지",
-							toast_copyimage_failed:				"이미지를 클립 보드로 복사하지 못했습니다",
-							toast_copyimagelink_success:		"클립 보드에 복사 된 이미지 링크",
-							toast_saveimage_success:			"'{{path}}'에 저장된 이미지",
-							toast_saveimage_failed:				"'{{path}}'에 이미지를 저장하지 못했습니다",
-							context_viewimage_text:				"이미지보기",
-							context_saveimageas_text:			"다른 이름으로 이미지 저장 ...",
-							context_copyimage_text:				"복사 이미지",
-							context_copyimagelink_text:			"이미지 링크 복사",
-							context_reverseimagesearch_text:	"로 이미지 검색 ...",
-							context_lenssize_text:				"렌즈 크기",
-							submenu_disabled_text:				"모두 비활성화 됨"
+							context_copy:						"Kopiera {{var0}}",
+							context_lenssize:					"Linsstorlek",
+							context_saveas:						"Spara {{var0}} som ...",
+							context_searchwith:					"Sök {{var0}} med ...",
+							context_view:						"Visa {{var0}}",
+							submenu_disabled:					"Alla funktionshindrade",
+							toast_copy_failed:					"{{var0}} kunde inte kopieras till Urklipp",
+							toast_copy_success:					"{{var0}} kopierades till Urklipp",
+							toast_save_failed:					"{{var0}} kunde inte sparas i '{{var1}}'",
+							toast_save_success:					"{{var0}} sparades i '{{var1}}'"
 						};
-					default:		//default: english
+					case "th":		// Thai
 						return {
-							toast_copyimage_success:			"Copied image to clipboard",
-							toast_copyimage_failed:				"Failed to copy image to clipboard",
-							toast_copyimagelink_success:		"Copied image link to clipboard",
-							toast_saveimage_success:			"Saved image in '{{path}}'",
-							toast_saveimage_failed:				"Failed to save image in '{{path}}'",
-							context_viewimage_text:				"View Image",
-							context_saveimageas_text:			"Save Image as ...",
-							context_copyimage_text:				"Copy Image",
-							context_copyimagelink_text:			"Copy Image Link",
-							context_reverseimagesearch_text:	"Search Image with ...",
-							context_lenssize_text:				"Lens Size",
-							submenu_disabled_text:				"All disabled"
+							context_copy:						"คัดลอก{{var0}}",
+							context_lenssize:					"ขนาดเลนส์",
+							context_saveas:						"บันทึก{{var0}}เป็น ...",
+							context_searchwith:					"ค้นหา{{var0}} ้วย ...",
+							context_view:						"ดู{{var0}}",
+							submenu_disabled:					"ปิดใช้งานทั้งหมด",
+							toast_copy_failed:					"ไม่สามารถคัดลอก{{var0}}ไปยังคลิปบอร์ดได้",
+							toast_copy_success:					"คัดลอก{{var0}}ไปยังคลิปบอร์ดแล้ว",
+							toast_save_failed:					"ไม่สามารถบันทึก{{var0}}ใน '{{var1}}'",
+							toast_save_success:					"{{var0}} ูกบันทึกใน '{{var1}}'"
+						};
+					case "tr":		// Turkish
+						return {
+							context_copy:						"{{var0}} kopyala",
+							context_lenssize:					"Lens Boyutu",
+							context_saveas:						"{{var0}} farklı kaydet ...",
+							context_searchwith:					"{{var0}} şununla ara ...",
+							context_view:						"{{var0}} görüntüle",
+							submenu_disabled:					"Hepsi devre dışı",
+							toast_copy_failed:					"{{var0}} panoya kopyalanamadı",
+							toast_copy_success:					"{{var0}} panoya kopyalandı",
+							toast_save_failed:					"{{var0}}, '{{var1}}' konumuna kaydedilemedi",
+							toast_save_success:					"{{var0}}, '{{var1}}' konumuna kaydedildi"
+						};
+					case "uk":		// Ukrainian
+						return {
+							context_copy:						"Копіювати {{var0}}",
+							context_lenssize:					"Розмір лінзи",
+							context_saveas:						"Збережіть {{var0}} як ...",
+							context_searchwith:					"Шукати {{var0}} за допомогою ...",
+							context_view:						"Переглянути {{var0}}",
+							submenu_disabled:					"Всі інваліди",
+							toast_copy_failed:					"Не вдалося скопіювати {{var0}} у буфер обміну",
+							toast_copy_success:					"{{var0}} скопійовано в буфер обміну",
+							toast_save_failed:					"Не вдалося зберегти {{var0}} у '{{var1}}'",
+							toast_save_success:					"{{var0}} було збережено у '{{var1}}'"
+						};
+					case "vi":		// Vietnamese
+						return {
+							context_copy:						"Sao chép {{var0}}",
+							context_lenssize:					"Kích thước ống kính",
+							context_saveas:						"Lưu {{var0}} dưới dạng ...",
+							context_searchwith:					"Tìm kiếm {{var0}} bằng ...",
+							context_view:						"Xem {{var0}}",
+							submenu_disabled:					"Tất cả đã bị vô hiệu hóa",
+							toast_copy_failed:					"Không thể sao chép {{var0}} vào khay nhớ tạm",
+							toast_copy_success:					"{{var0}} đã được sao chép vào khay nhớ tạm",
+							toast_save_failed:					"Không thể lưu {{var0}} trong '{{var1}}'",
+							toast_save_success:					"{{var0}} đã được lưu trong '{{var1}}'"
+						};
+					case "zh-CN":	// Chinese (China)
+						return {
+							context_copy:						"复制 {{var0}}",
+							context_lenssize:					"镜片尺寸",
+							context_saveas:						"将 {{var0}} 另存为 ...",
+							context_searchwith:					"用搜索 {{var0}} ...",
+							context_view:						"查看 {{var0}}",
+							submenu_disabled:					"全部禁用",
+							toast_copy_failed:					"{{var0}} 无法复制到剪贴板",
+							toast_copy_success:					"{{var0}} 已复制到剪贴板",
+							toast_save_failed:					"{{var0}} 无法保存在'{{var1}}'中",
+							toast_save_success:					"{{var0}} 已保存在'{{var1}}'中"
+						};
+					case "zh-TW":	// Chinese (Taiwan)
+						return {
+							context_copy:						"複製 {{var0}}",
+							context_lenssize:					"鏡片尺寸",
+							context_saveas:						"將 {{var0}} 另存為 ...",
+							context_searchwith:					"用搜索 {{var0}} ...",
+							context_view:						"查看 {{var0}}",
+							submenu_disabled:					"全部禁用",
+							toast_copy_failed:					"{{var0}} 無法複製到剪貼板",
+							toast_copy_success:					"{{var0}} 已復製到剪貼板",
+							toast_save_failed:					"{{var0}} 無法保存在'{{var1}}'中",
+							toast_save_success:					"{{var0}} 已保存在'{{var1}}'中"
+						};
+					default:		// English
+						return {
+							context_copy:						"Copy {{var0}}",
+							context_lenssize:					"Lens Size",
+							context_saveas:						"Save {{var0}} as ...",
+							context_searchwith:					"Search {{var0}} with ...",
+							context_view:						"View {{var0}}",
+							submenu_disabled:					"All disabled",
+							toast_copy_failed:					"{{var0}} could not be copied to the Clipboard",
+							toast_copy_success:					"{{var0}} was copied to the Clipboard",
+							toast_save_failed:					"{{var0}} could not be saved in '{{var1}}'",
+							toast_save_success:					"{{var0}} was saved in '{{var1}}'"
 						};
 				}
 			}

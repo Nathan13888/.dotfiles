@@ -29,6 +29,16 @@ MessageLoggerV2Data.config.json
 BetterDiscord/plugins/MessageLoggerV2DataBackup.config.json
 BetterDiscord/plugins/ImageUtilities.config.json
 BetterDiscord/bdstorage.json
+BetterDiscord/Cookies*
+BetterDiscord/Cache
+BetterDiscord/GPUCache
+BetterDiscord/Code Cache
+BetterDiscord/Local Storage
+BetterDiscord/Session Storage
+BetterDiscord/Dictionaries
+BetterDiscord/Preferences
+BetterDiscord/Network Persistent State
+BetterDiscord/data
 
 # Vim Swap Files
 *.swp

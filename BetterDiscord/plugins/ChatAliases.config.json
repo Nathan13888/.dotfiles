@@ -3,11 +3,21 @@
 		"minAliasLength": 2
 	},
 	"configs": {
-		"autoc": true,
 		"case": false,
 		"exact": true,
-		"file": false,
-		"regex": false
+		"autoc": true,
+		"regex": false,
+		"file": false
+	},
+	"general": {
+		"replaceBeforeSend": true,
+		"addContextMenu": true,
+		"addAutoComplete": true
+	},
+	"places": {
+		"normal": true,
+		"edit": true,
+		"upload": true
 	},
 	"settings": {
 		"addAutoComplete": true,

@@ -1,38 +1,40 @@
-###########
-# Packages #
-############
+################
+# **Packages** #
+################
 
-## Essentials
-- sudo
-- vim/neovim
-- Discord
-- yakuake or guake (if gnome)
-- Alacritty
-- zsh
+## Dev
+- zsh bash
+- git hub-bin (github git-wrapper)
+- vim neovim
+- emacs (ripgrep doom emacs)
+- doom emacs
+  - git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
+  - ~/.emacs.d/bin/doom install
+- alacritty
 - firefox-nightly
+- torbrowser-launcher nyx tor
+- ungoogled-chromium
 - neofetch pfetch
-- ddgr
-
-## DEV
-- THE FUCK (install with pip3)
-- Screen and Tmux
-- git and hub (github git-wrapper)
-- visual studio code
+- thefuck (or with PIP)
+- screen tmux sudo
+- visual-studio-code[-insiders]-bin
 - cuda and cudnn
-- heorku cli
-- netlify cli
-- wine
-- xrdp
-- Time
+- time
 - nodejs npm nvm
 - gcc gdb
 - python python-pip
 - go
 - openjdk
-- qt
-- cmake
-- QMK
-- colorls (gem install colorls)
+- tokei
+- exa
+
+## Communication
+- discord betterdiscord
+- signal-desktop
+- teams
+
+# xmonad
+- xmonad xmonad-contrib
 
 # i3
 - i3-gaps
@@ -42,27 +44,24 @@
 - X11 stuff --> xorg xorg-server
 - xorg-xinit
 - xdg-utils
-- lsdesktopf
 - display manager
+<!--- lsdesktopf
 - lxappearance
-- dconf-editor
-- gtk2
+- dconf-editor-->
 - *(input)*
 - numlockx
 - xbanish
 - *(services)*
 - fcitx5
-- picom
+- picom-ibhagwan-git
 - polybar
 - rofi
 - network-manager-applet
-- networkmanager-dmenu-git?
-- pa-applet
 - dunst
 - feh
 - flameshot
-- xcolor
 - *(fonts)*
+- ttf-ms-fonts
 - nerd-fonts-complete
 #- font-config
 - *(sound)*
@@ -70,106 +69,47 @@
 - pulseaudio-ctl (shell-based)
 - pamixer
 - playerctl
+- pulseeffects
 - *(secrets)*
 - gnome-keyring
 - libsecret
 - seahorse
-- pinentry-gnome3
-- gpg
+- pinentry
+- gnupg
 - *(misc)*
 - pcmanfm
+- vifm nnn
 - calcurse
 - lynx
-- bottom
+- bottom-bin
 - iotop
 - powertop
 - fetchcord-git (or from pip)
+- speedtest-cli
 - *(battery)*
 - cbatticon
 
-## v4l2loopback
-- v4l2loopback-dkms
-- gstreamer
-
-## Virtualization
-- VirtualBox
+## Virtualization / Containers
+- virt-manager
+- virtualbox-bin virtualbox-host-modules-arch
   - https://www.virtualbox.org/wiki/Linux_Downloads 
   - `modprobe vboxdrv vboxnetfit vboxnetadp vboxpci`
   - https://www.oracle.com/virtualization/technologies/vm/downloads/virtualbox-downloads.html#extpack (or just download from AUR: virtualbox-ext-oracle)
 - KVM (https://wiki.archlinux.org/index.php/KVM)
 - QEMU (https://wiki.archlinux.org/index.php/QEMU)
-- Docker (https://wiki.archlinux.org/index.php/Docker#Installation)
-
-## Utilities
-- Kicad
-- freecad
-- Blender
-- Cura
-- wol (wake on lan)
-- geekbench
-- android-file-transfer
-- mtpfs
-- go-mtpfs-git
-- traceroute
-- cht.sh (cheat.sh)
-- ufw
-- East Asian Fonts: https://wiki.archlinux.org/index.php/Fonts#Chinese,_Japanese,_Korean,_Vietnamese
-- trash-cli
-- nnn
-- time
-- privoxy: https://wiki.archlinux.org/index.php/Privoxy
-- tor
-- stubby: https://wiki.archlinux.org/index.php/Stubby
-- nordvpn: https://wiki.archlinux.org/index.php/NordVPN
-- cups: https://wiki.archlinux.org/index.php/CUPS#Installation
-  - https://wiki.archlinux.org/index.php/CUPS/Printer-specific_problems#UFRII
-  - pacman -S pciutils usbutils
-- nut (ups)
-- pavucontrol (for pulseaudio)
-- Samba and Cifs-Utils
-- wakatime
-- curl, wget, rpm
-- Pro #what is this??
-- Snap and Flatpak (eww)
-- zram-config --> setup https://github.com/StuartIanNaylor/zram-config
-- https://github.com/Huion-Linux/DIGImend-kernel-drivers-for-Huion
-- davinci-resolve
-- lyrebird
-- kodi-x11
-- Shutter
-- KRDC
-- libreoffice-fresh
-- torbrowser-launcher nyx tor
-- lastpass
-- megasync
-- LBRY-app-bin
-- transmission-gtk (or -qt)
-- handbrake
-- Audacity
-- VLC/MPV
-- joplin
-- teams
-- krita
-- gimp
-- inkscape
-- DarkTable
-- filezilla
-- tigervnc
-- Spectacle (KDE for screenshots)
-- Steam
-
-## Benchmark
-- Phoronix Test Suite
-- fio
-- Geekbench
-- hashcat -B
-- cinfo
-
-## Chess
-- chess engines --> allie lc0 kommodo stockfish
-- syzygy tables
+- [Docker](https://wiki.archlinux.org/index.php/Docker#Installation)
+- podman
+- kubernetes
+- kubectl
+- k3s-bin or k3s-git
+- helm
+- cloudfoundry-cli
+- wine
 
 ## INFOSEC
+- privoxy: https://wiki.archlinux.org/index.php/Privoxy
+- stubby: https://wiki.archlinux.org/index.php/Stubby
+- nordvpn: https://wiki.archlinux.org/index.php/NordVPN
 - clamav
 - wireguard
 - macchanger
@@ -184,8 +124,99 @@
 - aircrack-ng and airegeddon
 - hashcat
 - hydra
-- nmap and zenmap
-- zenmap download --> https://nmap.org/download.html
+- nmap zenmap
+
+## Media
+- mpv vlc
+- kodi-x11
+- davinci-resolve
+%- krita
+%- gimp
+%- inkscape
+%- DarkTable
+%- Kicad
+%- freecad
+%- Blender
+%- Cura
+%- super slicer
+- rpi-imager
+- etcher
+
+## Recording
+- handbrake
+- asciinema
+- obs-studio
+- v4l2loopback-dkms
+- gstreamer
+- Audacity
+- cava
+- screenkey
+
+## Clients
+- transmission-gtk (or -qt)
+- filezilla
+- tigervnc
+- xrdp
+- KRDC
+- heroku-cli
+- netlify
+- cht.sh (cheat.sh)
+
+- lastpass
+- megasync
+- libreoffice-fresh
+- joplin
+- Spectacle (KDE for screenshots)
+- yakuake or guake (if gnome)
+
+## Tools and Utilities
+- poppler
+- iperf3
+- ufw
+- wol (wake on lan)
+- QMK
+- android-file-transfer
+- mtpfs
+- go-mtpfs-git
+- xcolor
+- ddgr
+- traceroute
+- East Asian Fonts: `https://wiki.archlinux.org/index.php/Fonts#Chinese,_Japanese,_Korean,_Vietnamese`
+- trash-cli
+- cups: https://wiki.archlinux.org/index.php/CUPS#Installation
+  - https://wiki.archlinux.org/index.php/CUPS/Printer-specific_problems#UFRII
+- pciutils usbutils
+- nut (ups)
+- Samba and Cifs-Utils
+- wakatime
+- curl, wget, rpm
+- Pro #what is this??
+- zram-config --> setup https://github.com/StuartIanNaylor/zram-config
+- https://github.com/Huion-Linux/DIGImend-kernel-drivers-for-Huion
+- lyrebird
+- Shutter
+
+## DBs
+- mysql
+- mongodb
+- mongo-compass
+- cockroach
+- postgres
+- dbeaver
+
+## Games
+- Steam
+
+## Benchmark
+- Phoronix Test Suite
+- fio
+- geekbench
+- hashcat -B
+- cinfo
+
+## Chess
+- chess engines --> allie lc0 kommodo stockfish
+- syzygy tables
 
 ## Fun
 - figlet

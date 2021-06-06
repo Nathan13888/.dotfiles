@@ -69,6 +69,7 @@ pinentry-program /usr/bin/pinentry-gnome3
 ### Firefox
 - Download firefox (a gpg key server must be setup to install `firefox-nightly` from AUR)
 - Disable `dom.event.contextmenu.enabled` if there are problems with right-click
+- Enable `browser.compactmode.show`
 - Sync settings
 - Disable telemetry and change search engine
 - Change device name to be more recognizable
@@ -97,6 +98,12 @@ Install options:
 ### WireGuard ([quick install](https://www.wireguard.com/quickstart/))
 - `apt install wireguard`
 - configure wireguard
+### LIMITS
+- Realtime: add to end of `/etc/security/limits.conf`:
+```
+@audio           -       rtprio          95
+@audio           -       memlock         unlimited
+```
 
 ## Scripts
 - `install` --> regular install script for a desktop

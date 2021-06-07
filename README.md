@@ -20,6 +20,7 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 - Add keyserver: `keyserver hkps://keys.openpgp.org`
   * `~/.gnupg/gpg.conf`
   * `/etc/pacman.d/gnupg/gpg.conf`
+  * `gpg --recv-keys <key1> <newkey2> ...`
 - Populate keys: `sudo pacman-key --populate archlinux`
 - Yay: clone `https://aur.archlinux.org/yay.git` and `makepkg -si`
 - Install all the packages you need form `PACKAGES.md`

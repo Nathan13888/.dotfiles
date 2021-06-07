@@ -17,7 +17,9 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 - Connecting to wifi: `nmtui`
 - Update reflector: `reflector --country Canada --country US --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist`
 - Setup GPG: `gpg --list-keys` (init user files), add keyserver, import key
-- Add keyserver: `keyserver hkp://pool.sks-keyservers.net`
+- Add keyserver: `keyserver hkps://keys.openpgp.org`
+  * `~/.gnupg/gpg.conf`
+  * `/etc/pacman.d/gnupg/gpg.conf`
 - Populate keys: `sudo pacman-key --populate archlinux`
 - Yay: clone `https://aur.archlinux.org/yay.git` and `makepkg -si`
 - Install all the packages you need form `PACKAGES.md`

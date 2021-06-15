@@ -1,12 +1,15 @@
 /**
  * @name EmojiStatistics
+ * @author DevilBro
  * @authorId 278543574059057154
+ * @version 2.9.8
+ * @description Shows you an Overview of Emojis and Emoji Servers
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
  * @patreon https://www.patreon.com/MircoWittrien
- * @website https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/EmojiStatistics
- * @source https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/EmojiStatistics/EmojiStatistics.plugin.js
- * @updateUrl https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/EmojiStatistics/EmojiStatistics.plugin.js
+ * @website https://mwittrien.github.io/
+ * @source https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/EmojiStatistics/
+ * @updateUrl https://mwittrien.github.io/BetterDiscordAddons/Plugins/EmojiStatistics/EmojiStatistics.plugin.js
  */
 
 module.exports = (_ => {
@@ -14,8 +17,13 @@ module.exports = (_ => {
 		"info": {
 			"name": "EmojiStatistics",
 			"author": "DevilBro",
-			"version": "2.9.7",
-			"description": "Add some helpful options to show you more information about emojis and emojiservers"
+			"version": "2.9.8",
+			"description": "Shows you an Overview of Emojis and Emoji Servers"
+		},
+		"changeLog": {
+			"improved": {
+				"Swapped Position": "Swapped Position with the Diversity Selector"
+			}
 		}
 	};
 
@@ -27,8 +35,8 @@ module.exports = (_ => {
 		
 		downloadLibrary () {
 			require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
-				if (!e && b && b.indexOf(`* @name BDFDB`) > -1) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => BdApi.showToast("Finished downloading BDFDB Library", {type: "success"}));
-				else BdApi.alert("Error", "Could not download BDFDB Library Plugin, try again later or download it manually from GitHub: https://github.com/mwittrien/BetterDiscordAddons/tree/master/Library/");
+				if (!e && b && r.statusCode == 200) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => BdApi.showToast("Finished downloading BDFDB Library", {type: "success"}));
+				else BdApi.alert("Error", "Could not download BDFDB Library Plugin. Try again later or download it manually from GitHub: https://mwittrien.github.io/downloader/?library");
 			});
 		}
 		
@@ -86,6 +94,9 @@ module.exports = (_ => {
 					${BDFDB.dotCNS.emojipicker + BDFDB.dotCN._emojistatisticsstatisticsbutton} {
 						width: 24px;
 						height: 24px;
+						grid-column: 2/3;
+					}
+					${BDFDB.dotCNS.emojipicker + BDFDB.dotCN.emojipickerdiversityselector} {
 						grid-column: 3/4;
 					}
 				`;
@@ -102,7 +113,7 @@ module.exports = (_ => {
 			processEmojiPicker (e) {
 				this.loadEmojiList();
 				let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {name: "DiversitySelector"});
-				if (index > -1) children.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TooltipContainer, {
+				if (index > -1) children.splice(index, 0, BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TooltipContainer, {
 					text: this.labels.modal_header,
 					children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Clickable, {
 						className: BDFDB.disCN._emojistatisticsstatisticsbutton,

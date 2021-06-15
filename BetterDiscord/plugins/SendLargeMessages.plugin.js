@@ -1,12 +1,15 @@
 /**
  * @name SendLargeMessages
+ * @author DevilBro
  * @authorId 278543574059057154
+ * @version 1.6.8
+ * @description Allows you to enter larger Messages, which will automatically split into several smaller Messages
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
  * @patreon https://www.patreon.com/MircoWittrien
- * @website https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/SendLargeMessages
- * @source https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/SendLargeMessages/SendLargeMessages.plugin.js
- * @updateUrl https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/SendLargeMessages/SendLargeMessages.plugin.js
+ * @website https://mwittrien.github.io/
+ * @source https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/SendLargeMessages/
+ * @updateUrl https://mwittrien.github.io/BetterDiscordAddons/Plugins/SendLargeMessages/SendLargeMessages.plugin.js
  */
 
 module.exports = (_ => {
@@ -14,12 +17,12 @@ module.exports = (_ => {
 		"info": {
 			"name": "SendLargeMessages",
 			"author": "DevilBro",
-			"version": "1.6.6",
-			"description": "Allows you to enter larger messages in the chattextarea, which allows you to automatically send the message in several smaller messages"
+			"version": "1.6.8",
+			"description": "Allows you to enter larger Messages, which will automatically split into several smaller Messages"
 		},
 		"changeLog": {
 			"improved": {
-				"New Line instead of Spaces": "Added an option to check for newlines instead of spaces to split messages"
+				"Nitro Max Message Length": "Now uses 4000 as Max Limit when the user has the permissions to"
 			}
 		}
 	};
@@ -32,8 +35,8 @@ module.exports = (_ => {
 		
 		downloadLibrary () {
 			require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
-				if (!e && b && b.indexOf(`* @name BDFDB`) > -1) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => BdApi.showToast("Finished downloading BDFDB Library", {type: "success"}));
-				else BdApi.alert("Error", "Could not download BDFDB Library Plugin, try again later or download it manually from GitHub: https://github.com/mwittrien/BetterDiscordAddons/tree/master/Library/");
+				if (!e && b && r.statusCode == 200) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => BdApi.showToast("Finished downloading BDFDB Library", {type: "success"}));
+				else BdApi.alert("Error", "Could not download BDFDB Library Plugin. Try again later or download it manually from GitHub: https://mwittrien.github.io/downloader/?library");
 			});
 		}
 		
@@ -63,14 +66,13 @@ module.exports = (_ => {
 		}
 	} : (([Plugin, BDFDB]) => {
 		const messageDelay = 1000; //changing at own risk, might result in bans or mutes
-		
-		let settings = {};
+		let maxMessageLength = 2000;
 	
 		return class SendLargeMessages extends Plugin {
 			onLoad () {
 				this.defaults = {
-					settings: {
-						byNewlines:		{value: false, 	description: "Try to split messages on newlines instead of spaces",		note: "This will stop sentences from being cut, but might result in more messages being sent"},
+					general: {
+						byNewlines:		{value: false, 	description: "Try to split Messages on Newlines instead of Spaces",		note: "This will stop Sentences from being cut, but might result in more Messages being sent"},
 					}
 				};
 				
@@ -86,44 +88,46 @@ module.exports = (_ => {
 			}
 			
 			onStart () {
-				this.forceUpdateAll();
+				maxMessageLength = BDFDB.LibraryModules.NitroUtils.canUseIncreasedMessageLength(BDFDB.UserUtils.me) ? BDFDB.DiscordConstants.MAX_MESSAGE_LENGTH_PREMIUM : BDFDB.DiscordConstants.MAX_MESSAGE_LENGTH;
+				
+				BDFDB.PatchUtils.forceAllUpdates(this);
 			}
 			
 			onStop () {
-				this.forceUpdateAll();
+				BDFDB.PatchUtils.forceAllUpdates(this);
 			}
 
 			getSettingsPanel (collapseStates = {}) {
-				let settingsPanel, settingsItems = [];
+				let settingsPanel;
+				return settingsPanel = BDFDB.PluginUtils.createSettingsPanel(this, {
+					collapseStates: collapseStates,
+					children: _ => {
+						let settingsItems = [];
 				
-				for (let key in settings) settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
-					type: "Switch",
-					plugin: this,
-					keys: ["settings", key],
-					label: this.defaults.settings[key].description,
-					note: this.defaults.settings[key].note,
-					value: settings[key]
-				}));
-				
-				return settingsPanel = BDFDB.PluginUtils.createSettingsPanel(this, settingsItems);
+						for (let key in this.defaults.general) settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
+							type: "Switch",
+							plugin: this,
+							keys: ["general", key],
+							label: this.defaults.general[key].description,
+							note: this.defaults.general[key].note,
+							value: this.settings.general[key]
+						}));
+						
+						return settingsItems;
+					}
+				});
 			}
 
 			onSettingsClosed (e) {
 				if (this.SettingsUpdated) {
 					delete this.SettingsUpdated;
-					this.forceUpdateAll();
+					BDFDB.PatchUtils.forceAllUpdates(this);
 				}
-			}
-		
-			forceUpdateAll () {
-				settings = BDFDB.DataUtils.get(this, "settings");
-				
-				BDFDB.PatchUtils.forceAllUpdates(this);
 			}
 
 			processChannelTextAreaForm (e) {
 				if (!BDFDB.PatchUtils.isPatched(this, e.instance, "handleSendMessage")) BDFDB.PatchUtils.patch(this, e.instance, "handleSendMessage", {instead: e2 => {
-					if (e2.methodArguments[0].length > BDFDB.DiscordConstants.MAX_MESSAGE_LENGTH) {
+					if (e2.methodArguments[0].length > maxMessageLength) {
 						e2.stopOriginalMethodCall();
 						let messages = this.formatText(e2.methodArguments[0]);
 						messages.filter(n => n).forEach((message, i) => {
@@ -142,16 +146,16 @@ module.exports = (_ => {
 			}
 			
 			processChannelTextAreaContainer (e) {
-				if (e.returnvalue.ref && e.returnvalue.ref.current && BDFDB.DOMUtils.getParent(BDFDB.dotCN.chatform, e.returnvalue.ref.current)) {
+				if (e.instance.props.type == BDFDB.DiscordConstants.TextareaTypes.NORMAL) {
 					let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {name: "SlateCharacterCount"});
 					if (index > -1) {
 						let text = BDFDB.LibraryModules.SlateSelectionUtils.serialize(children[index].props.document, "raw");
-						if (text.length > BDFDB.DiscordConstants.MAX_MESSAGE_LENGTH) children[index] = BDFDB.ReactUtils.createElement("div", {
+						if (text.length > maxMessageLength) children[index] = BDFDB.ReactUtils.createElement("div", {
 							className: BDFDB.disCNS.textareacharcounter + BDFDB.disCN.textareacharcountererror,
 							children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TooltipContainer, {
-								text: Math.ceil(text.length / BDFDB.DiscordConstants.MAX_MESSAGE_LENGTH * (39/40)) + " " + BDFDB.LanguageUtils.LanguageStrings.MESSAGES,
+								text: Math.ceil(text.length / maxMessageLength * (39/40)) + " " + BDFDB.LanguageUtils.LanguageStrings.MESSAGES,
 								children: BDFDB.ReactUtils.createElement("span", {
-									children: BDFDB.DiscordConstants.MAX_MESSAGE_LENGTH - text.length
+									children: maxMessageLength - text.length
 								})
 							})
 						});
@@ -160,19 +164,19 @@ module.exports = (_ => {
 			}
 
 			processChannelEditorContainer (e) {
-				if (e.instance.props.type && e.instance.props.type == BDFDB.DiscordConstants.TextareaTypes.NORMAL) e.instance.props.shouldUploadLongMessages = false;
+				if (e.instance.props.type == BDFDB.DiscordConstants.TextareaTypes.NORMAL) e.instance.props.shouldUploadLongMessages = false;
 			}
 
 			formatText (text) {
-				const separator = settings.byNewlines ? "\n" : " ";
+				const separator = !this.settings.general.byNewlines ? "\n" : " ";
 				
 				text = text.replace(/\t/g, "	");
-				let longWords = text.match(new RegExp(`[^${separator.replace("\n", "\\n")}]{${BDFDB.DiscordConstants.MAX_MESSAGE_LENGTH * (19/20)},}`, "gm"));
+				let longWords = text.match(new RegExp(`[^${separator.replace("\n", "\\n")}]{${maxMessageLength * (19/20)},}`, "gm"));
 				if (longWords) for (let longWord of longWords) {
 					let count1 = 0;
 					let shortWords = [];
 					longWord.split("").forEach(c => {
-						if (shortWords[count1] && (shortWords[count1].length >= BDFDB.DiscordConstants.MAX_MESSAGE_LENGTH * (19/20) || (c == "\n" && shortWords[count1].length >= BDFDB.DiscordConstants.MAX_MESSAGE_LENGTH * (19/20) - 100))) count1++;
+						if (shortWords[count1] && (shortWords[count1].length >= maxMessageLength * (19/20) || (c == "\n" && shortWords[count1].length >= maxMessageLength * (19/20) - 100))) count1++;
 						shortWords[count1] = shortWords[count1] ? shortWords[count1] + c : c;
 					});
 					text = text.replace(longWord, shortWords.join(separator));
@@ -180,7 +184,7 @@ module.exports = (_ => {
 				let messages = [];
 				let count2 = 0;
 				text.split(separator).forEach((word) => {
-					if (messages[count2] && (messages[count2] + "" + word).length > BDFDB.DiscordConstants.MAX_MESSAGE_LENGTH * (39/40)) count2++;
+					if (messages[count2] && (messages[count2] + "" + word).length > maxMessageLength * (39/40)) count2++;
 					messages[count2] = messages[count2] ? messages[count2] + separator + word : word;
 				});
 
@@ -318,7 +322,7 @@ module.exports = (_ => {
 						};
 					default:		// English
 						return {
-							toast_allsent:						"All messages sent"
+							toast_allsent:						"All Messages sent"
 						};
 				}
 			}

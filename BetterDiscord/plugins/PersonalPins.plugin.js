@@ -2,7 +2,7 @@
  * @name PersonalPins
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 2.0.3
+ * @version 2.0.4
  * @description Allows you to locally pin Messages
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -17,14 +17,13 @@ module.exports = (_ => {
 		"info": {
 			"name": "PersonalPins",
 			"author": "DevilBro",
-			"version": "2.0.3",
+			"version": "2.0.4",
 			"description": "Allows you to locally pin Messages"
 		},
 		"changeLog": {
-			"improved": {
-				"Performance": "Added Pagination to the Notes Popout to reduce the Stress for People who saved a lot of Notes",
-				"Pagination": "Fixed some Performance Issues"
-			},
+			"added": {
+				"Amount": "Added the shown and total amount of pinned messages"
+			}
 		}
 	};
 
@@ -120,6 +119,7 @@ module.exports = (_ => {
 					});
 				}
 				if (updateData) BDFDB.DataUtils.save(notes, _this, "notes");
+				let allCount = messages.length;
 				let currentChannel = BDFDB.LibraryModules.ChannelStore.getChannel(BDFDB.LibraryModules.LastChannelStore.getChannelId()) || {};
 				switch (popoutProps.selectedFilter.value) {
 					case "channel":
@@ -139,7 +139,7 @@ module.exports = (_ => {
 				}
 				BDFDB.ArrayUtils.keySort(messages, popoutProps.selectedSort.value);
 				if (popoutProps.selectedOrder.value != "descending") messages.reverse();
-				return messages;
+				return [messages, allCount];
 			}
 			renderMessage(note, message, channel) {
 				if (!message || !channel) return null;
@@ -236,7 +236,7 @@ module.exports = (_ => {
 			}
 			render() {
 				let searchTimeout;
-				const messages = this.filterMessages();
+				const [messages, allCount] = this.filterMessages();
 				return BDFDB.ReactUtils.createElement(BDFDB.ReactUtils.Fragment, {
 					children: [
 						BDFDB.ReactUtils.createElement("div", {
@@ -251,7 +251,7 @@ module.exports = (_ => {
 										children: [
 											BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex.Child, {
 												className: BDFDB.disCN.messagespopouttitle,
-												children: _this.labels.popout_note
+												children: `${_this.labels.popout_note} - ${messages.length}/${allCount}`
 											}),
 											BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SearchBar, {
 												query: popoutProps.searchKey,
@@ -439,17 +439,25 @@ module.exports = (_ => {
 			onMessageOptionToolbar (e) {
 				if (e.instance.props.expanded && e.instance.props.message && e.instance.props.channel) {
 					let note = this.getNoteData(e.instance.props.message, e.instance.props.channel);
-					e.returnvalue.props.children.unshift(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TooltipContainer, {
-						key: note ? "unpin-note" : "pin-note",
-						text: note ? this.labels.context_unpinoption : this.labels.context_pinoption,
-						children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Clickable, {
-							className: BDFDB.disCN.messagetoolbarbutton,
-							onClick: _ => this.addMessageToNotes(e.instance.props.message, e.instance.props.channel),
-							children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SvgIcon, {
-								className: BDFDB.disCN.messagetoolbaricon,
-								iconSVG: note ? pinIconDelete : pinIcon
+					e.returnvalue.props.children.unshift(BDFDB.ReactUtils.createElement(class extends BdApi.React.Component {
+						render() {
+							return BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TooltipContainer, {
+								key: note ? "unpin-note" : "pin-note",
+								text: _ => note ? _this.labels.context_unpinoption : _this.labels.context_pinoption,
+								children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Clickable, {
+									className: BDFDB.disCN.messagetoolbarbutton,
+									onClick: _ => {
+										_this.addMessageToNotes(e.instance.props.message, e.instance.props.channel);
+										note = _this.getNoteData(e.instance.props.message, e.instance.props.channel);
+										BDFDB.ReactUtils.forceUpdate(this);
+									},
+									children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SvgIcon, {
+										className: BDFDB.disCN.messagetoolbaricon,
+										iconSVG: note ? pinIconDelete : pinIcon
+									})
+								})
 							})
-						})
+						}
 					}));
 					if (this.isNoteOutdated(note, e.instance.props.message)) e.returnvalue.props.children.unshift(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TooltipContainer, {
 						key: "update-note",
@@ -580,6 +588,22 @@ module.exports = (_ => {
 							toast_noteremove:					"Съобщението е премахнато от бележника",
 							toast_noteupdate:					"Актуализира съобщението в бележника"
 						};
+					case "cs":		// Czech
+						return {
+							context_pinoption:					"Poznamenat zprávu",
+							context_unpinoption:				"Odebrat poznámku",
+							context_updateoption:				"Aktualizovat poznámku",
+							popout_filter_all:					"Všechny servery",
+							popout_filter_channel:				"Kanál",
+							popout_filter_server:				"Server",
+							popout_note:						"Poznámky",
+							popout_pinoption:					"Poznámka",
+							popout_sort_messagetime:			"Datum zprávy",
+							popout_sort_notetime:				"Datum poznámky",
+							toast_noteadd:						"Zpráva přidána do poznámek",
+							toast_noteremove:					"Zpráva odebrána z poznámek",
+							toast_noteupdate:					"Zpráva v poznámkách aktualizována"
+						};
 					case "da":		// Danish
 						return {
 							context_pinoption:					"Skriv beskeden ned",
@@ -675,6 +699,22 @@ module.exports = (_ => {
 							toast_noteadd:						"Message ajouté au carnet",
 							toast_noteremove:					"Message supprimé du carnet",
 							toast_noteupdate:					"Mise à jour du message dans le carnet"
+						};
+					case "hi":		// Hindi
+						return {
+							context_pinoption:					"नोट संदेश",
+							context_unpinoption:				"नोट हटाएं",
+							context_updateoption:				"अद्यतन नोट",
+							popout_filter_all:					"सभी सर्वर",
+							popout_filter_channel:				"चैनल",
+							popout_filter_server:				"सर्वर",
+							popout_note:						"टिप्पणियाँ",
+							popout_pinoption:					"ध्यान दें",
+							popout_sort_messagetime:			"संदेश दिनांक",
+							popout_sort_notetime:				"नोट दिनांक",
+							toast_noteadd:						"संदेश नोटबुक में जोड़ा गया",
+							toast_noteremove:					"नोटबुक से संदेश हटाया गया",
+							toast_noteupdate:					"नोटबुक में संदेश अपडेट किया गया"
 						};
 					case "hr":		// Croatian
 						return {

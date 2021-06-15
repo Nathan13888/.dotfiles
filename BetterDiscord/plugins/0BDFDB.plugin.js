@@ -2,7 +2,7 @@
  * @name BDFDB
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 1.6.5
+ * @version 1.7.1
  * @description Required Library for DevilBro's Plugins
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -19,10 +19,15 @@ module.exports = (_ => {
 		"info": {
 			"name": "BDFDB",
 			"author": "DevilBro",
-			"version": "1.6.5",
+			"version": "1.7.1",
 			"description": "Required Library for DevilBro's Plugins"
 		},
-		"rawUrl": `https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js`
+		"rawUrl": `https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js`,
+		"changeLog": {
+			"fixed": {
+				"Message Rerendering": "Fixed Message Rerendering causing weird Message Jumps"
+			}
+		}
 	};
 	
 	const DiscordObjects = {};
@@ -187,17 +192,32 @@ module.exports = (_ => {
 	BDFDB.TimeUtils.timeout = function (callback, delay, ...args) {
 		delay = parseFloat(delay);
 		if (typeof callback != "function") return;
-		else if (isNaN(delay) || typeof delay != "number" || delay < 1) {
+		if (isNaN(delay) || typeof delay != "number" || delay < 1) {
 			let immediate = setImmediate(_ => BDFDB.TimeUtils.suppress(callback, "Immediate")(...[immediate, args].flat()));
 			return immediate;
 		}
 		else {
-			let timeout = setTimeout(_ => BDFDB.TimeUtils.suppress(callback, "Timeout")(...[timeout, args].flat()), delay);
+			let start, paused = true, timeout = {
+				pause: _ => {
+					if (paused) return;
+					paused = true;
+					BDFDB.TimeUtils.clear(timeout.timer);
+					delay -= performance.now() - start;
+				},
+				resume: _ => {
+					if (!paused) return;
+					paused = false;
+					start = performance.now();
+					timeout.timer = setTimeout(_ => BDFDB.TimeUtils.suppress(callback, "Timeout")(...[timeout, args].flat()), delay)
+				}
+			};
+			timeout.resume();
 			return timeout;
 		}
 	};
 	BDFDB.TimeUtils.clear = function (...timeObjects) {
 		for (let t of timeObjects.flat(10).filter(n => n)) {
+			t = t.timer != undefined ? t.timer : t;
 			if (typeof t == "number") {
 				clearInterval(t);
 				clearTimeout(t);
@@ -419,6 +439,7 @@ module.exports = (_ => {
 	BDFDB.BDUtils = {};
 	BDFDB.BDUtils.getPluginsFolder = function () {
 		if (BdApi && BdApi.Plugins && BdApi.Plugins.folder && typeof BdApi.Plugins.folder == "string") return BdApi.Plugins.folder;
+		else if (LibraryRequires.process.env.BETTERDISCORD_DATA_PATH) return LibraryRequires.path.resolve(LibraryRequires.process.env.BETTERDISCORD_DATA_PATH, "plugins/");
 		else if (LibraryRequires.process.env.injDir) return LibraryRequires.path.resolve(LibraryRequires.process.env.injDir, "plugins/");
 		else switch (LibraryRequires.process.platform) {
 			case "win32":
@@ -432,6 +453,7 @@ module.exports = (_ => {
 	};
 	BDFDB.BDUtils.getThemesFolder = function () {
 		if (BdApi && BdApi.Themes && BdApi.Themes.folder && typeof BdApi.Themes.folder == "string") return BdApi.Themes.folder;
+		else if (LibraryRequires.process.env.BETTERDISCORD_DATA_PATH) return LibraryRequires.path.resolve(LibraryRequires.process.env.BETTERDISCORD_DATA_PATH, "themes/");
 		else if (LibraryRequires.process.env.injDir) return LibraryRequires.path.resolve(LibraryRequires.process.env.injDir, "plugins/");
 		else switch (LibraryRequires.process.platform) {
 			case "win32": 
@@ -1233,7 +1255,7 @@ module.exports = (_ => {
 						
 						let type = data.config.type && BDFDB.disCN["toast" + data.config.type];
 						if (!type) {
-							barColor = BDFDB.ColorUtils.convert(data.config.barColor, "HEX");
+							barColor = BDFDB.ColorUtils.getType(data.config.barColor) ? BDFDB.ColorUtils.convert(data.config.barColor, "HEX") : data.config.barColor;
 							let comp = BDFDB.ColorUtils.convert(data.config.color, "RGBCOMP");
 							if (comp) {
 								backgroundColor = BDFDB.ColorUtils.convert(comp, "HEX");
@@ -1245,23 +1267,11 @@ module.exports = (_ => {
 						else BDFDB.DOMUtils.addClass(data.toast, type);
 						
 						let disableInteractions = data.config.disableInteractions && typeof data.config.onClick != "function";
-						if (disableInteractions) data.toast.style.setProperty("pointer-events", "none", "important");
-						else {
-							BDFDB.DOMUtils.addClass(data.toast, BDFDB.disCN.toastclosable);
-							data.toast.addEventListener("click", event => {
-								if (typeof data.config.onClick == "function" && !BDFDB.DOMUtils.getParent(BDFDB.dotCN.toastcloseicon, event.target)) data.config.onClick();
-								data.toast.close();
-							});
-						}
-						
-						toasts.appendChild(data.toast);
-						
+						let start, progress = 0, paused = false
 						let timeout = typeof data.config.timeout == "number" && !disableInteractions ? data.config.timeout : 3000;
 						timeout = (timeout > 0 ? timeout : 600000) + 300;
-						let closeTimeout = BDFDB.TimeUtils.timeout(_ => {
-							data.toast.close();
-						}, timeout);
-						BDFDB.TimeUtils.timeout(_ => {BDFDB.DOMUtils.removeClass(data.toast, BDFDB.disCN.toastopening);});
+						
+						let progressInterval, closeTimeout = BDFDB.TimeUtils.timeout(_ => data.toast.close(), timeout);
 						data.toast.close = _ => {
 							BDFDB.TimeUtils.clear(closeTimeout);
 							if (document.contains(data.toast)) {
@@ -1279,6 +1289,31 @@ module.exports = (_ => {
 							runQueue();
 						};
 						
+						if (disableInteractions) data.toast.style.setProperty("pointer-events", "none", "important");
+						else {
+							BDFDB.DOMUtils.addClass(data.toast, BDFDB.disCN.toastclosable);
+							data.toast.addEventListener("click", event => {
+								if (typeof data.config.onClick == "function" && !BDFDB.DOMUtils.getParent(BDFDB.dotCN.toastcloseicon, event.target)) data.config.onClick();
+								data.toast.close();
+							});
+							if (typeof closeTimeout.pause == "function") {
+								data.toast.addEventListener("mouseenter", _ => {
+									if (paused) return;
+									paused = true;
+									closeTimeout.pause();
+								});
+								data.toast.addEventListener("mouseleave", _ => {
+									if (!paused) return;
+									paused = false;
+									start = performance.now() - progress;
+									closeTimeout.resume();
+								});
+							}
+						}
+						
+						toasts.appendChild(data.toast);
+						BDFDB.TimeUtils.timeout(_ => BDFDB.DOMUtils.removeClass(data.toast, BDFDB.disCN.toastopening));
+						
 						let icon = data.config.avatar ? BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.AvatarComponents.default, {
 							src: data.config.avatar,
 							size: InternalComponents.LibraryComponents.AvatarComponents.Sizes.SIZE_24
@@ -1289,18 +1324,14 @@ module.exports = (_ => {
 							height: 18,
 							nativeClass: true
 						}) : null);
-						BDFDB.ReactUtils.render(BDFDB.ReactUtils.createElement(class BDFDB_Toast extends BDFDB.ReactUtils.Component {
+						
+						BDFDB.ReactUtils.render(BDFDB.ReactUtils.createElement(class BDFDB_Toast extends LibraryModules.React.Component {
 							componentDidMount() {
 								data.toast.update = newChildren => {
 									if (!newChildren) return;
 									this.props.children = newChildren;
 									BDFDB.ReactUtils.forceUpdate(this);
 								};
-								this._start = performance.now();
-								this._progress = BDFDB.TimeUtils.interval(_ => {BDFDB.ReactUtils.forceUpdate(this);}, 10);
-							}
-							componentWillUnmount() {
-								BDFDB.TimeUtils.clear(this._progress);
 							}
 							render() {
 								return BDFDB.ReactUtils.createElement(BDFDB.ReactUtils.Fragment, {
@@ -1329,11 +1360,25 @@ module.exports = (_ => {
 												})
 											].filter(n => n)
 										}),
-										BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.Animations.animated.div, {
-											className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.toastbar, barColor && BDFDB.disCN.toastcustombar),
-											style: {
-												backgroundColor: barColor,
-												right: `${100 - (performance.now() - this._start) * 100 / timeout}%`
+										BDFDB.ReactUtils.createElement(class extends LibraryModules.React.Component {
+											componentDidMount() {
+												start = performance.now();
+												progressInterval = BDFDB.TimeUtils.interval(_ => {
+													if (!paused) BDFDB.ReactUtils.forceUpdate(this);
+												}, 10);
+											}
+											componentWillUnmount() {
+												BDFDB.TimeUtils.clear(progressInterval);
+											}
+											render() {
+												progress = performance.now() - start;
+												return BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.Animations.animated.div, {
+													className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.toastbar, barColor && BDFDB.disCN.toastcustombar),
+													style: {
+														backgroundColor: barColor,
+														right: `${100 - progress * 100 / timeout}%`
+													}
+												})
 											}
 										})
 									]
@@ -1511,17 +1556,16 @@ module.exports = (_ => {
 				var Tooltips = [];
 				BDFDB.TooltipUtils = {};
 				BDFDB.TooltipUtils.create = function (anker, text, config = {}) {
-					let itemLayerContainer = document.querySelector(BDFDB.dotCN.appmount +  " > " + BDFDB.dotCN.itemlayercontainer);
+					if (!text && !config.guild) return null;
+					const itemLayerContainer = document.querySelector(BDFDB.dotCN.appmount +  " > " + BDFDB.dotCN.itemlayercontainer);
 					if (!itemLayerContainer || !Node.prototype.isPrototypeOf(anker) || !document.contains(anker)) return null;
-					text = typeof text == "function" ? text() : text;
-					if (typeof text != "string" && !BDFDB.ReactUtils.isValidElement(text) && !BDFDB.ObjectUtils.is(config.guild)) return null;
-					let id = BDFDB.NumberUtils.generateId(Tooltips);
-					let itemLayer = BDFDB.DOMUtils.create(`<div class="${BDFDB.disCNS.itemlayer + BDFDB.disCN.itemlayerdisabledpointerevents}"><div class="${BDFDB.disCN.tooltip}" tooltip-id="${id}"><div class="${BDFDB.disCN.tooltippointer}"></div><div class="${BDFDB.disCN.tooltipcontent}"></div></div></div>`);
+					const id = BDFDB.NumberUtils.generateId(Tooltips);
+					const itemLayer = BDFDB.DOMUtils.create(`<div class="${BDFDB.disCNS.itemlayer + BDFDB.disCN.itemlayerdisabledpointerevents}"><div class="${BDFDB.disCN.tooltip}" tooltip-id="${id}"><div class="${BDFDB.disCN.tooltippointer}"></div><div class="${BDFDB.disCN.tooltipcontent}"></div></div></div>`);
 					itemLayerContainer.appendChild(itemLayer);
 					
-					let tooltip = itemLayer.firstElementChild;
-					let tooltipContent = itemLayer.querySelector(BDFDB.dotCN.tooltipcontent);
-					let tooltipPointer = itemLayer.querySelector(BDFDB.dotCN.tooltippointer);
+					const tooltip = itemLayer.firstElementChild;
+					const tooltipContent = itemLayer.querySelector(BDFDB.dotCN.tooltipcontent);
+					const tooltipPointer = itemLayer.querySelector(BDFDB.dotCN.tooltippointer);
 					
 					if (config.id) tooltip.id = config.id.split(" ").join("");
 					
@@ -1563,6 +1607,7 @@ module.exports = (_ => {
 					if (config.list || BDFDB.ObjectUtils.is(config.guild)) BDFDB.DOMUtils.addClass(tooltip, BDFDB.disCN.tooltiplistitem);
 					
 					const removeTooltip = _ => {
+						document.removeEventListener("wheel", wheel);
 						document.removeEventListener("mousemove", mouseMove);
 						document.removeEventListener("mouseleave", mouseLeave);
 						BDFDB.DOMUtils.remove(itemLayer);
@@ -1581,13 +1626,11 @@ module.exports = (_ => {
 							let connectedVoiceUsers = BDFDB.ObjectUtils.toArray(LibraryModules.VoiceUtils.getVoiceStates(config.guild.id)).map(state => voiceChannels.includes(state.channelId) && state.channelId != config.guild.afkChannelId && !streamOwnerIds.includes(state.userId) && LibraryModules.UserStore.getUser(state.userId)).filter(n => n);
 							let connectedStageUsers = BDFDB.ObjectUtils.toArray(LibraryModules.VoiceUtils.getVoiceStates(config.guild.id)).map(state => stageChannels.includes(state.channelId) && state.channelId != config.guild.afkChannelId && !streamOwnerIds.includes(state.userId) && LibraryModules.UserStore.getUser(state.userId)).filter(n => n);
 							
-							let tooltipText = config.guild.toString();
-							if (fontColorIsGradient) tooltipText = `<span style="pointer-events: none; -webkit-background-clip: text !important; color: transparent !important; background-image: ${BDFDB.ColorUtils.createGradient(config.fontColor)} !important;">${BDFDB.StringUtils.htmlEscape(tooltipText)}</span>`;
-							
 							let isMuted = LibraryModules.MutedUtils.isMuted(config.guild.id);
 							let muteConfig = LibraryModules.MutedUtils.getMuteConfig(config.guild.id);
 							
 							let hasExtraRow = connectedStageUsers.length || connectedVoiceUsers.length || streamOwners.length;
+							let children = [typeof newText == "function" ? newText() : newText].flat(10).filter(n => typeof n == "string" || BDFDB.ReactUtils.isValidElement(n));
 							
 							BDFDB.ReactUtils.render(BDFDB.ReactUtils.createElement(BDFDB.ReactUtils.Fragment, {
 								children: [
@@ -1601,13 +1644,20 @@ module.exports = (_ => {
 											}),
 											BDFDB.ReactUtils.createElement("span", {
 												className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.tooltipguildnametext, hasExtraRow && BDFDB.disCN.tooltipguildnametextlimitedsize),
-												children: fontColorIsGradient || config.html ? BDFDB.ReactUtils.elementToReact(BDFDB.DOMUtils.create(tooltipText)) : tooltipText
+												children: fontColorIsGradient ? BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.TextGradientElement, {
+													gradient: BDFDB.ColorUtils.createGradient(config.fontColor),
+													children: config.guild.toString()
+												}) : config.guild.toString()
 											}),
 										]
 									}),
-									newText && BDFDB.ReactUtils.createElement("div", {
+									children.length && BDFDB.ReactUtils.createElement("div", {
 										className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.tooltiprow, BDFDB.disCN.tooltiprowextra),
-										children: newText
+										children: children
+									}),
+									config.note && BDFDB.ReactUtils.createElement("div", {
+										className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.tooltiprow, BDFDB.disCN.tooltiprowextra, BDFDB.disCN.tooltipnote),
+										children: config.note
 									}),
 									connectedStageUsers.length && BDFDB.ReactUtils.createElement("div", {
 										className: BDFDB.disCN.tooltiprow,
@@ -1661,9 +1711,19 @@ module.exports = (_ => {
 							}), tooltipContent);
 						}
 						else {
-							if (fontColorIsGradient) tooltipContent.innerHTML = `<span style="pointer-events: none; -webkit-background-clip: text !important; color: transparent !important; background-image: ${BDFDB.ColorUtils.createGradient(config.fontColor)} !important;">${BDFDB.StringUtils.htmlEscape(newText)}</span>`;
-							else if (config.html) tooltipContent.innerHTML = newText;
-							else tooltipContent.innerText = newText;
+							let children = [typeof newText == "function" ? newText() : newText].flat(10).filter(n => typeof n == "string" || BDFDB.ReactUtils.isValidElement(n));
+							children.length && BDFDB.ReactUtils.render(BDFDB.ReactUtils.createElement(BDFDB.ReactUtils.Fragment, {
+								children: [
+									fontColorIsGradient ? BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.TextGradientElement, {
+										gradient: BDFDB.ColorUtils.createGradient(config.fontColor),
+										children: children
+									}) : children,
+									config.note && BDFDB.ReactUtils.createElement("div", {
+										className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.tooltiprow, BDFDB.disCN.tooltiprowextra, BDFDB.disCN.tooltipnote),
+										children: config.note
+									})
+								]
+							}), tooltipContent);
 						}
 					};
 					const update = newText => {
@@ -1728,18 +1788,27 @@ module.exports = (_ => {
 						}
 					};
 
+					const wheel = e => {
+						const tRects1 = BDFDB.DOMUtils.getRects(anker);
+						BDFDB.TimeUtils.clear(wheel.timeout);
+						wheel.timeout = BDFDB.TimeUtils.timeout(_ => {
+							const tRects2 = BDFDB.DOMUtils.getRects(anker);
+							if (tRects1.x != tRects2.x || tRects1.y != tRects2.y) removeTooltip();
+						}, 500);
+					};
 					const mouseMove = e => {
-						let parent = e.target.parentElement.querySelector(":hover");
+						const parent = e.target.parentElement.querySelector(":hover");
 						if (parent && anker != parent && !anker.contains(parent)) removeTooltip();
 					};
 					const mouseLeave = e => removeTooltip();
 					if (!config.perssist) {
+						document.addEventListener("wheel", wheel);
 						document.addEventListener("mousemove", mouseMove);
 						document.addEventListener("mouseleave", mouseLeave);
 					}
 					
 					const observer = new MutationObserver(changes => changes.forEach(change => {
-						let nodes = Array.from(change.removedNodes);
+						const nodes = Array.from(change.removedNodes);
 						if (nodes.indexOf(itemLayer) > -1 || nodes.indexOf(anker) > -1 || nodes.some(n => n.contains(anker))) removeTooltip();
 					}));
 					observer.observe(document.body, {subtree: true, childList: true});
@@ -2768,10 +2837,10 @@ module.exports = (_ => {
 				BDFDB.MessageUtils.rerenderAll = function (instant) {
 					BDFDB.TimeUtils.clear(BDFDB.MessageUtils.rerenderAll.timeout);
 					BDFDB.MessageUtils.rerenderAll.timeout = BDFDB.TimeUtils.timeout(_ => {
-						let channel = LibraryModules.ChannelStore.getChannel(LibraryModules.LastChannelStore.getChannelId());
-						if (channel) {
-							if (BDFDB.DMUtils.isDMChannel(channel)) BDFDB.DMUtils.markAsRead(channel);
-							else BDFDB.ChannelUtils.markAsRead(channel);
+						let channelId = LibraryModules.LastChannelStore.getChannelId();
+						if (channelId) {
+							if (BDFDB.DMUtils.isDMChannel(channelId)) BDFDB.DMUtils.markAsRead(channelId);
+							else BDFDB.ChannelUtils.markAsRead(channelId);
 						}
 						let LayerProviderIns = BDFDB.ReactUtils.findOwner(document.querySelector(BDFDB.dotCN.messageswrapper), {name: "LayerProvider", unlimited: true, up: true});
 						let LayerProviderPrototype = BDFDB.ObjectUtils.get(LayerProviderIns, `${BDFDB.ReactUtils.instanceKey}.type.prototype`);
@@ -2834,6 +2903,11 @@ module.exports = (_ => {
 					let user = LibraryModules.UserStore.getUser(id);
 					if (!user) return window.location.origin + "/assets/1f0bfc0865d324c2587920a7d80c609b.png";
 					else return ((user.avatar ? "" : window.location.origin) + LibraryModules.IconUtils.getUserAvatarURL(user)).split("?")[0];
+				};
+				BDFDB.UserUtils.getBanner = function (id = BDFDB.UserUtils.me.id) {
+					let user = LibraryModules.UserStore.getUser(id);
+					if (!user || !user.banner) return "";
+					return LibraryModules.IconUtils.getUserBannerURL(user).split("?")[0];
 				};
 				BDFDB.UserUtils.can = function (permission, id = BDFDB.UserUtils.me.id, channelId = LibraryModules.LastChannelStore.getChannelId()) {
 					if (!BDFDB.DiscordConstants.Permissions[permission]) BDFDB.LogUtils.warn([permission, "not found in Permissions"]);
@@ -3113,29 +3187,31 @@ module.exports = (_ => {
 						if (conv == "RGBCOMP") {
 							switch (type) {
 								case "RGBCOMP":
-									if (color.length == 3) return processRGB(color);
-									else if (color.length == 4) {
-										let a = processA(color.pop());
-										return processRGB(color).concat(a);
+									var rgbComp = [].concat(color);
+									if (rgbComp.length == 3) return processRGB(rgbComp);
+									else if (rgbComp.length == 4) {
+										let a = processA(rgbComp.pop());
+										return processRGB(rgbComp).concat(a);
 									}
 									break;
 								case "RGB":
 									return processRGB(color.replace(/\s/g, "").slice(4, -1).split(","));
 								case "RGBA":
-									let comp = color.replace(/\s/g, "").slice(5, -1).split(",");
-									let a = processA(comp.pop());
-									return processRGB(comp).concat(a);
+									var rgbComp = color.replace(/\s/g, "").slice(5, -1).split(",");
+									var a = processA(rgbComp.pop());
+									return processRGB(rgbComp).concat(a);
 								case "HSLCOMP":
-									if (color.length == 3) return BDFDB.ColorUtils.convert(`hsl(${processHSL(color).join(",")})`, "RGBCOMP");
-									else if (color.length == 4) {
-										let a = processA(color.pop());
-										return BDFDB.ColorUtils.convert(`hsl(${processHSL(color).join(",")})`, "RGBCOMP").concat(a);
+									var hslComp = [].concat(color);
+									if (hslComp.length == 3) return BDFDB.ColorUtils.convert(`hsl(${processHSL(hslComp).join(",")})`, "RGBCOMP");
+									else if (hslComp.length == 4) {
+										let a = processA(hslComp.pop());
+										return BDFDB.ColorUtils.convert(`hsl(${processHSL(hslComp).join(",")})`, "RGBCOMP").concat(a);
 									}
 									break;
 								case "HSL":
-									var hslcomp = processHSL(color.replace(/\s/g, "").slice(4, -1).split(","));
+									var hslComp = processHSL(color.replace(/\s/g, "").slice(4, -1).split(","));
 									var r, g, b, m, c, x, p, q;
-									var h = hslcomp[0] / 360, l = parseInt(hslcomp[1]) / 100, s = parseInt(hslcomp[2]) / 100; m = Math.floor(h * 6); c = h * 6 - m; x = s * (1 - l); p = s * (1 - c * l); q = s * (1 - (1 - c) * l);
+									var h = hslComp[0] / 360, l = parseInt(hslComp[1]) / 100, s = parseInt(hslComp[2]) / 100; m = Math.floor(h * 6); c = h * 6 - m; x = s * (1 - l); p = s * (1 - c * l); q = s * (1 - (1 - c) * l);
 									switch (m % 6) {
 										case 0: r = s, g = q, b = x; break;
 										case 1: r = p, g = s, b = x; break;
@@ -3146,8 +3222,8 @@ module.exports = (_ => {
 									}
 									return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 								case "HSLA":
-									var hslcomp = color.replace(/\s/g, "").slice(5, -1).split(",");
-									return BDFDB.ColorUtils.convert(`hsl(${hslcomp.slice(0, 3).join(",")})`, "RGBCOMP").concat(processA(hslcomp.pop()));
+									var hslComp = color.replace(/\s/g, "").slice(5, -1).split(",");
+									return BDFDB.ColorUtils.convert(`hsl(${hslComp.slice(0, 3).join(",")})`, "RGBCOMP").concat(processA(hslComp.pop()));
 								case "HEX":
 									var hex = /^#([a-f\d]{1})([a-f\d]{1})([a-f\d]{1})$|^#([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
 									return [parseInt(hex[1] + hex[1] || hex[4], 16), parseInt(hex[2] + hex[2] || hex[5], 16), parseInt(hex[3] + hex[3] || hex[6], 16)];
@@ -3236,25 +3312,25 @@ module.exports = (_ => {
 						return newcolor;
 					}
 					else {
-						let comp = BDFDB.ColorUtils.convert(color, "RGBCOMP");
-						if (comp) {
+						let rgbComp = BDFDB.ColorUtils.convert(color, "RGBCOMP");
+						if (rgbComp) {
 							a = a.toString();
 							a = (a.indexOf("%") > -1 ? 0.01 : 1) * parseFloat(a.replace(/[^0-9\.\-]/g, ""));
 							a = isNaN(a) || a > 1 ? 1 : a < 0 ? 0 : a;
-							comp[3] = a;
+							rgbComp[3] = a;
 							conv = (conv || BDFDB.ColorUtils.getType(color)).toUpperCase();
 							conv = conv == "RGB" || conv == "HSL" || conv == "HEX" ? conv + "A" : conv;
-							return BDFDB.ColorUtils.convert(comp, conv);
+							return BDFDB.ColorUtils.convert(rgbComp, conv);
 						}
 					}
 					return null;
 				};
 				BDFDB.ColorUtils.getAlpha = function (color) {
-					let comp = BDFDB.ColorUtils.convert(color, "RGBCOMP");
-					if (comp) {
-						if (comp.length == 3) return 1;
-						else if (comp.length == 4) {
-							let a = comp[3].toString();
+					let rgbComp = BDFDB.ColorUtils.convert(color, "RGBCOMP");
+					if (rgbComp) {
+						if (rgbComp.length == 3) return 1;
+						else if (rgbComp.length == 4) {
+							let a = rgbComp[3].toString();
 							a = (a.indexOf("%") > -1 ? 0.01 : 1) * parseFloat(a.replace(/[^0-9\.\-]/g, ""));
 							return isNaN(a) || a > 1 ? 1 : a < 0 ? 0 : a;
 						}
@@ -3270,21 +3346,22 @@ module.exports = (_ => {
 							return newColor;
 						}
 						else {
-							let comp = BDFDB.ColorUtils.convert(color, "RGBCOMP");
-							if (comp) {
+							let rgbComp = BDFDB.ColorUtils.convert(color, "RGBCOMP");
+							if (rgbComp) {
+								let a = BDFDB.ColorUtils.getAlpha(rgbComp);
 								if (parseInt(value) !== value) {
 									value = value.toString();
 									value = (value.indexOf("%") > -1 ? 0.01 : 1) * parseFloat(value.replace(/[^0-9\.\-]/g, ""));
 									value = isNaN(value) ? 0 : value;
-									return BDFDB.ColorUtils.convert([].concat(comp).map(c => {
+									return BDFDB.ColorUtils.convert([].concat(rgbComp).slice(0, 3).map(c => {
 										c = Math.round(c * (1 + value));
 										return c > 255 ? 255 : c < 0 ? 0 : c;
-									}), conv || BDFDB.ColorUtils.getType(color));
+									}).concat(a), conv || BDFDB.ColorUtils.getType(color));
 								}
-								else return BDFDB.ColorUtils.convert([].concat(comp).map(c => {
+								else return BDFDB.ColorUtils.convert([].concat(rgbComp).slice(0, 3).map(c => {
 									c = Math.round(c + value);
 									return c > 255 ? 255 : c < 0 ? 0 : c;
-								}), conv || BDFDB.ColorUtils.getType(color));
+								}).concat(a), conv || BDFDB.ColorUtils.getType(color));
 							}
 						}
 					}
@@ -4113,6 +4190,11 @@ module.exports = (_ => {
 				BDFDB.DiscordUtils.isDevModeEnabled = function () {
 					return LibraryModules.SettingsStore.developerMode;
 				};
+				BDFDB.DiscordUtils.getExperiment = function (id) {
+					if (!id) return null;
+					const module = BDFDB.ModuleUtils.find(m => m.definition && m.definition.defaultConfig && m.definition.defaultConfig[id] != null && typeof m.getCurrentConfig == "function");
+					return module && (module.getCurrentConfig({}) || {})[id];
+				};
 				BDFDB.DiscordUtils.getTheme = function () {
 					return LibraryModules.SettingsStore.theme != "dark" ? BDFDB.disCN.themelight : BDFDB.disCN.themedark;
 				};
@@ -4775,6 +4857,15 @@ module.exports = (_ => {
 				
 				InternalComponents.LibraryComponents.ChannelTextAreaButton = reactInitialized && class BDFDB_ChannelTextAreaButton extends LibraryModules.React.Component {
 					render() {
+						const inner = BDFDB.ReactUtils.createElement("div", {
+							className: BDFDB.disCN.textareabuttonwrapper,
+							children: BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.SvgIcon, {
+								name: this.props.iconName,
+								iconSVG: this.props.iconSVG,
+								className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.textareaicon, this.props.iconClassName, this.props.pulse && BDFDB.disCN.textareaiconpulse),
+								nativeClass: this.props.nativeClass
+							})
+						});
 						return BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.Button, {
 							look: InternalComponents.LibraryComponents.Button.Looks.BLANK,
 							size: InternalComponents.LibraryComponents.Button.Sizes.NONE,
@@ -4786,15 +4877,7 @@ module.exports = (_ => {
 							onContextMenu: this.props.onContextMenu,
 							onMouseEnter: this.props.onMouseEnter,
 							onMouseLeave: this.props.onMouseLeave,
-							children: BDFDB.ReactUtils.createElement("div", {
-								className: BDFDB.disCN.textareabuttonwrapper,
-								children: BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.SvgIcon, {
-									name: this.props.iconName,
-									iconSVG: this.props.iconSVG,
-									className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.textareaicon, this.props.iconClassName, this.props.pulse && BDFDB.disCN.textareaiconpulse),
-									nativeClass: this.props.nativeClass
-								})
-							})
+							children: this.props.tooltip && this.props.tooltip.text ? BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.TooltipContainer, Object.assign({}, this.props.tooltip, {children: inner})) : inner
 						});
 					}
 				};
@@ -5096,6 +5179,9 @@ module.exports = (_ => {
 						let a = BDFDB.ColorUtils.getAlpha(selectedColor);
 						a = a == null ? 1 : a;
 						
+						let hexColor = BDFDB.ColorUtils.convert(selectedColor, this.props.alpha ? "HEXA" : "HEX");
+						let hexLength = hexColor.length;
+						
 						return BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.PopoutFocusLock, {
 							className: BDFDB.disCNS.colorpickerwrapper + BDFDB.disCN.colorpicker,
 							children: [
@@ -5328,9 +5414,12 @@ module.exports = (_ => {
 									className: BDFDB.disCNS.colorpickerhexinput + BDFDB.disCN.margintop8,
 									maxLength: this.props.alpha ? 9 : 7,
 									valuePrefix: "#",
-									value: BDFDB.ColorUtils.convert(selectedColor, this.props.alpha ? "HEXA" : "HEX"),
+									value: hexColor,
 									autoFocus: true,
 									onChange: value => {
+										const oldLength = hexLength;
+										hexLength = (value || "").length;
+										if (this.props.alpha && (oldLength > 8 || oldLength < 6) && hexLength == 7) value += "FF";
 										if (hexRegex.test(value)) this.handleColorChange(value);
 									},
 									inputChildren: this.props.gradient && BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.TooltipContainer, {
@@ -5474,22 +5563,13 @@ module.exports = (_ => {
 						return !this.props.colors.length ? BDFDB.ReactUtils.createElement("div", {
 							className: BDFDB.disCN.colorpickerswatchsinglewrapper,
 							children: customSwatch
-						}) : BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.Flex, {
+						}) : BDFDB.ReactUtils.createElement("div", {
 							className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.colorpickerswatches, BDFDB.disCN.colorpickerswatchescontainer, this.props.disabled && BDFDB.disCN.colorpickerswatchesdisabled),
 							children: [
-								BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.Flex.Child, {
-									className: BDFDB.disCN.marginreset,
-									shrink: 0,
-									grow: 0,
-									children: customSwatch
-								}),
-								BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.Flex, {
-									direction: InternalComponents.LibraryComponents.Flex.Direction.VERTICAL,
-									className: BDFDB.disCN.flexmarginreset,
-									grow: 1,
-									children: this.props.colorRows.map(row => BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.Flex, {
+								customSwatch,
+								BDFDB.ReactUtils.createElement("div", {
+									children: this.props.colorRows.map(row => BDFDB.ReactUtils.createElement("div", {
 										className: BDFDB.disCN.colorpickerrow,
-										wrap: InternalComponents.LibraryComponents.Flex.Wrap.WRAP,
 										children: row.map(color => BDFDB.ReactUtils.createElement(this.ColorSwatch, {
 											swatches: this,
 											color: color,
@@ -5547,7 +5627,7 @@ module.exports = (_ => {
 					}
 					renderInfoButton(text, style) {
 						return BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.TooltipContainer, {
-							text: text,
+							text: [text].flat(10).filter(n => n).map(n => BDFDB.ReactUtils.createElement("div", {children: n})),
 							tooltipConfig: {
 								type: "bottom",
 								zIndex: 1009,
@@ -5608,7 +5688,7 @@ module.exports = (_ => {
 													"$agoAmount will be replaced with ('Today', 'Yesterday', 'x days/weeks/months ago')",
 													"$agoDays will be replaced with ('Today', 'Yesterday', 'x days ago')",
 													"$agoDate will be replaced with ('Today', 'Yesterday', $date)"
-												].join("\n"), {marginRight: 6}),
+												], {marginRight: 6}),
 												this.renderFormatButton({
 													name: BDFDB.LanguageUtils.LanguageStrings.DATE,
 													svgName: InternalComponents.LibraryComponents.SvgIcon.Names.CALENDAR,
@@ -5623,7 +5703,7 @@ module.exports = (_ => {
 														"$yyyy will be replaced with the Year (4-Digit)",
 														"$month will be replaced with the Month Name",
 														"$monthS will be replaced with the Month Name (Short Form)",
-													].join("\n"),
+													],
 													onChange: value => {
 														this.props.dateString = value;
 														this.handleChange.apply(this, []);
@@ -5644,7 +5724,7 @@ module.exports = (_ => {
 														"$ss will be replaced with the Seconds (Forced Zeros)",
 														"$u will be replaced with the Milliseconds",
 														"$uu will be replaced with the Milliseconds (Forced Zeros)"
-													].join("\n"),
+													],
 													onChange: value => {
 														this.props.timeString = value;
 														this.handleChange.apply(this, []);
@@ -5994,7 +6074,7 @@ module.exports = (_ => {
 						this.props.participating = this.props.state ? LibraryModules.CurrentVoiceUtils.getGuildId() == this.props.guild.id : false;
 						this.props.participatingInStage = this.props.state ? currentVoiceChannel && currentVoiceChannel.guild_id == this.props.guild.id && currentVoiceChannel.isGuildStageVoice() : false;
 						
-						this.props.animatable = this.props.state ? LibraryModules.IconUtils.hasAnimatedGuildIcon(this.props.guild) : false;
+						this.props.animatable = this.props.state ? this.props.guild.icon && LibraryModules.IconUtils.isAnimatedIconHash(this.props.guild.icon) : false;
 						this.props.unavailable = this.props.state ? LibraryModules.GuildUnavailableStore.unavailableGuilds.includes(this.props.guild.id) : false;
 					
 						let isDraggedGuild = this.props.draggingGuildId === this.props.guild.id;
@@ -6025,7 +6105,7 @@ module.exports = (_ => {
 									onMouseUp: this.handleMouseUp.bind(this),
 									onClick: this.handleClick.bind(this),
 									onContextMenu: this.handleContextMenu.bind(this),
-									icon: this.props.guild.getIconURL(this.state.hovered && this.props.animatable ? "gif" : "png"),
+									icon: this.props.guild.getIconURL(this.state.hovered && this.props.animatable),
 									selected: this.props.selected || this.state.hovered
 								})
 							})
@@ -7452,7 +7532,7 @@ module.exports = (_ => {
 									}) : child)
 								}),
 								this.props.errorMessage ? BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.TextElement, {
-									className: BDFDB.disCN.carderror,
+									className: BDFDB.disCN.margintop8,
 									size: InternalComponents.LibraryComponents.TextElement.Sizes.SIZE_12,
 									color: InternalComponents.LibraryComponents.TextElement.Colors.STATUS_RED,
 									children: this.props.errorMessage
@@ -7540,6 +7620,7 @@ module.exports = (_ => {
 							if (!shown && !e.currentTarget.BDFDBtooltipShown) {
 								e.currentTarget.BDFDBtooltipShown = shown = true;
 								this.tooltip = BDFDB.TooltipUtils.create(e.currentTarget, typeof this.props.text == "function" ? this.props.text(this) : this.props.text, Object.assign({
+									note: this.props.note,
 									delay: this.props.delay
 								}, this.props.tooltipConfig, {
 									onHide: (tooltip, anker) => {
@@ -7697,7 +7778,7 @@ module.exports = (_ => {
 						MemberListItem: ["componentDidMount", "componentDidUpdate"],
 						PrivateChannel: ["componentDidMount", "componentDidUpdate"],
 						UserPopout: ["componentDidMount", "componentDidUpdate"],
-						UserProfile: ["componentDidMount", "componentDidUpdate"],
+						AnalyticsContext: ["componentDidMount", "componentDidUpdate"],
 						SettingsView: "componentDidMount",
 						Shakeable: "render"
 					}
@@ -7729,9 +7810,11 @@ module.exports = (_ => {
 				InternalBDFDB._processAvatarRender = function (user, avatar) {
 					if (BDFDB.ReactUtils.isValidElement(avatar) && BDFDB.ObjectUtils.is(user) && (avatar.props.className || "").indexOf(BDFDB.disCN.bdfdbbadgeavatar) == -1) {
 						avatar.props[InternalData.userIdAttribute] = user.id;
-						let role = "", className = BDFDB.DOMUtils.formatClassName((avatar.props.className || "").replace(BDFDB.disCN.avatar, "")), addBadge = InternalBDFDB.settings.general.showSupportBadges;
+						let role = "", note = "", link, className = BDFDB.DOMUtils.formatClassName((avatar.props.className || "").replace(BDFDB.disCN.avatar, "")), addBadge = InternalBDFDB.settings.general.showSupportBadges;
 						if (BDFDB_Patrons[user.id] && BDFDB_Patrons[user.id].active) {
+							link = "https://www.patreon.com/MircoWittrien";
 							role = BDFDB_Patrons[user.id].text || (BDFDB_Patron_Tiers[BDFDB_Patrons[user.id].tier] || {}).text;
+							note = BDFDB_Patrons[user.id].text && (BDFDB_Patron_Tiers[BDFDB_Patrons[user.id].tier] || {}).text;
 							className = BDFDB.DOMUtils.formatClassName(className, addBadge && BDFDB.disCN.bdfdbhasbadge, BDFDB.disCN.bdfdbbadgeavatar, BDFDB.disCN.bdfdbsupporter, BDFDB.disCN[`bdfdbsupporter${BDFDB_Patrons[user.id].tier}`]);
 						}
 						if (user.id == InternalData.myId) {
@@ -7747,13 +7830,14 @@ module.exports = (_ => {
 							delete avatar.props.className;
 							let newProps = {
 								className: className,
-								style: {borderRadius: 0, overflow: "visible"},
 								children: [avatar]
 							};
 							newProps[InternalData.userIdAttribute] = user.id;
 							avatar = BDFDB.ReactUtils.createElement("div", newProps);
 							if (addBadge) avatar.props.children.push(BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.TooltipContainer, {
 								text: role,
+								note: note,
+								onClick: link ? (_ => BDFDB.DiscordUtils.openLink(link)) : (_ => {}),
 								children: BDFDB.ReactUtils.createElement("div", {
 									className: BDFDB.disCN.bdfdbbadge
 								})
@@ -7763,12 +7847,15 @@ module.exports = (_ => {
 					}
 				};
 				InternalBDFDB._processAvatarMount = function (user, avatar, wrapper) {
-					if (Node.prototype.isPrototypeOf(avatar) && BDFDB.ObjectUtils.is(user) && (avatar.className || "").indexOf(BDFDB.disCN.bdfdbbadgeavatar) == -1) {
-						if (wrapper) wrapper.setAttribute(InternalData.userIdAttribute, user.id);
+					if (!user) return;
+					if (wrapper) wrapper.setAttribute(InternalData.userIdAttribute, user.id);
+					if (Node.prototype.isPrototypeOf(avatar) && (avatar.className || "").indexOf(BDFDB.disCN.bdfdbbadgeavatar) == -1) {
 						avatar.setAttribute(InternalData.userIdAttribute, user.id);
-						let role = "", addBadge = InternalBDFDB.settings.general.showSupportBadges;
+						let role = "", note = "", link, addBadge = InternalBDFDB.settings.general.showSupportBadges;
 						if (BDFDB_Patrons[user.id] && BDFDB_Patrons[user.id].active) {
+							link = "https://www.patreon.com/MircoWittrien";
 							role = BDFDB_Patrons[user.id].text || (BDFDB_Patron_Tiers[BDFDB_Patrons[user.id].tier] || {}).text;
+							note = BDFDB_Patrons[user.id].text && (BDFDB_Patron_Tiers[BDFDB_Patrons[user.id].tier] || {}).text;
 							avatar.className = BDFDB.DOMUtils.formatClassName(avatar.className, addBadge && BDFDB.disCN.bdfdbhasbadge, BDFDB.disCN.bdfdbbadgeavatar, BDFDB.disCN.bdfdbsupporter, BDFDB.disCN[`bdfdbsupporter${BDFDB_Patrons[user.id].tier}`]);
 						}
 						else if (user.id == InternalData.myId) {
@@ -7779,16 +7866,15 @@ module.exports = (_ => {
 						if (addBadge && role && !avatar.querySelector(BDFDB.dotCN.bdfdbbadge)) {
 							let badge = document.createElement("div");
 							badge.className = BDFDB.disCN.bdfdbbadge;
-							badge.addEventListener("mouseenter", _ => BDFDB.TooltipUtils.create(badge, role, {position: "top"}));
-							avatar.style.setProperty("position", "relative");
-							avatar.style.setProperty("overflow", "visible");
-							avatar.style.setProperty("border-radius", 0);
+							if (link) badge.addEventListener("click", _ => BDFDB.DiscordUtils.openLink(link));
+							badge.addEventListener("mouseenter", _ => BDFDB.TooltipUtils.create(badge, role, {position: "top", note: note}));
 							avatar.appendChild(badge);
 						}
 					}
 				};
 				InternalBDFDB._processUserInfoNode = function (user, wrapper) {
-					if (wrapper && user && InternalData.UserBackgrounds[user.id]) for (let property in InternalData.UserBackgrounds[user.id]) wrapper.style.setProperty(property, InternalData.UserBackgrounds[user.id][property], "important");
+					if (!user || !wrapper) return;
+					if (InternalData.UserBackgrounds[user.id]) for (let property in InternalData.UserBackgrounds[user.id]) wrapper.style.setProperty(property, InternalData.UserBackgrounds[user.id][property], "important");
 				};
 				InternalBDFDB.processMessageHeader = function (e) {
 					if (e.instance.props.message && e.instance.props.message.author) {
@@ -7810,12 +7896,15 @@ module.exports = (_ => {
 					InternalBDFDB._processAvatarMount(e.instance.props.user, e.node.querySelector(BDFDB.dotCN.avatarwrapper), e.node);
 				};
 				InternalBDFDB.processUserPopout = function (e) {
-					InternalBDFDB._processAvatarMount(e.instance.props.user, e.node.querySelector(BDFDB.dotCN.userpopoutavatarwrapper), e.node);
-					InternalBDFDB._processUserInfoNode(e.instance.props.user, e.node);
-				};
-				InternalBDFDB.processUserProfile = function (e) {
 					InternalBDFDB._processAvatarMount(e.instance.props.user, e.node.querySelector(BDFDB.dotCN.avatarwrapper), e.node);
 					InternalBDFDB._processUserInfoNode(e.instance.props.user, e.node);
+				};
+				InternalBDFDB.processAnalyticsContext = function (e) {
+					if (e.instance.props.section != BDFDB.DiscordConstants.AnalyticsSections.PROFILE_MODAL) return;
+					const user = BDFDB.ReactUtils.findValue(e.instance, "user");
+					const wrapper = e.node.querySelector(BDFDB.dotCN.userprofile) || e.node;
+					InternalBDFDB._processAvatarMount(user, e.node.querySelector(BDFDB.dotCN.avatarwrapper), wrapper);
+					InternalBDFDB._processUserInfoNode(user, wrapper);
 				};
 				InternalBDFDB.processDiscordTag = function (e) {
 					if (e.instance && e.instance.props && e.returnvalue && e.instance.props.user) e.returnvalue.props.user = e.instance.props.user;
@@ -7847,7 +7936,7 @@ module.exports = (_ => {
 				BDFDB.ReactUtils.instanceKey = Object.keys(document.querySelector(BDFDB.dotCN.app) || {}).some(n => n.startsWith("__reactInternalInstance")) ? "_reactInternalFiber" : "_reactInternals";
 
 				BDFDB.PluginUtils.load(BDFDB);
-				InternalBDFDB.settings = BDFDB.DataUtils.get(BDFDB);
+				InternalBDFDB.settings = BDFDB.DataUtils.get(InternalBDFDB);
 				changeLogs = BDFDB.DataUtils.load(BDFDB, "changeLogs");
 				BDFDB.PluginUtils.checkChangeLog(BDFDB);
 				
@@ -8043,9 +8132,17 @@ module.exports = (_ => {
 				BDFDB.PatchUtils.patch(BDFDB, LibraryModules.GuildStore, "getGuild", {after: e => {
 					if (e.returnValue && e.methodArguments[0] == InternalData.myGuildId) e.returnValue.banner = `https://mwittrien.github.io/BetterDiscordAddons/Library/_res/BDFDB.banner.png`;
 				}});
+				
+				BDFDB.PatchUtils.patch(BDFDB, LibraryModules.UserStore, "getUser", {after: e => {
+					if (e.returnValue && e.methodArguments[0] == InternalData.myId) e.returnValue.banner = `https://mwittrien.github.io/BetterDiscordAddons/Library/_res/DevilBro.banner.png`;
+				}});
 
 				BDFDB.PatchUtils.patch(BDFDB, LibraryModules.IconUtils, "getGuildBannerURL", {instead: e => {
 					return e.methodArguments[0].id == InternalData.myGuildId ? e.methodArguments[0].banner : e.callOriginalMethod();
+				}});
+
+				BDFDB.PatchUtils.patch(BDFDB, LibraryModules.IconUtils, "getUserBannerURL", {instead: e => {
+					return e.methodArguments[0].id == InternalData.myId ? e.methodArguments[0].banner : e.callOriginalMethod();
 				}});
 				
 				InternalBDFDB.forceUpdateAll();
@@ -8164,60 +8261,19 @@ module.exports = (_ => {
 					};
 					BDFDB.DevUtils.generateLanguageStrings = function (strings, config = {}) {
 						const language = config.language || "en";
-						const languages = BDFDB.ArrayUtils.removeCopies(BDFDB.ArrayUtils.is(config.languages) ? config.languages : ["en"].concat(Object.keys(BDFDB.ObjectUtils.filter(BDFDB.LanguageUtils.languages, n => n.discord))).filter(n => !n.startsWith("en-") && !n.startsWith("$") && n != language)).sort();
+						const languages = BDFDB.ArrayUtils.removeCopies(BDFDB.ArrayUtils.is(config.languages) ? config.languages : ["en"].concat(BDFDB.LibraryModules.LanguageStore.languages.filter(n => n.enabled).map(n => {
+							if (BDFDB.LanguageUtils.languages[n.code]) return n.code;
+							else {
+								const code = n.code.split("-")[0];
+								if (BDFDB.LanguageUtils.languages[code]) return code;
+							}
+						})).filter(n => n && !n.startsWith("en-") && !n.startsWith("$") && n != language)).sort();
 						let translations = {};
 						strings = BDFDB.ObjectUtils.sort(strings);
 						const stringKeys = Object.keys(strings);
 						translations[language] = BDFDB.ObjectUtils.toArray(strings);
 						let text = Object.keys(translations[language]).map(k => translations[language][k]).join("\n\n");
 						
-						let gt = (lang, callback) => {
-							let googleTranslateWindow = BDFDB.WindowUtils.open(BDFDB, `https://translate.google.com/#${language}/${{"zh": "zh-CN", "pt-BR": "pt"}[lang] || lang}/${encodeURIComponent(text)}`, {
-								onLoad: _ => {
-									googleTranslateWindow.executeJavaScriptSafe(`
-										let count = 0, interval = setInterval(_ => {
-											count++;
-											let translation = Array.from(document.querySelectorAll("[data-language-to-translate-into] span:not([class])")).map(n => n.innerText).join("");
-											if (translation || count > 50) {
-												clearInterval(interval);
-												require("electron").ipcRenderer.sendTo(${LibraryRequires.electron.remote.getCurrentWindow().webContents.id}, "BDFDB-translation", [
-													translation,
-													(document.querySelector("h2 ~ [lang]") || {}).lang
-												]);
-											}
-										}, 100);
-									`);
-								}
-							});
-							BDFDB.WindowUtils.addListener(BDFDB, "BDFDB-translation", (event, messageData) => {
-								BDFDB.WindowUtils.close(googleTranslateWindow);
-								BDFDB.WindowUtils.removeListener(BDFDB, "BDFDB-translation");
-								callback(messageData[0]);
-							});
-						};
-						let gt2 = (lang, callback) => {
-							BDFDB.LibraryRequires.request(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${language}&tl=${lang}&dt=t&dj=1&source=input&q=${encodeURIComponent(text)}`, (error, response, result) => {
-								if (!error && result && response.statusCode == 200) {
-									try {callback(JSON.parse(result).sentences.map(n => n && n.trans).filter(n => n).join(""));}
-									catch (err) {callback("");}
-								}
-								else {
-									if (response.statusCode == 429) {
-										BDFDB.NotificationUtils.toast("Too many requests, switching to backup", {
-											type: "danger"
-										});
-										config.useBackup = true;
-										BDFDB.DevUtils.generateLanguageStrings(strings, config);
-									}
-									else {
-										BDFDB.NotificationUtils.toast("Failed to translate text", {
-											type: "danger"
-										});
-										callback("");
-									}
-								}
-							});
-						};
 						let fails = 0, next = lang => {
 							if (!lang) {
 								let formatTranslation = (l, s, i) => {
@@ -8236,22 +8292,43 @@ module.exports = (_ => {
 								});
 								BDFDB.LibraryRequires.electron.clipboard.write({text: result});
 							}
-							else (config.useBackup ? gt : gt2)(lang, translation => {
-								BDFDB.LogUtils.log(lang);
-								if (!translation) {
-									console.warn("no translation");
-									fails++;
-									if (fails > 10) console.error("skipped language");
-									else languages.unshift(lang);
-								}
-								else {
-									fails = 0;
-									translations[lang] = translation.split("\n\n");
-								}
-								next(languages.shift());
-							});
+							else {
+								const callback = translation => {
+									BDFDB.LogUtils.log(lang);
+									if (!translation) {
+										console.warn("No Translation");
+										fails++;
+										if (fails > 10) console.error("Skipped Language");
+										else languages.unshift(lang);
+									}
+									else {
+										fails = 0;
+										translations[lang] = translation.split("\n\n");
+									}
+									next(languages.shift());
+								};
+								BDFDB.LibraryRequires.request(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${language}&tl=${lang}&dt=t&dj=1&source=input&q=${encodeURIComponent(text)}`, (error, response, result) => {
+									if (!error && result && response.statusCode == 200) {
+										try {callback(JSON.parse(result).sentences.map(n => n && n.trans).filter(n => n).join(""));}
+										catch (err) {callback("");}
+									}
+									else {
+										if (response.statusCode == 429) {
+											BDFDB.NotificationUtils.toast("Too many Requests", {
+												type: "danger"
+											});
+										}
+										else {
+											BDFDB.NotificationUtils.toast("Failed to translate Text", {
+												type: "danger"
+											});
+											callback("");
+										}
+									}
+								});
+							}
 						};
-						next(languages.shift());
+						if (stringKeys.length) next(languages.shift());
 					};
 					BDFDB.DevUtils.req = InternalBDFDB.getWebModuleReq();
 					
@@ -8337,7 +8414,7 @@ module.exports = (_ => {
 						searchable: true
 					}));
 					for (let key in InternalBDFDB.settings.general) {
-						let nativeSetting = BDFDB.BDUtils.getSettings(BDFDB.BDUtils.settingsIds[key]);
+						let nativeSetting = BDFDB.BDUtils.settingsIds[key] && BDFDB.BDUtils.getSettings(BDFDB.BDUtils.settingsIds[key]);
 						let disabled = typeof InternalBDFDB.defaults.general[key].isDisabled == "function" && InternalBDFDB.defaults.general[key].isDisabled({
 							value: InternalBDFDB.settings.general[key],
 							nativeValue: nativeSetting
@@ -8375,7 +8452,7 @@ module.exports = (_ => {
 								name: InternalComponents.LibraryComponents.SvgIcon.Names.QUESTIONMARK,
 								width: 20,
 								height: 20,
-								onClick: _ => BDFDB.ModalUtils.open(BDFDB, {
+								onClick: _ => BDFDB.ModalUtils.open(InternalBDFDB, {
 									header: "Plugins",
 									subHeader: "",
 									contentClassName: BDFDB.disCN.marginbottom20,

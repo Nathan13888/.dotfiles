@@ -11,7 +11,8 @@ function getMic {
 }
 
 function isMicMuted {
-    echo $(pamixer --get-mute --source $(getMic))
+    MIC=@DEFAULT_SOURCE@
+    echo $(pamixer --get-mute --source $MIC)
 }
 
 function isMMicon {
@@ -24,7 +25,8 @@ function isMMicon {
 }
 
 function togmic {
-    MIC=$(getMic)
+    #MIC=$(getMic)
+    MIC=@DEFAULT_SOURCE@
     echo "Toggling volume of mic $MIC"
     pactl set-source-mute $MIC toggle
 }
@@ -68,6 +70,9 @@ function mute {
 }
 
 case "$1" in
+    gm)
+        echo $(getMic)
+        ;;
     isMMicon)
         isMMicon
         ;;

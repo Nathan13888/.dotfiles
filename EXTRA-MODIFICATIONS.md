@@ -2,6 +2,10 @@
   - `sudo useradd -d /tmp -u 69 -MNrs /bin/bash tmod`
   - `sudo usermod -aG wheel attackercow`
   - `sudo usermod -aG sudo attackercow`
+- Portainer:
+- `$ docker run -d -p 443:9000 -p 8000:8000 --name portainer --restart always -v /var/run/docker.sock:/var/run/docker.sock -v ~/local-certs:/certs -v portainer_data:/data portainer/portainer-ce --ssl --sslcert /certs/portainer.crt --sslkey /certs/portainer.key`
+- Self-Selfed SSL Cert:
+- `sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /certs/portainer.key -out /certs/portainer.crt`
 - SSD: https://wiki.archlinux.org/index.php/Solid_state_drive
 - Fan Control: https://wiki.archlinux.org/index.php/Fan_speed_control
 - ClamAV: https://wiki.archlinux.org/index.php/ClamAV

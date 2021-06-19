@@ -1,7 +1,17 @@
 *.old
 *.log
 log/
+logs/
 TODO.md
+
+# Xmonad
+.xmonad/xmonad-x86_64-linux
+.xmonad/xmonad.errors
+.xmonad/xmonad.hi
+.xmonad/xmonad.o
+
+# OBS
+obs-studio/profiler_data
 
 # VIFM
 vifm/vifminfo.json

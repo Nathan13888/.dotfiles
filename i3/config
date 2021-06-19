@@ -1,30 +1,28 @@
-# Fcitx
-exec fcitx5
-
-# Flameshot screenshot tool
-exec flameshot
+# Polybar
+exec_always --no-startup-id source ~/.config/polybar/launch.sh
 
 # Picom
 exec_always --no-startup-id picom
 
-# Polybar
-exec_always --no-startup-id source ~/.config/polybar/launch.sh
-
-# Hide cursor when typing
-exec --no-startup-id xbanish
-
-# Enable Numpad Lock
-exec_always --no-startup-id numlockx
-
 # Wallpaper Timeout
-set $wpto 900
+set $wpto 300
 # Feh
 # *optional* argument: --no-fehbg
-exec --no-startup-id watch -n $wpto feh --bg-scale --randomize ~/Desktop/Wallpapers/ &
-#watch -n $wpto exec ~/.fehbg
+#exec --no-startup-id watch -n $wpto feh --bg-scale --randomize ~/Desktop/Wallpapers/ &
+exec --no-startup-id feh --bg-scale --randomize ~/Desktop/Wallpapers/
+exec_always watch -n $wpto sh ~/.fehbg &
 
-# Notifications - Dunst
+# Remap CAPS LOCK key
+#exec_always xmodmap -e "clear lock"
+#exec_always xmodmap -e "keycode 66 = Escape Caps_Lock NoSymbol NoSymbol"
+#exec_always xmodmap -e "keycode 66 = BackSpace Caps_Lock NoSymbol NoSymbol"
+
+set $lockcommand ~/.local/bin/lock.sh
 exec --no-startup-id dunst
+exec --no-startup-id xss-lock --transfer-sleep-lock -- $lockcommand --nofork
+exec --no-startup-id nm-applet
+exec fcitx5
+exec flameshot
 
 # Faster key repeat and delay
 exec_always --no-startup-id xset r rate 210 40
@@ -32,25 +30,15 @@ exec_always --no-startup-id xset r rate 210 40
 # Change Mouse Acceleration
 exec_always --no-startup-id xset m 3/2
 
-# Remap CAPS LOCK key
-exec_always xmodmap -e "clear lock"
-#exec_always xmodmap -e "keycode 66 = Escape Caps_Lock NoSymbol NoSymbol"
-exec_always xmodmap -e "keycode 66 = BackSpace Caps_Lock NoSymbol NoSymbol"
+# Hide cursor when typing
+exec --no-startup-id xbanish
 
-set $lockcommand ~/.local/bin/lock.sh
-
-# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
-# screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- $lockcommand --nofork
-
-# NetworkManager is the most popular way to manage wireless networks on Linux,
-# and nm-applet is a desktop environment-independent system tray GUI for it.
-exec --no-startup-id nm-applet
-
-#exec --no-startup-id pa-applet
+# Enable Numpad Lock
+exec_always --no-startup-id numlockx
 
 # Autostart Scripts
-exec_always bash ~/.local/bin/fetchcord.sh
+#exec_always bash ~/.local/bin/fetchcord.sh
+exec_always --no-startup-id noisetorch -i
 
 ################################################################################
 
@@ -90,10 +78,12 @@ set $mod Mod4
 bindsym Mod1+Return exec $terminal
 bindsym $mod+Return exec $terminal
 bindsym $mod+F1 exec $browser
-bindsym $mod+F2 exec $messaging
-bindsym $mod+F3 exec $notes
-bindsym $mod+F4 exec $filemanager
-bindsym $mod+F5 exec $editor
+bindsym $mod+F2 exec discord-ptb ; exec signal-desktop
+bindsym $mod+F3 exec teams
+bindsym $mod+F4 exec $terminal -e ~/.local/bin/obs-virt.sh
+bindsym $mod+F5 exec $terminal -e $filemanager
+bindsym $mod+T exec $terminal -e nvim $HOME/TODO.md
+bindsym $mod+Shift+T exec $terminal -e less $HOME/TODO.md
 
 set $prtscr flameshot gui
 
@@ -170,6 +160,7 @@ bindsym $mod+z split h
 #;exec notify-send 'tile horizontally'
 bindsym $mod+v split v
 #;exec notify-send 'tile vertically'
+bindsym $mod+Control+V [class=".*"] split v
 #bindsym $mod+q split toggle
 
 # enter fullscreen mode for the focused container
@@ -182,6 +173,7 @@ bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
+bindsym $mod+Control+Shift+S sticky toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
@@ -191,8 +183,6 @@ bindsym $mod+a focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
-
-
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -243,70 +233,52 @@ bindsym $mod+Control+8 move container to workspace $ws8; workspace $ws8
 bindsym $mod+Control+9 move container to workspace $ws9; workspace $ws9
 bindsym $mod+Control+0 move container to workspace $ws10; workspace $ws10
 
+# ASSIGN WORKSPACE
 #assign [class="^Firefox$"] 1
 assign [class="^Joplin$"] 2
+assign [class="Teams"] 3
 assign [class="discord"] 4
+assign [class="Signal"] 4
+assign [class="Eclipse"] 5
+for_window [title="Eclipse IDE "] no_focus, floating enable, move container to workspace 5
 assign [class="FreeCAD"] 5
 assign [class="^Kicad$"] 5
+for_window [class="Spotify"] no_focus, move to workspace $ws10
+#assign [class="Spotify"] 10
 
+# NO FOCUS
 #no_focus [class=".*"]
+no_focus [class="Eclipse"]
+no_focus [title="Eclipse IDE "]
+no_focus [class="Signal"]
 no_focus [class="discord"]
+no_focus [class="Teams"]
+
+# Sticky Windows
+#for_window [class="Teams"] floating enable,sticky enable
 
 # reload the configuration file
-#bindsym Mod1+Shift+c reload
 #bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+R restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+E exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
-# using plasma's logout screen instead of i3's
-#bindsym $mod+Shift+e exec --no-startup-id qdbus org.kde.ksmserver /KSMServer org.kde.KSMServerInterface.logout -1 -1 -1
 
-#bindsym $mod+r mode "RESIZE"
-
-# resize window (you can also use the mouse for that)
-#mode "RESIZE" {
-        # These bindings trigger as soon as you enter the resize mode
-
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-#        bindsym h resize shrink width 10 px or 10 ppt
-#        bindsym j resize shrink height 10 px or 10 ppt
-#        bindsym k resize grow height 10 px or 10 ppt
-#        bindsym l resize grow width 10 px or 10 ppt
-
-        # same bindings, but for the arrow keys
-#        bindsym Left resize shrink width 10 px or 10 ppt
-#        bindsym Down resize shrink height 10 px or 10 ppt
-#        bindsym Up resize grow height 10 px or 10 ppt
-#        bindsym Right resize grow width 10 px or 10 ppt
-
-        # back to normal: Enter or Escape or $mod+r
-#        bindsym Return mode "default"
-#        bindsym Escape mode "default"
-#        bindsym $mod+r mode "default"
-#        bindsym $mod+Shift+r mode "default", restart
-#}
-
-bindsym $mod+Control+h resize shrink width 10px or 10ppt
-bindsym $mod+Control+j resize shrink height 10 px or 10 ppt
-bindsym $mod+Control+k resize grow height 10 px or 10 ppt
-bindsym $mod+Control+l resize grow width 10 px or 10 ppt
+bindsym $mod+Control+h resize shrink width 25 px or 5ppt
+bindsym $mod+Control+j resize shrink height 25 px or 5 ppt
+bindsym $mod+Control+k resize grow height 25 px or 5 ppt
+bindsym $mod+Control+l resize grow width 25 px or 5 ppt
 
 # Set shut down, restart and locking features
 bindsym $mod+Escape mode "$mode_system"
 set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown
 
-set $statefile /sys/power/state
-
 mode "$mode_system" {
     bindsym l exec --no-startup-id $lockcommand, mode "default"
-    bindsym s exec --no-startup-id $lockcommand && echo -n mem > $statefile, mode "default"
+    bindsym s exec --no-startup-id $lockcommand && echo -n mem > /sys/power/state, mode "default"
     bindsym u exec --no-startup-id dm-tool switch-to-greeter, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
-    bindsym h exec --no-startup-id $lockcommand && echo -n disk > $statefile, mode "default"
+    bindsym h exec --no-startup-id $lockcommand && echo -n disk > /sys/power/state, mode "default"
     bindsym r exec --no-startup-id reboot, mode "default"
     bindsym Shift+s exec --no-startup-id shutdown, mode "default"
 

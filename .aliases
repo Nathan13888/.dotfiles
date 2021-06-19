@@ -2,8 +2,8 @@
 #         ALIAS         #
 #########################
 
-#eval $(thefuck --alias) # thef***
-alias f="thefuck"
+eval $(thefuck --alias)
+alias f="fuck"
 
 ### CLI & APPLICATIONS
 alias s="sudo"
@@ -16,6 +16,7 @@ function reload {
     exec $SHELL # reload whatever is $SHELL
   fi
 }
+alias ar="paru"
 alias open="xdg-open"
 #alias scr="screen"
 alias tm="tmux"
@@ -85,21 +86,9 @@ function unmac {
   iplsu $1
 }
 ### SYSTEM
-#alias systemctl="sudo systemctl"
 alias mount="sudo mount"
 alias ipt="sudo iptables"
 alias resetlock="faillock --reset --user $USER"
-alias shutdown="sudo shutdown now"
-alias reboot="sudo reboot now"
-alias update="sudo apt update && sudo apt full-upgrade"
-alias pac="sudo pacman"
-alias sa="sudo apt"
-alias sai="sudo apt install"
-alias sar="sudo apt remove"
-alias sd="sudo dpkg"
-alias sdi="sudo dpkg -i"
-alias saar="sudo add-apt-repository"
-alias fr="free"
 alias free="free -hm"
 #alias top="htop" # HTOP is better than TOP
 alias xc="xclip"

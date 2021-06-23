@@ -31,23 +31,23 @@
     "input": {
         "blocklist": "",
         "plugins_order": [
-            "gate",
+            "rnnoise",
+            "deesser",
             "compressor",
+            "equalizer",
+            "gate",
             "multiband_gate",
             "webrtc",
             "limiter",
             "multiband_compressor",
             "filter",
-            "equalizer",
-            "deesser",
             "reverb",
             "pitch",
             "stereo_tools",
-            "maximizer",
-            "rnnoise"
+            "maximizer"
         ],
         "compressor": {
-            "state": "true",
+            "state": "false",
             "input-gain": "0",
             "output-gain": "0",
             "mode": "Downward",
@@ -710,7 +710,7 @@
             "inertia": "20"
         },
         "gate": {
-            "state": "true",
+            "state": "false",
             "detection": "RMS",
             "stereo-link": "Average",
             "range": "-24",
@@ -752,7 +752,7 @@
             "faster": "false"
         },
         "reverb": {
-            "state": "true",
+            "state": "false",
             "input-gain": "0",
             "output-gain": "0",
             "room-size": "Large",

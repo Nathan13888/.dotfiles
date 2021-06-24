@@ -4,7 +4,7 @@
 
 ## Dev
 - zsh bash
-- git hub-bin (github git-wrapper)
+- git hub
 - vim neovim
 - emacs (ripgrep doom emacs)
 - doom emacs
@@ -29,7 +29,7 @@
 - exa
 
 ## Communication
-- discord betterdiscord
+- discord-ptb betterdiscord
 - signal-desktop
 - teams
 
@@ -110,21 +110,17 @@
 - privoxy: https://wiki.archlinux.org/index.php/Privoxy
 - stubby: https://wiki.archlinux.org/index.php/Stubby
 - nordvpn: https://wiki.archlinux.org/index.php/NordVPN
+- nmap zenmap
+- wireshark
+- macchanger
 - clamav
 - wireguard
-- macchanger
 - hashcat
 - certbot
 - cuda and cudnn
-- ytop
-- iotop
-- tree
 - libinput-gestures https://github.com/bulletmark/libinput-gestures
-- wireshark
 - aircrack-ng and airegeddon
-- hashcat
 - hydra
-- nmap zenmap
 
 ## Media
 - mpv vlc
@@ -150,7 +146,7 @@
 - gstreamer
 - Audacity
 - cava
-- screenkey
+- screenkey-git
 
 ## Clients
 - transmission-gtk (or -qt)
@@ -187,14 +183,11 @@
   - https://wiki.archlinux.org/index.php/CUPS/Printer-specific_problems#UFRII
 - pciutils usbutils
 - nut (ups)
-- Samba and Cifs-Utils
+- cifs-utils (for Samba)
 - wakatime
 - curl, wget, rpm
-- Pro #what is this??
 - zram-config --> setup https://github.com/StuartIanNaylor/zram-config
-- https://github.com/Huion-Linux/DIGImend-kernel-drivers-for-Huion
 - lyrebird
-- Shutter
 
 ## DBs
 - mysql

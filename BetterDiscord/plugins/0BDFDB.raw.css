@@ -1,19 +1,20 @@
 @import url(https://mwittrien.github.io/BetterDiscordAddons/Themes/_res/SupporterBadge.css);
 
 :root {
-	--bdfdb-blurple: var(--brand-experiment, #5865f2);
-	--bdfdb-green: var(--status-positive-background, #3ba55c);
-	--bdfdb-yellow: var(--status-warning-background, #faa61a);
-	--bdfdb-red: var(--status-danger-background, #ed4245);
+	--bdfdb-blurple: var(--brand-experiment, hsl(235, calc(var(--saturation-factor, 1) * 85.6%), 64.7%));
+	--bdfdb-green: hsl(139, calc(var(--saturation-factor, 1) * 47.3%), 43.9%);
+	--bdfdb-yellow: hsl(38, calc(var(--saturation-factor, 1) * 95.7%), 54.1%);
+	--bdfdb-red: hsl(359, calc(var(--saturation-factor, 1) * 82.6%), 59.4%);
 }
 
 img:not([src]), img[src=""], img[src="null"] {
 	opacity: 0;
 }
 
-[REPLACE_CLASS_app] > [REPLACE_CLASS_itemlayercontainer],
-[REPLACE_CLASS_app] > [REPLACE_CLASS_popouts] {
+[REPLACE_CLASS_appmount] > [REPLACE_CLASS_itemlayercontainer],
+[REPLACE_CLASS_appmount] > [REPLACE_CLASS_popouts] {
 	position: fixed;
+	z-index: 1001;
 }
 
 [REPLACE_CLASS_titlebarmac] {
@@ -21,7 +22,8 @@ img:not([src]), img[src=""], img[src="null"] {
 }
 
 [REPLACE_CLASS_itemlayercontainerzindexdisabled] {
-	z-index: unset;
+	position: absolute !important;
+	z-index: unset !important;
 }
 [REPLACE_CLASS_itemlayercontainerzindexdisabled] > * {
 	z-index: 1002;
@@ -383,12 +385,15 @@ img:not([src]), img[src=""], img[src="null"] {
 }
 [REPLACE_CLASS_discoverycardtitlebutton] {
 	display: flex;
-	margin-left: 4px;
+	justify-content: center;
+	align-items: center;
+	margin-left: 6px;
 }
 [REPLACE_CLASS_discoverycard] [REPLACE_CLASS_favbuttoncontainer] {
 	width: 20px;
 	height: 20px;
 	flex: 0 0 auto;
+	margin-left: 3px;
 }
 [REPLACE_CLASS_discoverycard] [REPLACE_CLASS_favbuttoncontainer] [REPLACE_CLASS_giffavoritesize] {
 	width: 20px;
@@ -459,38 +464,24 @@ img:not([src]), img[src=""], img[src="null"] {
 	text-overflow: ellipsis;
 }
 
-[REPLACE_CLASS_userpopoutheadernamewrapper_old],
-[REPLACE_CLASS_userpopoutheadernamewrapper],
-[REPLACE_CLASS_userpopoutheadertagnonickname] {
-	display: flex;
-	align-items: center;
-	line-height: unset;
-}
-[REPLACE_CLASS_userpopoutheadertagdiscriminatornonickname] {
-	position: relative;
-	top: 1px;
+
+[REPLACE_CLASS_userpopoutheaderbottag] {
+	margin-top: 4px !important;
 }
 [REPLACE_CLASS_userinfodate] {
-	user-select: text;
+	color: var(--header-secondary);
 	margin-top: 8px;
+	user-select: text;
 }
+[REPLACE_CLASS_userprofilenametag] + [REPLACE_CLASS_userinfodate],
 [REPLACE_CLASS_userinfodate] + [REPLACE_CLASS_userinfodate] {
 	margin-top: 0;
 }
 [REPLACE_CLASS_userinfodate] + *:not([REPLACE_CLASS_userinfodate]) {
-	margin-top: 4px;
-}
-[REPLACE_CLASS_userpopout] [REPLACE_CLASS_userinfodate] {
-	color: var(--header-secondary);
+	margin-top: 6px;
 }
 [REPLACE_CLASS_userprofile] [REPLACE_CLASS_userinfodate] {
-	color: var(--header-secondary);
-}
-[REPLACE_CLASS_userpopout] [REPLACE_CLASS_userpopoutheader]:not([class*='headerNormal']) [REPLACE_CLASS_userinfodate] {
-	color: hsla(0,0%,100%,.6);
-}
-[REPLACE_CLASS_userprofile] [class*='topSection']:not([class*='topSectionNormal']) [REPLACE_CLASS_userinfodate] {
-	color: hsla(0,0%,100%,.6);
+	margin-left: 16px;
 }
 
 [REPLACE_CLASS_avatardisabled] {
@@ -500,7 +491,6 @@ img:not([src]), img[src=""], img[src="null"] {
 [REPLACE_CLASS_messagebottag] {
 	top: .15rem;
 }
-
 [REPLACE_CLASS_messageusername] ~ [REPLACE_CLASS_messagebottagcompact] {
 	margin-right: 0;
 	margin-left: .25rem;
@@ -573,6 +563,7 @@ img:not([src]), img[src=""], img[src="null"] {
 [REPLACE_CLASS_selectwrapper] {
 	display: flex;
 	align-items: center;
+	flex: 1 1 auto;
 }
 [REPLACE_CLASS_selectwrapper] [REPLACE_CLASS_select] {
 	flex: 1 1 auto;
@@ -1266,6 +1257,10 @@ img:not([src]), img[src=""], img[src="null"] {
 	margin-top: 8px;
 }
 
+[REPLACE_CLASS_colorpickerswatches] > div:not([class]),
+[REPLACE_CLASS_colorpickerswatches] [REPLACE_CLASS_colorpickerswatch] {
+	flex: 1 1 auto;
+}
 [REPLACE_CLASS_colorpickerswatchsinglewrapper] {
 	position: relative;
 	z-index: 1;

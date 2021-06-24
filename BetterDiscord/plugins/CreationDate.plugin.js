@@ -2,7 +2,7 @@
  * @name CreationDate
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 1.4.2
+ * @version 1.4.5
  * @description Displays the Creation Date of an Account in the UserPopout and UserModal
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -17,12 +17,12 @@ module.exports = (_ => {
 		"info": {
 			"name": "CreationDate",
 			"author": "DevilBro",
-			"version": "1.4.2",
+			"version": "1.4.5",
 			"description": "Displays the Creation Date of an Account in the UserPopout and UserModal"
 		},
 		"changeLog": {
-			"improved": {
-				"New User Popout": "Fixed for the new User Popout, which will be released soon-ish"
+			"fixed": {
+				"User Profile Modal": ""
 			}
 		}
 	};
@@ -82,9 +82,8 @@ module.exports = (_ => {
 				
 				this.patchedModules = {
 					after: {
-						UserPopout: "render",
-						UserPopoutHeader: "default",
-						AnalyticsContext: "render"
+						UserPopoutInfo: "default",
+						UserProfileModalHeader: "default"
 					}
 				};
 				
@@ -154,30 +153,18 @@ module.exports = (_ => {
 					BDFDB.PatchUtils.forceAllUpdates(this);
 				}
 			}
-			
-			processUserPopout (e) {
+
+			processUserPopoutInfo (e) {
 				if (e.instance.props.user && this.settings.places.userPopout) {
 					let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {name: "CustomStatus"});
 					if (index > -1) this.injectDate(children, 2, e.instance.props.user);
 				}
 			}
 
-			processUserPopoutHeader (e) {
-				if (e.instance.props.user && this.settings.places.userPopout) {
-					let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {name: "CustomStatus"});
-					if (index > -1) this.injectDate(children, 2, e.instance.props.user);
-				}
-			}
-
-			processAnalyticsContext (e) {
-				if (typeof e.returnvalue.props.children == "function" && e.instance.props.section == BDFDB.DiscordConstants.AnalyticsSections.PROFILE_MODAL && this.settings.places.userProfile) {
-					let renderChildren = e.returnvalue.props.children;
-					e.returnvalue.props.children = (...args) => {
-						let renderedChildren = renderChildren(...args);
-						let [children, index] = BDFDB.ReactUtils.findParent(renderedChildren, {name: ["DiscordTag", "ColoredFluxTag"]});
-						if (index > -1) this.injectDate(children, 1, children[index].props.user);
-						return renderedChildren;
-					};
+			processUserProfileModalHeader (e) {
+				if (e.instance.props.user && this.settings.places.userProfile) {
+					let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {name: ["DiscordTag", "ColoredFluxTag"]});
+					if (index > -1) this.injectDate(children, index + 1, e.instance.props.user);
 				}
 			}
 			

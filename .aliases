@@ -2,19 +2,12 @@
 #         ALIAS         #
 #########################
 
-#eval $(thefuck --alias) # thef***
-#alias f="fuck"
-alias f="thefuck"
+eval $(thefuck --alias)
+alias f="fuck"
 
-### TYPOS
-#alias f='g' # NEED TO SAVE THIS FOR `THE F***`
-#alias gi='git'
-#alias gti='git'
-#alias cd..="cd .."
-#alias exti="exit"
-#alias al="la"
 ### CLI & APPLICATIONS
 alias s="sudo"
+alias s!="sudo !!"
 alias sudo='sudo ' # for using other alias when using sudo
 function reload {
   if [[ $SHELL == */tmux ]] ; then
@@ -23,7 +16,9 @@ function reload {
     exec $SHELL # reload whatever is $SHELL
   fi
 }
-alias scr="screen"
+alias ar="paru"
+alias open="xdg-open"
+#alias scr="screen"
 alias tm="tmux"
 alias tma="tmux attach"
 alias tmr="tmux source-file ~/.tmux.conf"
@@ -42,15 +37,11 @@ if [[ $ISSERVER != YES ]] ; then
   alias git="hub"
 fi
 alias n="npm"
-alias p="pm2"
-alias h="heroku"
-alias dock="docker"
 alias py="python"
 alias vr='v -r'
 alias vm="v -M"
 alias l="less"
 alias m="more"
-alias ca="cat"
 alias su="sudo su -"
 alias c="cd"
 alias clear="clear -x"
@@ -95,23 +86,12 @@ function unmac {
   iplsu $1
 }
 ### SYSTEM
-#alias systemctl="sudo systemctl"
 alias mount="sudo mount"
 alias ipt="sudo iptables"
 alias resetlock="faillock --reset --user $USER"
-alias shutdown="sudo shutdown now"
-alias reboot="sudo reboot now"
-alias update="sudo apt update && sudo apt full-upgrade"
-alias pac="sudo pacman"
-alias sa="sudo apt"
-alias sai="sudo apt install"
-alias sar="sudo apt remove"
-alias sd="sudo dpkg"
-alias sdi="sudo dpkg -i"
-alias saar="sudo add-apt-repository"
-alias fr="free"
 alias free="free -hm"
 #alias top="htop" # HTOP is better than TOP
+alias xc="xclip"
 alias pg="pgrep" # find process id, `$ pidof` is another viable command alternative
 function findexe() {
   readonly pid=${1:?"The PID of the process must be specified"}

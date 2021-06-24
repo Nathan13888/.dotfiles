@@ -8,9 +8,7 @@
 - vim neovim
 - emacs (ripgrep doom emacs)
 - doom emacs
-  - git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
-  - ~/.emacs.d/bin/doom install
-- alacritty
+  - git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d ~/.emacs.d/bin/doom install alacritty
 - firefox-nightly
 - torbrowser-launcher nyx tor
 - ungoogled-chromium
@@ -64,12 +62,6 @@
 - ttf-ms-fonts
 - nerd-fonts-complete
 #- font-config
-- *(sound)*
-- pavucontrol (gtk gui)
-- pulseaudio-ctl (shell-based)
-- pamixer
-- playerctl
-- pulseeffects
 - *(secrets)*
 - gnome-keyring
 - libsecret
@@ -123,6 +115,7 @@
 - hydra
 
 ## Media
+- spotify-adblock(-git)
 - mpv vlc
 - kodi-x11
 - davinci-resolve
@@ -138,15 +131,31 @@
 - rpi-imager
 - etcher
 
-## Recording
-- handbrake
-- asciinema
+## Recording, Video, Audio
+- pipewire pipewire-alsa pipewire-pulse pipewire-jack
+- alsa
+- patchage
 - obs-studio
 - v4l2loopback-dkms
-- gstreamer
-- Audacity
+- audacity
+- ardour
+- pavucontrol (gtk gui)
+- alsa-utils
+- pulseaudio-ctl (shell-based)
+- pamixer
+- playerctl
+- pulseeffects
+- jack jack2-dbus
+- carla
+- cadence
+- pulseaudio
+- pulseaudio-jack
+- qjackctl
 - cava
-- screenkey-git
+- screenkey
+- handbrake
+- asciinema
+- gstreamer
 
 ## Clients
 - transmission-gtk (or -qt)
@@ -164,6 +173,12 @@
 - joplin
 - Spectacle (KDE for screenshots)
 - yakuake or guake (if gnome)
+
+## Data tools
+- tar
+- rar
+- libzip
+- pg...
 
 ## Tools and Utilities
 - poppler

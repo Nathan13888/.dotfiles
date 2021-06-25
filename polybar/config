@@ -141,7 +141,8 @@ font-3 = ${var.font3}
 font-4 = ${var.font4}
 
 modules-left = i3 xwindow
-modules-right = cpu memory filesystem pulseaudio microphone date
+#modules-center = microphone
+modules-right = cpu memory filesystem pulseaudio date
 #modules-right = kernel cpu memory filesystem speedtest pulseaudio transmission pacman date
 
 tray-position = right
@@ -225,7 +226,7 @@ label-mode-background = ${colors.secondary}
 label-focused = %index%
 label-focused-foreground = ${colors.highlight}
 label-focused-background = ${colors.background-alt}
-label-focused-underline= ${colors.secondary}
+label-focused-underline= ${colors.background-alt}
 label-focused-padding = ${self.label-mode-padding}
 
 ; unfocused = Inactive workspace on any monitor
@@ -348,7 +349,7 @@ ramp-volume-0 = 
 ramp-volume-1 = 
 ramp-volume-2 = 
 
-click-left = pavucontrol &
+click-right = pavucontrol &
 
 [module/microphone]
 type = custom/script

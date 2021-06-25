@@ -61,6 +61,16 @@ pinentry-program /usr/bin/pinentry-gnome3
 - Installing using curl: `curl -fsSL https://starship.rs/install.sh | bash`
 - Alternative, you could get starship from AUR: `starship, starship-bin, starship-git`
 
+### Pipewire
+- to change sample rate in `pipewire.conf`: `default.clock.rate = 192000`
+- add to end of `/usr/share/pipewire/pipewire.conf`
+```
+context.exec = [
+    { path = "/usr/bin/pipewire" args = "-c pipewire-pulse.conf" }
+    { path = "/usr/bin/pipewire-media-session"  args = "" }
+]
+```
+
 ### Tmux
 - Installing TPM: `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
 - Install plugins: "Press prefix + I (capital i, as in Install) to fetch the plugin"
@@ -101,6 +111,10 @@ Install options:
 ### WireGuard ([quick install](https://www.wireguard.com/quickstart/))
 - `apt install wireguard`
 - configure wireguard
+
+### Podman
+- Refer to: `https://wiki.archlinux.org/title/Podman#Configuration`
+
 ### LIMITS
 - Realtime: add to end of `/etc/security/limits.conf`:
 ```

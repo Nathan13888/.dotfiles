@@ -2,7 +2,7 @@
  * @name BDFDB
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 1.7.1
+ * @version 1.7.4
  * @description Required Library for DevilBro's Plugins
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -19,13 +19,13 @@ module.exports = (_ => {
 		"info": {
 			"name": "BDFDB",
 			"author": "DevilBro",
-			"version": "1.7.1",
+			"version": "1.7.4",
 			"description": "Required Library for DevilBro's Plugins"
 		},
 		"rawUrl": `https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js`,
 		"changeLog": {
 			"fixed": {
-				"Message Rerendering": "Fixed Message Rerendering causing weird Message Jumps"
+				"User Popout": "Fixing Stuff for the User Popout Update, thanks Discord"
 			}
 		}
 	};
@@ -5913,10 +5913,12 @@ module.exports = (_ => {
 								animated: false
 							};
 							if (typeof this.props.onSelect == "function") this.props.onSelect(this.props.emoji, this);
+							if (typeof this.close == "function" && !BDFDB.ListenerUtils.isPressed(16)) this.close();
 							BDFDB.ReactUtils.forceUpdate(this);
 						}
 					}
 					render() {
+						let button = this;
 						return BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.PopoutContainer, {
 							children: BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.EmojiButton, {
 								className: BDFDB.DOMUtils.formatClassName(this.props.className, BDFDB.disCN.emojiinputbutton),
@@ -5931,16 +5933,25 @@ module.exports = (_ => {
 							position: InternalComponents.LibraryComponents.PopoutContainer.Positions.TOP,
 							align: InternalComponents.LibraryComponents.PopoutContainer.Align.LEFT,
 							renderPopout: instance => {
-								return BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.EmojiPicker, {
-									closePopout: instance.close,
-									onSelectEmoji: this.handleEmojiChange.bind(this),
-									allowManagedEmojis: this.props.allowManagedEmojis
-								});
+								this.close = instance.close;
+								return [
+									BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.EmojiPicker, {
+										closePopout: this.close,
+										onSelectEmoji: this.handleEmojiChange.bind(this),
+										allowManagedEmojis: this.props.allowManagedEmojis,
+										allowManagedEmojisUsage: this.props.allowManagedEmojisUsage
+									}),
+									BDFDB.ReactUtils.createElement(class extends LibraryModules.React.Component {
+										componentDidMount() {InternalComponents.LibraryComponents.EmojiPickerButton.current = button;}
+										componentWillUnmount() {delete InternalComponents.LibraryComponents.EmojiPickerButton.current;}
+										render() {return null;}
+									})
+								];
 							}
 						});
 					}
 				};
-				InternalBDFDB.setDefaultProps(InternalComponents.LibraryComponents.EmojiPickerButton, {allowManagedEmojis: false});
+				InternalBDFDB.setDefaultProps(InternalComponents.LibraryComponents.EmojiPickerButton, {allowManagedEmojis: false, allowManagedEmojisUsage: false});
 				
 				InternalComponents.LibraryComponents.FavButton = reactInitialized && class BDFDB_FavButton extends LibraryModules.React.Component {
 					handleClick() {
@@ -6277,7 +6288,7 @@ module.exports = (_ => {
 					handleClick(e) {if (typeof this.props.onClick == "function") this.props.onClick(e, this);}
 					handleContextMenu(e) {if (typeof this.props.onContextMenu == "function") this.props.onContextMenu(e, this);}
 					render() {
-						let color = BDFDB.ColorUtils.convert(this.props.role.colorString || BDFDB.DiscordConstants.Colors.PRIMARY_DARK_300, "RGB");
+						let color = BDFDB.ColorUtils.convert(this.props.role.colorString, "RGB") || BDFDB.DiscordConstants.Colors.PRIMARY_DARK_300;
 						return BDFDB.ReactUtils.createElement("li", {
 							className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.userpopoutrole, this.props.className),
 							style: {borderColor: BDFDB.ColorUtils.setAlpha(color, 0.6)},
@@ -7657,14 +7668,11 @@ module.exports = (_ => {
 					render() {
 						return BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.PopoutContainer, BDFDB.ObjectUtils.exclude(Object.assign({}, this.props, {
 							wrap: false,
-							renderPopout: instance => {
-								return BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.UserPopout, {
-									userId: this.props.userId,
-									guildId: this.props.guildId,
-									channelId: this.props.channelId
-								});
-							}
-						}), "userId", "guildId", "channelId"));
+							renderPopout: instance => BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.UserPopout, {
+								userId: this.props.userId,
+								user: LibraryModules.UserStore.getUser(this.props.userId)
+							}),
+						}), "userId"));
 					}
 				};
 				
@@ -7771,16 +7779,18 @@ module.exports = (_ => {
 				});
 				
 				InternalBDFDB.patchedModules = {
+					before: {
+						EmojiPickerListRow: "default"
+					},
 					after: {
-						DiscordTag: "default",
+						SettingsView: "componentDidMount",
+						Shakeable: "render",
 						Message: "default",
 						MessageHeader: "default",
 						MemberListItem: ["componentDidMount", "componentDidUpdate"],
 						PrivateChannel: ["componentDidMount", "componentDidUpdate"],
-						UserPopout: ["componentDidMount", "componentDidUpdate"],
 						AnalyticsContext: ["componentDidMount", "componentDidUpdate"],
-						SettingsView: "componentDidMount",
-						Shakeable: "render"
+						DiscordTag: "default"
 					}
 				};
 				
@@ -7895,19 +7905,19 @@ module.exports = (_ => {
 				InternalBDFDB.processPrivateChannel = function (e) {
 					InternalBDFDB._processAvatarMount(e.instance.props.user, e.node.querySelector(BDFDB.dotCN.avatarwrapper), e.node);
 				};
-				InternalBDFDB.processUserPopout = function (e) {
-					InternalBDFDB._processAvatarMount(e.instance.props.user, e.node.querySelector(BDFDB.dotCN.avatarwrapper), e.node);
-					InternalBDFDB._processUserInfoNode(e.instance.props.user, e.node);
-				};
 				InternalBDFDB.processAnalyticsContext = function (e) {
-					if (e.instance.props.section != BDFDB.DiscordConstants.AnalyticsSections.PROFILE_MODAL) return;
+					if (e.instance.props.section != BDFDB.DiscordConstants.AnalyticsSections.PROFILE_MODAL && e.instance.props.section != BDFDB.DiscordConstants.AnalyticsSections.PROFILE_POPOUT) return;
 					const user = BDFDB.ReactUtils.findValue(e.instance, "user");
-					const wrapper = e.node.querySelector(BDFDB.dotCN.userprofile) || e.node;
+					if (!user) return;
+					const wrapper = e.node.querySelector(BDFDB.dotCNC.userpopout + BDFDB.dotCN.userprofile) || e.node;
 					InternalBDFDB._processAvatarMount(user, e.node.querySelector(BDFDB.dotCN.avatarwrapper), wrapper);
 					InternalBDFDB._processUserInfoNode(user, wrapper);
 				};
 				InternalBDFDB.processDiscordTag = function (e) {
 					if (e.instance && e.instance.props && e.returnvalue && e.instance.props.user) e.returnvalue.props.user = e.instance.props.user;
+				};
+				InternalBDFDB.processEmojiPickerListRow = function (e) {
+					if (e.instance.props.emojiDescriptors && InternalComponents.LibraryComponents.EmojiPickerButton.current && InternalComponents.LibraryComponents.EmojiPickerButton.current.props && InternalComponents.LibraryComponents.EmojiPickerButton.current.props.allowManagedEmojisUsage) for (let i in e.instance.props.emojiDescriptors) e.instance.props.emojiDescriptors[i] = Object.assign({}, e.instance.props.emojiDescriptors[i], {isDisabled: false});
 				};
 				
 				const ContextMenuTypes = ["UserSettingsCog", "UserProfileActions", "User", "Developer", "Slate", "GuildFolder", "GroupDM", "SystemMessage", "Message", "Native", "Role", "Guild", "Channel"];
@@ -7943,7 +7953,7 @@ module.exports = (_ => {
 				if (window.Lightcord || window.LightCord) BDFDB.ModalUtils.open(BDFDB, {
 					header: "Attention!",
 					subHeader: "Modified Client detected",
-					text: "We detected that you are using LightCord. Unlike other client modificaton (BetterDiscord, PowerCord), LightCord is a completely modified client, which is no longer maintained by Discord but instead by a 3rd party. This will put your account at risk, not only because the 3rd party might use your account credentials as they like, you are also breaking a higher instance of Discord's ToS by using a 3rd party client instead of using a simple client mod which ininjects itself into the original client app. Many Plugins won't flawlessly run on LightCord. We do not support LightCord and as such, we do not provide help or support. You should switch to another modification as soon as possible.",
+					text: "We detected that you are using LightCord. Unlike other client modificaton (BetterDiscord, PowerCord), LightCord is a completely modified client, which is no longer maintained by Discord but instead by a 3rd party. This will put your account at risk, not only because the 3rd party might use your account credentials as they like, you are also breaking a higher instance of Discord's ToS by using a 3rd party client instead of using a simple client mod which injects itself into the original client app. Many Plugins won't flawlessly run on LightCord. We do not support LightCord and as such, we do not provide help or support. You should switch to another modification as soon as possible.",
 					buttons: [{color: "RED", contents: BDFDB.LanguageUtils.LanguageStrings.OKAY, close: true}]
 				});
 				
@@ -8143,6 +8153,10 @@ module.exports = (_ => {
 
 				BDFDB.PatchUtils.patch(BDFDB, LibraryModules.IconUtils, "getUserBannerURL", {instead: e => {
 					return e.methodArguments[0].id == InternalData.myId ? e.methodArguments[0].banner : e.callOriginalMethod();
+				}});
+				
+				BDFDB.PatchUtils.patch(BDFDB, LibraryModules.EmojiStateUtils, "getEmojiUnavailableReason", {after: e => {
+					if (InternalComponents.LibraryComponents.EmojiPickerButton.current && InternalComponents.LibraryComponents.EmojiPickerButton.current.props && InternalComponents.LibraryComponents.EmojiPickerButton.current.props.allowManagedEmojisUsage) return null;
 				}});
 				
 				InternalBDFDB.forceUpdateAll();

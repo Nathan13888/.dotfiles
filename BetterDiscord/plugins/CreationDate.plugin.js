@@ -2,7 +2,7 @@
  * @name CreationDate
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 1.4.5
+ * @version 1.4.6
  * @description Displays the Creation Date of an Account in the UserPopout and UserModal
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -17,17 +17,25 @@ module.exports = (_ => {
 		"info": {
 			"name": "CreationDate",
 			"author": "DevilBro",
-			"version": "1.4.5",
+			"version": "1.4.6",
 			"description": "Displays the Creation Date of an Account in the UserPopout and UserModal"
 		},
 		"changeLog": {
 			"fixed": {
-				"User Profile Modal": ""
+				"User Popout": "Fixing Stuff for the User Popout Update, thanks Discord"
 			}
 		}
 	};
 
-	return !window.BDFDB_Global || (!window.BDFDB_Global.loaded && !window.BDFDB_Global.started) ? class {
+	return (window.Lightcord || window.LightCord) ? class {
+		getName () {return config.info.name;}
+		getAuthor () {return config.info.author;}
+		getVersion () {return config.info.version;}
+		getDescription () {return "Do not use LightCord!";}
+		load () {BdApi.alert("Attention!", "By using LightCord you are risking your Discord Account, due to using a 3rd Party Client. Switch to an official Discord Client (https://discord.com/) with the proper BD Injection (https://betterdiscord.app/)");}
+		start() {}
+		stop() {}
+	} : !window.BDFDB_Global || (!window.BDFDB_Global.loaded && !window.BDFDB_Global.started) ? class {
 		getName () {return config.info.name;}
 		getAuthor () {return config.info.author;}
 		getVersion () {return config.info.version;}
@@ -82,7 +90,7 @@ module.exports = (_ => {
 				
 				this.patchedModules = {
 					after: {
-						UserPopoutInfo: "default",
+						UserPopoutInfo: "UserPopoutInfo",
 						UserProfileModalHeader: "default"
 					}
 				};
@@ -156,8 +164,8 @@ module.exports = (_ => {
 
 			processUserPopoutInfo (e) {
 				if (e.instance.props.user && this.settings.places.userPopout) {
-					let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {name: "CustomStatus"});
-					if (index > -1) this.injectDate(children, 2, e.instance.props.user);
+					let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {name: ["DiscordTag", "ColoredFluxTag"]});
+					if (index > -1) this.injectDate(children, index + 1, e.instance.props.user);
 				}
 			}
 

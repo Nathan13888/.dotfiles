@@ -61,6 +61,7 @@
 - feh
 - flameshot
 - *(fonts)*
+- noto-fonts-cjk
 - ttf-ms-fonts
 - nerd-fonts-complete
 #- font-config
@@ -139,6 +140,7 @@
 
 ## Recording, Video, Audio
 - pipewire pipewire-alsa pipewire-pulse pipewire-jack
+- realtime-privileges (add user to @realtime group after)
 - alsa
 - patchage
 - obs-studio

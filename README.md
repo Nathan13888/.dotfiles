@@ -53,6 +53,7 @@ pinentry-program /usr/bin/pinentry-gnome3
 ### Bash
 - Oh-my-bash: `bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"`
 ### ZSH
+- `chsh`
 - install `zsh`: `sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"` and [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)
 - remove `~/.oh-my-zsh/custom`
 #### PowerLevel10k
@@ -88,6 +89,7 @@ context.exec = [
 - Change device name to be more recognizable
 ### Discord
 - Install `discord` or `discord-ptb`
+- NEW: `betterdiscord` (GUI)
 - Install `betterdiscordctl`
 - Run `betterdiscordctl install [-f ptb]`
 - Connect dotfiles

@@ -113,7 +113,7 @@
             "sc-listen": "false"
         },
         "equalizer": {
-            "state": "true",
+            "state": "false",
             "mode": "IIR",
             "num-bands": "18",
             "input-gain": "0",

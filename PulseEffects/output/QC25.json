@@ -29,12 +29,16 @@
         ]
     },
     "output": {
-        "blocklist": "",
+        "blocklist": [
+            "Nightly"
+        ],
         "plugins_order": [
+            "limiter",
+            "autogain",
             "equalizer",
+            "loudness",
             "convolver",
             "bass_enhancer",
-            "limiter",
             "filter",
             "compressor",
             "exciter",
@@ -42,13 +46,11 @@
             "crossfeed",
             "maximizer",
             "multiband_compressor",
-            "loudness",
             "gate",
             "multiband_gate",
             "crystalizer",
             "stereo_tools",
             "deesser",
-            "autogain",
             "pitch",
             "delay",
             "rnnoise"
@@ -778,12 +780,12 @@
             }
         },
         "autogain": {
-            "state": "false",
-            "detect-silence": "false",
-            "use-geometric-mean": "true",
+            "state": "true",
+            "detect-silence": "true",
+            "use-geometric-mean": "false",
             "input-gain": "0",
             "output-gain": "0",
-            "target": "-23",
+            "target": "-25",
             "weight-m": "1",
             "weight-s": "1",
             "weight-i": "1"

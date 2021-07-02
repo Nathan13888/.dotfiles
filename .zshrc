@@ -1,52 +1,7 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-# P10K
-#if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-#  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-#fi
-
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-#ZSH_THEME="robbyrussell"
-
-# Uncomment the following line to use case-sensitive completion.
-CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
+zmodload zsh/zprof
 
 # Uncomment the following line if pasting URLs and other text is messed up.
 DISABLE_MAGIC_FUNCTIONS=true
-
-# Uncomment the following line to enable command auto-correction.
-#ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
@@ -59,47 +14,108 @@ COMPLETION_WAITING_DOTS="true"
 HISTSIZE=100000
 #HISTFILE=$HOME/.zsh_history
 
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
+#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(
-    git
-    zsh-syntax-highlighting
-    zsh-autosuggestions
-    wakatime
-)
+# CHT.SH Autocomplete
+#fpath=(~/.zsh.d/ $fpath)
 
-source $ZSH/oh-my-zsh.sh
+# Use ~~ as the trigger sequence instead of the default **
+export FZF_COMPLETION_TRIGGER='~~'
 
-# User configuration
+# Options to fzf command
+export FZF_DEFAULT_OPTS='--height 70% --layout=reverse --border'
 
-# export MANPATH="/usr/local/man:$MANPATH"
+# Use fd (https://github.com/sharkdp/fd) instead of the default find
+# command for listing path candidates.
+# - The first argument to the function ($1) is the base path to start traversal
+# - See the source code (completion.{bash,zsh}) for the details.
+_fzf_compgen_path() {
+  fd --hidden --follow --exclude ".git" . "$1"
+}
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+  fd --type d --hidden --follow --exclude ".git" . "$1"
+}
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+[ -n "$BASH" ] && complete -F _fzf_complete_doge -o default -o bashdefault doge
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# (EXPERIMENTAL) Advanced customization of fzf options via _fzf_comprun function
+# - The first argument to the function is the name of the command.
+# - You should make sure to pass the rest of the arguments to fzf.
+_fzf_comprun() {
+  local command=$1
+  shift
 
-#POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
+  case "$command" in
+    cd)           fzf "$@" --preview 'tree -C {} | head -200' ;; #'exa -1 --color=always $realpath'
+    export|unset) fzf "$@" --preview "eval 'echo \$'{}" ;;
+    ssh)          fzf "$@" --preview 'dig {}' ;;
+    *)            fzf "$@" ;;
+  esac
+}
 
-# P10K: To customize prompt, run `p10k configure` or edit ~/.p10k.zsh
-#P10KCONF="$HOME/.p10k.zsh"
-#[[ ! -f $P10KCONF ]] || source $P10KCONF
+### Added by Zinit's installer
+if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
+    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
+    command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
+        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+        print -P "%F{160}▓▒░ The clone has failed.%f%b"
+fi
+
+source "$HOME/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+zinit light-mode for \
+    zinit-zsh/z-a-rust \
+    zinit-zsh/z-a-as-monitor \
+    zinit-zsh/z-a-patch-dl \
+    zinit-zsh/z-a-bin-gem-node
+
+### End of Zinit's installer chunk
+
+#zinit light starship/starship
 
 # Starship
 eval "$(starship init zsh)"
 
-# CHT.SH Autocomplete
-fpath=(~/.zsh.d/ $fpath)
+#PS1="READY > "
+#zinit ice wait'!0'
+zinit ice wait lucid; zinit light sobolevn/wakatime-zsh-plugin
+zinit ice wait lucid; zinit light sobolevn/wakatime-zsh-plugin
+zinit ice wait lucid; zinit light junegunn/fzf
+
+zinit ice wait lucid atload'_zsh_autosuggest_start'
+zinit ice wait lucid; zinit light zsh-users/zsh-autosuggestions
+zinit ice wait lucid; zinit light zsh-users/zsh-syntax-highlighting
+zinit ice wait lucid; zinit light Aloxaf/fzf-tab
+
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+
+# Run xinit if this is the normal terminal
+if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
+  exec startx
+fi
+
+# Aliases
+## REMOVE ALL DEFAULT ZSH ALIASES
+#unalias -m '*'
+[[ -f ~/.aliases ]] && source ~/.aliases
+
+# Exports
+export PYTHONDONTWRITEBYTECODE=1
+[ -f ~/.exports ] && source ~/.exports
+export PATH=$PATH:$HOME/.cargo/bin
+export PATH=$PATH:$GOROOT/bin
+export GOPATH=$HOME/go # the first path in GOPATH is always used to install external packages
+export PATH=$PATH:$GOPATH/bin
+export GOPATH=$GOPATH:$HOME/ws/scripts:$HOME/ws/gt
+export PYTHONDONTWRITEBYTECODE=1
+export PATH=$PATH:$HOME/.cargo/bin
+
+#[ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
+

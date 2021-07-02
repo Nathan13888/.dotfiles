@@ -17,6 +17,9 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 - Connecting to wifi: `nmtui`
 - Update reflector: `reflector --country Canada --country US --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist`
 - Setup GPG: `gpg --list-keys` (init user files), add keyserver, import key
+- Import: `gpg --import <key file>`
+- Upload Public Key: `gpg --keyserver <keyserver uri> --send-keys <pub id>`
+- Edit: `gpg --edit-key <sub id>`
 - Add keyserver: `keyserver hkps://keys.openpgp.org`
   * `~/.gnupg/gpg.conf`
   * `/etc/pacman.d/gnupg/gpg.conf`

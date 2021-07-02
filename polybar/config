@@ -11,19 +11,19 @@
 ;==========================================================
 
 [var]
-bar-height = 36
-tray-size = 16
+bar-height = 64
+tray-size = 32
 
 ; default nerd font
-font0 = JetBrains Mono Nerd Font:style=Medium:size=13;5
+font0 = JetBrains Mono Nerd Font:style=Medium:size=22;5
 ; xwindow title
-font1 = DejaVuSansMono Nerd Font Mono:style=Oblique:size=12;1
+font1 = DejaVuSansMono Nerd Font Mono:style=Oblique:size=20;1
 ; important labels
-font2 = MesloLGS Nerd Font:style=Bold:size=14;3
+font2 = MesloLGS Nerd Font:style=Bold:size=24;5
 ; emojis
-font3 = MesloLGS Nerd Font:style=Regular:size=10;-1
+font3 = MesloLGS Nerd Font:style=Regular:size=20;-1
 ; rampcore
-font4 = MesloLGS Nerd Font:style=Regular:size=12;-1
+font4 = MesloLGS Nerd Font:style=Regular:size=24;-1
 
 [colors]
 background = #cc0B090A

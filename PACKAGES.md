@@ -55,6 +55,10 @@
 - polybar
 - rofi
 - network-manager-applet
+- bluez bluez-utils bluez-openrc
+- fprintd fingerprint-gui
+- xbindkeys
+- xbacklight
 - dunst
 - feh
 - flameshot
@@ -137,7 +141,7 @@
 - realtime-privileges (add user to @realtime group after)
 - alsa
 - patchage
-- obs-studio
+- obs-studio guvcview
 - v4l2loopback-dkms
 - audacity
 - ardour
@@ -188,9 +192,7 @@
 - ufw
 - wol (wake on lan)
 - QMK
-- android-file-transfer
-- mtpfs
-- go-mtpfs-git
+- android-udev android-file-transfer go-mtpfs-git mtpfs
 - xcolor
 - ddgr
 - traceroute

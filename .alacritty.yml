@@ -10,7 +10,7 @@ scrolling:
   multiplier: 8
 
 font:
-  size: 11.5
+  size: 12
   # The normal (roman) font face to use.
   normal:
     family: MesloLGS Nerd Font

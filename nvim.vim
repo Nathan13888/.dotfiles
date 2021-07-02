@@ -4,6 +4,7 @@ call plug#begin()
 " Aesthetics
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'joshdick/onedark.vim', { 'as': 'onedark' }
+Plug 'owozsh/amora'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ryanoasis/vim-devicons'
@@ -14,6 +15,7 @@ Plug 'ap/vim-css-color'
 
 " Functionalities
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+"Plug 'chrisbra/Recover.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tpope/vim-surround'
 Plug 'majutsushi/tagbar'
@@ -28,13 +30,16 @@ Plug 'honza/vim-snippets'
 " Plug 'metakirby5/codi.vim'
 Plug 'dkarter/bullets.vim'
 "Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'vim-syntastic/syntastic'
+"Plug 'vim-syntastic/syntastic'
 "Plug 'ycm-core/YouCompleteMe'
 Plug 'wakatime/vim-wakatime'
 
 call plug#end()
 
 """ Plugin Configurations
+
+"
+let g:mode = 'focus'
 
 " Syntastic
 set statusline+=%#warningmsg#
@@ -178,13 +183,30 @@ let mapleader=","
 nmap <leader>r :so ~/.config/nvim/init.vim<CR>
 
 " Behave like Windows
-source $VIMRUNTIME/mswin.vim
-behave mswin
+"source $VIMRUNTIME/mswin.vim
+"$behave mswin
+
+" Commenting blocks of code.
+augroup commenting_blocks_of_code
+  autocmd!
+  autocmd FileType c,cpp,java,scala let b:comment_leader = '// '
+  autocmd FileType sh,ruby,python   let b:comment_leader = '# '
+  autocmd FileType conf,fstab       let b:comment_leader = '# '
+  autocmd FileType tex              let b:comment_leader = '% '
+  autocmd FileType mail             let b:comment_leader = '> '
+  autocmd FileType vim              let b:comment_leader = '" '
+augroup END
+noremap <silent> <leader>cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
+noremap <silent> <leader>cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
+
 " CP
 nmap <leader>Y ggVG"+y''
 nmap <leader>y V"+y''
 nnoremap gb :w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -g -std=c++17 -Wall -Wextra -Wno-unused-result -D LOCAL -O2 %:r.cpp -o %:r 2>&1 \| tee %:r.cerr && printf "\n================\n   Running...\n================\n" && time ./%:r < %:r.in > %:r.out 2> %:r.err && printf "\n\n\n\n"<CR>
 autocmd filetype cpp nnoremap <F5> :w <bar> exec '!g++ '.shellescape('%').' -std=c++11 -Wshadow -Wall -O2 -Wno-unused-result -o '.shellescape('%:r').' && /usr/bin/time '.shellescape('%:p:r')<CR>
+
+command DiffOrig vert new | set buftype=nofile | read ++edit # | 0d_
+    \ | diffthis | wincmd p | diffthis
 
 """ Key Mappings
 
@@ -223,7 +245,7 @@ noremap <silent> <A-0> 10gt
 
 """ Styling
 syntax on
-colorscheme onedark
+colorscheme amora
 highlight Pmenu guibg=white guifg=black gui=bold
 highlight Comment gui=bold
 highlight Normal gui=none

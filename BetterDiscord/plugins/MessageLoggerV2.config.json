@@ -18,9 +18,7 @@
         "savedMessagesCap": 1000,
         "reverseOrder": true,
         "onlyLogWhitelist": true,
-        "whitelist": [
-            "758035380057407548"
-        ],
+        "whitelist": [],
         "blacklist": [],
         "notificationBlacklist": [],
         "toastToggles": {
@@ -30,7 +28,7 @@
             "ghostPings": true
         },
         "toastTogglesDMs": {
-            "sent": false,
+            "sent": true,
             "edited": true,
             "deleted": true,
             "ghostPings": true,
@@ -64,7 +62,7 @@
             "showNotifications": false,
             "showContextMenu": false
         },
-        "imageCacheDir": "/home/attackercow/.dotfiles/BetterDiscord/plugins/MLV2_IMAGE_CACHE",
+        "imageCacheDir": "/home/attackercow/.config/BetterDiscord/plugins/MLV2_IMAGE_CACHE",
         "flags": 2,
         "autoUpdate": true,
         "versionInfo": "1.7.71"

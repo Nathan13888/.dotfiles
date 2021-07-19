@@ -2,7 +2,7 @@
  * @name ImageUtilities
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 4.4.1
+ * @version 4.4.4
  * @description Adds several Utilities for Images/Videos (Gallery, Download, Reverse Search, Zoom, Copy, etc.)
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -17,17 +17,25 @@ module.exports = (_ => {
 		"info": {
 			"name": "ImageUtilities",
 			"author": "DevilBro",
-			"version": "4.4.1",
+			"version": "4.4.4",
 			"description": "Adds several Utilities for Images/Videos (Gallery, Download, Reverse Search, Zoom, Copy, etc.)"
 		},
 		"changeLog": {
-			"added": {
-				"User Banners": "Right Click Banner to get Options"
+			"fixed": {
+				"Bigger Stream Preview": "Works now with the Plugin"
 			}
 		}
 	};
 	
-	return !window.BDFDB_Global || (!window.BDFDB_Global.loaded && !window.BDFDB_Global.started) ? class {
+	return (window.Lightcord || window.LightCord) ? class {
+		getName () {return config.info.name;}
+		getAuthor () {return config.info.author;}
+		getVersion () {return config.info.version;}
+		getDescription () {return "Do not use LightCord!";}
+		load () {BdApi.alert("Attention!", "By using LightCord you are risking your Discord Account, due to using a 3rd Party Client. Switch to an official Discord Client (https://discord.com/) with the proper BD Injection (https://betterdiscord.app/)");}
+		start() {}
+		stop() {}
+	} : !window.BDFDB_Global || (!window.BDFDB_Global.loaded && !window.BDFDB_Global.started) ? class {
 		getName () {return config.info.name;}
 		getAuthor () {return config.info.author;}
 		getVersion () {return config.info.version;}
@@ -69,7 +77,7 @@ module.exports = (_ => {
 		var ownLocations = {}, downloadsFolder;
 		
 		const imgUrlReplaceString = "DEVILBRO_BD_REVERSEIMAGESEARCH_REPLACE_IMAGEURL";
-			
+		
 		const fileTypes = {
 			"3gp":		{copyable: false,	searchable: false,	video: true},
 			"3g2":		{copyable: false,	searchable: false,	video: true},
@@ -141,7 +149,7 @@ module.exports = (_ => {
 			onLoad () {
 				firedEvents = [];
 				clickedImage = null;
-					
+				
 				this.defaults = {
 					general: {
 						resizeImage: 			{value: true,		description: "Always resize Image to fit the whole Image Modal"},
@@ -280,7 +288,7 @@ module.exports = (_ => {
 					BDFDB.TimeUtils.timeout(_ => {clickedImage = null;});
 				});
 				
-				BDFDB.PatchUtils.patch(this, (BDFDB.ModuleUtils.findByName("renderImageComponent", false).exports || {}), "renderImageComponent", {after: e => {
+				BDFDB.PatchUtils.patch(this, BDFDB.LibraryModules.MediaComponentUtils, "renderImageComponent", {after: e => {
 					if (this.settings.general.showAsHeader && e.returnValue && e.returnValue.type && (e.returnValue.type.displayName == "LazyImageZoomable" || e.returnValue.type.displayName == "LazyImage") && e.methodArguments[0].original && e.methodArguments[0].src.indexOf("https://media.discordapp.net/attachments") == 0 && (e.methodArguments[0].className || "").indexOf(BDFDB.disCN.embedmedia) == -1 && (e.methodArguments[0].className || "").indexOf(BDFDB.disCN.embedthumbnail) == -1) {
 						return BDFDB.ReactUtils.createElement("div", {
 							className: BDFDB.disCN.embedwrapper,
@@ -422,8 +430,7 @@ module.exports = (_ => {
 													placeholder: ownLocations[locationName].location,
 													size: BDFDB.LibraryComponents.TextInput.Sizes.MINI,
 													maxLength: 100000000000000000000,
-													disabled: !editable,
-													onChange: !editable ? null : value => {
+													onChange: value => {
 														ownLocations[locationName].location = value;
 														BDFDB.DataUtils.save(ownLocations, this, "ownLocations");
 													}
@@ -492,7 +499,8 @@ module.exports = (_ => {
 			}
 		
 			forceUpdateAll () {
-				ownLocations = Object.assign({"Downloads": {enabled:true, location: this.getDownloadLocation()}}, BDFDB.DataUtils.load(this, "ownLocations"));
+				const loadedLocations = BDFDB.DataUtils.load(this, "ownLocations");
+				ownLocations = Object.assign(!loadedLocations || !loadedLocations.Downloads ? {"Downloads": {enabled:true, location: this.getDownloadLocation()}} : {}, loadedLocations);
 				
 				BDFDB.PatchUtils.forceAllUpdates(this);
 				BDFDB.MessageUtils.rerenderAll();
@@ -876,7 +884,7 @@ module.exports = (_ => {
 				if (e.node) {
 					if (e.instance.props.resized) e.instance.state.readyState = BDFDB.LibraryComponents.Image.ImageReadyStates.READY;
 					let isVideo = (typeof e.instance.props.children == "function" && e.instance.props.children(Object.assign({}, e.instance.props, {size: e.instance.props})) || {type: {}}).type.displayName == "Video";
-					if (this.settings.general.enableZoom && !isVideo && !BDFDB.DOMUtils.containsClass(e.node.parentElement, BDFDB.disCN._imageutilitiessibling) && BDFDB.DOMUtils.getParent(BDFDB.dotCN.imagemodal, e.node)) {
+					if (this.settings.general.enableZoom && !isVideo && !BDFDB.DOMUtils.containsClass(e.node.parentElement, BDFDB.disCN._imageutilitiessibling) && BDFDB.ReactUtils.findOwner(BDFDB.ReactUtils.getInstance(e.node), {name: "ImageModal", up: true})) {
 						e.node.addEventListener("mousedown", event => {
 							if (event.which != 1) return;
 							BDFDB.ListenerUtils.stopEvent(event);
@@ -975,7 +983,7 @@ module.exports = (_ => {
 						let attachment = BDFDB.ReactUtils.findValue(e.instance, "attachment", {up: true});
 						if (attachment) {
 							let renderChildren = e.returnvalue.props.children;
-							e.returnvalue.props.children = (...args) => {
+							e.returnvalue.props.children = BDFDB.TimeUtils.suppress((...args) => {
 								return BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TooltipContainer, {
 									text: `${attachment.filename}\n${BDFDB.NumberUtils.formatBytes(attachment.size)}\n${attachment.width}x${attachment.height}px`,
 									tooltipConfig: {
@@ -984,12 +992,12 @@ module.exports = (_ => {
 									},
 									children: renderChildren(...args)
 								});
-							};
+							}, "", this);
 						}
 					}
 				}
 				else {
-					if (this.settings.general.resizeImage && e.instance.props.className && e.instance.props.className.indexOf(BDFDB.disCN.imagemodalimage) > -1 && BDFDB.ReactUtils.findOwner(BDFDB.ObjectUtils.get(e, `instance.${BDFDB.ReactUtils.instanceKey}`), {name: "ImageModal", up: true})) {
+					if (this.settings.general.resizeImage && BDFDB.ReactUtils.findOwner(BDFDB.ObjectUtils.get(e, `instance.${BDFDB.ReactUtils.instanceKey}`), {name: "ImageModal", up: true})) {
 						let data = this.settings.general.enableGallery ? this.getSiblingsAndPosition(e.instance.props.src, this.getMessageGroupOfImage(e.instance.props.src)) : {};
 						let aRects = BDFDB.DOMUtils.getRects(document.querySelector(BDFDB.dotCN.appmount));
 						let ratio = Math.min((aRects.width * (data.previous || data.next ? 0.8 : 1) - 20) / e.instance.props.width, (aRects.height - (this.settings.general.addDetails ? 310 : 100)) / e.instance.props.height);
@@ -1006,7 +1014,6 @@ module.exports = (_ => {
 			}
 			
 			processUserBanner (e) {
-				if (e.instance.props.user && this.settings.places.userAvatars && BDFDB.UserUtils.getBanner(e.instance.props.user.id)) console.log(e, );
 				if (e.instance.props.user && this.settings.places.userAvatars && BDFDB.UserUtils.getBanner(e.instance.props.user.id)) e.returnvalue.props.onContextMenu = event => {
 					let validUrls = this.filterUrls((e.instance.props.user.getBannerURL() || "").replace(/\.webp|\.gif/, ".png"), BDFDB.LibraryModules.IconUtils.isAnimatedIconHash(e.instance.props.user.banner) && e.instance.props.user.getBannerURL(true));
 					if (validUrls.length) BDFDB.ContextMenuUtils.open(this, event, BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuGroup, {
@@ -1054,7 +1061,7 @@ module.exports = (_ => {
 							BDFDB.LibraryRequires.electron.clipboard.write({image: BDFDB.LibraryRequires.electron.nativeImage.createFromBuffer(body)});
 						}
 						else {
-							let file = BDFDB.LibraryRequires.path.join(BDFDB.LibraryRequires.process.env.HOME, "imageutilstempimg.png");
+							let file = BDFDB.LibraryRequires.path.join(BDFDB.LibraryRequires.process.resourcesPath, "imageutilstempimg.png");
 							BDFDB.LibraryRequires.fs.writeFileSync(file, body, {encoding: null});
 							BDFDB.LibraryRequires.electron.clipboard.write({image: file});
 							BDFDB.LibraryRequires.fs.unlinkSync(file);
@@ -1069,7 +1076,11 @@ module.exports = (_ => {
 				let homePath = BDFDB.LibraryRequires.process.env.USERPROFILE || BDFDB.LibraryRequires.process.env.HOMEPATH || BDFDB.LibraryRequires.process.env.HOME;
 				let downloadPath = homePath && BDFDB.LibraryRequires.path.join(homePath, "Downloads");
 				if (downloadPath && BDFDB.LibraryRequires.fs.existsSync(downloadPath)) return downloadsFolder = downloadPath;
-				return downloadsFolder = BDFDB.BDUtils.getPluginsFolder();
+				else {
+					downloadsFolder = BDFDB.LibraryRequires.path.join(BDFDB.BDUtils.getPluginsFolder(), "downloads");
+					if (!BDFDB.LibraryRequires.fs.existsSync(downloadsFolder)) BDFDB.LibraryRequires.fs.mkdirSync(downloadsFolder);
+					return downloadsFolder;
+				}
 			}
 			
 			getFileName (path, fileName, extension, i) {
@@ -1196,6 +1207,19 @@ module.exports = (_ => {
 							toast_save_failed:					"{{var0}} не можа да бъде запазен в '{{var1}}'",
 							toast_save_success:					"{{var0}} бе запазено в '{{var1}}'"
 						};
+					case "cs":		// Czech
+						return {
+							context_copy:						"Zkopírovat {{var0}}",
+							context_lenssize:					"Velikost lupy",
+							context_saveas:						"Uložit {{var0}} jako...",
+							context_searchwith:					"Hledat {{var0}} pomocí...",
+							context_view:						"Zobrazit {{var0}}",
+							submenu_disabled:					"Vše zakázáno",
+							toast_copy_failed:					"{{var0}} nemohl být zkopírován do schránky",
+							toast_copy_success:					"{{var0}} byl zkopírován do schránky",
+							toast_save_failed:					"{{var0}} nemohl být uložen do '{{var1}}'",
+							toast_save_success:					"{{var0}} bylo uložen do '{{var1}}'"
+						};
 					case "da":		// Danish
 						return {
 							context_copy:						"Kopiér {{var0}}",
@@ -1273,6 +1297,19 @@ module.exports = (_ => {
 							toast_copy_success:					"{{var0}} a été copié dans le presse-papiers",
 							toast_save_failed:					"{{var0}} n'a pas pu être enregistré dans '{{var1}}'",
 							toast_save_success:					"{{var0}} a été enregistré dans '{{var1}}'"
+						};
+					case "hi":		// Hindi
+						return {
+							context_copy:						"कॉपी {{var0}}",
+							context_lenssize:					"लेंस का आकार",
+							context_saveas:						"{{var0}} को इस रूप में सेव करें...",
+							context_searchwith:					"इसके साथ {{var0}} खोजें ...",
+							context_view:						"देखें {{var0}}",
+							submenu_disabled:					"सभी अक्षम",
+							toast_copy_failed:					"{{var0}} को क्लिपबोर्ड पर कॉपी नहीं किया जा सका",
+							toast_copy_success:					"{{var0}} को क्लिपबोर्ड पर कॉपी किया गया था",
+							toast_save_failed:					"{{var0}} '{{var1}}' में सहेजा नहीं जा सका",
+							toast_save_success:					"{{var0}} '{{var1}}' में सहेजा गया था"
 						};
 					case "hr":		// Croatian
 						return {

@@ -10,20 +10,6 @@
 		"ownAdminTagName": "Admin",
 		"ownManagementTagName": "Management"
 	},
-	"settings": {
-		"addForAdmins": false,
-		"addForManagement": false,
-		"addInChatWindow": true,
-		"addInMemberList": true,
-		"addInUserPopout": true,
-		"addInUserProfile": true,
-		"addInVoiceList": true,
-		"hideNativeCrown": true,
-		"ignoreBotAdmins": false,
-		"useBlackFont": false,
-		"useCrown": false,
-		"useRoleColor": true
-	},
 	"tagPlaces": {
 		"chat": true,
 		"memberList": true,

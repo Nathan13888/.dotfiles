@@ -1,18 +1,8 @@
 {
 	"bindings": {
-		"Copy_Link": {
-			"click": 0,
-			"keycombo": [
-				17,
-				81
-			]
-		},
-		"Copy_Raw": {
-			"click": 0,
-			"keycombo": [
-				17,
-				68
-			]
+		"Edit_Message": {
+			"click": 1,
+			"keycombo": []
 		},
 		"Delete_Message": {
 			"click": 0,
@@ -20,14 +10,17 @@
 				46
 			]
 		},
-		"Edit_Message": {
-			"click": 1,
-			"keycombo": []
-		},
 		"Pin/Unpin_Message": {
 			"click": 0,
 			"keycombo": [
 				17
+			]
+		},
+		"Reply_to_Message": {
+			"click": 0,
+			"keycombo": [
+				17,
+				72
 			]
 		},
 		"React_to_Message": {
@@ -37,17 +30,18 @@
 				83
 			]
 		},
-		"Reply_to_Message": {
+		"Copy_Raw": {
 			"click": 0,
 			"keycombo": [
 				17,
-				84
+				68
 			]
 		},
-		"__Note_Message": {
+		"Copy_Link": {
 			"click": 0,
 			"keycombo": [
-				16
+				17,
+				81
 			]
 		},
 		"__Quote_Message": {
@@ -57,43 +51,48 @@
 				87
 			]
 		},
+		"__Note_Message": {
+			"click": 0,
+			"keycombo": [
+				16
+			]
+		},
+		"__Translate_Message": {
+			"click": 0,
+			"keycombo": [
+				20
+			]
+		},
 		"__Reveal_Spoilers": {
 			"click": 0,
 			"keycombo": [
 				17,
 				74
 			]
-		},
-		"__Translate_Message": {
-			"click": 0,
-			"keycombo": [
-				37,
-				84
-			]
 		}
 	},
 	"settings": {
-		"Copy_Link": true,
-		"Copy_Raw": true,
-		"Delete_Message": true,
-		"Edit_Message": true,
-		"Pin/Unpin_Message": true,
-		"React_to_Message": true,
-		"Reply_to_Message": true,
-		"__Note_Message": false,
-		"__Quote_Message": false,
-		"__Reveal_Spoilers": false,
-		"__Translate_Message": false,
 		"addHints": true,
-		"clearOnEscape": true
+		"clearOnEscape": true,
+		"Edit_Message": true,
+		"Delete_Message": true,
+		"Pin/Unpin_Message": true,
+		"Reply_to_Message": true,
+		"React_to_Message": true,
+		"Copy_Raw": true,
+		"Copy_Link": true,
+		"__Quote_Message": false,
+		"__Note_Message": false,
+		"__Translate_Message": false,
+		"__Reveal_Spoilers": false
 	},
 	"toasts": {
-		"Copy_Link": true,
-		"Copy_Raw": true,
-		"Delete_Message": true,
 		"Edit_Message": false,
+		"Delete_Message": true,
 		"Pin/Unpin_Message": true,
+		"Reply_to_Message": true,
 		"React_to_Message": false,
-		"Reply_to_Message": true
+		"Copy_Raw": true,
+		"Copy_Link": true
 	}
 }

@@ -1,0 +1,13 @@
+{
+	"dates": {
+		"timestampDate": {},
+		"tooltipDate": {}
+	},
+	"general": {
+		"showInChat": true,
+		"showInEmbed": true,
+		"showInAuditLogs": true,
+		"changeForChat": true,
+		"changeForEdit": true
+	}
+}

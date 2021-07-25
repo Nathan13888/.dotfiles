@@ -65,6 +65,6 @@
         "imageCacheDir": "/home/attackercow/.config/BetterDiscord/plugins/MLV2_IMAGE_CACHE",
         "flags": 2,
         "autoUpdate": true,
-        "versionInfo": "1.7.71"
+        "versionInfo": "1.7.72"
     }
 }

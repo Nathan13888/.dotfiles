@@ -2,7 +2,7 @@
  * @name BDFDB
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 1.7.9
+ * @version 1.7.10
  * @description Required Library for DevilBro's Plugins
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -19,22 +19,10 @@ module.exports = (_ => {
 		"info": {
 			"name": "BDFDB",
 			"author": "DevilBro",
-			"version": "1.7.9",
+			"version": "1.7.10",
 			"description": "Required Library for DevilBro's Plugins"
 		},
-		"rawUrl": `https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js`,
-		"changeLog": {
-			"progress": {
-				"Vacation": "I am back from Vacation"
-			},
-			"fixed": {
-				"Text Scrollers": "No longer get stuck at the end position sometimes",
-				"Popups": "Open again (PersonalPins, ClickableMentions, Date Formatters, etc.)"
-			},
-			"added": {
-				"Data Attributes": "Added user id data attribute to body"
-			}
-		}
+		"rawUrl": `https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js`
 	};
 	
 	const DiscordObjects = {};
@@ -2197,9 +2185,9 @@ module.exports = (_ => {
 							methodArguments: arguments,
 							originalMethod: originalMethod,
 							originalMethodName: methodName,
-							callOriginalMethod: _ => {if (!stopCall) data.returnValue = data.originalMethod.apply(data.thisObject, data.methodArguments)},
-							callOriginalMethodAfterwards: _ => {callInstead = true;},
-							stopOriginalMethodCall: _ => {stopCall = true;}
+							callOriginalMethod: _ => data.returnValue = data.originalMethod.apply(data.thisObject, data.methodArguments),
+							callOriginalMethodAfterwards: _ => callInstead = true,
+							stopOriginalMethodCall: _ => stopCall = true
 						};
 						if (module.BDFDB_patches && module.BDFDB_patches[methodName]) {
 							for (let priority in module.BDFDB_patches[methodName].before) for (let id in BDFDB.ObjectUtils.sort(module.BDFDB_patches[methodName].before[priority])) {
@@ -3061,8 +3049,12 @@ module.exports = (_ => {
 			let channel = typeof channelOrId == "string" ? LibraryModules.ChannelStore.getChannel(channelOrId) : channelOrId;
 			return BDFDB.ObjectUtils.is(channel) && (channel.type == BDFDB.DiscordConstants.ChannelTypes.GUILD_TEXT || channel.type == BDFDB.DiscordConstants.ChannelTypes.GUILD_STORE || channel.type == BDFDB.DiscordConstants.ChannelTypes.GUILD_ANNOUNCEMENT);
 		};
+		BDFDB.ChannelUtils.isThread = function (channelOrId) {
+			let channel = typeof channelOrId == "string" ? LibraryModules.ChannelStore.getChannel(channelOrId) : channelOrId;
+			return channel && channel.isThread();
+		};
 		BDFDB.ChannelUtils.markAsRead = function (channelIds) {
-			let unreadChannels = [channelIds].flat(10).filter(id => id && typeof id == "string" && BDFDB.ChannelUtils.isTextChannel(id) && (LibraryModules.UnreadChannelUtils.hasUnread(id) || LibraryModules.UnreadChannelUtils.getMentionCount(id) > 0)).map(id => ({
+			let unreadChannels = [channelIds].flat(10).filter(id => id && typeof id == "string" && (BDFDB.ChannelUtils.isTextChannel(id) || BDFDB.ChannelUtils.isThread(id)) && (LibraryModules.UnreadChannelUtils.hasUnread(id) || LibraryModules.UnreadChannelUtils.getMentionCount(id) > 0)).map(id => ({
 				channelId: id,
 				messageId: LibraryModules.UnreadChannelUtils.lastMessageId(id)
 			}));
@@ -4510,7 +4502,7 @@ module.exports = (_ => {
 							formatVars[err.toString().split("for: ")[1]] = value != null ? (value === 0 ? "0" : value) : "undefined";
 							if (stringObj.intMessage) {
 								try {for (let hook of stringObj.intMessage.format(formatVars).match(/\([^\(\)]+\)/gi)) formatVars[hook.replace(/[\(\)]/g, "")] = n => n;}
-								catch (err2) {if (item == "USER_ACTIVITY_LISTENING_ARTISTS") console.log(2, err2, formatVars);}
+								catch (err2) {}
 							}
 						}
 					}
@@ -5051,24 +5043,23 @@ module.exports = (_ => {
 				if (!this.props.value) return style;
 				style = Object.assign({}, style);
 				this.props.color = typeof this.props.getColor == "function" ? this.props.getColor(this.props.value) : this.props.color;
-				style.borderColor = this.props.color;
-				if (InternalComponents.NativeSubComponents.Checkbox.Types) switch (this.props.type) {
-					case InternalComponents.NativeSubComponents.Checkbox.Types.DEFAULT:
+				if (InternalComponents.LibraryComponents.Checkbox.Types) switch (this.props.type) {
+					case InternalComponents.LibraryComponents.Checkbox.Types.DEFAULT:
 						style.borderColor = this.props.color;
 						break;
-					case InternalComponents.NativeSubComponents.Checkbox.Types.GHOST:
+					case InternalComponents.LibraryComponents.Checkbox.Types.GHOST:
 						let color = BDFDB.ColorUtils.setAlpha(this.props.color, 0.15, "RGB");
 						style.backgroundColor = color;
 						style.borderColor = color;
 						break;
-					case InternalComponents.NativeSubComponents.Checkbox.Types.INVERTED:
+					case InternalComponents.LibraryComponents.Checkbox.Types.INVERTED:
 						style.backgroundColor = this.props.color;
 						style.borderColor = this.props.color;
 				}
 				return style;
 			}
 			getColor() {
-				return this.props.value ? (InternalComponents.NativeSubComponents.Checkbox.Types && this.props.type === InternalComponents.NativeSubComponents.Checkbox.Types.INVERTED ? BDFDB.DiscordConstants.Colors.WHITE : this.props.color) : "transparent";
+				return this.props.value ? (InternalComponents.LibraryComponents.Checkbox.Types && this.props.type === InternalComponents.LibraryComponents.Checkbox.Types.INVERTED ? BDFDB.DiscordConstants.Colors.WHITE : this.props.color) : "transparent";
 			}
 			handleChange(e) {
 				this.props.value = typeof this.props.getValue == "function" ? this.props.getValue(this.props.value, e) : !this.props.value;
@@ -5101,7 +5092,7 @@ module.exports = (_ => {
 							})
 						}),
 						BDFDB.ReactUtils.createElement("div", {
-							className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.checkbox, this.props.shape, this.props.value && BDFDB.disCN.checkboxchecked),
+							className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.checkbox, BDFDB.disCN["checkbox" + this.props.shape], this.props.value && BDFDB.disCN.checkboxchecked),
 							style: Object.assign({
 								width: this.props.size,
 								height: this.props.size,
@@ -5119,6 +5110,16 @@ module.exports = (_ => {
 				});
 			}
 		};
+		InternalComponents.LibraryComponents.Checkbox.Types = {
+			DEFAULT: "DEFAULT",
+			GHOST: "GHOST",
+			INVERTED: "INVERTED"
+		};
+		InternalComponents.LibraryComponents.Checkbox.Shapes = {
+			BOX: "box",
+			ROUND: "round"
+		};
+		InternalBDFDB.setDefaultProps(InternalComponents.LibraryComponents.Checkbox, {type: InternalComponents.LibraryComponents.Checkbox.Types.INVERTED, shape: InternalComponents.LibraryComponents.Checkbox.Shapes.ROUND});
 		
 		InternalComponents.LibraryComponents.Clickable = reactInitialized && class BDFDB_Clickable extends LibraryModules.React.Component {
 			handleClick(e) {if (typeof this.props.onClick == "function") this.props.onClick(e, this);}
@@ -8322,7 +8323,7 @@ module.exports = (_ => {
 			};
 			BDFDB.DevUtils.generateLanguageStrings = function (strings, config = {}) {
 				const language = config.language || "en";
-				const languages = BDFDB.ArrayUtils.removeCopies(BDFDB.ArrayUtils.is(config.languages) ? config.languages : ["en"].concat(BDFDB.LibraryModules.LanguageStore.languages.filter(n => n.enabled).map(n => {
+				const languages = BDFDB.ArrayUtils.removeCopies(BDFDB.ArrayUtils.is(config.languages) ? config.languages : ["en"].concat((BDFDB.LibraryModules.LanguageStore.languages || BDFDB.LibraryModules.LanguageStore._languages).filter(n => n.enabled).map(n => {
 					if (BDFDB.LanguageUtils.languages[n.code]) return n.code;
 					else {
 						const code = n.code.split("-")[0];

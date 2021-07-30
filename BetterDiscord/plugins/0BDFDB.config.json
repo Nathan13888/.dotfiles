@@ -3,16 +3,16 @@
 		"BDFDB": "1.7.9",
 		"BetterNsfwTag": "1.2.7",
 		"ChatAliases": "2.3.2",
-		"CompleteTimestamps": "1.5.7",
+		"CompleteTimestamps": "1.5.8",
 		"CreationDate": "1.4.6",
 		"DisplayLargeMessages": "1.0.9",
 		"FriendNotifications": "1.7.5",
-		"ImageUtilities": "4.4.4",
+		"ImageUtilities": "4.4.5",
 		"MessageUtilities": "1.9.0",
 		"ShowBadgesInChat": "1.8.0",
-		"ShowHiddenChannels": "3.0.1",
-		"StaffTag": "1.4.6",
-		"Translator": "2.2.9"
+		"ShowHiddenChannels": "3.0.2",
+		"StaffTag": "1.4.7",
+		"Translator": "2.3.0"
 	},
 	"choices": {
 		"toastPosition": "right"

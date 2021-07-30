@@ -115,6 +115,7 @@
 		"SearchPageUtils": {"props": ["searchNextPage", "searchPreviousPage"]},
 		"SettingsStore": {"props": ["guildPositions", "theme"]},
 		"SettingsUtils": {"props": ["updateRemoteSettings", "updateLocalSettings"]},
+		"SimpleMarkdownComponents": {"strings": ["customEmoji", "emojiTooltipPosition", "timestampTooltip"]},
 		"SimpleMarkdownParser": {"props": ["parseBlock", "parseInline", "defaultOutput"]},
 		"SlateUtils": {"props": ["serialize", "deserialize"], "notProps": ["getFlag"]},
 		"SlateSelectionUtils": {"props": ["serialize", "serializeSelection"]},
@@ -136,6 +137,7 @@
 		"StringUtils": {"props": ["cssValueToNumber", "upperCaseFirstChar"]},
 		"TimestampUtils": {"props": ["fromTimestamp", "extractTimestamp"]},
 		"TimeUtils": {"props": ["calendarFormat", "dateFormat"]},
+		"ThreadStore": {"props": ["isActive", "getThreadsForGuild"]},
 		"UnreadGuildUtils": {"props": ["hasUnread", "getUnreadGuilds"]},
 		"UnreadChannelUtils": {"props": ["getUnreadCount", "getOldestUnreadMessageId"]},
 		"UploadUtils": {"props": ["upload", "instantBatchUpload"]},
@@ -178,9 +180,6 @@
 			"DirectMessage",
 			"GuildIcon"
 		],
-		"MemoComponent": [],
-		"SubRender": [],
-		"NonPrototype": [],
 		"Finder": {
 			"Account": {"class": "accountinfo"},
 			"App": {"class": "app"},
@@ -245,6 +244,8 @@
 			"SearchResults": {"class": "searchresultswrap"},
 			"SearchResultsInner": {"strings": ["SEARCH_HIDE_BLOCKED_MESSAGES", "totalResults", "SEARCH_PAGE_SIZE"]},
 			"StandardSidebarView": {"class": "settingswindowstandardsidebarview"},
+			"ThreadCard": {"strings": ["threadId", "gotoThread", "container"]},
+			"ThreadSidebar": {"strings": ["channelId", "collectThreadMetadata", "SIDEBAR"]},
 			"TypingUsers": {"class": "typing"},
 			"UnavailableGuildsButton": {"props": ["UnavailableGuildsButton"]},
 			"UnreadDMs": {"class": "guildsscroller"},
@@ -852,6 +853,7 @@
 			"nickCounter": "nickCounter-tJrO_4",
 			"popoutNoteCounter": "popoutNoteCounter-62U4Rh",
 			"profileNoteCounter": "profileNoteCounter-p0fWA_",
+			"threadCreation": "threadCreation-p0fWA_",
 			"uploadCounter": "uploadCounter-iEGQQk"
 		},
 		"CreationDate": {
@@ -982,7 +984,8 @@
 			"verifiedBadge": "verifiedBadge-mH2YpO"
 		},
 		"ShowHiddenChannels": {
-			"accessModal": "accessModal-w5HjsV"
+			"accessModal": "accessModal-w5HjsV",
+			"hiddenChannel": "hidden-9f2Dsa"
 		},
 		"SpotifyControls": {
 			"activityButton": "activityButton-5Fs4Aa",
@@ -1008,8 +1011,10 @@
 		},
 		"StaffTag": {
 			"adminIcon": "admin-Kv1Hp_",
+			"groupOwnerIcon": "groupOwner-g6FlmA",
 			"managementIcon": "management-3fF_o8",
-			"ownerIcon": "owner-FfFh3B"
+			"ownerIcon": "owner-FfFh3B",
+			"threadCreatorIcon": "threadCreator-lp5sXo"
 		},
 		"ThemeRepo": {
 			"dragBar": "dragBar-4FsRaa",
@@ -1261,8 +1266,10 @@
 		"MessagesLoading": {"props": ["attachment", "blob", "cozy"]},
 		"MessagesWelcome": {"props": ["emptyChannelIcon", "description", "header"]},
 		"MessagesWelcomeButton": {"props": ["button", "buttonIcon"], "length": 2},
+		"MessagesWelcomeThread": {"props": ["iconWrapper", "threadCreatorName"]},
 		"MessagesWrap": {"props": ["messagesWrapper", "messageGroupBlocked"]},
 		"MessageSystem": {"props": ["container", "actionAnchor"]},
+		"MessageSystemAccessories": {"props": ["name", "spine", "cta"]},
 		"MessageToolbar": {"props": ["container", "icon", "isHeader"]},
 		"MessageToolbarItems": {"props": ["wrapper", "button", "separator"]},
 		"Modal": {"props": ["modal", "sizeLarge"]},
@@ -1324,6 +1331,7 @@
 		"TextColor2": {"props": ["muted", "wrapper", "base"]},
 		"TextSize": {"props": ["size10", "size14", "size20"]},
 		"TextStyle": {"props": ["strikethrough", "underline", "bold"]},
+		"ThreadCard": {"props": ["threadName", "container", "facepile"]},
 		"Tip": {"props": ["pro", "inline"]},
 		"TitleBar": {"props": ["titleBar", "wordmark"]},
 		"Tooltip": {"props": ["tooltip", "tooltipTop"]},
@@ -1381,6 +1389,7 @@
 		"_charcounternickcounter": ["CharCounter", "nickCounter"],
 		"_charcounterpopoutnotecounter": ["CharCounter", "popoutNoteCounter"],
 		"_charcounterprofilenotecounter": ["CharCounter", "profileNoteCounter"],
+		"_charcounterthreadcreationcounter": ["CharCounter", "threadCreation"],
 		"_charcounteruploadcounter": ["CharCounter", "uploadCounter"],
 		"_creationdatedate": ["CreationDate", "date"],
 		"_customstatuspresetscustomstatusitem": ["CustomStatusPresets", "customStatusItem"],
@@ -1470,6 +1479,7 @@
 		"_showconnectionsicon": ["ShowConnections", "connectionIcon"],
 		"_showconnectionsverifiedbadge": ["ShowConnections", "verifiedBadge"],
 		"_showhiddenchannelsaccessmodal": ["ShowHiddenChannels", "accessModal"],
+		"_showhiddenchannelshiddenchannel": ["ShowHiddenChannels", "hiddenChannel"],
 		"_spellcheckerror": ["SpellCheck", "error"],
 		"_spellcheckoverlay": ["SpellCheck", "overlay"],
 		"_spotifycontrolsactivitybutton": ["SpotifyControls", "activityButton"],
@@ -1493,8 +1503,10 @@
 		"_spotifycontrolstimeline": ["SpotifyControls", "timeline"],
 		"_spotifycontrolsvolumeslider": ["SpotifyControls", "volumeSlider"],
 		"_stafftagadminicon": ["StaffTag", "adminIcon"],
+		"_stafftaggroupownericon": ["StaffTag", "groupOwnerIcon"],
 		"_stafftagmanagementicon": ["StaffTag", "managementIcon"],
 		"_stafftagownericon": ["StaffTag", "ownerIcon"],
+		"_stafftagthreadcreatoricon": ["StaffTag", "threadCreatorIcon"],
 		"_themerepodragbar": ["ThemeRepo", "dragBar"],
 		"_themerepodragcorner": ["ThemeRepo", "dragCorner"],
 		"_themerepodraginterface": ["ThemeRepo", "dragInterface"],
@@ -2455,6 +2467,8 @@
 		"messagemarkupisfailed": ["MessageBody", "isFailed"],
 		"messagemarkupissending": ["MessageBody", "isSending"],
 		"messagemarkuprtl": ["MessageBody", "markupRtl"],
+		"messagemarkuptimestamp": ["MessageMarkup", "timestamp"],
+		"messagemarkuptimestamptooltip": ["MessageMarkup", "timestampTooltip"],
 		"messagementioned": ["Message", "mentioned"],
 		"messagepopout": ["MessagePopout", "message"],
 		"messageoperations": ["MessageOperations", "operations"],
@@ -2527,6 +2541,7 @@
 		"messageswelcomeemptychannelicon": ["MessagesWelcome", "emptyChannelIcon"],
 		"messageswelcomeheader": ["MessagesWelcome", "header"],
 		"messageswelcomelocked": ["MessagesWelcome", "locked"],
+		"messageswelcomethreadcreator": ["MessagesWelcomeThread", "threadCreatorName"],
 		"messageswrapper": ["MessagesWrap", "messagesWrapper"],
 		"messagesystem": ["Message", "systemMessage"],
 		"messagesystemaccessories": ["MessageBody", "systemMessageAccessories"],
@@ -2535,6 +2550,10 @@
 		"messagesystemicon": ["MessageSystem", "icon"],
 		"messagesystemiconcontainer": ["MessageSystem", "iconContainer"],
 		"messagesystemiconsize": ["MessageSystem", "iconSize"],
+		"messagesystemname": ["MessageSystemAccessories", "name"],
+		"messagethreadaccessory": ["MessageBody", "threadMessageAccessory"],
+		"messagethreadaccessoryavatar": ["MessageBody", "threadMessageAccessoryAvatar"],
+		"messagethreadaccessorypreview": ["MessageBody", "threadMessageAccessoryPreview"],
 		"messagetimedivider": ["MessageDivider", "divider"],
 		"messagetimedividercontent": ["MessageDivider", "content"],
 		"messagetimedividerhascontent": ["MessageDivider", "hasContent"],
@@ -2942,6 +2961,10 @@
 		"themedark": ["NotFound", "themeDark"],
 		"themelight": ["NotFound", "themeLight"],
 		"themeundefined": ["NotFound", "themeUndefined"],
+		"threadcard": ["ThreadCard", "container"],
+		"threadcardauthor": ["ThreadCard", "authorName"],
+		"threadcardavatar": ["ThreadCard", "avatar"],
+		"threadcardname": ["ThreadCard", "threadName"],
 		"tip": ["Tip", "tip"],
 		"tipblock": ["Tip", "block"],
 		"tippro": ["Tip", "pro"],
@@ -5036,8 +5059,7 @@
 		"174868361040232448": 	{"active": false,		"tier": "t2",		"text": "",					"color": "",			"id": "GIBBU (Ian) Note: Asked to disable"},
 		"363785301195358221": 	{"active": true,		"tier": "t2",		"text": "",					"color": "",			"id": "TRENT (KABEL)"},
 		"443943393660239872": 	{"active": false,		"tier": "t3",		"text": "",					"color": "",			"id": "SARGE (PaSh)"},
-		"620397524494057513": 	{"active": true,		"tier": "t3",		"text": "",					"color": "",			"id": "FUSL"},
-		"838434341197316126": 	{"active": true,		"tier": "t4",		"text": "Allmächtig",		"color": "",			"id": "ZeroAccess"}
+		"620397524494057513": 	{"active": true,		"tier": "t3",		"text": "",					"color": "",			"id": "FUSL"}
 	},
 	"BDFDB_Patron_Tiers": {
 		"t1": {

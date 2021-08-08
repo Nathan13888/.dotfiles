@@ -4,6 +4,7 @@
         "hasShownChangelog": true
     },
     "settings": {
-        "autoEnable": true
+        "autoEnable": true,
+        "exclude": []
     }
 }

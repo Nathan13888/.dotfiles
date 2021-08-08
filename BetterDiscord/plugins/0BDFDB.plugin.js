@@ -2,7 +2,7 @@
  * @name BDFDB
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 1.7.10
+ * @version 1.7.13
  * @description Required Library for DevilBro's Plugins
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -19,10 +19,15 @@ module.exports = (_ => {
 		"info": {
 			"name": "BDFDB",
 			"author": "DevilBro",
-			"version": "1.7.10",
+			"version": "1.7.13",
 			"description": "Required Library for DevilBro's Plugins"
 		},
-		"rawUrl": `https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js`
+		"rawUrl": `https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js`,
+		"changeLog": {
+			"fixed": {
+				"Date Formatter": "No longer shows future dates as 'today'"
+			}
+		}
 	};
 	
 	const DiscordObjects = {};
@@ -1955,12 +1960,16 @@ module.exports = (_ => {
 					methodNames = BDFDB.ArrayUtils.removeCopies(methodNames).flat(10).filter(n => n);
 					if (methodNames.includes("componentDidMount")) InternalBDFDB.initiateProcess(plugin, type, {
 						instance: instance,
+						returnvalue: undefined,
+						component: undefined,
 						methodname: "componentDidMount",
 						patchtypes: pluginData.patchTypes[type]
 					});
 					if (methodNames.includes("render")) forceRender = true;
 					else if (!forceRender && methodNames.includes("componentDidUpdate")) InternalBDFDB.initiateProcess(plugin, type, {
 						instance: instance,
+						returnvalue: undefined,
+						component: undefined,
 						methodname: "componentDidUpdate",
 						patchtypes: pluginData.patchTypes[type]
 					});
@@ -2048,14 +2057,13 @@ module.exports = (_ => {
 					toBePatched = toBePatched && toBePatched.type && typeof toBePatched.type.render == "function" ? toBePatched.type : toBePatched;
 					for (let pluginData of pluginDataObjs) for (let patchType in pluginData.patchTypes) {
 						let patchMethods = {};
-						patchMethods[patchType] = e => {
-							return InternalBDFDB.initiateProcess(pluginData.plugin, type, {
-								instance: e.thisObject,
-								returnvalue: e.returnValue,
-								methodname: e.originalMethodName,
-								patchtypes: [patchType]
-							});
-						};
+						patchMethods[patchType] = e => InternalBDFDB.initiateProcess(pluginData.plugin, type, {
+							instance: e.thisObject,
+							returnvalue: e.returnValue,
+							component: toBePatched,
+							methodname: e.originalMethodName,
+							patchtypes: [patchType]
+						});
 						BDFDB.PatchUtils.patch(pluginData.plugin, toBePatched, pluginData.patchTypes[patchType], patchMethods, {name});
 					}
 				}
@@ -2068,7 +2076,7 @@ module.exports = (_ => {
 			}) && ins.return.type;
 		};
 		InternalBDFDB.isMemo = function (exports) {
-			return exports && exports.default && typeof exports.default.$$typeof == "symbol" && (exports.default.$$typeof.toString() || "").indexOf("memo") > -1
+			return exports && exports.default && typeof exports.default.$$typeof == "symbol" && (exports.default.$$typeof.toString() || "").indexOf("memo") > -1;
 		};
 		InternalBDFDB.checkEle = function (pluginDataObjs, ele, type, config) {
 			pluginDataObjs = [pluginDataObjs].flat(10).filter(n => n);
@@ -5879,9 +5887,10 @@ module.exports = (_ => {
 				.replace(/\$month/g, timeObj.toLocaleDateString(language, {month: "long"}))
 				.replace(/\$dayS/g, timeObj.toLocaleDateString(language, {weekday: "short"}))
 				.replace(/\$day/g, timeObj.toLocaleDateString(language, {weekday: "long"}))
-				.replace(/\$agoAmount/g, daysAgo > 1 ? BDFDB.LanguageUtils.LanguageStringsFormat(`GAME_LIBRARY_LAST_PLAYED_${daysAgo > 80 ? "MONTHS" : daysAgo > 30 ? "WEEKS" : "DAYS"}`, daysAgo > 80 ? Math.round(daysAgo/30) : daysAgo > 30 ? Math.round(daysAgo/7) : daysAgo) : BDFDB.LanguageUtils.LanguageStrings[`SEARCH_SHORTCUT_${daysAgo == 1 ? "YESTERDAY" : "TODAY"}`])
-				.replace(/\$agoDays/g, daysAgo > 1 ? BDFDB.LanguageUtils.LanguageStringsFormat(`GAME_LIBRARY_LAST_PLAYED_DAYS`, daysAgo) : BDFDB.LanguageUtils.LanguageStrings[`SEARCH_SHORTCUT_${daysAgo == 1 ? "YESTERDAY" : "TODAY"}`])
-				.replace(/\$agoDate/g, daysAgo > 1 ? date : BDFDB.LanguageUtils.LanguageStrings[`SEARCH_SHORTCUT_${daysAgo == 1 ? "YESTERDAY" : "TODAY"}`]);
+				.replace(/\$agoAmount/g, daysAgo < 0 ? "" : daysAgo > 1 ? BDFDB.LanguageUtils.LanguageStringsFormat(`GAME_LIBRARY_LAST_PLAYED_${daysAgo > 80 ? "MONTHS" : daysAgo > 30 ? "WEEKS" : "DAYS"}`, daysAgo > 80 ? Math.round(daysAgo/30) : daysAgo > 30 ? Math.round(daysAgo/7) : daysAgo) : BDFDB.LanguageUtils.LanguageStrings[`SEARCH_SHORTCUT_${daysAgo == 1 ? "YESTERDAY" : "TODAY"}`])
+				.replace(/\$agoDays/g, daysAgo < 0 ? "" : daysAgo > 1 ? BDFDB.LanguageUtils.LanguageStringsFormat(`GAME_LIBRARY_LAST_PLAYED_DAYS`, daysAgo) : BDFDB.LanguageUtils.LanguageStrings[`SEARCH_SHORTCUT_${daysAgo == 1 ? "YESTERDAY" : "TODAY"}`])
+				.replace(/\$agoDate/g, daysAgo < 0 ? "" : daysAgo > 1 ? date : BDFDB.LanguageUtils.LanguageStrings[`SEARCH_SHORTCUT_${daysAgo == 1 ? "YESTERDAY" : "TODAY"}`])
+				.replace(/\(\)|\[\]/g, "").replace(/,\s*$|^\s*,/g, "").replace(/ +/g, " ").trim();
 		};
 		InternalComponents.LibraryComponents.DateInput.formatDate = function (data, time) {
 			if (typeof data == "string") data = {dateString: data};
@@ -5899,7 +5908,8 @@ module.exports = (_ => {
 				.replace(/\$mm/g, timeObj.toLocaleDateString(language, {month: "2-digit"}))
 				.replace(/\$m/g, timeObj.toLocaleDateString(language, {month: "numeric"}))
 				.replace(/\$yyyy/g, timeObj.toLocaleDateString(language, {year: "numeric"}))
-				.replace(/\$yy/g, timeObj.toLocaleDateString(language, {year: "2-digit"}));
+				.replace(/\$yy/g, timeObj.toLocaleDateString(language, {year: "2-digit"}))
+				.trim();
 		};
 		InternalComponents.LibraryComponents.DateInput.formatTime = function (data, time, hour12) {
 			if (typeof data == "string") data = {timeString: data};
@@ -5926,7 +5936,8 @@ module.exports = (_ => {
 				.replace(/\$ss/g, seconds < 10 ? `0${seconds}` : seconds)
 				.replace(/\$s/g, seconds)
 				.replace(/\$uu/g, milli < 10 ? `00${seconds}` : milli < 100 ? `0${milli}` : milli)
-				.replace(/\$u/g, milli);
+				.replace(/\$u/g, milli)
+				.trim();
 
 			let digits = "\\d";
 			if (BDFDB.LanguageUtils.languages[language] && BDFDB.LanguageUtils.languages[language].numberMap) {

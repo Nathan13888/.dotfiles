@@ -236,6 +236,7 @@ bindsym $mod+Control+0 move container to workspace $ws10; workspace $ws10
 # ASSIGN WORKSPACE
 #assign [class="^Firefox$"] 1
 assign [class="^Joplin$"] 2
+assign [class="^zoom$"] 2
 assign [class="Teams"] 3
 assign [class="discord"] 4
 assign [class="Signal"] 4
@@ -248,6 +249,7 @@ for_window [class="Spotify"] no_focus, move to workspace $ws10
 
 # NO FOCUS
 #no_focus [class=".*"]
+no_focus [class="^zoom$"]
 no_focus [class="Eclipse"]
 no_focus [title="Eclipse IDE "]
 no_focus [class="Signal"]

@@ -10,7 +10,6 @@
 - doom emacs
   - git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d ~/.emacs.d/bin/doom install alacritty
 - firefox-nightly
-- torbrowser-launcher nyx tor
 - ungoogled-chromium
 - neofetch pfetch
 - thefuck (or with PIP)
@@ -29,6 +28,7 @@
 ## Communication
 - discord-ptb betterdiscord-installer
 - signal-desktop
+- element-desktop-nightly-bin
 - teams
 
 # xmonad
@@ -56,7 +56,8 @@
 - rofi
 - network-manager-applet
 - bluez bluez-utils bluez-openrc
-- fprintd fingerprint-gui
+- fprintd libfprint (or from git `fprintd-libfprint2` `libprint-git`)
+- fingerprint-gui
 - xbindkeys
 - xbacklight
 - dunst
@@ -75,6 +76,7 @@
 - gnupg
 - *(misc)*
 - pcmanfm
+- file-roller
 - vifm nnn
 - calcurse
 - lynx
@@ -164,6 +166,9 @@
 - gstreamer
 
 ## Clients
+- torbrowser-launcher nyx tor tor-openrc
+- proxychains
+
 - transmission-gtk (or -qt)
 - filezilla
 - tigervnc
@@ -193,6 +198,7 @@
 - wol (wake on lan)
 - QMK
 - android-udev android-file-transfer go-mtpfs-git mtpfs
+- android-tools
 - xcolor
 - ddgr
 - traceroute
@@ -203,6 +209,7 @@
 - pciutils usbutils
 - nut (ups)
 - cifs-utils (for Samba)
+- ntfs-3g dosfstools exfatprogs xfsprogs btrfs-progs
 - wakatime
 - curl, wget, rpm
 - zram-config --> setup https://github.com/StuartIanNaylor/zram-config
@@ -222,6 +229,7 @@
 ## Benchmark
 - Phoronix Test Suite
 - fio
+- hdparm smartmontools
 - geekbench
 - hashcat -B
 - cinfo

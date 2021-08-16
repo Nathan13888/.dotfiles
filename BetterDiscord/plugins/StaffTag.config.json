@@ -7,6 +7,8 @@
 	},
 	"inputs": {
 		"ownOwnerTagName": "Owner",
+		"ownGroupOwnerTagName": "Group Owner",
+		"ownThreadCreatorTagName": "Creator",
 		"ownAdminTagName": "Admin",
 		"ownManagementTagName": "Management"
 	},
@@ -19,6 +21,8 @@
 	},
 	"tagTypes": {
 		"owners": true,
+		"groupOwners": true,
+		"threadCreators": true,
 		"admins": true,
 		"managementG": true,
 		"managementC": true,

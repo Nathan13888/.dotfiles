@@ -2,7 +2,7 @@
  * @name BDFDB
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 1.7.9
+ * @version 1.7.13
  * @description Required Library for DevilBro's Plugins
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -19,20 +19,13 @@ module.exports = (_ => {
 		"info": {
 			"name": "BDFDB",
 			"author": "DevilBro",
-			"version": "1.7.9",
+			"version": "1.7.13",
 			"description": "Required Library for DevilBro's Plugins"
 		},
 		"rawUrl": `https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js`,
 		"changeLog": {
-			"progress": {
-				"Vacation": "I am back from Vacation"
-			},
 			"fixed": {
-				"Text Scrollers": "No longer get stuck at the end position sometimes",
-				"Popups": "Open again (PersonalPins, ClickableMentions, Date Formatters, etc.)"
-			},
-			"added": {
-				"Data Attributes": "Added user id data attribute to body"
+				"Date Formatter": "No longer shows future dates as 'today'"
 			}
 		}
 	};
@@ -1967,12 +1960,16 @@ module.exports = (_ => {
 					methodNames = BDFDB.ArrayUtils.removeCopies(methodNames).flat(10).filter(n => n);
 					if (methodNames.includes("componentDidMount")) InternalBDFDB.initiateProcess(plugin, type, {
 						instance: instance,
+						returnvalue: undefined,
+						component: undefined,
 						methodname: "componentDidMount",
 						patchtypes: pluginData.patchTypes[type]
 					});
 					if (methodNames.includes("render")) forceRender = true;
 					else if (!forceRender && methodNames.includes("componentDidUpdate")) InternalBDFDB.initiateProcess(plugin, type, {
 						instance: instance,
+						returnvalue: undefined,
+						component: undefined,
 						methodname: "componentDidUpdate",
 						patchtypes: pluginData.patchTypes[type]
 					});
@@ -2060,14 +2057,13 @@ module.exports = (_ => {
 					toBePatched = toBePatched && toBePatched.type && typeof toBePatched.type.render == "function" ? toBePatched.type : toBePatched;
 					for (let pluginData of pluginDataObjs) for (let patchType in pluginData.patchTypes) {
 						let patchMethods = {};
-						patchMethods[patchType] = e => {
-							return InternalBDFDB.initiateProcess(pluginData.plugin, type, {
-								instance: e.thisObject,
-								returnvalue: e.returnValue,
-								methodname: e.originalMethodName,
-								patchtypes: [patchType]
-							});
-						};
+						patchMethods[patchType] = e => InternalBDFDB.initiateProcess(pluginData.plugin, type, {
+							instance: e.thisObject,
+							returnvalue: e.returnValue,
+							component: toBePatched,
+							methodname: e.originalMethodName,
+							patchtypes: [patchType]
+						});
 						BDFDB.PatchUtils.patch(pluginData.plugin, toBePatched, pluginData.patchTypes[patchType], patchMethods, {name});
 					}
 				}
@@ -2080,7 +2076,7 @@ module.exports = (_ => {
 			}) && ins.return.type;
 		};
 		InternalBDFDB.isMemo = function (exports) {
-			return exports && exports.default && typeof exports.default.$$typeof == "symbol" && (exports.default.$$typeof.toString() || "").indexOf("memo") > -1
+			return exports && exports.default && typeof exports.default.$$typeof == "symbol" && (exports.default.$$typeof.toString() || "").indexOf("memo") > -1;
 		};
 		InternalBDFDB.checkEle = function (pluginDataObjs, ele, type, config) {
 			pluginDataObjs = [pluginDataObjs].flat(10).filter(n => n);
@@ -2197,9 +2193,9 @@ module.exports = (_ => {
 							methodArguments: arguments,
 							originalMethod: originalMethod,
 							originalMethodName: methodName,
-							callOriginalMethod: _ => {if (!stopCall) data.returnValue = data.originalMethod.apply(data.thisObject, data.methodArguments)},
-							callOriginalMethodAfterwards: _ => {callInstead = true;},
-							stopOriginalMethodCall: _ => {stopCall = true;}
+							callOriginalMethod: _ => data.returnValue = data.originalMethod.apply(data.thisObject, data.methodArguments),
+							callOriginalMethodAfterwards: _ => callInstead = true,
+							stopOriginalMethodCall: _ => stopCall = true
 						};
 						if (module.BDFDB_patches && module.BDFDB_patches[methodName]) {
 							for (let priority in module.BDFDB_patches[methodName].before) for (let id in BDFDB.ObjectUtils.sort(module.BDFDB_patches[methodName].before[priority])) {
@@ -3061,8 +3057,12 @@ module.exports = (_ => {
 			let channel = typeof channelOrId == "string" ? LibraryModules.ChannelStore.getChannel(channelOrId) : channelOrId;
 			return BDFDB.ObjectUtils.is(channel) && (channel.type == BDFDB.DiscordConstants.ChannelTypes.GUILD_TEXT || channel.type == BDFDB.DiscordConstants.ChannelTypes.GUILD_STORE || channel.type == BDFDB.DiscordConstants.ChannelTypes.GUILD_ANNOUNCEMENT);
 		};
+		BDFDB.ChannelUtils.isThread = function (channelOrId) {
+			let channel = typeof channelOrId == "string" ? LibraryModules.ChannelStore.getChannel(channelOrId) : channelOrId;
+			return channel && channel.isThread();
+		};
 		BDFDB.ChannelUtils.markAsRead = function (channelIds) {
-			let unreadChannels = [channelIds].flat(10).filter(id => id && typeof id == "string" && BDFDB.ChannelUtils.isTextChannel(id) && (LibraryModules.UnreadChannelUtils.hasUnread(id) || LibraryModules.UnreadChannelUtils.getMentionCount(id) > 0)).map(id => ({
+			let unreadChannels = [channelIds].flat(10).filter(id => id && typeof id == "string" && (BDFDB.ChannelUtils.isTextChannel(id) || BDFDB.ChannelUtils.isThread(id)) && (LibraryModules.UnreadChannelUtils.hasUnread(id) || LibraryModules.UnreadChannelUtils.getMentionCount(id) > 0)).map(id => ({
 				channelId: id,
 				messageId: LibraryModules.UnreadChannelUtils.lastMessageId(id)
 			}));
@@ -4510,7 +4510,7 @@ module.exports = (_ => {
 							formatVars[err.toString().split("for: ")[1]] = value != null ? (value === 0 ? "0" : value) : "undefined";
 							if (stringObj.intMessage) {
 								try {for (let hook of stringObj.intMessage.format(formatVars).match(/\([^\(\)]+\)/gi)) formatVars[hook.replace(/[\(\)]/g, "")] = n => n;}
-								catch (err2) {if (item == "USER_ACTIVITY_LISTENING_ARTISTS") console.log(2, err2, formatVars);}
+								catch (err2) {}
 							}
 						}
 					}
@@ -5051,24 +5051,23 @@ module.exports = (_ => {
 				if (!this.props.value) return style;
 				style = Object.assign({}, style);
 				this.props.color = typeof this.props.getColor == "function" ? this.props.getColor(this.props.value) : this.props.color;
-				style.borderColor = this.props.color;
-				if (InternalComponents.NativeSubComponents.Checkbox.Types) switch (this.props.type) {
-					case InternalComponents.NativeSubComponents.Checkbox.Types.DEFAULT:
+				if (InternalComponents.LibraryComponents.Checkbox.Types) switch (this.props.type) {
+					case InternalComponents.LibraryComponents.Checkbox.Types.DEFAULT:
 						style.borderColor = this.props.color;
 						break;
-					case InternalComponents.NativeSubComponents.Checkbox.Types.GHOST:
+					case InternalComponents.LibraryComponents.Checkbox.Types.GHOST:
 						let color = BDFDB.ColorUtils.setAlpha(this.props.color, 0.15, "RGB");
 						style.backgroundColor = color;
 						style.borderColor = color;
 						break;
-					case InternalComponents.NativeSubComponents.Checkbox.Types.INVERTED:
+					case InternalComponents.LibraryComponents.Checkbox.Types.INVERTED:
 						style.backgroundColor = this.props.color;
 						style.borderColor = this.props.color;
 				}
 				return style;
 			}
 			getColor() {
-				return this.props.value ? (InternalComponents.NativeSubComponents.Checkbox.Types && this.props.type === InternalComponents.NativeSubComponents.Checkbox.Types.INVERTED ? BDFDB.DiscordConstants.Colors.WHITE : this.props.color) : "transparent";
+				return this.props.value ? (InternalComponents.LibraryComponents.Checkbox.Types && this.props.type === InternalComponents.LibraryComponents.Checkbox.Types.INVERTED ? BDFDB.DiscordConstants.Colors.WHITE : this.props.color) : "transparent";
 			}
 			handleChange(e) {
 				this.props.value = typeof this.props.getValue == "function" ? this.props.getValue(this.props.value, e) : !this.props.value;
@@ -5101,7 +5100,7 @@ module.exports = (_ => {
 							})
 						}),
 						BDFDB.ReactUtils.createElement("div", {
-							className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.checkbox, this.props.shape, this.props.value && BDFDB.disCN.checkboxchecked),
+							className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.checkbox, BDFDB.disCN["checkbox" + this.props.shape], this.props.value && BDFDB.disCN.checkboxchecked),
 							style: Object.assign({
 								width: this.props.size,
 								height: this.props.size,
@@ -5119,6 +5118,16 @@ module.exports = (_ => {
 				});
 			}
 		};
+		InternalComponents.LibraryComponents.Checkbox.Types = {
+			DEFAULT: "DEFAULT",
+			GHOST: "GHOST",
+			INVERTED: "INVERTED"
+		};
+		InternalComponents.LibraryComponents.Checkbox.Shapes = {
+			BOX: "box",
+			ROUND: "round"
+		};
+		InternalBDFDB.setDefaultProps(InternalComponents.LibraryComponents.Checkbox, {type: InternalComponents.LibraryComponents.Checkbox.Types.INVERTED, shape: InternalComponents.LibraryComponents.Checkbox.Shapes.ROUND});
 		
 		InternalComponents.LibraryComponents.Clickable = reactInitialized && class BDFDB_Clickable extends LibraryModules.React.Component {
 			handleClick(e) {if (typeof this.props.onClick == "function") this.props.onClick(e, this);}
@@ -5878,9 +5887,10 @@ module.exports = (_ => {
 				.replace(/\$month/g, timeObj.toLocaleDateString(language, {month: "long"}))
 				.replace(/\$dayS/g, timeObj.toLocaleDateString(language, {weekday: "short"}))
 				.replace(/\$day/g, timeObj.toLocaleDateString(language, {weekday: "long"}))
-				.replace(/\$agoAmount/g, daysAgo > 1 ? BDFDB.LanguageUtils.LanguageStringsFormat(`GAME_LIBRARY_LAST_PLAYED_${daysAgo > 80 ? "MONTHS" : daysAgo > 30 ? "WEEKS" : "DAYS"}`, daysAgo > 80 ? Math.round(daysAgo/30) : daysAgo > 30 ? Math.round(daysAgo/7) : daysAgo) : BDFDB.LanguageUtils.LanguageStrings[`SEARCH_SHORTCUT_${daysAgo == 1 ? "YESTERDAY" : "TODAY"}`])
-				.replace(/\$agoDays/g, daysAgo > 1 ? BDFDB.LanguageUtils.LanguageStringsFormat(`GAME_LIBRARY_LAST_PLAYED_DAYS`, daysAgo) : BDFDB.LanguageUtils.LanguageStrings[`SEARCH_SHORTCUT_${daysAgo == 1 ? "YESTERDAY" : "TODAY"}`])
-				.replace(/\$agoDate/g, daysAgo > 1 ? date : BDFDB.LanguageUtils.LanguageStrings[`SEARCH_SHORTCUT_${daysAgo == 1 ? "YESTERDAY" : "TODAY"}`]);
+				.replace(/\$agoAmount/g, daysAgo < 0 ? "" : daysAgo > 1 ? BDFDB.LanguageUtils.LanguageStringsFormat(`GAME_LIBRARY_LAST_PLAYED_${daysAgo > 80 ? "MONTHS" : daysAgo > 30 ? "WEEKS" : "DAYS"}`, daysAgo > 80 ? Math.round(daysAgo/30) : daysAgo > 30 ? Math.round(daysAgo/7) : daysAgo) : BDFDB.LanguageUtils.LanguageStrings[`SEARCH_SHORTCUT_${daysAgo == 1 ? "YESTERDAY" : "TODAY"}`])
+				.replace(/\$agoDays/g, daysAgo < 0 ? "" : daysAgo > 1 ? BDFDB.LanguageUtils.LanguageStringsFormat(`GAME_LIBRARY_LAST_PLAYED_DAYS`, daysAgo) : BDFDB.LanguageUtils.LanguageStrings[`SEARCH_SHORTCUT_${daysAgo == 1 ? "YESTERDAY" : "TODAY"}`])
+				.replace(/\$agoDate/g, daysAgo < 0 ? "" : daysAgo > 1 ? date : BDFDB.LanguageUtils.LanguageStrings[`SEARCH_SHORTCUT_${daysAgo == 1 ? "YESTERDAY" : "TODAY"}`])
+				.replace(/\(\)|\[\]/g, "").replace(/,\s*$|^\s*,/g, "").replace(/ +/g, " ").trim();
 		};
 		InternalComponents.LibraryComponents.DateInput.formatDate = function (data, time) {
 			if (typeof data == "string") data = {dateString: data};
@@ -5898,7 +5908,8 @@ module.exports = (_ => {
 				.replace(/\$mm/g, timeObj.toLocaleDateString(language, {month: "2-digit"}))
 				.replace(/\$m/g, timeObj.toLocaleDateString(language, {month: "numeric"}))
 				.replace(/\$yyyy/g, timeObj.toLocaleDateString(language, {year: "numeric"}))
-				.replace(/\$yy/g, timeObj.toLocaleDateString(language, {year: "2-digit"}));
+				.replace(/\$yy/g, timeObj.toLocaleDateString(language, {year: "2-digit"}))
+				.trim();
 		};
 		InternalComponents.LibraryComponents.DateInput.formatTime = function (data, time, hour12) {
 			if (typeof data == "string") data = {timeString: data};
@@ -5925,7 +5936,8 @@ module.exports = (_ => {
 				.replace(/\$ss/g, seconds < 10 ? `0${seconds}` : seconds)
 				.replace(/\$s/g, seconds)
 				.replace(/\$uu/g, milli < 10 ? `00${seconds}` : milli < 100 ? `0${milli}` : milli)
-				.replace(/\$u/g, milli);
+				.replace(/\$u/g, milli)
+				.trim();
 
 			let digits = "\\d";
 			if (BDFDB.LanguageUtils.languages[language] && BDFDB.LanguageUtils.languages[language].numberMap) {
@@ -8322,7 +8334,7 @@ module.exports = (_ => {
 			};
 			BDFDB.DevUtils.generateLanguageStrings = function (strings, config = {}) {
 				const language = config.language || "en";
-				const languages = BDFDB.ArrayUtils.removeCopies(BDFDB.ArrayUtils.is(config.languages) ? config.languages : ["en"].concat(BDFDB.LibraryModules.LanguageStore.languages.filter(n => n.enabled).map(n => {
+				const languages = BDFDB.ArrayUtils.removeCopies(BDFDB.ArrayUtils.is(config.languages) ? config.languages : ["en"].concat((BDFDB.LibraryModules.LanguageStore.languages || BDFDB.LibraryModules.LanguageStore._languages).filter(n => n.enabled).map(n => {
 					if (BDFDB.LanguageUtils.languages[n.code]) return n.code;
 					else {
 						const code = n.code.split("-")[0];

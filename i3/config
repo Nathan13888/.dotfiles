@@ -101,9 +101,10 @@ bindsym XF86AudioLowerVolume exec --no-startup-id $volcommand dn
 bindsym XF86AudioMute exec --no-startup-id $volcommand togm
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
-# increase/decrease keyboard brightness
-bindsym XF86KbdBrightnessUp --no-startup-id exec kbdbacklight up
-bindsym XF86KbdBrightnessDown --no-startup-id exec kbdbacklight down
+# increase/decrease backlight brightness
+set $backlight ~/.local/bin/backlight.sh
+bindsym XF86MonBrightnessUp exec --no-startup-id $backlight inc
+bindsym XF86MonBrightnessDown exec --no-startup-id $backlight dec
 
 # Media player controls
 bindsym XF86AudioPlay --no-startup-id exec playerctl play

@@ -4,14 +4,26 @@ STEPS="10"
 MAX="$(cat /sys/class/backlight/intel_backlight/max_brightness)"
 DEVICE="/sys/class/backlight/intel_backlight/"
 
+function set {
+    echo ${@: -1} > $DEVICE/brightness
+}
+
 function inc {
     TMP=$(( $(cur) + $(stepSize) ))
-    echo $TMP > $DEVICE/brightness
+    set $TMP
 }
 
 function dec {
     TMP=$(( $(cur) - $(stepSize) ))
-    echo $TMP > $DEVICE/brightness
+    set $TMP
+}
+
+function min {
+    set 0
+}
+
+function max {
+    set $MAX
 }
 
 function cur {
@@ -24,11 +36,20 @@ function stepSize {
 
 
 case "$1" in
+    set)
+        set $@
+        ;;
     inc)
         inc
         ;;
     dec)
         dec
+        ;;
+    min)
+        min
+        ;;
+    max)
+        max
         ;;
     cur)
         cur
@@ -39,7 +60,7 @@ case "$1" in
     steps)
         echo $STEPS
         ;;
-    max)
+    max-value)
         echo $MAX
         ;;
     *)

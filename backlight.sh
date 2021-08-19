@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-STEPS="10"
+STEPS="20"
 MAX="$(cat /sys/class/backlight/intel_backlight/max_brightness)"
 DEVICE="/sys/class/backlight/intel_backlight/"
 
@@ -10,11 +10,13 @@ function set {
 
 function inc {
     TMP=$(( $(cur) + $(stepSize) ))
+    TMP=$(( $TMP<=$MAX ? $TMP : $MAX ))
     set $TMP
 }
 
 function dec {
     TMP=$(( $(cur) - $(stepSize) ))
+    TMP=$(( $TMP>=0 ? $TMP : 0 ))
     set $TMP
 }
 

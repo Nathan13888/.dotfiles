@@ -87,6 +87,7 @@ function unmac {
 }
 ### SYSTEM
 alias mount="sudo mount"
+alias umount="sudo umount"
 alias ipt="sudo iptables"
 alias resetlock="faillock --reset --user $USER"
 alias free="free -hm"

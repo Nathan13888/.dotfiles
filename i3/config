@@ -101,9 +101,10 @@ bindsym XF86AudioLowerVolume exec --no-startup-id $volcommand dn
 bindsym XF86AudioMute exec --no-startup-id $volcommand togm
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
-# increase/decrease keyboard brightness
-bindsym XF86KbdBrightnessUp --no-startup-id exec kbdbacklight up
-bindsym XF86KbdBrightnessDown --no-startup-id exec kbdbacklight down
+# increase/decrease backlight brightness
+set $backlight ~/.local/bin/backlight.sh
+bindsym XF86MonBrightnessUp exec --no-startup-id $backlight inc
+bindsym XF86MonBrightnessDown exec --no-startup-id $backlight dec
 
 # Media player controls
 bindsym XF86AudioPlay --no-startup-id exec playerctl play
@@ -236,6 +237,7 @@ bindsym $mod+Control+9 move container to workspace $ws9; workspace $ws9
 # ASSIGN WORKSPACE
 #assign [class="^Firefox$"] 1
 assign [class="^Joplin$"] 2
+assign [class="^zoom$"] 2
 assign [class="Teams"] 3
 assign [class="discord"] 4
 assign [class="Signal"] 4
@@ -248,6 +250,7 @@ for_window [class="Spotify"] no_focus, move to workspace $ws10
 
 # NO FOCUS
 #no_focus [class=".*"]
+no_focus [class="^zoom$"]
 no_focus [class="Eclipse"]
 no_focus [title="Eclipse IDE "]
 no_focus [class="Signal"]

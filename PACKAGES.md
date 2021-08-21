@@ -26,7 +26,7 @@
 - exa
 
 ## Communication
-- discord-ptb betterdiscord
+- discord-ptb betterdiscord-installer
 - signal-desktop
 - element-desktop-nightly-bin
 - teams

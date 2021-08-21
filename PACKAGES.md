@@ -230,9 +230,12 @@
 - Phoronix Test Suite
 - fio
 - hdparm smartmontools
+- idle3-tools
+- traceroute
 - geekbench
 - hashcat -B
 - cinfo
+- dmidecode
 
 ## Chess
 - chess engines --> allie lc0 kommodo stockfish

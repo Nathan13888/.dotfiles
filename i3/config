@@ -78,7 +78,7 @@ set $mod Mod4
 bindsym Mod1+Return exec $terminal
 bindsym $mod+Return exec $terminal
 bindsym $mod+F1 exec $browser
-bindsym $mod+F2 exec discord-ptb ; exec signal-desktop
+bindsym $mod+F2 exec discord-canary ; exec element-desktop-nightly
 bindsym $mod+F3 exec teams
 bindsym $mod+F4 exec $terminal -e ~/.local/bin/obs-virt.sh
 bindsym $mod+F5 exec $terminal -e $filemanager
@@ -238,6 +238,7 @@ bindsym $mod+Control+9 move container to workspace $ws9; workspace $ws9
 #assign [class="^Firefox$"] 1
 assign [class="^Joplin$"] 2
 assign [class="^zoom$"] 2
+for_window [class="^Element"] move to workspace $ws3
 assign [class="Teams"] 3
 assign [class="discord"] 4
 assign [class="Signal"] 4
@@ -245,8 +246,7 @@ assign [class="Eclipse"] 5
 for_window [title="Eclipse IDE "] no_focus, floating enable, move container to workspace 5
 assign [class="FreeCAD"] 5
 assign [class="^Kicad$"] 5
-for_window [class="Spotify"] no_focus, move to workspace $ws10
-#assign [class="Spotify"] 10
+for_window [class="Spotify"] move to workspace $ws10, no_focus
 
 # NO FOCUS
 #no_focus [class=".*"]

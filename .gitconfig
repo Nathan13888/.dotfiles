@@ -81,10 +81,8 @@
 	sm = submodule
 	a = add
 	aa = add . # stage everything to be committed
-	lg = log -p
-	# could maybe add some more log commands in the future
-## WHAT ARE THESE BELOW??
-	gr = log --graph --format=line # graph
+    lg = log -p
+    gr = log --graph --pretty=format:\"%h %s\" # graph
 	grd = log --graph --format=detail # graph detail
 	gra = log --graph --format=line --all # graph all
 	grad = log --graph --format=detail --all # graph all in detail

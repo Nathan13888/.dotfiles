@@ -1,15 +1,3 @@
-;==========================================================
-;
-;
-;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
-;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
-;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
-;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
-;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
-;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
-;
-;==========================================================
-
 [var]
 bar-height = 64
 tray-size = 32
@@ -26,21 +14,22 @@ font3 = MesloLGS Nerd Font:style=Regular:size=20;-1
 font4 = MesloLGS Nerd Font:style=Regular:size=24;-1
 
 [colors]
-background = #cc0B090A
-foreground = #e0dede
-background-alt = #323B49
-foreground-alt = #9b8f8f
+background = #a00B090A
+foreground = #90e0ef
+background-alt = #14213d
+foreground-alt = #b5e48c
 
 kernel = #9aedfe
-cpu = #fc7d71
-memory = #7194fc
-filesystem = ${self.primary}
+cpu = #ff476f
+memory = #f8961e
+filesystem = #f9c74f
 speedtest = #aaeeee
-pulseaudio = ${self.active}
-microphone = #abcdef
+vol-active = ${self.active}
+vol-mute = ${self.alert}
+microphone = #43aa8b
 transmission = #eeee00
 pacman = #fcc271
-date = #71fcad
+date = #0a9396
 
 ;overline-size = 2
 ;overline-color = #bc92f8
@@ -62,70 +51,44 @@ high-load = ${self.alert}
 [settings]
 screenchange-reload = true
 ;compositing-background = xor
-;compositing-background = screen
+compositing-background = screen
 compositing-foreground = source
 ;compositing-border = over
-;pseudo-transparency = false
+pseudo-transparency = true
 
 [bar/base]
 monitor = ${env:MONITOR:DP-0}
 width = 100%
 height = ${var.bar-height}
 
-[bar/bar-xmonad]
-inherit = bar/base
-tray-position = right
-tray-padding = 3
-tray-maxsize = ${var.tray-size}
-
-font-0 = ${var.font0}
-font-1 = ${var.font1}
-font-2 = ${var.font2}
-font-3 = ${var.font3}
-font-4 = ${var.font4}
-
-fixed-center = false
-margin-top = 0
-margin-left = 0
-margin-bottom = 0
-
-monitor-strict = false
-override-redirect = true
-
-separator = 
-
-border-size = 0
-border-color = #00000000
-padding-left = 1
-padding-right = 1
-module-margin-left = 1
-module-margin-right = 1
-
-background = ${colors.background}
-foreground = ${colors.foreground}
-
-line-size = 3
-line-color = #f00
-
-modules-left = xmonad xwindow
-modules-right = cpu memory filesystem pulseaudio microphone date
-
 [bar/bar-i3]
 inherit = bar/base
-;offset-x = 0
-;offset-y = 0
-margin-top = 0
-margin-bottom = 0
+margin-top = 10
+margin-bottom = 2
+padding = 10
 
 separator = 
 
-border-size = 0
-padding-left = 1
+;border-size = 10
+border-left-size = 0
+border-right-size = 0
+border-top-size = 0
+radius = 0
+padding-left = 3
 padding-right = 1
-module-margin-left = 1
-module-margin-right = 1
+tray-radius = 25.0
+module-margin-left = 1.5
+module-margin-right = 1.5
 
-;radius = 6.0
+tray-position = right
+tray-padding = 10
+tray-maxsize = ${var.tray-size}
+;tray-background = ${colors.background-alt}
+
+dim-value = 0.8
+;wm-restack = i3
+override-redirect = false
+
 fixed-center = true
 
 background = ${colors.background}
@@ -141,18 +104,8 @@ font-3 = ${var.font3}
 font-4 = ${var.font4}
 
 modules-left = i3 xwindow
-#modules-center = microphone
 modules-right = cpu memory filesystem pulseaudio date
 #modules-right = kernel cpu memory filesystem speedtest pulseaudio transmission pacman date
-
-tray-position = right
-tray-padding = 3
-tray-maxsize = ${var.tray-size}
-;tray-background = #0063ff
-
-;wm-restack = i3
-
-override-redirect = false
 
 ;scroll-up = i3wm-wsnext
 ;scroll-down = i3wm-wsprev
@@ -178,7 +131,6 @@ label-foreground = ${colors.foreground-alt}
 label-empty = *empty...*
 format = <label>
 format-font = 2
-;font
 
 [module/kernel]
 type = custom/script
@@ -199,7 +151,7 @@ mount-0 = /
 ;mount-1 = /tmp
 ;mount-1 = /home
 
-label-mounted =  %free% FREE
+label-mounted =  %free%
 label-mounted-foreground = ${colors.filesystem}
 label-unmounted = %mountpoint%: not mounted
 label-unmounted-foreground = ${colors.foreground-alt}
@@ -288,7 +240,7 @@ interval = 2
 format-prefix = "﬙ "
 format-foreground = ${colors.memory}
 ;format-underline = ${colors.underline}
-label = %gb_used% of %gb_total%
+label = %gb_free% free
 
 [module/date]
 type = internal/date
@@ -337,12 +289,11 @@ type = internal/pulseaudio
 
 format-volume = <ramp-volume> <label-volume>
 format-volume-font = 3
-label-volume = VOL %percentage%%
-;label-volume-foreground = ${colors.active}
-format-volume-foreground = ${colors.pulseaudio}
+label-volume = %percentage%%
+format-volume-foreground = ${colors.vol-active}
 
 label-muted =  muted
-label-muted-foreground = ${colors.alert}
+label-muted-foreground = ${colors.vol-mute}
 
 ; Only applies if <ramp-volume> is used
 ramp-volume-0 = 

@@ -2,7 +2,7 @@
  * @name CompleteTimestamps
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 1.5.8
+ * @version 1.5.9
  * @description Replaces Timestamps with your own custom Timestamps
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -17,17 +17,17 @@ module.exports = (_ => {
 		"info": {
 			"name": "CompleteTimestamps",
 			"author": "DevilBro",
-			"version": "1.5.8",
+			"version": "1.5.9",
 			"description": "Replaces Timestamps with your own custom Timestamps"
 		},
 		"changeLog": {
-			"added": {
-				"Markup Timestamps": "Now also targets message markup timestamps"
+			"fixed": {
+				"Markup Timestamps": "Now also targets message markup timestamps completely"
 			}
 		}
 	};
 
-	return (window.Lightcord || window.LightCord) ? class {
+	return (window.Lightcord && !Node.prototype.isPrototypeOf(window.Lightcord) || window.LightCord && !Node.prototype.isPrototypeOf(window.LightCord) || window.Astra && !Node.prototype.isPrototypeOf(window.Astra)) ? class {
 		getName () {return config.info.name;}
 		getAuthor () {return config.info.author;}
 		getVersion () {return config.info.version;}
@@ -179,7 +179,7 @@ module.exports = (_ => {
 					e.instance.props._originalText = e.instance.props._originalText || e.instance.props.text;
 					if (this.settings.general.showInMarkup) {
 						if (tooltipIsSame) e.instance.props.delay = 99999999999999999999;
-						let timestamp = this.formatTimestamp(this.settings.dates.timestampDate, new Date(e.instance.props._originalText));
+						let timestamp = this.formatTimestamp(this.settings.dates.timestampDate, e.instance.props._originalText);
 						let renderChildren = e.instance.props.children;
 						e.instance.props.children = (...args) => {
 							let renderedChildren = renderChildren(...args);

@@ -2,12 +2,12 @@
 	"changeLogs": {
 		"BDFDB": "1.7.13",
 		"BetterNsfwTag": "1.2.7",
-		"ChatAliases": "2.3.2",
-		"CompleteTimestamps": "1.5.8",
+		"ChatAliases": "2.3.3",
+		"CompleteTimestamps": "1.5.9",
 		"CreationDate": "1.4.6",
 		"DisplayLargeMessages": "1.0.9",
-		"FriendNotifications": "1.7.6",
-		"ImageUtilities": "4.4.5",
+		"FriendNotifications": "1.7.8",
+		"ImageUtilities": "4.4.7",
 		"MessageUtilities": "1.9.0",
 		"ShowBadgesInChat": "1.8.1",
 		"ShowHiddenChannels": "3.0.2",
@@ -21,5 +21,9 @@
 		"showToasts": true,
 		"showSupportBadges": true,
 		"useChromium": false
+	},
+	"hashes": {
+		"0BDFDB.data.json": "e38ca99ef840f7a5f992497a11cec614ca03500f",
+		"0BDFDB.raw.css": "6bb82eb9f45d2d68a03ad2d3e21dcf35a5e2e3ee"
 	}
 }

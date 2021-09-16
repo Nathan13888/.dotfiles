@@ -2,6 +2,19 @@
 #         ALIAS         #
 #########################
 
+alias EA="nvim ~/.aliases"
+function aurcommit() {
+        MSG=$*
+        if [[ -z "$1" ]]; then
+                read -p "Message: " MSG
+        fi
+        updpkgsums
+        makepkg --printsrcinfo > .SRCINFO
+        git add PKGBUILD .SRCINFO
+        namcap PKGBUILD
+        git commit -m "$MSG"
+}
+
 eval $(thefuck --alias)
 alias f="fuck"
 
@@ -18,20 +31,16 @@ function reload {
 }
 alias ar="paru"
 alias open="xdg-open"
-#alias scr="screen"
 alias tm="tmux"
 alias tma="tmux attach"
 alias tmr="tmux source-file ~/.tmux.conf"
 alias tmks="tmux kill-server"
+if command -v nvim &> /dev/null; then
+    alias v="nvim"
+fi
 alias sv='sudo v'
 alias nv="nvim"
-if [[ $ISSERVER == YES ]] ; then
-  alias v=$(which vim)
-else
-  alias v=$(which nvim)
-fi
 alias vi="vim"
-alias t="todo.sh"
 alias g="git"
 if [[ $ISSERVER != YES ]] ; then
   alias git="hub"
@@ -92,8 +101,13 @@ alias ipt="sudo iptables"
 alias resetlock="faillock --reset --user $USER"
 alias free="free -hm"
 #alias top="htop" # HTOP is better than TOP
-alias xc="xclip"
+alias xc="xclip -selection clipboard -i"
+
 alias pg="pgrep" # find process id, `$ pidof` is another viable command alternative
+function gi {
+  grep -i "$@"
+}
+
 function findexe() {
   readonly pid=${1:?"The PID of the process must be specified"}
   readlink -f /proc/$1/exe
@@ -113,7 +127,7 @@ alias disks='df -h | grep sd \
     | sed -e "s_/mnt/[-_A-Za-z0-9]*_\x1b[34;1m&\x1b[0m_"' # list all disks
 # SSD Benchmark
 function fiotest {
-    testFile="/mnt/fs/fiotest.tmp"
+    readonly testFile=${1:?"The PID of the process must be specified"}
     sudo fio --loops=5 --size=1000m --filename=$testFile --stonewall --ioengine=libaio --direct=1 \
       --name=Seqread --bs=1m --rw=read \
       --name=Seqwrite --bs=1m --rw=write \
@@ -139,7 +153,7 @@ alias count-files-recursive="ls -R | wc -l"
 if command -v exa &> /dev/null; then
     alias ls="exa"
 fi
-alias la='ls -alhF --color=always --group-directories-first'
+alias la='ls -alhFg --color=always --group-directories-first'
 alias lag="la | grep --color=always ''"
 alias lad="la | grep --color=always '^d'"
 alias laf="la | grep --color=always '^-'"
@@ -157,18 +171,18 @@ alias cho="chown"
 alias chowm="sudo chown $USER:$USER -v"
 alias mkd="mkdir -vp"
 alias smkd="sudo mkdir -vp"
-alias rs="rsync -avzh --progress"
+function rs {
+  rsync -ahh --info=progress2,stats1 --partial "$@"
+}
 alias cp='cp -v'
 alias mv='mv -v'
 function garb {
-    # TODO: do the same for all other arguements
-    mv $1 ~/ws/gt/garb/
+    mv "$@" /tmp/
 }
-alias ga="garb"
 alias rm='rm -v'
-alias rmf="rm -f" # removes all prompts
-alias rmd='rmdir -v'
-alias tra="trash -v"
+alias rmf='rm -f' # removes all prompts
+alias rmd="rmdir -v"
+
 ### CD
 alias down="cd ~/Downloads"
 alias docs="cd ~/Documents"

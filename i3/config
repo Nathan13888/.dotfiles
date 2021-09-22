@@ -1,44 +1,12 @@
-# Polybar
-exec_always --no-startup-id source ~/.config/polybar/launch.sh
-
-# Picom
-exec_always --no-startup-id picom
-
-# Wallpaper Timeout
-set $wpto 300
-# Feh
-# *optional* argument: --no-fehbg
-#exec --no-startup-id watch -n $wpto feh --bg-scale --randomize ~/Desktop/Wallpapers/ &
-exec --no-startup-id feh --bg-scale --randomize ~/Desktop/Wallpapers/
-exec_always watch -n $wpto sh ~/.fehbg &
+# START ALL SERVICES
+exec --no-startup-id ~/wm.sh init
+exec_always --no-startup-id ~/wm.sh restart
+exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 # Remap CAPS LOCK key
 #exec_always xmodmap -e "clear lock"
 #exec_always xmodmap -e "keycode 66 = Escape Caps_Lock NoSymbol NoSymbol"
 #exec_always xmodmap -e "keycode 66 = BackSpace Caps_Lock NoSymbol NoSymbol"
-
-set $lockcommand ~/.local/bin/lock.sh
-exec --no-startup-id dunst
-exec --no-startup-id xss-lock --transfer-sleep-lock -- $lockcommand --nofork
-exec --no-startup-id nm-applet
-exec fcitx5
-exec flameshot
-
-# Faster key repeat and delay
-exec_always --no-startup-id xset r rate 210 40
-
-# Change Mouse Acceleration
-exec_always --no-startup-id xset m 3/2
-
-# Hide cursor when typing
-exec --no-startup-id xbanish
-
-# Enable Numpad Lock
-exec_always --no-startup-id numlockx
-
-# Autostart Scripts
-#exec_always bash ~/.local/bin/fetchcord.sh
-#exec_always --no-startup-id noisetorch -i
 
 ################################################################################
 
@@ -62,42 +30,31 @@ default_orientation auto
 # Default Layout Mode (default|stacking|tabbed)
 workspace_layout default
 
-# Variables
 set $terminal $TERMINAL
-set $browser $BROWSER
-set $messaging $MESSAGING
-set $filemanager $FILEMANAGER
-set $editor $EDITOR
-set $notes $NOTES
-set $mediaplayer $MEDIAPLAYER
 
 set $mod Mod4
 #set $mod Mod1
 
-# start a terminal
 bindsym Mod1+Return exec $terminal
 bindsym $mod+Return exec $terminal
-bindsym $mod+F1 exec $browser
-bindsym $mod+F2 exec discord-canary ; exec element-desktop-nightly
-bindsym $mod+F3 exec teams
-bindsym $mod+F4 exec $terminal -e ~/.local/bin/obs-virt.sh
-bindsym $mod+F5 exec $terminal -e $filemanager
-bindsym $mod+T exec $terminal -e nvim $HOME/TODO.md
-bindsym $mod+Shift+T exec $terminal -e less $HOME/TODO.md
+bindsym $mod+F1 exec ~/wm.sh f1
+bindsym $mod+F2 exec ~/wm.sh f2
+bindsym $mod+F3 exec ~/wm.sh f3
+bindsym $mod+F4 exec ~/wm.sh f4
+bindsym $mod+F5 exec ~/wm.sh f5
+bindsym $mod+T exec --no-startup-id ~/.local/bin/todo.sh open
 
-set $prtscr flameshot gui
-
+set $prtscr ~/wm.sh screenshot
 bindsym Print exec --no-startup-id $prtscr
 bindsym $Mod+Shift+S exec --no-startup-id $prtscr
 
 font pango:SauceCodePro Nerd Font 9
 
 set $volcommand ~/.local/bin/volume.sh
-
 bindsym $mod+Shift+M exec --no-startup-id $volcommand togmic
-
 bindsym XF86AudioRaiseVolume exec --no-startup-id $volcommand up
 bindsym XF86AudioLowerVolume exec --no-startup-id $volcommand dn
+bindsym $mod+M exec --no-startup-id $volcommand togm
 bindsym XF86AudioMute exec --no-startup-id $volcommand togm
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
@@ -238,10 +195,9 @@ bindsym $mod+Control+9 move container to workspace $ws9; workspace $ws9
 #assign [class="^Firefox$"] 1
 assign [class="^Joplin$"] 2
 assign [class="^zoom$"] 2
-for_window [class="^Element"] move to workspace $ws3
 assign [class="Teams"] 3
-assign [class="discord"] 4
 assign [class="Signal"] 4
+for_window [class="^Element"] move to workspace $ws5
 assign [class="Eclipse"] 5
 for_window [title="Eclipse IDE "] no_focus, floating enable, move container to workspace 5
 assign [class="FreeCAD"] 5
@@ -256,6 +212,7 @@ no_focus [title="Eclipse IDE "]
 no_focus [class="Signal"]
 no_focus [class="discord"]
 no_focus [class="Teams"]
+no_focus [class="^Element"]
 
 # Sticky Windows
 #for_window [class="Teams"] floating enable,sticky enable
@@ -267,10 +224,10 @@ bindsym $mod+Shift+R restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+E exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
-bindsym $mod+Control+h resize shrink width 25 px or 5ppt
-bindsym $mod+Control+j resize shrink height 25 px or 5 ppt
-bindsym $mod+Control+k resize grow height 25 px or 5 ppt
-bindsym $mod+Control+l resize grow width 25 px or 5 ppt
+bindsym $mod+Control+h resize shrink width 50 px
+bindsym $mod+Control+j resize shrink height 50 px
+bindsym $mod+Control+k resize grow height 50 px
+bindsym $mod+Control+l resize grow width 50 px
 
 # Set shut down, restart and locking features
 bindsym $mod+Escape mode "$mode_system"

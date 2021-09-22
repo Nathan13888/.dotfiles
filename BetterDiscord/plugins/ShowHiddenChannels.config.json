@@ -1,5 +1,7 @@
 {
-	"blacklist": [],
+	"blacklist": [
+		"760673053695934495"
+	],
 	"categorydata": [],
 	"channels": {
 		"GUILD_TEXT": true,

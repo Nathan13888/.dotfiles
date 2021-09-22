@@ -12,7 +12,7 @@
 		"ShowBadgesInChat": "1.8.1",
 		"ShowHiddenChannels": "3.0.2",
 		"StaffTag": "1.4.8",
-		"Translator": "2.3.1"
+		"Translator": "2.3.2"
 	},
 	"choices": {
 		"toastPosition": "right"
@@ -23,7 +23,7 @@
 		"useChromium": false
 	},
 	"hashes": {
-		"0BDFDB.data.json": "e38ca99ef840f7a5f992497a11cec614ca03500f",
+		"0BDFDB.data.json": "097c89472cb757fa7b1c13b705f651dcc6efb28f",
 		"0BDFDB.raw.css": "6bb82eb9f45d2d68a03ad2d3e21dcf35a5e2e3ee"
 	}
 }

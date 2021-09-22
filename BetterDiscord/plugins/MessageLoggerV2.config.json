@@ -18,7 +18,12 @@
         "savedMessagesCap": 1000,
         "reverseOrder": true,
         "onlyLogWhitelist": true,
-        "whitelist": [],
+        "whitelist": [
+            "843552361212805180",
+            "758035380057407548",
+            "626094560627523628",
+            "760673053695934495"
+        ],
         "blacklist": [],
         "notificationBlacklist": [],
         "toastToggles": {
@@ -66,6 +71,6 @@
         "imageCacheDir": "/home/attackercow/.config/BetterDiscord/plugins/MLV2_IMAGE_CACHE",
         "flags": 2,
         "autoUpdate": true,
-        "versionInfo": "1.8.0"
+        "versionInfo": "1.8.1"
     }
 }

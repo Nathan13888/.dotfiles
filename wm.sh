@@ -11,11 +11,11 @@
 # - required packages
 # - get fonts
 
-f1=(firefox-nightly)
-f2=(discord element-desktop-nightly)
-f3=(teams)
-f4=("~/.local/bin/obs-virt.sh") # TODO: make script run within terminal
-f5=("$FILEMANAGER")
+f1="firefox-nightly"
+f2="discord element-desktop-nightly"
+f3="teams"
+f4="~/.local/bin/obs-virt.sh" # TODO: make script run within terminal
+f5="$FILEMANAGER"
 screenshot="flameshot gui"
 
 ###
@@ -24,15 +24,15 @@ VERBOSE=0
 
 function open {
     set -m
-    #echo "Executing: '$@'"
+    echo "Executing: '$@'"
     for p in "$@"; do
-        if [ $VERBOSE -eq 1 ]; then
+        if [ $VERBOSE -gt 0 ]; then
             echo -e "Executing '$p'\n"
         fi
         if [ -x $p ]; then
             echo -e "CANNOT EXECUTE '$p'"
         else
-            $p &
+            nohup $p &
             disown
         fi
     done
@@ -62,11 +62,11 @@ function startup {
 
 ###
 
-echo ${@: -1}
-if [ -v ${@: -1} ] && [[ "${@: -1}" -eq "-v" ]]; then
-    VERBOSE=1
-    echo $VERBOSE
-fi
+#echo ${@: -1}
+#if [ -v ${@: -1} ] && [[ "${@: -1}" -eq "-v" ]]; then
+#    VERBOSE=1
+#    echo "Verbose: $VERBOSE"
+#fi
 
 case "$1" in
     init)
@@ -86,7 +86,8 @@ case "$1" in
         if [ -v ${!1} ]; then
             echo "'$1' was not found"
         else
-            open "${!1}"
+            echo ${!1}
+            open ${!1}
         fi
         ;;
     screenshot)

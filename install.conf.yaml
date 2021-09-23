@@ -12,29 +12,27 @@
     ~/.angular-config.json: .angular-config.json
     ~/.bashrc: .bashrc
     ~/.bash.d: .bash.d
-    ~/.doom.d: .doom.d
+#    ~/.doom.d: .doom.d
     ~/.oh-my-bash/custom: .oh-my-bash
     ~/.config/BetterDiscord: BetterDiscord
     ~/.config/starship.toml: starship.toml
-    ~/.cht.sh/cht.sh.conf: cht.sh.conf
+#    ~/.cht.sh/cht.sh.conf: cht.sh.conf
     ~/.config/fontconfig: fontconfig
-    ~/.config/neofetch: neofetch
+#    ~/.config/neofetch: neofetch
     ~/.config/nvim: .config/nvim
     ~/.config/vifm: vifm
     ~/.exports: .exports
     ~/.gitconfig: .gitconfig
     ~/.gitmessage.txt: .gitmessage.txt
     ~/.oh-my-zsh/custom: .oh-my-zsh/custom
-    ~/.p10k.zsh: .p10k.zsh
-    ~/.todo: .todo
     ~/.tmux.conf: .tmux.conf
     ~/.vim: .vim
     ~/.vimrc: .vimrc
     ~/.zshrc: .zshrc
     ~/.zsh.d: .zsh.d
 
-- create:
-    - ~/workspace
+#- create:
+#    - ~/workspace
 
 #- shell:
 #  - [git submodule update --init --recursive, Installing submodules]

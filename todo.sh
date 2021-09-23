@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# TODO: customizable editor, shell mode
+
 NEED_TERM=true
 #USE_THIS_SHELL=false
 

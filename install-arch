@@ -1,0 +1,79 @@
+#!/bin/sh
+
+#pacstrap /mnt base base-devel linux linux-firmware nano vim networkmanager man-db man-pages grub os-prober efibootmgr
+
+packages=(
+    bash zsh tmux neofetch
+    nano vim neovim
+    git
+    alacritty
+    xorg xorg-xinit xdg-utils
+    i3-gaps
+    picom
+    polybar rofi dunst feh
+    network-manager-applet
+    i3lock-color
+    #xss-lock xbanish numlockx
+    pavucontrol usbutils pciutils
+    gnome-keyring libsecret seahorse pinentry-gnome3 gpg
+    #nerd-fonts-complete
+)
+
+extras=()
+
+function installPackages {
+    for p in packages; do
+        printf "\nInstalling $p...\n"
+        #yay -Sy $p
+    done
+}
+
+function addUser {
+    useradd -m attackercow
+    usermod -aG wheel attackercow
+    passwd attackercow
+}
+
+function setHost {
+    vim /etc/hostname
+    vim /etc/hosts
+}
+
+function installYay {
+    echo "Installing Yay"
+    git clone
+    cd yay
+    makepkg -si
+}
+
+function updateMirrors {
+    reflector --country Canada --country US --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+}
+
+function changeShell {
+    chsh -s /bin/zsh
+}
+
+ping -c 3 archlinux.org
+
+installYay
+
+# enable ntp
+timedatectl set-ntp true
+timedatectl status
+hwclock --systohc
+
+# gen fstab
+genfstab -U /mnt >> /mnt/etc/fstab
+
+# time zone
+ln -sf /usr/share/zoneinfo/America/Toronto /etc/localtime
+
+# visudo
+
+# locale-gen
+
+# grub and mkconfig
+
+# gpg
+

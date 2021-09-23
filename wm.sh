@@ -48,7 +48,8 @@ function startup {
 # - screenshots
     open dunst
     #~/.config/polybar/launch.sh
-    open "feh --bg-scale --randomize ~/Desktop/Wallpapers/"
+    nohup feh --bg-scale --randomize ~/Desktop/Wallpapers/ &
+    disown
 
     open xbanish
     open numlockx
@@ -91,7 +92,7 @@ case "$1" in
         fi
         ;;
     screenshot)
-        open $screenshot
+        nohup $screenshot
         ;;
     *)
         echo "Unknown or missing parameters"

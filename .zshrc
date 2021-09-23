@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 zmodload zsh/zprof
 
 # Uncomment the following line if pasting URLs and other text is messed up.
@@ -78,23 +85,37 @@ zinit light-mode for \
 
 ### End of Zinit's installer chunk
 
-#zinit light starship/starship
 
-# Starship
-eval "$(starship init zsh)"
+#########################
+#        PROMPT         #
+#########################
+
+#eval "$(starship init zsh)"
+# Load powerlevel10k theme
+zinit ice depth"1" # git clone depth
+zinit light romkatv/powerlevel10k
+
+# Load pure theme
+zinit ice pick"async.zsh" src"pure.zsh" # with zsh-async library that's bundled with it.
+zinit light sindresorhus/pure
+
+# Load starship theme
+zinit ice as"command" from"gh-r" \ # `starship` binary as command, from github release
+          atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \ # starship setup at clone(create init.zsh, completion)
+          atpull"%atclone" src"init.zsh"
+zinit light starship/starship
 
 #PS1="READY > "
 #zinit ice wait'!0'
 zinit ice wait lucid; zinit light sobolevn/wakatime-zsh-plugin
-zinit ice wait lucid; zinit light sobolevn/wakatime-zsh-plugin
 zinit ice wait lucid; zinit light junegunn/fzf
-
-zinit ice wait lucid atload'_zsh_autosuggest_start'
+#zinit ice wait lucid atload'_zsh_autosuggest_start'
 zinit ice wait lucid; zinit light zsh-users/zsh-autosuggestions
+#zinit ice wait lucid; zinit light zsh-autocomplete
 zinit ice wait lucid; zinit light zsh-users/zsh-syntax-highlighting
-zinit ice wait lucid; zinit light Aloxaf/fzf-tab
+#zinit ice wait lucid; zinit light Aloxaf/fzf-tab
 
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+#zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
 
 # Run xinit if this is the normal terminal
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
@@ -115,7 +136,13 @@ export GOPATH=$HOME/go # the first path in GOPATH is always used to install exte
 export PATH=$PATH:$GOPATH/bin
 export GOPATH=$GOPATH:$HOME/ws/scripts:$HOME/ws/gt
 export PYTHONDONTWRITEBYTECODE=1
-export PATH=$PATH:$HOME/.cargo/bin
+
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+#rustup completions zsh cargo > ~/.zfunc/_cargo
 
 #[ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

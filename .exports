@@ -6,4 +6,3 @@ export PATH="$HOME/.local/bin:$PATH"
 # GPG --> https://stackoverflow.com/questions/41052538/git-error-gpg-failed-to-sign-data
 export GPG_TTY=$(tty)
 
-[ -f ~/.exports.local ] && source ~/.exports.local

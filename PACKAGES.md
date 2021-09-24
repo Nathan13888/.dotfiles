@@ -4,12 +4,14 @@
 
 ## Dev
 - zsh bash
+- hyperfine
 - git hub
 - vim neovim
 - emacs (ripgrep doom emacs)
 - doom emacs
   - git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d ~/.emacs.d/bin/doom install alacritty
 - firefox-nightly
+- keybase
 - ungoogled-chromium
 - neofetch pfetch
 - thefuck (or with PIP)
@@ -20,7 +22,7 @@
 - nodejs npm nvm
 - gcc gdb
 - python python-pip
-- go
+- go rustup
 - openjdk
 - tokei
 - exa
@@ -56,6 +58,7 @@
 - rofi
 - network-manager-applet
 - bluez bluez-utils bluez-openrc
+- openntpd openntpd-openrc
 - fprintd libfprint (or from git `fprintd-libfprint2` `libprint-git`)
 - fingerprint-gui
 - xbindkeys
@@ -145,7 +148,7 @@
 - patchage
 - obs-studio guvcview
 - v4l2loopback-dkms
-- audacity
+- tenacity-git
 - ardour
 - pavucontrol (gtk gui)
 - alsa-utils
@@ -172,7 +175,7 @@
 - transmission-gtk (or -qt)
 - filezilla
 - tigervnc
-- xrdp
+- xrdp xorg xrdp-glamor (intel/amd) xordxrdp-nvidia (nvidia)
 - KRDC
 - heroku-cli
 - netlify
@@ -192,6 +195,7 @@
 - pg...
 
 ## Tools and Utilities
+- openrgb
 - poppler
 - iperf3
 - ufw

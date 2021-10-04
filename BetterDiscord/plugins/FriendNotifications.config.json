@@ -267,19 +267,6 @@
 					"custom": 0,
 					"timelog": true
 				},
-				"247463509149876225": {
-					"online": 1,
-					"idle": 0,
-					"dnd": 0,
-					"playing": 0,
-					"listening": 0,
-					"streaming": 0,
-					"offline": 1,
-					"login": 0,
-					"mobile": 0,
-					"custom": 0,
-					"timelog": true
-				},
 				"255084344601870336": {
 					"online": 1,
 					"idle": 0,
@@ -1416,6 +1403,19 @@
 			"strangers": {
 				"621456448559382548": {},
 				"634398896088416275": {
+					"online": 1,
+					"idle": 0,
+					"dnd": 0,
+					"playing": 0,
+					"listening": 0,
+					"streaming": 0,
+					"offline": 1,
+					"login": 0,
+					"mobile": 0,
+					"custom": 0,
+					"timelog": true
+				},
+				"247463509149876225": {
 					"online": 1,
 					"idle": 0,
 					"dnd": 0,

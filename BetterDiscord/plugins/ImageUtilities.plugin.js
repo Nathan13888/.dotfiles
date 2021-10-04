@@ -2,7 +2,7 @@
  * @name ImageUtilities
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 4.4.7
+ * @version 4.5.0
  * @description Adds several Utilities for Images/Videos (Gallery, Download, Reverse Search, Zoom, Copy, etc.)
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -17,12 +17,13 @@ module.exports = (_ => {
 		"info": {
 			"name": "ImageUtilities",
 			"author": "DevilBro",
-			"version": "4.4.7",
+			"version": "4.5.0",
 			"description": "Adds several Utilities for Images/Videos (Gallery, Download, Reverse Search, Zoom, Copy, etc.)"
 		},
 		"changeLog": {
 			"fixed": {
-				"Invalid Images (Instagram)": "Fixed Issue where some Images could not be downloaded"
+				"Server Avatar": "Uses the Server Avatar now, if the user has one",
+				"Animated Banners": "Can be downloaded as gifs now"
 			}
 		}
 	};
@@ -213,6 +214,8 @@ module.exports = (_ => {
 					${BDFDB.dotCN._imageutilitiesgallery},
 					${BDFDB.dotCN._imageutilitiesdetailsadded} {
 						transform: unset !important;
+						filter: unset !important;
+						backdrop-filter: unset !important;
 					}
 					${BDFDB.dotCN._imageutilitiessibling} {
 						display: flex;
@@ -510,14 +513,14 @@ module.exports = (_ => {
 				if (e.instance.props.guild && this.settings.places.guildIcons) {
 					if (BDFDB.DOMUtils.getParent(BDFDB.dotCN.guildheader, e.instance.props.target) || BDFDB.DOMUtils.getParent(BDFDB.dotCN.guildchannels, e.instance.props.target) && !e.instance.props.target.className && e.instance.props.target.parentElement.firstElementChild == e.instance.props.target) {
 						let banner = BDFDB.GuildUtils.getBanner(e.instance.props.guild.id);
-						if (banner) this.injectItem(e, banner.replace(/\.webp|\.gif/, ".png"));
+						if (banner) this.injectItem(e, banner.replace(/\.webp|\.gif/, ".png"), e.instance.props.guild.banner && BDFDB.LibraryModules.IconUtils.isAnimatedIconHash(e.instance.props.guild.banner), banner);
 					}
-					else if (e.type != "GuildChannelListContextMenu") this.injectItem(e, (e.instance.props.guild.getIconURL() || "").replace(/\.webp|\.gif/, ".png"), e.instance.props.guild.icon && BDFDB.LibraryModules.IconUtils.isAnimatedIconHash(e.instance.props.guild.icon) && e.instance.props.guild.getIconURL(true));
+					else if (e.type != "GuildChannelListContextMenu") this.injectItem(e, (e.instance.props.guild.getIconURL(4096) || "").replace(/\.webp|\.gif/, ".png"), e.instance.props.guild.icon && BDFDB.LibraryModules.IconUtils.isAnimatedIconHash(e.instance.props.guild.icon) && e.instance.props.guild.getIconURL(4096, true));
 				}
 			}
 
 			onUserContextMenu (e) {
-				if (e.instance.props.user && this.settings.places.userAvatars) this.injectItem(e, (e.instance.props.user.getAvatarURL() || "").replace(/\.webp|\.gif/, ".png"), BDFDB.LibraryModules.IconUtils.isAnimatedIconHash(e.instance.props.user.avatar) && e.instance.props.user.getAvatarURL(null, true));
+				if (e.instance.props.user && this.settings.places.userAvatars) this.injectItem(e, (e.instance.props.user.getAvatarURL(e.instance.props.guildId, 4096) || "").replace(/\.webp|\.gif/, ".png"), BDFDB.LibraryModules.IconUtils.isAnimatedIconHash(e.instance.props.user.avatar) && e.instance.props.user.getAvatarURL(e.instance.props.guildId, 4096, true));
 			}
 
 			onGroupDMContextMenu (e) {
@@ -1015,7 +1018,7 @@ module.exports = (_ => {
 			processUserBanner (e) {
 				let banner = e.instance.props.user && this.settings.places.userAvatars && BDFDB.UserUtils.getBanner(e.instance.props.user.id);
 				if (banner) e.returnvalue.props.onContextMenu = event => {
-					let validUrls = this.filterUrls(banner.replace(/\.webp|\.gif/, ".png"), BDFDB.LibraryModules.IconUtils.isAnimatedIconHash(e.instance.props.user.banner) && e.instance.props.user.getBannerURL(true));
+					let validUrls = this.filterUrls(banner.replace(/\.webp|\.gif/, ".png"), BDFDB.LibraryModules.IconUtils.isAnimatedIconHash(e.instance.props.user.banner) && e.instance.props.user.getBannerURL(4096, true));
 					if (validUrls.length) BDFDB.ContextMenuUtils.open(this, event, BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuGroup, {
 						children: validUrls.length == 1 ? this.createSubMenus({}, validUrls) : BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
 							label: BDFDB.LanguageUtils.LanguageStrings.IMAGE + " " + BDFDB.LanguageUtils.LanguageStrings.ACTIONS,
@@ -1100,7 +1103,7 @@ module.exports = (_ => {
 			}
 
 			getMessageGroupOfImage (src) {
-				if (src && this.settings.general.enableGallery) for (let message of document.querySelectorAll(BDFDB.dotCN.message)) for (let img of message.querySelectorAll(BDFDB.dotCNS.imagewrapper + "img")) if (this.isSameImage(src, img)) {
+				if (src && this.settings.general.enableGallery) for (let message of document.querySelectorAll(BDFDB.dotCN.messagelistitem)) for (let img of message.querySelectorAll(BDFDB.dotCNS.imagewrapper + "img")) if (this.isSameImage(src, img)) {
 					let previousSiblings = [], nextSiblings = [];
 					let previousSibling = message.previousSibling, nextSibling = message.nextSibling;
 					if (!BDFDB.DOMUtils.containsClass(message, BDFDB.disCN.messagegroupstart)) while (previousSibling) {
@@ -1115,7 +1118,7 @@ module.exports = (_ => {
 						}
 						else nextSibling = null;
 					}
-					return [].concat(previousSiblings.reverse(), message, nextSiblings).filter(n => n && BDFDB.DOMUtils.containsClass(n, BDFDB.disCN.message));
+					return [].concat(previousSiblings.reverse(), message, nextSiblings).filter(n => n && BDFDB.DOMUtils.containsClass(n, BDFDB.disCN.messagelistitem));
 				}
 				return [];
 			}

@@ -26,10 +26,10 @@ vifm/vifminfo.json
 .scidvspc/config/history.dat
 .scidvspc/config/recent.dat
 
-# Enhanced Discord
+powercord/
+
 .config/EnhancedDiscord
 
-# Better Discord
 emote_data.json
 BadgesEverywhere.config.json
 Guild\ And\ Friend\ Removal\ Alerts.config.json

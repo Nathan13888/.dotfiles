@@ -14,16 +14,23 @@ DISABLE_MAGIC_FUNCTIONS=true
 HISTSIZE=100000
 #HISTFILE=$HOME/.zsh_history
 
+#
 #[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # CHT.SH Autocomplete
 #fpath=(~/.zsh.d/ $fpath)
 
+#########################
+#          FZF          #
+#########################
+
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+
 # Use ~~ as the trigger sequence instead of the default **
 export FZF_COMPLETION_TRIGGER='~~'
 
 # Options to fzf command
-export FZF_DEFAULT_OPTS='--height 70% --layout=reverse --border'
+export FZF_DEFAULT_OPTS='--height 90% --layout=reverse --border'
 
 # Use fd (https://github.com/sharkdp/fd) instead of the default find
 # command for listing path candidates.
@@ -55,6 +62,21 @@ _fzf_comprun() {
   esac
 }
 
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+# set descriptions format to enable group support
+zstyle ':completion:*:descriptions' format '[%d]'
+# set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# preview directory's content with exa when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+# switch group using `,` and `.`
+zstyle ':fzf-tab:*' switch-group ',' '.'
+
+#########################
+#        ZINIT          #
+#########################
+
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
     print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
@@ -78,51 +100,48 @@ zinit light-mode for \
 
 ### End of Zinit's installer chunk
 
-
 #########################
 #        PROMPT         #
 #########################
 
-#eval "$(starship init zsh)"
-# Load powerlevel10k theme
-zinit ice depth"1" # git clone depth
-zinit light romkatv/powerlevel10k
-
-# Load pure theme
-zinit ice pick"async.zsh" src"pure.zsh" # with zsh-async library that's bundled with it.
-zinit light sindresorhus/pure
-
 # Load starship theme
-zinit ice as"command" from"gh-r" \ # `starship` binary as command, from github release
-          atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \ # starship setup at clone(create init.zsh, completion)
-          atpull"%atclone" src"init.zsh"
+zinit ice as"command" from"gh-r" \
+    atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+    atpull"%atclone" src"init.zsh"
 zinit light starship/starship
 
-#PS1="READY > "
-#zinit ice wait'!0'
-zinit ice wait lucid; zinit light sobolevn/wakatime-zsh-plugin
-zinit ice wait lucid; zinit light junegunn/fzf
+#zinit ice wait lucid; zinit light junegunn/fzf
+#source /usr/share/fzf/completion.zsh
+autoload -U compinit && compinit
+zinit ice wait lucid; zinit light Aloxaf/fzf-tab
 #zinit ice wait lucid atload'_zsh_autosuggest_start'
 zinit ice wait lucid; zinit light zsh-users/zsh-autosuggestions
-#zinit ice wait lucid; zinit light zsh-autocomplete
+#zinit ice wait lucid; zinit light zsh-users/zsh-completions
 zinit ice wait lucid; zinit light zsh-users/zsh-syntax-highlighting
-#zinit ice wait lucid; zinit light Aloxaf/fzf-tab
-
-#zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+zinit ice wait lucid; zinit light sobolevn/wakatime-zsh-plugin
 
 # Run xinit if this is the normal terminal
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
   exec startx
 fi
 
-# Aliases
+
+#########################
+#        ALIASES        #
+#########################
+
 ## REMOVE ALL DEFAULT ZSH ALIASES
 #unalias -m '*'
-[[ -f ~/.aliases ]] && source ~/.aliases
+zinit ice wait lucaid; [ -f ~/.aliases ] && source ~/.aliases
+zinit ice wait lucaid; [ -f ~/.aliases.local ] && source ~/.aliases.local
 
-# Exports
+#########################
+#        EXPORTS        #
+#########################
+
 export PYTHONDONTWRITEBYTECODE=1
 [ -f ~/.exports ] && source ~/.exports
+[ -f ~/.exports.local ] && source ~/.exports.local
 export PATH=$PATH:$HOME/.cargo/bin
 export PATH=$PATH:$GOROOT/bin
 export GOPATH=$HOME/go # the first path in GOPATH is always used to install external packages
@@ -136,3 +155,4 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 #rustup completions zsh cargo > ~/.zfunc/_cargo
 
 #[ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
+

@@ -35,6 +35,9 @@ alias tm="tmux"
 alias tma="tmux attach"
 alias tmr="tmux source-file ~/.tmux.conf"
 alias tmks="tmux kill-server"
+#if command -v goneovim &> /dev/null; then
+#    alias v="goneovim"
+#el
 if command -v nvim &> /dev/null; then
     alias v="nvim"
 fi
@@ -116,7 +119,14 @@ function findexe() {
 alias code="code-insiders"
 alias bdctl="betterdiscordctl"
 alias chrome="google-chrome"
-alias weather="xdg-open https://www.accuweather.com/en/ca/mississauga/l5b/hourly-weather-forecast/55071"
+
+alias fdisk="sudo fdisk"
+function flash {
+    readonly source=${1:?"Source ISO must be specified"}
+    readonly target=${2:?"Target Device must be specified"}
+    sudo dd bs=4M if=$source of=$target status=progress
+}
+
 ### FILE INFO
 alias disks='df -h | grep sd \
     | sed -e "s_/dev/sda[1-9]_\x1b[34m&\x1b[0m_" \
@@ -125,9 +135,10 @@ alias disks='df -h | grep sd \
     | sed -e "s_[0-9]*%_\x1b[32m&\x1b[0m_" \
     | sed -e "s_9[0-9]%_\x1b[31m&\x1b[0m_" \
     | sed -e "s_/mnt/[-_A-Za-z0-9]*_\x1b[34;1m&\x1b[0m_"' # list all disks
+
 # SSD Benchmark
 function fiotest {
-    readonly testFile=${1:?"The PID of the process must be specified"}
+    readonly testFile=${1:?"Test file must be specified"}
     sudo fio --loops=5 --size=1000m --filename=$testFile --stonewall --ioengine=libaio --direct=1 \
       --name=Seqread --bs=1m --rw=read \
       --name=Seqwrite --bs=1m --rw=write \
@@ -173,6 +184,21 @@ alias mkd="mkdir -vp"
 alias smkd="sudo mkdir -vp"
 function rs {
   rsync -ahh --info=progress2,stats1 --partial "$@"
+}
+function wg {
+  NSLASH="$(echo "$1" | perl -pe 's|.*://[^/]+(.*?)/?$|\1|' | grep -o / | wc -l)"
+  NCUT=$((NSLASH > 0 ? NSLASH-1 : 0))
+  wget -r -np -e robots=off --user-agent=Mozilla/5.0 -nH --relative --cut-dirs=$NCUT -R "index.html*" "$@"
+}
+function tarp {
+  readonly source=${1:?"The SOURCE must be specified"}
+  readonly target=${2:?"The TARGET must be specified"}
+  program="$3"
+  if [ -z ${3+x} ]; then
+  	program="pigz -k -6"
+  fi
+  echo -e "Using compress program command '$program'\n"
+  tar --use-compress-program=$program -cf - -C $source . | pv > $target
 }
 alias cp='cp -v'
 alias mv='mv -v'

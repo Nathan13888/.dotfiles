@@ -2,7 +2,7 @@
  * @name BDFDB
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 1.9.0
+ * @version 1.9.1
  * @description Required Library for DevilBro's Plugins
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -19,7 +19,7 @@ module.exports = (_ => {
 		"info": {
 			"name": "BDFDB",
 			"author": "DevilBro",
-			"version": "1.9.0",
+			"version": "1.9.1",
 			"description": "Required Library for DevilBro's Plugins"
 		},
 		"rawUrl": `https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js`,
@@ -29,6 +29,7 @@ module.exports = (_ => {
 				"data-author-is-friend": "Added to Friends Flag to Messages"
 			},
 			"fixed": {
+				"BD Browser": "Fixed compartibility issues",
 				"Server Changes": "Fixed Stuff for anything changing Servers (ServerDetails, DisplayServerAsChannels)",
 				"React Search": "Fixed some Incompatibilities with other Plugins"
 			}
@@ -148,16 +149,21 @@ module.exports = (_ => {
 				}
 			}
 			stop () {
-				if (this.stopping) return;
-				this.stopping = true;
-				BDFDB.TimeUtils.timeout(_ => {delete this.stopping;});
-				
-				BDFDB.TimeUtils.suppress(_ => {
-					if (typeof this.onStop == "function") this.onStop();
-					BDFDB.PluginUtils.clear(this);
-				}, "Failed to stop Plugin!", config.info)();
+				if (window.BDFDB_Global.loading) {
+					if (PluginStores.delayed.starts.includes(this)) PluginStores.delayed.starts.splice(PluginStores.delayed.starts.indexOf(this), 1);
+				}
+				else {
+					if (this.stopping) return;
+					this.stopping = true;
+					BDFDB.TimeUtils.timeout(_ => {delete this.stopping;});
+					
+					BDFDB.TimeUtils.suppress(_ => {
+						if (typeof this.onStop == "function") this.onStop();
+						BDFDB.PluginUtils.clear(this);
+					}, "Failed to stop Plugin!", config.info)();
 
-				delete this.started;
+					delete this.started;
+				}
 			}
 		};
 	};
@@ -285,8 +291,8 @@ module.exports = (_ => {
 		if (!nodeOrObj || !valuePath) return null;
 		let obj = Node.prototype.isPrototypeOf(nodeOrObj) ? BDFDB.ReactUtils.getInstance(nodeOrObj) : nodeOrObj;
 		if (!BDFDB.ObjectUtils.is(obj)) return null;
-		let found = obj, values = valuePath.split(".").filter(n => n);
-		for (value of values) {
+		let found = obj;
+		for (const value of valuePath.split(".").filter(n => n)) {
 			if (!found) return null;
 			found = found[value];
 		}
@@ -2838,7 +2844,8 @@ module.exports = (_ => {
 			config.key = config.key && [config.key].flat().filter(n => n);
 			config.props = config.props && [config.props].flat().filter(n => n);
 			config.filter = typeof config.filter == "function" && config.filter;
-			let parent = firstArray = instance;
+			let parent, firstArray;
+			parent = firstArray = instance;
 			while (!BDFDB.ArrayUtils.is(firstArray) && firstArray.props && firstArray.props.children) firstArray = firstArray.props.children;
 			if (!BDFDB.ArrayUtils.is(firstArray)) {
 				if (parent && parent.props) {
@@ -4419,7 +4426,8 @@ module.exports = (_ => {
 		const DiscordClasses = Object.assign({}, InternalData.DiscordClasses);
 		BDFDB.DiscordClasses = Object.assign({}, DiscordClasses);
 		InternalBDFDB.getDiscordClass = function (item, selector) {
-			let className = fallbackClassName = DiscordClassModules.BDFDB.BDFDBundefined + "-" + InternalBDFDB.generateClassId();
+			let className, fallbackClassName;
+			className = fallbackClassName = DiscordClassModules.BDFDB.BDFDBundefined + "-" + InternalBDFDB.generateClassId();
 			if (DiscordClasses[item] === undefined) {
 				BDFDB.LogUtils.warn([item, "not found in DiscordClasses"]);
 				return className;
@@ -6567,8 +6575,8 @@ module.exports = (_ => {
 							BDFDB.ReactUtils.createElement(InternalComponents.LibraryComponents.TextInput, BDFDB.ObjectUtils.exclude(Object.assign({}, this.props, {
 								className: BDFDB.disCN.inputmultilast,
 								inputClassName: BDFDB.disCN.inputmultifield,
-								onFocus: e => {this.setState({focused: true})},
-								onBlur: e => {this.setState({focused: false})}
+								onFocus: e => this.setState({focused: true}),
+								onBlur: e => this.setState({focused: false})
 							}), "children", "innerClassName"))
 						]
 					})

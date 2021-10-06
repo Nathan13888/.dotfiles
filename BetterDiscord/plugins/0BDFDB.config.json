@@ -1,6 +1,6 @@
 {
 	"changeLogs": {
-		"BDFDB": "1.9.0",
+		"BDFDB": "1.9.1",
 		"BetterNsfwTag": "1.2.7",
 		"ChatAliases": "2.3.3",
 		"CompleteTimestamps": "1.5.9",
@@ -23,7 +23,7 @@
 		"useChromium": false
 	},
 	"hashes": {
-		"0BDFDB.data.json": "4ac8e9c57e8f092513ae043c3e26b4837b564999",
+		"0BDFDB.data.json": "0744627923a2005a92540627be1e829d3de006df",
 		"0BDFDB.raw.css": "6bb82eb9f45d2d68a03ad2d3e21dcf35a5e2e3ee"
 	}
 }

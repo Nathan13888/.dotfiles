@@ -2,7 +2,7 @@
  * @name FriendNotifications
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 1.7.8
+ * @version 1.8.1
  * @description Shows a Notification when a Friend or a User, you choose to observe, changes their Status
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -17,12 +17,12 @@ module.exports = (_ => {
 		"info": {
 			"name": "FriendNotifications",
 			"author": "DevilBro",
-			"version": "1.7.8",
+			"version": "1.8.1",
 			"description": "Shows a Notification when a Friend or a User, you choose to observe, changes their Status"
 		},
 		"changeLog": {
 			"fixed": {
-				"Log In Option": "Now also works for Desktop Notifications"
+				"Status Crash": "No longer crashes Discord when clicking on the status notification adn trying to open the DM of a User you don't share a DM with"
 			}
 		}
 	};
@@ -245,7 +245,7 @@ module.exports = (_ => {
 			
 				this.patchedModules = {
 					after: {
-						Guilds: "render"
+						Guilds: "type"
 					}
 				};
 		
@@ -296,6 +296,8 @@ module.exports = (_ => {
 			
 			forceUpdateAll () {
 				defaultSettings = Object.assign(BDFDB.ObjectUtils.map(statuses, status => notificationTypes[status.value ? "TOAST" : "DISABLED"].value), {timelog: true}, BDFDB.DataUtils.load(this, "defaultSettings"));
+				
+				BDFDB.GuildUtils.rerenderAll();
 				BDFDB.PatchUtils.forceAllUpdates(this);
 			}
 
@@ -734,34 +736,8 @@ module.exports = (_ => {
 			}
 			
 			processGuilds (e) {
-				if (this.settings.general.addOnlineCount) {
-					if (typeof e.returnvalue.props.children == "function") {
-						let childrenRender = e.returnvalue.props.children;
-						e.returnvalue.props.children = BDFDB.TimeUtils.suppress((...args) => {
-							let children = childrenRender(...args);
-							this.checkTree(children);
-							return children;
-						}, "", this);
-					}
-					else this.checkTree(e.returnvalue);
-				}
-			}
-			
-			checkTree (returnvalue) {
-				let tree = BDFDB.ReactUtils.findChild(returnvalue, {filter: n => n && n.props && typeof n.props.children == "function"});
-				if (tree) {
-					let childrenRender = tree.props.children;
-					tree.props.children = BDFDB.TimeUtils.suppress((...args) => {
-						let children = childrenRender(...args);
-						this.injectCounter(children);
-						return children;
-					}, "", this);
-				}
-				else this.injectCounter(returnvalue);
-			}
-			
-			injectCounter (returnvalue) {
-				let [children, index] = BDFDB.ReactUtils.findParent(returnvalue, {name: "ConnectedUnreadDMs"});
+				if (!this.settings.general.addOnlineCount) return;
+				let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {name: "UnreadDMs"});
 				if (index > -1) children.splice(index, 0, BDFDB.ReactUtils.createElement(FriendOnlineCounterComponent, {
 					amount: this.getOnlineCount()
 				}));
@@ -886,7 +862,7 @@ module.exports = (_ => {
 									if (this.settings.general.openOnClick) {
 										let DMid = BDFDB.LibraryModules.ChannelStore.getDMFromUserId(user.id)
 										if (DMid) BDFDB.LibraryModules.ChannelUtils.selectPrivateChannel(DMid);
-										else BDFDB.LibraryModules.DirectMessageUtils.openPrivateChannel(BDFDB.UserUtils.me.id, user.id);
+										else BDFDB.LibraryModules.DirectMessageUtils.openPrivateChannel(user.id);
 										BDFDB.LibraryModules.WindowUtils.focus();
 									}
 								};

@@ -7,7 +7,7 @@
 		"CreationDate": "1.4.6",
 		"DisplayLargeMessages": "1.0.9",
 		"FriendNotifications": "1.8.1",
-		"ImageUtilities": "4.5.1",
+		"ImageUtilities": "4.5.2",
 		"MessageUtilities": "1.9.0",
 		"ShowBadgesInChat": "1.8.1",
 		"ShowHiddenChannels": "3.0.2",
@@ -23,7 +23,7 @@
 		"useChromium": false
 	},
 	"hashes": {
-		"0BDFDB.data.json": "a6cdce1d5f9ca06100bb8f28822af6869f7cf046",
+		"0BDFDB.data.json": "41b30991e13587e202da5e384a2ba3fb03d961be",
 		"0BDFDB.raw.css": "6bb82eb9f45d2d68a03ad2d3e21dcf35a5e2e3ee"
 	}
 }

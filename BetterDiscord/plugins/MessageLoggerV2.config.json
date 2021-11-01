@@ -22,7 +22,8 @@
             "843552361212805180",
             "758035380057407548",
             "626094560627523628",
-            "760673053695934495"
+            "760673053695934495",
+            "900543170679549992"
         ],
         "blacklist": [],
         "notificationBlacklist": [],
@@ -71,6 +72,6 @@
         "imageCacheDir": "/home/attackercow/.config/BetterDiscord/plugins/MLV2_IMAGE_CACHE",
         "flags": 2,
         "autoUpdate": true,
-        "versionInfo": "1.8.2"
+        "versionInfo": "1.8.5"
     }
 }

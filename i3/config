@@ -42,6 +42,11 @@ bindsym $mod+F2 exec ~/wm.sh f2
 bindsym $mod+F3 exec ~/wm.sh f3
 bindsym $mod+F4 exec ~/wm.sh f4
 bindsym $mod+F5 exec ~/wm.sh f5
+bindsym $mod+Shift+F1 exec ~/wm.sh fs1
+bindsym $mod+Shift+F2 exec ~/wm.sh fs2
+bindsym $mod+Shift+F3 exec ~/wm.sh fs3
+bindsym $mod+Shift+F4 exec ~/wm.sh fs4
+bindsym $mod+Shift+F5 exec ~/wm.sh fs5
 bindsym $mod+T exec --no-startup-id ~/.local/bin/todo.sh open
 
 set $prtscr ~/wm.sh screenshot
@@ -202,6 +207,7 @@ assign [class="Eclipse"] 5
 for_window [title="Eclipse IDE "] no_focus, floating enable, move container to workspace 5
 assign [class="FreeCAD"] 5
 assign [class="^Kicad$"] 5
+assign [class="discord"] 6
 for_window [class="Spotify"] move to workspace $ws10, no_focus
 
 # NO FOCUS

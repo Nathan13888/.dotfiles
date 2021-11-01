@@ -117,8 +117,36 @@ Install options:
 - `apt install wireguard`
 - configure wireguard
 
+### GTK
+```
+To manually change the GTK theme, icons, font and font size, add the following to the configuration files, for example:
+
+GTK 2:
+
+~/.gtkrc-2.0
+
+gtk-icon-theme-name = "Adwaita"
+gtk-theme-name = "Adwaita"
+gtk-font-name = "DejaVu Sans 11"
+
+GTK 3:
+
+$XDG_CONFIG_HOME/gtk-3.0/settings.ini
+
+[Settings]
+gtk-icon-theme-name = Adwaita
+gtk-theme-name = Adwaita
+gtk-font-name = DejaVu Sans 11
+```
+
 ### Podman
 - Refer to: `https://wiki.archlinux.org/title/Podman#Configuration`
+- 
+
+### NVME
+
+- NVME Power States: https://wiki.pine64.org/wiki/Pinebook_Pro_Hardware_Accessory_Compatibility#NVMe_SSD_drives
+- Disable APST: `sudo nvme set-feature -f 0x0c -v=0 /dev/nvme0`
 
 ### LIMITS
 - Realtime: add to end of `/etc/security/limits.conf`:

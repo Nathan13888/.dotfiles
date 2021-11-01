@@ -3,6 +3,38 @@
 #########################
 
 alias EA="nvim ~/.aliases"
+mkdot() {
+    if [ -z "$1" ];then
+        echo "You must specify a path"
+        return 1
+    else
+        readonly DOTF=`realpath ${DOTF?"$HOME/.dotfiles"}`
+        readonly SOURCE="$1"
+        readonly DEST="$DOTF/${SOURCE%$HOME}"
+        echo "Source:\t$SOURCE"
+        echo "Dest:\t$DEST"
+        echo "Dotf:\t$DOTF"
+        if ! [ -d "$DOTF" ]; then
+            echo "'$DOTF' is an invalid directory"
+            return 1
+        fi
+        if ! [ $1 = "$HOME*" ]; then
+            echo "Paths outside of '$HOME' are currently unsupported"
+            return 1
+        fi
+        if ! [ -d "$SOURCE" || -f "$SOURCE" ]; then
+            echo "Dotfile must be a file or directory!"
+            return 1
+        fi
+        if [ -e "$DEST" ]; then
+            echo "Dotfile already exists at '$DEST'!"
+            return 1
+        fi
+        #mv "$SOURCE" "$DEST"
+        #ln -s "$DEST" "$SOURCE"
+    fi
+}
+
 function aurcommit() {
         MSG=$*
         if [[ -z "$1" ]]; then
@@ -44,6 +76,36 @@ fi
 alias sv='sudo v'
 alias nv="nvim"
 alias vi="vim"
+
+vns() {
+    if [ -z "$1" ];then
+        echo "You must specify a path!"
+    else
+        if [ -e "$1" ];then
+            echo "'$1' already exists!"
+            return 1
+        fi
+
+        local SHEBANG="#!/bin/bash"
+        echo "$SHEBANG" >> "$1"
+
+        if ! [ -f "$1" ]; then
+            echo "Could not find created file"
+            return 1
+        fi
+
+        chmod +x "$1"
+        if ! [ -x "$1" ];then
+            echo "Failed to append execute permissions"
+            return 1
+        fi
+
+        if [ -f "$1" ]; then
+            v "$1"
+        fi
+    fi
+}
+
 alias g="git"
 if [[ $ISSERVER != YES ]] ; then
   alias git="hub"
@@ -98,36 +160,51 @@ function unmac {
   iplsu $1
 }
 ### SYSTEM
-alias mount="sudo mount"
-alias umount="sudo umount"
 alias ipt="sudo iptables"
 alias resetlock="faillock --reset --user $USER"
-alias free="free -hm"
-#alias top="htop" # HTOP is better than TOP
-alias xc="xclip -selection clipboard -i"
 
+service () {
+    # TODO:  detect init system
+    CMD="rc-service"
+    # TODO:  root user or not
+    sudo $CMD
+}
+
+alias xc="xclip -selection clipboard -i"
 alias pg="pgrep" # find process id, `$ pidof` is another viable command alternative
+alias grep="grep --color=always"
 function gi {
   grep -i "$@"
 }
+function sedhref {
+  sed -n 's/.*href="\([^"]*\).*/\1/p'
+}
+alias count="wc -l"
 
 function findexe() {
   readonly pid=${1:?"The PID of the process must be specified"}
   readlink -f /proc/$1/exe
 }
+
 ### APPLICATIONS
 alias code="code-insiders"
-alias bdctl="betterdiscordctl"
 alias chrome="google-chrome"
 
-alias fdisk="sudo fdisk"
 function flash {
     readonly source=${1:?"Source ISO must be specified"}
     readonly target=${2:?"Target Device must be specified"}
     sudo dd bs=4M if=$source of=$target status=progress
 }
 
-### FILE INFO
+### FS
+sf () {
+    sshfs -o allow_other "$@"
+}
+alias fdisk="sudo fdisk"
+alias mount="sudo mount"
+alias umount="sudo umount"
+alias free="free -hm"
+
 alias disks='df -h | grep sd \
     | sed -e "s_/dev/sda[1-9]_\x1b[34m&\x1b[0m_" \
     | sed -e "s_/dev/sd[b-z][1-9]_\x1b[33m&\x1b[0m_" \
@@ -155,10 +232,21 @@ alias du="du -h"
 alias df="df -h"
 alias du1="du -d 1" # view the size of all directories of depth 1
 alias dutop="du -hsx -- * | sort -rh | head -10" # list top 10 largest files/folders in directory
-alias cf="count-files"
-alias count-files="ls | wc -l"
-alias cfr="count-files-recursive"
-alias count-files-recursive="ls -R | wc -l"
+tdur() {
+    local P="$1"
+    if [ -z "$P" ]; then
+        #P=./*
+        echo -e "No path specified. Scanning all contents of working directory.\n\n"
+        return 1
+    else
+        echo -e "Using path specified: '$P'\n\n"
+    fi
+    exiftool -n -p '\${Duration;our\$s;\$_=ConvertDuration(\$s+=\$_)}' $P|tail -n1
+}
+#alias cf="count-files"
+#alias count-files="ls | wc -l"
+#alias cfr="count-files-recursive"
+#alias count-files-recursive="ls -R | wc -l"
 #alias ducks="du -cks -- * | sort -rn | head"
 ##### LS
 if command -v exa &> /dev/null; then
@@ -185,11 +273,17 @@ alias smkd="sudo mkdir -vp"
 function rs {
   rsync -ahh --info=progress2,stats1 --partial "$@"
 }
-function wg {
+function wgt {
   NSLASH="$(echo "$1" | perl -pe 's|.*://[^/]+(.*?)/?$|\1|' | grep -o / | wc -l)"
   NCUT=$((NSLASH > 0 ? NSLASH-1 : 0))
   wget -r -np -e robots=off --user-agent=Mozilla/5.0 -nH --relative --cut-dirs=$NCUT -R "index.html*" "$@"
 }
+
+alias ydl="yt-dlp"
+ydl-channel () {
+        ydl -f "bestvideo[height>=720]+bestaudio/best" -ciw -o "%(title)s.%(ext)s" -v  --write-annotations --write-description --write-info-json --write-all-thumbnails --merge-output-format=mkv --download-archive downloaded.txt "$@"
+}
+
 function tarp {
   readonly source=${1:?"The SOURCE must be specified"}
   readonly target=${2:?"The TARGET must be specified"}
@@ -198,7 +292,7 @@ function tarp {
   	program="pigz -k -6"
   fi
   echo -e "Using compress program command '$program'\n"
-  tar --use-compress-program=$program -cf - -C $source . | pv > $target
+  tar --use-compress-program="$program" -cf - -C "$source" . | pv > "$target"
 }
 alias cp='cp -v'
 alias mv='mv -v'

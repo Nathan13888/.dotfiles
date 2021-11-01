@@ -1,0 +1,10 @@
+noblacklist ${HOME}/.config/Element-Nightly
+
+mkdir ${HOME}.config/Element-Nightly
+whitelist ${HOME}/.config/Element-Nightly
+whitelist /opt/Element-Nightly
+
+private-opt Element-Nightly
+
+include /etc/firejail/element-desktop.profile
+

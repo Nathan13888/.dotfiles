@@ -10,19 +10,20 @@
 - emacs (ripgrep doom emacs)
 - doom emacs
   - git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d ~/.emacs.d/bin/doom install alacritty
-- firefox-nightly
+- firefox-nightly firefox-developer-edition ungoogled-chromium brave-bin
+- keepassxc
+- thunderbird protonmail-desktop protonmail-bridge
 - keybase
-- ungoogled-chromium
 - neofetch pfetch
 - thefuck (or with PIP)
 - screen tmux sudo
 - visual-studio-code[-insiders]-bin
 - cuda and cudnn
 - time
+- python python-pip anaconda
+- go rustup
 - nodejs npm nvm
 - gcc gdb
-- python python-pip
-- go rustup
 - openjdk
 - tokei
 - exa
@@ -66,10 +67,7 @@
 - dunst
 - feh
 - flameshot
-- *(fonts)*
-- noto-fonts-cjk
-- ttf-ms-fonts
-- nerd-fonts-complete
+- nerd-fonts-complete ttf-ms-fonts noto-fonts-cjk ttf-google-fonts-git
 #- font-config
 - *(secrets)*
 - gnome-keyring
@@ -83,9 +81,7 @@
 - vifm nnn
 - calcurse
 - lynx
-- bottom-bin
-- iotop
-- powertop
+- bottom-bin iotop powertop htop iftop lm-sensors ipmitool dimidecode?
 - fetchcord-git (or from pip)
 - speedtest-cli
 - *(battery)*
@@ -125,12 +121,14 @@
 - hydra
 
 ## Media
-- spotify-adblock(-git)
+- spotify spotify-adblock(-git) spicetify spicetify-themes-git
 - mpv vlc
 - kodi-x11
 - davinci-resolve
+- kdenlive kio-extras opentimelineio
 %- krita
 %- gimp
+- icoutils
 %- inkscape
 %- DarkTable
 %- Kicad
@@ -143,13 +141,18 @@
 
 ## Recording, Video, Audio
 - pipewire pipewire-alsa pipewire-pulse pipewire-jack
+- wireplumber
+- helvum
+- pulseaudio pulseaudio-jack
 - realtime-privileges (add user to @realtime group after)
 - alsa
 - patchage
 - obs-studio guvcview
 - v4l2loopback-dkms
-- tenacity-git
+- audacity tenacity-git spek
 - ardour
+- mixxx
+- clementine audacious-gtk3 (audacious-plugins-gtk3) deadbeef cozy-audiobooks
 - pavucontrol (gtk gui)
 - alsa-utils
 - pulseaudio-ctl (shell-based)
@@ -159,8 +162,6 @@
 - jack jack2-dbus
 - carla
 - cadence
-- pulseaudio
-- pulseaudio-jack
 - qjackctl
 - cava
 - screenkey
@@ -172,6 +173,8 @@
 - torbrowser-launcher nyx tor tor-openrc
 - proxychains
 
+- yt-dlp
+- rclone
 - transmission-gtk (or -qt)
 - filezilla
 - tigervnc
@@ -180,6 +183,7 @@
 - heroku-cli
 - netlify
 - cht.sh (cheat.sh)
+- calibre
 
 - lastpass
 - megasync
@@ -195,11 +199,37 @@
 - pg...
 
 ## Tools and Utilities
+- linux-tkg ccache schedtool
+- apparmor audit audit-openrc firejail
+- hardinfo
+
+### Graphics
+- nvidia-dkms
+- nvidia-settings
+- intel-media-driver libva-utils vdpauinfo libva-vdpau-driver-chromium libva-vdpau-driver-vp9-git
+- gwe ("green with envy")
+
+### File Systems and Storage
+- ntfs-3g dosfstools exfat-utils (exfatprogs) xfsprogs btrfs-progs zfs-dkms (zfs-linux...)
+- ipfs-desktop
+- hdparm nvme-cli intel-mas-cli-tool
+- perl-image-exiftool ffmpeg
+- rsync tar gzip pigz lz4 lzma pv
+- clonezilla
+- zrepl sanoid
+- fio iozone ioping nmon
+- smartmontools idle3-tools
+- iperf3
+- memtest86+
+- lockfile-progs
+- artools iso-profiles arch-install-scripts
+- curl, wget, rpm
+- furiusisomount
+- jdownloader2
+- syncthing syncthing-openrc
 - openrgb
 - poppler
-- iperf3
-- ufw
-- wol (wake on lan)
+- ufw qemu-guest-agent wol (wake on lan)
 - QMK
 - android-udev android-file-transfer go-mtpfs-git mtpfs
 - android-tools
@@ -213,9 +243,7 @@
 - pciutils usbutils
 - nut (ups)
 - cifs-utils (for Samba)
-- ntfs-3g dosfstools exfatprogs xfsprogs btrfs-progs
 - wakatime
-- curl, wget, rpm
 - zram-config --> setup https://github.com/StuartIanNaylor/zram-config
 - lyrebird
 
@@ -232,11 +260,9 @@
 
 ## Benchmark
 - Phoronix Test Suite
-- fio
-- hdparm smartmontools
-- idle3-tools
-- traceroute
 - geekbench
+- unigine-superposition unigine-valley unigine-heaven
+- traceroute
 - hashcat -B
 - cinfo
 - dmidecode

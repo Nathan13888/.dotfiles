@@ -16,7 +16,7 @@
         "showOpenLogsButton": true,
         "messageCacheCap": 1000,
         "savedMessagesCap": 1000,
-        "reverseOrder": true,
+        "reverseOrder": false,
         "onlyLogWhitelist": true,
         "whitelist": [
             "843552361212805180",

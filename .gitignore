@@ -4,6 +4,10 @@ log/
 logs/
 TODO.md
 
+# Spicetify
+spicetify/Backup
+spicetify/Extracted
+
 # Xmonad
 .xmonad/xmonad-x86_64-linux
 .xmonad/xmonad.errors

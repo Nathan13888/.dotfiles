@@ -12,7 +12,7 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 # Gaps
 # You can also use any non-zero value if you'd like to have a border
-for_window [class=".*"] border pixel 0
+for_window [class=".*"] border pixel 3
 
 gaps inner 6
 #smart_gaps on
@@ -83,7 +83,7 @@ bindsym XF86AudioNext --no-startup-id exec playerctl next
 bindsym XF86AudioPrev --no-startup-id exec playerctl previous
 
 # class                 border  bground text    indicator child_border
-client.focused          #fdaaaa #fdaaaa #F8F8F2 #fdaaaa   #fdaaaa
+client.focused          #d94745 #d94745 #d94745 #d94745   #d94745
 client.focused_inactive #44475A #44475A #f7f7f7 #44475A   #44475A
 client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
 client.urgent           #44475A #FF5555 #f7f7f7 #FF5555   #FF5555

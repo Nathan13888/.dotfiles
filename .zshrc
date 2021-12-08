@@ -12,7 +12,7 @@ DISABLE_MAGIC_FUNCTIONS=true
 # HIST_STAMPS="mm/dd/yyyy"
 
 HISTSIZE=100000
-#HISTFILE=$HOME/.zsh_history
+HISTFILE=$HOME/.zsh_history
 
 #
 #[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -79,9 +79,9 @@ zstyle ':fzf-tab:*' switch-group ',' '.'
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
-    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
+    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
     command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
-    command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
+    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.zinit/bin" && \
         print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
         print -P "%F{160}▓▒░ The clone has failed.%f%b"
 fi
@@ -114,11 +114,19 @@ zinit light starship/starship
 #source /usr/share/fzf/completion.zsh
 autoload -U compinit && compinit
 zinit ice wait lucid; zinit light Aloxaf/fzf-tab
-#zinit ice wait lucid atload'_zsh_autosuggest_start'
-zinit ice wait lucid; zinit light zsh-users/zsh-autosuggestions
-#zinit ice wait lucid; zinit light zsh-users/zsh-completions
-zinit ice wait lucid; zinit light zsh-users/zsh-syntax-highlighting
+
+zinit wait lucid for \
+ atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
+    zdharma-continuum/fast-syntax-highlighting \
+ blockf \
+    zsh-users/zsh-completions \
+ atload"!_zsh_autosuggest_start" \
+    zsh-users/zsh-autosuggestions
+
+zinit ice wait lucid; zinit light jeffreytse/zsh-vi-mode
+
 zinit ice wait lucid; zinit light sobolevn/wakatime-zsh-plugin
+export ZSH_WAKATIME_BIN=/usr/bin/wakatime
 
 # Run xinit if this is the normal terminal
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
@@ -132,8 +140,8 @@ fi
 
 ## REMOVE ALL DEFAULT ZSH ALIASES
 #unalias -m '*'
-zinit ice wait lucaid; [ -f ~/.aliases ] && source ~/.aliases
-zinit ice wait lucaid; [ -f ~/.aliases.local ] && source ~/.aliases.local
+zinit ice wait lucid; [ -f ~/.aliases ] && source ~/.aliases
+zinit ice wait lucid; [ -f ~/.aliases.local ] && source ~/.aliases.local
 
 #########################
 #        EXPORTS        #
@@ -142,12 +150,6 @@ zinit ice wait lucaid; [ -f ~/.aliases.local ] && source ~/.aliases.local
 export PYTHONDONTWRITEBYTECODE=1
 [ -f ~/.exports ] && source ~/.exports
 [ -f ~/.exports.local ] && source ~/.exports.local
-export PATH=$PATH:$HOME/.cargo/bin
-export PATH=$PATH:$GOROOT/bin
-export GOPATH=$HOME/go # the first path in GOPATH is always used to install external packages
-export PATH=$PATH:$GOPATH/bin
-export GOPATH=$GOPATH:$HOME/ws/scripts:$HOME/ws/gt
-export PYTHONDONTWRITEBYTECODE=1
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"

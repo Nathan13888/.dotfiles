@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 
 function startPipewire {
-    pipewire &
+    TMP="$(mktemp -u)_pipewire"
+    /usr/bin/pipewire | tee $TMP &
     disown
-    pipewire-pulse &
-    disown
-    pipewire-media-session &
-    disown
+    #TMP="$(mktemp -u)_pipewire_pulse"
+    #/usr/bin/pipewire-pulse | tee $TMP &
+    #disown
+    #/usr/bin/pipewire-media-session &
+    #sleep 2
+    #TMP="$(mktemp -u)_wireplumber"
+    #/usr/bin/wireplumber | tee $TMP &
+    #disown
 }
 
 case "$1" in

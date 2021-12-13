@@ -65,6 +65,9 @@ pinentry-program /usr/bin/pinentry-gnome3
 - Installing using curl: `curl -fsSL https://starship.rs/install.sh | bash`
 - Alternative, you could get starship from AUR: `starship, starship-bin, starship-git`
 
+### Rustup
+- Setup toolchain: `rustup default stable`
+
 ### Pipewire
 - to change sample rate in `pipewire.conf`: `default.clock.rate = 192000`
 - add to end of `/usr/share/pipewire/pipewire.conf`
@@ -75,18 +78,95 @@ context.exec = [
 ]
 ```
 
+### Dnsmasq
+- Configure settings at `/etc/dnsmasq.conf`:
+```
+domain-needed
+bogus-priv
+dnssec
+
+server=<upstream servers...>
+server=<upstream server 2...>
+
+no-resolv
+conf-file=/usr/share/dnsmasq/trust-anchors.conf
+cache-size=1000
+listen-address=::1,127.0.0.1
+```
+- Test config: `dnsmasq --test`
+- Add nameserver to `/etc/resolv.conf`:
+```
+nameserver ::1
+nameserver 127.0.0.1
+options trust-ad
+```
+
+### Dnsmasq-proxy
+- Disable NetworkManager from messing with resolv.conf, edit `/etc/NetworkManager/NetworkManager.conf`:
+```
+[main]
+plugins=ifupdown,keyfile
+# Stops overwriting /etc/resolv.conf by NetworkManager
+# because we use dnscrypt-proxy
+dns=none
+# Need to comment this line because of use dnscrypt-proxy
+#dns=dnsmasq
+
+[ifupdown]
+managed=false
+
+[device]
+# Random mac address
+# should be already default
+wifi.scan-rand-mac-address=yes
+```
+- Install `openresolv` and configure `/etc/resolvconf.conf`:
+```
+resolv_conf=/etc/resolv.conf
+resolv_conf_options="edns0"
+name_servers="127.0.0.1"
+...
+```
+- Add NM script `/etc/NetworkManager/dispatcher.d/20-resolv-conf`:
+```
+#!/bin/sh
+resolvconf -u
+```
+- Symlink to pre-up.d: `ln -s /etc/NetworkManager/dispatcher.d/20-resolv-conf /etc/NetworkManager/dispatcher.d/pre-up.d/20-resolv-conf`
+- Edit dnscrypt-proxy config `/etc/dnscrypt-proxy/dnscrypt-proxy.toml`:
+```
+server_names = ['cloudflare'] # ... https://dnscrypt.info/public-servers
+listen_addresses = ['127.0.0.1:53000', '[::1]:53000']
+```
+
 ### Tmux
 - Installing TPM: `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
 - Install plugins: "Press prefix + I (capital i, as in Install) to fetch the plugin"
+
 ### Nvim
 - **Install Vim-Plug**: `sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'`
 - Inside neovim, run `:PlugInstall`
 - `CocInstall coc-css coc-json coc-python coc-discord coc-sh coc-yaml`
 - Install YCM using these instructions (https://github.com/ycm-core/YouCompleteMe#linux-64-bit)
+
+### Chromium
+- Enable:
+```
+#ignore-gpu-blocklist
+#enable-gpu-rasterization
+#enable-zero-copy
+#enable-system-notifications
+#enable-force-dark
+#enable-parallel-downloading
+```
+
 ### Firefox
 - Download firefox (a gpg key server must be setup to install `firefox-nightly` from AUR)
+- HARDWARE ACCEL: https://wiki.archlinux.org/title/Firefox#Hardware_video_acceleration
+- New tabs position: `browser.tabs.insertAfterCurrent` and `browser.tabs.insertRelatedAfterCurrent`
 - Disable `dom.event.contextmenu.enabled` if there are problems with right-click
 - Enable `browser.compactmode.show`
+- Remove pocket `extensions.pocket.enabled = false`
 - Sync settings
 - Disable telemetry and change search engine
 - Change device name to be more recognizable
@@ -117,31 +197,11 @@ Install options:
 - `apt install wireguard`
 - configure wireguard
 
-### GTK
-```
-To manually change the GTK theme, icons, font and font size, add the following to the configuration files, for example:
-
-GTK 2:
-
-~/.gtkrc-2.0
-
-gtk-icon-theme-name = "Adwaita"
-gtk-theme-name = "Adwaita"
-gtk-font-name = "DejaVu Sans 11"
-
-GTK 3:
-
-$XDG_CONFIG_HOME/gtk-3.0/settings.ini
-
-[Settings]
-gtk-icon-theme-name = Adwaita
-gtk-theme-name = Adwaita
-gtk-font-name = DejaVu Sans 11
-```
+### Docker
+- 
 
 ### Podman
 - Refer to: `https://wiki.archlinux.org/title/Podman#Configuration`
-- 
 
 ### NVME
 
@@ -154,6 +214,13 @@ gtk-font-name = DejaVu Sans 11
 @audio           -       rtprio          95
 @audio           -       memlock         unlimited
 ```
+
+### Graphics
+- KMS: https://wiki.archlinux.org/title/Kernel_mode_setting#Installation
+
+### Virtual Machines
+- add user to `kvm` group
+- Create Bridge: `brctl addbr br0`
 
 ## Scripts
 - `install` --> regular install script for a desktop

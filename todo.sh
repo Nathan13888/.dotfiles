@@ -58,7 +58,7 @@ case "$1" in
         LISTS=${@:2}
         if [ "$#" -eq 1 ]; then
             # TODO: auto find all "default" files and extraneous files
-            LISTS="main school review uni shopping projects dev"
+            LISTS="main school setup dev homelab projects house volunteering garden review shopping"
         fi
         echo $LISTS
         PATHS=()

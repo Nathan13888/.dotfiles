@@ -2,6 +2,7 @@
 exec --no-startup-id ~/wm.sh init
 exec_always --no-startup-id ~/wm.sh restart
 exec_always --no-startup-id ~/.config/polybar/launch.sh
+#exec --no-startup-id ~/wm.sh keepassxc
 
 # Remap CAPS LOCK key
 #exec_always xmodmap -e "clear lock"
@@ -57,6 +58,7 @@ bindsym $mod+Shift+period exec --no-startup-id dunstctl context
 bindsym $mod+slash exec --no-startup-id notify-send "Dunst Paused" "$(dunstctl is-paused)" -u low
 bindsym $mod+Shift+slash exec --no-startup-id dunstctl set-paused toggle
 
+bindsym $mod+Mod1+K exec --no-startup-id ~/wm.sh keepassxc
 set $prtscr ~/wm.sh screenshot
 bindsym Print exec --no-startup-id $prtscr
 bindsym $mod+Shift+S exec --no-startup-id $prtscr
@@ -215,6 +217,7 @@ for_window [title="Eclipse IDE "] no_focus, floating enable, move container to w
 assign [class="FreeCAD"] 5
 assign [class="^Kicad$"] 5
 assign [class="discord"] 6
+assign [class="KeePassXC$"] 7
 for_window [class="Spotify"] move to workspace $ws10, no_focus
 
 # NO FOCUS

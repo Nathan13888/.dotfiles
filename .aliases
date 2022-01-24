@@ -173,8 +173,11 @@ service () {
 alias xc="xclip -selection clipboard -i"
 alias pg="pgrep" # find process id, `$ pidof` is another viable command alternative
 alias grep="grep --color=always"
-function gi {
+function GI {
   grep -i "$@"
+}
+function TC {
+  tr -s ' ' | cut -d " " -f$1
 }
 function sedhref {
   sed -n 's/.*href="\([^"]*\).*/\1/p'
@@ -188,12 +191,12 @@ function findexe() {
 
 ### APPLICATIONS
 alias code="code-insiders"
-alias chrome="google-chrome"
+alias mpv="mpv --hwdec=auto"
 
 function flash {
     readonly source=${1:?"Source ISO must be specified"}
     readonly target=${2:?"Target Device must be specified"}
-    sudo dd bs=4M if=$source of=$target status=progress
+    sudo dd bs=4M if=$source of=$target status=progress "${@:3}"
 }
 
 ### FS
@@ -231,7 +234,14 @@ alias ff='find . -type f -name' # find file
 alias du="du -h"
 alias df="df -h"
 alias du1="du -d 1" # view the size of all directories of depth 1
-alias dutop="du -hsx -- * | sort -rh | head -10" # list top 10 largest files/folders in directory
+dutop() {
+  SOURCE=$1
+  if [ SOURCE=="" ]; then
+    du -hsx -- * | sort -rh | head -10
+  else
+    du -hsx -- $SOURCE | sort -rh | head -10
+  fi
+}
 tdur() {
     local P="$1"
     if [ -z "$P" ]; then
@@ -243,6 +253,7 @@ tdur() {
     fi
     exiftool -n -p '\${Duration;our\$s;\$_=ConvertDuration(\$s+=\$_)}' $P|tail -n1
 }
+alias stripexif="exiftool -all:all= -tagsfromfile @ -exif:Orientation"
 #alias cf="count-files"
 #alias count-files="ls | wc -l"
 #alias cfr="count-files-recursive"
@@ -250,7 +261,7 @@ tdur() {
 #alias ducks="du -cks -- * | sort -rn | head"
 ##### LS
 if command -v exa &> /dev/null; then
-    alias ls="exa"
+    alias ls="exa -@ --time-style iso --octal-permissions --no-permissions"
 fi
 alias la='ls -alhFg --color=always --group-directories-first'
 alias lag="la | grep --color=always ''"

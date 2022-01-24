@@ -34,6 +34,11 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 - ~/.Xresources
 - ~/.xinitrc
 
+### Flatpak
+- Add remote: `flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo`
+- Search: `flatpak search <query>`
+- Install: `flatpak install <package>`
+
 ### GPG
 - **Import Key**: `gpg --import private.key`
 - **Verify Key**: `gpg --edit-key {KEY} trust quit`
@@ -149,7 +154,7 @@ listen_addresses = ['127.0.0.1:53000', '[::1]:53000']
 - `CocInstall coc-css coc-json coc-python coc-discord coc-sh coc-yaml`
 - Install YCM using these instructions (https://github.com/ycm-core/YouCompleteMe#linux-64-bit)
 
-### Chromium
+### Chromium/Brave
 - Enable:
 ```
 #ignore-gpu-blocklist
@@ -159,6 +164,7 @@ listen_addresses = ['127.0.0.1:53000', '[::1]:53000']
 #enable-force-dark
 #enable-parallel-downloading
 ```
+- Disable IDLE API: `chrome://settings/content/idleDetection`
 
 ### Firefox
 - Download firefox (a gpg key server must be setup to install `firefox-nightly` from AUR)
@@ -202,6 +208,10 @@ Install options:
 
 ### Podman
 - Refer to: `https://wiki.archlinux.org/title/Podman#Configuration`
+
+### Node
+- Install Corepack: `sudo npm i -g corepack` and `corepack enable`
+- `npx next telemetry disable`
 
 ### NVME
 

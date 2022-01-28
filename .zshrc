@@ -9,12 +9,11 @@ DISABLE_MAGIC_FUNCTIONS=true
 # "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 # or set a custom format using the strftime function format specifications,
 # see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
+#HIST_STAMPS="mm/dd/yyyy"
 
-HISTSIZE=100000
+SAVEHIST=100000
 HISTFILE=$HOME/.zsh_history
 
-#
 #[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # CHT.SH Autocomplete
@@ -93,10 +92,10 @@ autoload -Uz _zinit
 # Load a few important annexes, without Turbo
 # (this is currently required for annexes)
 zinit light-mode for \
-    zinit-zsh/z-a-rust \
-    zinit-zsh/z-a-as-monitor \
-    zinit-zsh/z-a-patch-dl \
-    zinit-zsh/z-a-bin-gem-node
+    zdharma-continuum/zinit-annex-rust \
+    zdharma-continuum/zinit-annex-as-monitor \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-bin-gem-node
 
 ### End of Zinit's installer chunk
 
@@ -104,11 +103,11 @@ zinit light-mode for \
 #        PROMPT         #
 #########################
 
-# Load starship theme
-zinit ice as"command" from"gh-r" \
-    atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
-    atpull"%atclone" src"init.zsh"
-zinit light starship/starship
+#zinit ice as"command" from"gh-r" \
+#    atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+#    atpull"%atclone" src"init.zsh"
+#zinit light starship/starship
+eval "$(starship init zsh)"
 
 #zinit ice wait lucid; zinit light junegunn/fzf
 #source /usr/share/fzf/completion.zsh
@@ -126,7 +125,7 @@ zinit wait lucid for \
 zinit ice wait lucid; zinit light jeffreytse/zsh-vi-mode
 
 zinit ice wait lucid; zinit light sobolevn/wakatime-zsh-plugin
-export ZSH_WAKATIME_BIN=/usr/bin/wakatime
+export ZSH_WAKATIME_BIN=$(which wakatime-cli)
 
 # Run xinit if this is the normal terminal
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then

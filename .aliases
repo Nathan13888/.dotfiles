@@ -51,12 +51,16 @@ eval $(thefuck --alias)
 alias f="fuck"
 
 ### CLI & APPLICATIONS
+exportvar () {
+  readonly NAME=${1:?"Specify the name of the variable"}
+  read VALUE
+  export $NAME="$VALUE"
+}
 alias s="sudo"
-alias s!="sudo !!"
 alias sudo='sudo ' # for using other alias when using sudo
 function reload {
   if [[ $SHELL == */tmux ]] ; then
-    exec /usr/bin/zsh
+    exec zsh
   else
     exec $SHELL # reload whatever is $SHELL
   fi
@@ -67,16 +71,11 @@ alias tm="tmux"
 alias tma="tmux attach"
 alias tmr="tmux source-file ~/.tmux.conf"
 alias tmks="tmux kill-server"
-#if command -v goneovim &> /dev/null; then
-#    alias v="goneovim"
-#el
 if command -v nvim &> /dev/null; then
     alias v="nvim"
 fi
 alias sv='sudo v'
-alias nv="nvim"
 alias vi="vim"
-
 vns() {
     if [ -z "$1" ];then
         echo "You must specify a path!"

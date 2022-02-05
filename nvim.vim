@@ -62,7 +62,18 @@ let g:airline_powerline_fonts = 1
 let g:airline_section_z = ' %{strftime("%-I:%M %p")}'
 let g:airline_section_warning = ''
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme = 'base16'
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#show_buffers = 0
+let g:airline#extensions#tabline#show_close_button = 0
+let g:airline#extensions#tabline#show_splits = 0
+let g:airline#extensions#tabline#tab_min_count = 2
+let g:airline#extensions#tabline#tabs_label = ''
+let g:airline#extensions#tabline#show_tab_nr = 0
+let g:airline#extensions#tabline#show_tab_type = 0
+let g:airline_theme = 'transparent'
 
 " Neovim : Terminal
 tmap <Esc> <C-\><C-n>
@@ -229,8 +240,8 @@ noremap <silent> <C-down> :call <SID>swap_down()<CR>
 " Clearing Search
 nnoremap <silent> <space> :nohlsearch<CR>
 " Tab Navigation
-noremap <silent> <C-S-Tab> <esc>:tabprevious<CR>
-noremap <silent> <C-Tab> <esc>:tabnext<CR>
+nnoremap <C-h> gT
+nnoremap <C-l> gt
 noremap <silent> <C-t> <esc>:tabnew<CR>
 noremap <silent> <C-w> <esc>:tabclose<CR>
 noremap <silent> <A-1> 1gt
@@ -242,7 +253,7 @@ noremap <silent> <A-6> 6gt
 noremap <silent> <A-7> 7gt
 noremap <silent> <A-8> 8gt
 noremap <silent> <A-9> 9gt
-noremap <silent> <A-0> 10gt
+noremap <silent> <A-0> <esc>:tablast<CR>
 
 """ Styling
 syntax on

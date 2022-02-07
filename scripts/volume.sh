@@ -3,11 +3,8 @@
 INC="1"
 MAX="120"
 
-# TODO: check if system is using pulseaudio (`pulseaudio --check` returns exit code 0)
-
-# TODO: improve method of getting input sources; ie. loop through all lines, get sink number, mute or unmute depending on state of some variable
-function getMic {
-    echo $(pamixer --list-sources | grep "alsa_input" | cut -c1-1)
+notify () {
+    dunstify "Volume" "$@" -u low
 }
 
 function isMicMuted {
@@ -24,13 +21,6 @@ function isMMicon {
     fi
 }
 
-function togmic {
-    #MIC=$(getMic)
-    MIC=@DEFAULT_SOURCE@
-    echo "Toggling volume of mic $MIC"
-    pactl set-source-mute $MIC toggle
-}
-
 function getCurVol {
     echo $(pamixer --get-volume)
 }
@@ -39,11 +29,11 @@ function up {
     if [ $(($(getCurVol)+$INC)) -le $MAX ]
     then
         echo "Increasing Volume by $INC"
-        pactl set-sink-volume @DEFAULT_SINK@ +$INC%
-        pactl set-sink-mute @DEFAULT_SINK@ 0
+        unmute
+        pamixer --allow-boost -i $INC
     else
-        echo "Maximum volume reached."
-        pactl set-sink-volume @DEFAULT_SINK@ $MAX%
+        notify "Maximum volume reached."
+        pamixer --set-volume $MAX
     fi
 }
 
@@ -51,28 +41,35 @@ function dn {
     if [ $(($(getCurVol)-$INC)) -ge 0 ]
     then
         echo "Decreasing Volume by $INC"
-        pactl set-sink-volume @DEFAULT_SINK@ -$INC%
-        pactl set-sink-mute @DEFAULT_SINK@ 0
+        unmute
+        pamixer --allow-boost -d $INC
     else
-        echo "Minimum volume reached."
-        pactl set-sink-volume @DEFAULT_SINK@ 0%
+        notify "Minimum volume reached."
+        pamixer --set-volume 0
     fi
 }
 
+function togmic {
+    notify "Toggling default source"
+    pamixer --default-source -t
+}
+
 function togm {
-    echo "Toggling Mute"
-    pactl set-sink-mute @DEFAULT_SINK@ toggle
+    notify "Toggling default sink"
+    pamixer -t
 }
 
 function mute {
-    echo "Muting"
-    pactl set-sink-mute @DEFAULT_SINK@ 1
+    notify "Muting default sink"
+    pamixer -m
+}
+
+function unmute {
+    notify "Unmuting default sink"
+    pamixer -u
 }
 
 case "$1" in
-    gm)
-        echo $(getMic)
-        ;;
     isMMicon)
         isMMicon
         ;;

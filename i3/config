@@ -53,9 +53,9 @@ bindsym $mod+T exec --no-startup-id ~/scripts/todo.sh open
 bindsym $mod+comma exec --no-startup-id dunstctl close
 bindsym $mod+Shift+comma exec --no-startup-id dunstctl close-all
 bindsym $mod+grave exec --no-startup-id dunstctl history-pop
-bindsym $mod+period exec --no-startup-id notify-send "Dunst Count" "$(dunstctl count)" -u low
+bindsym $mod+period exec --no-startup-id dunstify "Dunst Count" "$(dunstctl count)" -u low
 bindsym $mod+Shift+period exec --no-startup-id dunstctl context
-bindsym $mod+slash exec --no-startup-id notify-send "Dunst Paused" "$(dunstctl is-paused)" -u low
+bindsym $mod+slash exec --no-startup-id dunstify "Dunst Paused" "$(dunstctl is-paused)" -u low
 bindsym $mod+Shift+slash exec --no-startup-id dunstctl set-paused toggle
 
 bindsym $mod+Mod1+K exec --no-startup-id ~/scripts/wm.sh keepassxc
@@ -65,7 +65,7 @@ bindsym $mod+Shift+S exec --no-startup-id $prtscr
 
 font pango:SauceCodePro Nerd Font 9
 
-set $volcommand ~/.local/bin/volume.sh
+set $volcommand ~/scripts/volume.sh
 bindsym $mod+Shift+M exec --no-startup-id $volcommand togmic
 bindsym XF86AudioRaiseVolume exec --no-startup-id $volcommand up
 bindsym XF86AudioLowerVolume exec --no-startup-id $volcommand dn

@@ -55,8 +55,12 @@ function togmic {
 }
 
 function togm {
-    notify "Toggling default sink"
-    pamixer -t
+    SINKS=($(pamixer --list-sinks | grep '"' | cut -d ' ' -f 1))
+    for SINK in ${SINKS[@]}; do
+      #notify "Toggling default sink"
+      echo "Toggling mute of $SINK"
+      pamixer -t --sink $SINK
+    done;
 }
 
 function mute {

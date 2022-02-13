@@ -245,20 +245,19 @@ bindsym $mod+Control+j resize shrink height 50 px
 bindsym $mod+Control+k resize grow height 50 px
 bindsym $mod+Control+l resize grow width 50 px
 
-# Set shut down, restart and locking features
 bindsym $mod+Escape mode "$mode_system"
-set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown
+set $mode_system (l)ock, (e)xit, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown
+
+set $lockcommand ~/scripts/lock.sh
 
 mode "$mode_system" {
     bindsym l exec --no-startup-id $lockcommand, mode "default"
-    bindsym s exec --no-startup-id $lockcommand && echo -n mem > /sys/power/state, mode "default"
-    bindsym u exec --no-startup-id dm-tool switch-to-greeter, mode "default"
+    bindsym s exec --no-startup-id $lockcommand && systemctl suspend, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
     bindsym h exec --no-startup-id $lockcommand && echo -n disk > /sys/power/state, mode "default"
     bindsym r exec --no-startup-id reboot, mode "default"
     bindsym Shift+s exec --no-startup-id shutdown, mode "default"
 
-    # exit system mode: "Enter" or "Escape"
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }

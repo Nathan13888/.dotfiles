@@ -2,6 +2,11 @@
 	name = Nathan13888
     email = 29968201+Nathan13888@users.noreply.github.com
 
+[include]
+	path = ~/.gitconfig.local
+
+#[includeIf
+
 [alias] ## Useful GIT commands https://github.com/joshnh/Git-Commands
 ## INFO
 	st = status -sb -uall # shortened and more concise version of git status, -uall option isn't actually needed
@@ -90,14 +95,12 @@
 	info = ! "inf() { if git rev-parse ${1} >/dev/null 2>&1; then git cat-file -p $(git rev-parse ${1}); else echo Invalid object; fi }; inf"
 
 [core]
-	editor = /usr/bin/vim
+	editor = vim
 	filemode = true
 	ignorecase = true
     autocrlf = input
 [credential]
 	helper = /usr/lib/git-core/git-credential-libsecret
-[include]
-	path = ~/.gitconfig.local
 [commit]
 	template = ~/.gitmessage.txt
 	cleanup = strip

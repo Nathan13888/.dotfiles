@@ -29,6 +29,7 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
 export FZF_COMPLETION_TRIGGER='~~'
 
 # Options to fzf command
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore'
 export FZF_DEFAULT_OPTS='--height 90% --layout=reverse --border'
 
 # Use fd (https://github.com/sharkdp/fd) instead of the default find

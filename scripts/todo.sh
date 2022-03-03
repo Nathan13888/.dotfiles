@@ -3,8 +3,8 @@
 NEED_TERM=true
 #USE_THIS_SHELL=false
 
-if [ command -v goneovim &> /dev/null ]; then
-    EDITOR="goneovim"
+if [ command -v neovide &> /dev/null ]; then
+    EDITOR="neovide"
     NEED_TERM=false
 else
     if ! command -v $EDITOR &> /dev/null; then
@@ -58,7 +58,7 @@ case "$1" in
         LISTS=${@:2}
         if [ "$#" -eq 1 ]; then
             # TODO: auto find all "default" files and extraneous files
-            LISTS="main school setup dev homelab projects house volunteering garden review shopping"
+            LISTS="main school uni setup dev homelab 3dprinter projects house food volunteering garden review shopping"
         fi
         echo $LISTS
         PATHS=()

@@ -1,94 +1,95 @@
-################
 # **Packages** #
 ################
+################
 
-## Dev
+## Terminal
+- ripgrep
 - zsh bash
-- hyperfine
-- git hub
-- vim neovim
-- emacs (ripgrep doom emacs)
-- doom emacs
-  - git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d ~/.emacs.d/bin/doom install alacritty
-- firefox-nightly firefox-developer-edition ungoogled-chromium brave-bin
-- keepassxc
-- thunderbird protonmail-desktop protonmail-bridge
-- keybase
-- neofetch pfetch
+- hyperfine time
+- git hub git-lfs git-extras github-cli
 - thefuck (or with PIP)
+- neofetch pfetch
 - screen tmux sudo
+
+## Editors
+- vim neovim
+- emacs (doom emacs)
+  - git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d ~/.emacs.d/bin/doom install alacritty
 - visual-studio-code[-insiders]-bin
-- cuda and cudnn
-- time
+
+## Development
+- apache
+- tokei exa
 - python python-pip anaconda
-- go rustup
+- go
+- rustup
 - nodejs npm nvm
 - gcc gdb
 - openjdk
-- tokei
-- exa
+- jq jo
 
-## Communication
-- discord-ptb betterdiscord-installer
+## Browser
+- firefox-nightly firefox-developer-edition
+- torbrowser-launcher nyx tor tor-openrc
+- ungoogled-chromium brave-bin
+- lynx
+- proxychains
+- profile-cleaner (cleans sqlite databases)
+
+## Clients
+- keybase
+### Communication
+- discord-ptb betterdiscord-installer discord-chat-exporter-cli
+- thunderbird protonmail-desktop protonmail-bridge
 - signal-desktop
 - element-desktop-nightly-bin
 - teams
 
-# xmonad
-- xmonad xmonad-contrib
-
-# i3
-- i3-gaps
-- i3lock-color
-- xss-lock
-- *(xorg)*
+## WM
 - X11 stuff --> xorg xorg-server
 - xorg-xinit
 - xdg-utils
 - display manager
-<!--- lsdesktopf
-- lxappearance
-- dconf-editor-->
-- *(input)*
-- numlockx
-- xbanish
-- *(services)*
-- fcitx5
+- lxappearance dconf-editor
+- juno-theme-git (artix-dark theme)
 - picom-ibhagwan-git
-- polybar
-- rofi
-- network-manager-applet
+- polybar dunst rofi
 - bluez bluez-utils bluez-openrc
+- network-manager-applet cbatticon
+- network-manager openresolv
+- dnsmasq dnsmasq-openrc dnscrypt-proxy dnscrypt-proxy-openrc dnsutils ldns
+
+## Services
+- numlockx xbanish xbindkeys xbacklight
 - openntpd openntpd-openrc
-- fprintd libfprint (or from git `fprintd-libfprint2` `libprint-git`)
-- fingerprint-gui
-- xbindkeys
-- xbacklight
-- dunst
+- fcitx5
+
+## Utilities
+- gnupg gnome-keyring keepassxc bitwarden bitwarden-cli
+- libsecret seahorse pinentry
 - feh
-- flameshot
+- flameshot gromit-mpx
+
+### i3
+- i3-gaps
+- i3lock-color
+- xss-lock
+
+### Xmonad
+- xmonad xmonad-contrib
+
+## Utilities
+- fprintd libfprint (or from git `fprintd-libfprint2` `libprint-git`) fingerprint-gui
 - nerd-fonts-complete ttf-ms-fonts noto-fonts-cjk ttf-google-fonts-git
-#- font-config
-- *(secrets)*
-- gnome-keyring
-- libsecret
-- seahorse
-- pinentry
-- gnupg
-- *(misc)*
-- pcmanfm
 - file-roller
-- vifm nnn
+- vifm nnn pcmanfm
 - calcurse
-- lynx
-- bottom-bin iotop powertop htop iftop lm-sensors ipmitool dimidecode?
+- btop bottom-bin iotop powertop htop iftop lm-sensors ipmitool dimidecode?
 - fetchcord-git (or from pip)
 - speedtest-cli
-- *(battery)*
-- cbatticon
 
 ## Virtualization / Containers
-- virt-manager
+- virt-manager qemu qemu-arch-extra libvirt-openrc edk2-ovmf ovmf-git bridge-utils
 - virtualbox-bin virtualbox-host-modules-arch
   - https://www.virtualbox.org/wiki/Linux_Downloads 
   - `modprobe vboxdrv vboxnetfit vboxnetadp vboxpci`
@@ -98,7 +99,7 @@
 - [Docker](https://wiki.archlinux.org/index.php/Docker#Installation)
 - podman
 - kubernetes
-- kubectl
+- kubectl lens-bin
 - k3s-bin or k3s-git
 - helm
 - cloudfoundry-cli
@@ -119,6 +120,7 @@
 - libinput-gestures https://github.com/bulletmark/libinput-gestures
 - aircrack-ng and airegeddon
 - hydra
+- mitmproxy
 
 ## Media
 - spotify spotify-adblock(-git) spicetify spicetify-themes-git
@@ -170,27 +172,20 @@
 - gstreamer
 
 ## Clients
-- torbrowser-launcher nyx tor tor-openrc
-- proxychains
 
 - yt-dlp
 - rclone
 - transmission-gtk (or -qt)
 - filezilla
-- tigervnc
-- xrdp xorg xrdp-glamor (intel/amd) xordxrdp-nvidia (nvidia)
+- tigervnc xrdp xorg xrdp-glamor (intel/amd) xordxrdp-nvidia (nvidia)
 - KRDC
-- heroku-cli
-- netlify
+- cuda and cudnn
+- heroku-cli netlify
 - cht.sh (cheat.sh)
-- calibre
-
-- lastpass
 - megasync
-- libreoffice-fresh
+- calibre
+- libreoffice-fresh onlyoffice drawio-desktop-bin
 - joplin
-- Spectacle (KDE for screenshots)
-- yakuake or guake (if gnome)
 
 ## Data tools
 - tar
@@ -207,17 +202,19 @@
 - nvidia-dkms
 - nvidia-settings
 - intel-media-driver libva-utils vdpauinfo libva-vdpau-driver-chromium libva-vdpau-driver-vp9-git
+- vulkan-tools
 - gwe ("green with envy")
 
 ### File Systems and Storage
 - ntfs-3g dosfstools exfat-utils (exfatprogs) xfsprogs btrfs-progs zfs-dkms (zfs-linux...)
 - ipfs-desktop
-- hdparm nvme-cli intel-mas-cli-tool
+- hdparm sdparm nvme-cli intel-mas-cli-tool ncdu
 - perl-image-exiftool ffmpeg
+- img2pdf pdftk ocrmypdf
 - rsync tar gzip pigz lz4 lzma pv
 - clonezilla
 - zrepl sanoid
-- fio iozone ioping nmon
+- fio iozone ioping nmon sysstat
 - smartmontools idle3-tools
 - iperf3
 - memtest86+
@@ -227,10 +224,11 @@
 - furiusisomount
 - jdownloader2
 - syncthing syncthing-openrc
-- openrgb
+- openrgb liquidctl
 - poppler
 - ufw qemu-guest-agent wol (wake on lan)
-- QMK
+- QMK stlink dfu-utils openocd telenet
+- arm-none-eabi-newlib arm-none-eabi-binutils
 - android-udev android-file-transfer go-mtpfs-git mtpfs
 - android-tools
 - xcolor

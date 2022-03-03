@@ -178,16 +178,15 @@ command! FZFlocate : set noquickview
 filetype *.mpg mpv %c
 
 filetype *.pdf okular %f
+fileviewer *.pdf
+    \ tput cup %py %px > /dev/tty && sips -s format jpeg %c --out /tmp/tempfile.jpg > /dev/null&& kitty +kitten icat --transfer-mode=file --place=%pwx%ph@%pxx%py /tmp/tempfile.jpg %N
+    \ %pc
+    \ kitty +kitten icat --transfer-mode=file --place=%pwx%ph@%pxx%py --clear %N
+
 filetype *.mp3,*.mp4,*.mkv,*.mov mpv --player-operation-mode=pseudo-gui -- %f
 
 filetype *.arw feh --start-at %f
 
-fileviewer *.pdf pdftotext %c -
-
-"fileviewer *.pdf
-"        \ vifmimg pdfpreview %px %py %pw %ph %c
-"        \ %pc
-"        \ vifmimg clear
 
     fileviewer *.epub
         \ vifmimg epubpreview %px %py %pw %ph %c
@@ -249,7 +248,9 @@ filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm},<image/*>
         \ {View in sxiv}
         \ feh %f,
 fileviewer {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm},<image/*>
-         \ imgt %px %py %pw %ph %c
+    \ kitty +kitten icat --transfer-mode=file --place=%pwx%ph@%pxx%py %c %N
+    \ %pc
+    \ kitty +kitten icat --transfer-mode=file --place=%pwx%ph@%pxx%py --clear %N
 
 " OpenRaster
 filextype *.ora

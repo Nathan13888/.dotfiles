@@ -168,7 +168,7 @@ Name[uk]=Нове вікно
 Name[vi]=Cửa sổ Mới
 Name[zh_CN]=新建窗口
 Name[zh_TW]=開新視窗
-Exec=brave --use-gl=desktop --enable-features=VaapiVideoDecoder
+Exec=brave --ignore-gpu-blocklist --enable-gpu-rasterization --enable-zero-copy --disk-cache-dir=/tmp/chromium-cache --enable-features=VaapiVideoDecoder --disable-gpu-driver-bug-workarounds --close-confirmation=last --disable-search-engine-collection --enable-gpu-rasterization --enable-quic --enable-zero-copy --ignore-gpu-blocklist --keep-old-history --scroll-tabs=never --show-avatar-button=never --enable-smooth-scrolling --enable-features=VaapiVideoDecoder,BackForwardCache,CanvasOopRasterization,EnableTLS13EarlyData,HttpsOnlyMode,OmniboxMaxURLMatches:OmniboxMaxURLMatches/5,ParallelDownloading,PlaybackSpeedButton,PrivacyReview,ReaderMode,ReduceUserAgent,SystemNotifications,TabHoverCardImages,WebRTCPipeWireCapturer,WebRtcHideLocalIpsWithMdns,WebUITabStrip --disable-features=ChromeWhatsNewUI,DisableQRGenerator,SendWebUIJavaScriptErrorReports,Vulkan --flag-switches-end --origin-trial-disabled-features=CaptureHandle
 
 [Desktop Action new-private-window]
 Name=New Incognito Window
@@ -220,5 +220,5 @@ Name[uk]=Нове вікно в режимі анонімного перегля
 Name[vi]=Cửa sổ ẩn danh mới
 Name[zh_CN]=新建隐身窗口
 Name[zh_TW]=新增無痕式視窗
-Exec=brave --incognito --use-gl=desktop --enable-features=VaapiVideoDecoder
+Exec=brave --incognito
 MimeType=x-scheme-handler/unknown;x-scheme-handler/about;text/html;text/xml;application/xhtml_xml;image/webp;x-scheme-handler/http;x-scheme-handler/https;

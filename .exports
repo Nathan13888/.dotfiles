@@ -1,7 +1,13 @@
 export LANG=en_CA.UTF-8
 export LC_CTYPE=en_CA.UTF-8
 
-export PATH="$HOME/.local/bin:$HOME/wm.sh:$PATH"
+export PATH="$HOME/.local/bin:$HOME/scripts:$HOME/wm.sh:$PATH"
+#export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
+[ -f $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh ] && source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+
+# Node
+export NEXT_TELEMETRY_DISABLED=1
+export GATSBY_TELEMETRY_DISABLED=1
 
 # CARGO
 export PATH=$PATH:$HOME/.cargo/bin
@@ -10,6 +16,7 @@ export GOPATH=$HOME/go # the first path in GOPATH is always used to install exte
 export PATH=$PATH:$GOPATH/bin
 export GOPATH=$GOPATH:$HOME/ws/scripts:$HOME/ws/gt
 export PYTHONDONTWRITEBYTECODE=1
+
 # Ruby
 export GEM_HOME="$(ruby -e 'puts Gem.user_dir')"
 export PATH="$PATH:$GEM_HOME/bin"

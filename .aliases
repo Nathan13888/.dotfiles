@@ -85,7 +85,7 @@ vns() {
             return 1
         fi
 
-        local SHEBANG="#!/bin/bash"
+        local SHEBANG="#!/bin/sh"
         echo "$SHEBANG" >> "$1"
 
         if ! [ -f "$1" ]; then

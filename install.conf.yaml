@@ -9,27 +9,41 @@
 - link:
     ~/.alacritty.yml: .alacritty.yml
     ~/.aliases: .aliases
-    ~/.angular-config.json: .angular-config.json
-    ~/.bashrc: .bashrc
-    ~/.bash.d: .bash.d
+      #~/.angular-config.json: .angular-config.json
+      #~/.bashrc: .bashrc
+      #    ~/.bash.d: .bash.d
 #    ~/.doom.d: .doom.d
-    ~/.oh-my-bash/custom: .oh-my-bash
+#~/.oh-my-bash/custom: .oh-my-bash
     ~/.config/BetterDiscord: BetterDiscord
-    ~/.config/starship.toml: starship.toml
-#    ~/.cht.sh/cht.sh.conf: cht.sh.conf
-    ~/.config/fontconfig: fontconfig
-#    ~/.config/neofetch: neofetch
+      #~/.var/app/com.discordapp.Discord/config/BetterDiscord: BetterDiscord
+    ~/.config/dunst: dunst
+    ~/.config/i3: i3
+    ~/.config/firejail: firejail
+    ~/.gtkrc-2.0: .gtkrc-2.0
+    ~/.config/gtk-2.0: gtk-2.0
+    ~/.config/gtk-3.0: gtk-3.0
     ~/.config/nvim: .config/nvim
+    ~/.config/polybar: polybar
+    ~/.config/rofi: rofi
+    ~/.config/kitty: .config/kitty
+    ~/.config/starship.toml: starship.toml
+    ~/.config/spicetify: spicetify
     ~/.config/vifm: vifm
+#    ~/.cht.sh/cht.sh.conf: cht.sh.conf
+#~/.config/fontconfig: fontconfig
+    ~/.config/mimeapps.list: .config/mimeapps.list
+#    ~/.config/neofetch: neofetch
+    ~/.local/share/applications/brave-browser.desktop: applications/brave-browser.desktop
+    ~/.local/share/applications/spotify-adblock.desktop: applications/spotify-adblock.desktop
     ~/.exports: .exports
     ~/.gitconfig: .gitconfig
     ~/.gitmessage.txt: .gitmessage.txt
-    ~/.oh-my-zsh/custom: .oh-my-zsh/custom
-    ~/.tmux.conf: .tmux.conf
+      #~/.oh-my-zsh/custom: .oh-my-zsh/custom
+      #~/.tmux.conf: .tmux.conf
     ~/.vim: .vim
     ~/.vimrc: .vimrc
     ~/.zshrc: .zshrc
-    ~/.zsh.d: .zsh.d
+      #~/.zsh.d: .zsh.d
 
 #- create:
 #    - ~/workspace

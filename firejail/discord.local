@@ -1,4 +1,6 @@
-noblacklist ${HOME}/.config/BetterDiscord
-whitelist ${HOME}/.config/BetterDiscord
-include allow-firefox.inc
+#noblacklist ${HOME}/.config/BetterDiscord
+#whitelist ${HOME}/.config/BetterDiscord
+#include allow-firefox.inc
+noblacklist ${HOME}/.dotfiles/BetterDiscord
+whitelist ${HOME}/.dotfiles/BetterDiscord
 

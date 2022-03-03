@@ -7,6 +7,16 @@ Three other Github repositories for fonts are included as a submodule of this re
 Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubuntu system.
 
 ## Prep
+### NixOS
+- Load configs in `/etc/nixos`
+- Home Manager: `https://nix-community.github.io/home-manager/`
+```
+nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+nix-channel --update
+nix-shell '<home-manager>' -A install
+```
+- `~/.config/nixpkgs/home.nix`
+
 ### WSL
 - refer to this [link](https://askubuntu.com/questions/966488/how-do-i-fix-r-command-not-found-errors-running-bash-scripts-in-wsl)
 - fix powerline fonts
@@ -153,6 +163,9 @@ listen_addresses = ['127.0.0.1:53000', '[::1]:53000']
 - Inside neovim, run `:PlugInstall`
 - `CocInstall coc-css coc-json coc-python coc-discord coc-sh coc-yaml`
 - Install YCM using these instructions (https://github.com/ycm-core/YouCompleteMe#linux-64-bit)
+
+### Discord
+- Disable Update Checks: add `"SKIP_HOST_UPDATE": true,` to `~/.config/discord/settings.json`
 
 ### Chromium/Brave
 - Enable:

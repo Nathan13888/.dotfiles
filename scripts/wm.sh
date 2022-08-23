@@ -30,6 +30,7 @@ function setSettings {
     notify "Updating XORG settings"
     xset r rate 210 40
     xset m 3/2
+    bash $HOME/scripts/xrandr-dup.sh
 }
 
 function startup {

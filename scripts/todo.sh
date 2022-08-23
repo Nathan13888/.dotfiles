@@ -30,7 +30,8 @@ echo -e "Using terminal (if needed):\t$TERM"
 echo -e "Needs terminal:\t\t\t$NEED_TERM"
 echo -e "Use this shell:\t\t\t$USE_THIS_SHELL"
 
-BASE_DIR="$HOME/.todo"
+#BASE_DIR="$HOME/.todo"
+BASE_DIR="$HOME/.notable/notes"
 
 function open {
     #echo PATH: $PATH

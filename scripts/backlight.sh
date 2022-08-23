@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-STEPS="20"
+STEPS="30"
 MAX="$(cat /sys/class/backlight/intel_backlight/max_brightness)"
 DEVICE="/sys/class/backlight/intel_backlight/"
 
@@ -64,6 +64,10 @@ case "$1" in
         ;;
     max-value)
         echo $MAX
+        ;;
+    toggle-pg) # Lenovo's privacy guard
+        echo TODO
+        echo /proc/acpi/ibm/lcdshadow
         ;;
     *)
         echo "Missing parameters :("

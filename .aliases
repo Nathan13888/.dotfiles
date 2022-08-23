@@ -286,12 +286,15 @@ function rs {
 function wgt {
   NSLASH="$(echo "$1" | perl -pe 's|.*://[^/]+(.*?)/?$|\1|' | grep -o / | wc -l)"
   NCUT=$((NSLASH > 0 ? NSLASH-1 : 0))
-  wget -r -np -e robots=off --user-agent=Mozilla/5.0 -nH --relative --cut-dirs=$NCUT -R "index.html*" "$@"
+  wget -r -c -np -e robots=off --user-agent=Mozilla/5.0 -nH --relative --cut-dirs=$NCUT -R "index.html*" "$@"
 }
 
 alias ydl="yt-dlp"
-ydl-channel () {
-        ydl -f "bestvideo[height>=720]+bestaudio/best" -ciw -o "%(title)s.%(ext)s" -v  --write-annotations --write-description --write-info-json --write-all-thumbnails --merge-output-format=mkv --download-archive downloaded.txt "$@"
+ydl-video () {
+  ydl -f "bestvideo[height>=720]+bestaudio/best" -ciw -o "%(title)s.%(ext)s" -v --merge-output-format=mkv "$@"
+}
+ydl-archive () {
+  ydl-video --write-annotations --write-description --write-info-json --write-all-thumbnails --download-archive downloaded.txt "$@"
 }
 
 function tarp {

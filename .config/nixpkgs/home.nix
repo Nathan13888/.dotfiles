@@ -8,6 +8,7 @@
 #}
 
 {
+
   home.username = "attackercow";
   home.homeDirectory = "/home/attackercow";
 
@@ -25,28 +26,42 @@
 
   services.syncthing = {
     enable = true;
-    tray = true;
-    #tray = {
-    #  enable = true;
-    #  package = pkgs.syncthingtray-minimal;
-    #};
+    tray = {
+      enable = true;
+      package = pkgs.syncthingtray-minimal;
+    };
   };
+
+  nixpkgs.overlays = [
+    (self: super:
+    {
+      goosemod-openasar = self.callPackage ./openasar { };
+      goosemod-discord = super.discord.overrideAttrs (old: {
+        postInstall = ''
+          cp ${self.goosemod-openasar}/app.asar $out/opt/Discord/resources/app.asar
+        '';
+      });
+    })
+  ];
 
   # https://github.com/cryinkfly/Autodesk-Fusion-360-for-Linux
   home.packages = with pkgs; [
     ## Applications/Clients
     firejail
-    discord
-    spotify spicetify-cli
+    #discord
+    goosemod-discord
     betterdiscordctl betterdiscord-installer discordchatexporter-cli
+    slack
     element-desktop nheko
-    teams
+    teams zoom-us
+    spotify spotify-qt
+    spicetify-cli
     vifm w3m xfce.thunar gnome.file-roller # File Explorer
     calibre
     filezilla
     dbeaver
     #thunderbird-bin protonmail-bridge # Email
-    openrgb liquidctl
+    openrgb liquidctl openrazer-daemon razergenie
     keepassxc bitwarden-cli
     virt-manager qemu libguestfs
     easyeffects
@@ -57,12 +72,14 @@
     vscode-fhs
     onlyoffice-bin
     libreoffice
+    xournalpp okular
     arduino
+    kubectl lens
+    insomnia
     mpv audacious deadbeef cozy guvcview kodi
-    okular
     archivebox
     syncthing
-    obs-studio obs-studio-plugins.obs-gstreamer
+    obs-studio #obs-studio-plugins.obs-gstreamer
     asciinema
     gimp krita inkscape
     darktable
@@ -91,7 +108,7 @@
     go
     jdk
     lua
-    musl
+    #musl
     nodejs-16_x#nodejs
     (let
     custom-python-packages = python-packages: with python-packages; [
@@ -107,7 +124,9 @@
     ruby
     rustup
     heroku netlify-cli
-    stlink dfu-util esphome esptool-ck openocd
+    plover.dev
+    qmk avrdude #pkgsCross.avr.buildPackages.gcc
+    dfu-programmer stlink dfu-util esphome esptool-ck #openocd
 
     wineWowPackages.full
     gnome.zenity
@@ -116,7 +135,7 @@
     ## Monitoring
     htop iftop btop bottom powertop pciutils usbutils
     hardinfo
-    lm_sensors ipmitool
+    lm_sensors ipmitool lshw
     pavucontrol
 
     ## Networking
@@ -124,6 +143,7 @@
     #tor-browser-bundle-bin
     socat nyx
     profile-cleaner
+    wireguard-tools
     zerotierone
     proxychains stunnel sslh
     dnscrypt-proxy2

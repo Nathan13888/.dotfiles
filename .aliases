@@ -110,6 +110,7 @@ if [[ $ISSERVER != YES ]] ; then
   alias git="hub"
 fi
 alias n="npm"
+alias k="kubectl"
 alias py="python"
 alias vr='v -r'
 alias vm="v -M"
@@ -124,6 +125,7 @@ alias ifa="/sbin/ifconfig -a"
 alias ipshow="ip link show"
 alias nmds="nmcli device status"
 alias nmcs="nmcli connection show"
+function nmwg { nmcli connection import type wireguard file "$@" }
 alias mc="sudo macchanger"
 alias mch="macchanger --help"
 alias mcl="macchanger -l"
@@ -135,6 +137,10 @@ alias mcA="mc -A"
 alias mcp="mc -p"
 alias airm="sudo airmon-ng" # https://github.com/aircrack-ng/rtl8812au
 alias airmck="airm check kill"
+alias wq="wg-quick"
+alias wu="wg-quick up"
+alias wd="wg-quick down"
+function wr { echo -e "wg-quick down\n"; wg-quick down "$@"; echo -e "wg-quick up\n"; wg-quick up "$@"; }
 alias ipls="sudo ip link set" # reference below from https://stackoverflow.com/questions/55127741/how-do-you-pass-arguments-to-custom-zsh-functions
 function iplsd {
   readonly face=${1:?"The interface must be specified"}

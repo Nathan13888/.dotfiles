@@ -38,6 +38,7 @@ set $mod Mod4
 
 bindsym Mod1+Return exec $terminal
 bindsym $mod+Return exec $terminal
+bindsym $mod+Mod1+O exec ~/scripts/start-apps.sh
 bindsym $mod+F1 exec ~/scripts/wm.sh f1
 bindsym $mod+F2 exec ~/scripts/wm.sh f2
 bindsym $mod+F3 exec ~/scripts/wm.sh f3
@@ -214,7 +215,7 @@ assign [class="Signal"] 4
 for_window [class="^Element"] move to workspace $ws5
 assign [class="Eclipse"] 5
 for_window [title="Eclipse IDE "] no_focus, floating enable, move container to workspace 5
-assign [class="FreeCAD"] 5
+#assign [class="FreeCAD"] 5
 assign [class="^Kicad$"] 5
 assign [class="discord"] 7
 assign [class="KeePassXC$"] 8
@@ -237,8 +238,6 @@ no_focus [class="^Element"]
 #bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+R restart
-# exit i3 (logs you out of your X session)
-bindsym $mod+Shift+E exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 bindsym $mod+Control+h resize shrink width 50 px
 bindsym $mod+Control+j resize shrink height 50 px

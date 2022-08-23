@@ -34,7 +34,6 @@
 	remsu = rems upstream # set upstream URL
 	smuir = submodule update --init --recursive
 	# add fetch command, good for large projects
-	pp = !git pull && git push
 	undo = reset HEAD~1
 	undo2 = reset HEAD~2
 	undo3 = reset HEAD~3
@@ -79,6 +78,8 @@
 	di = diff
 	pl = pull
 	pu = push
+    pp = !git pull && git push
+    upload = push -u
 	rem = remote
 	reb = rebase
 	fe = fetch
@@ -87,7 +88,10 @@
 	a = add
 	aa = add . # stage everything to be committed
     lg = log -p
-    gr = log --graph --pretty=format:\"%h %s\" # graph
+    lgo = log --oneline --graph
+	# could maybe add some more log commands in the future
+## WHAT ARE THESE BELOW??
+	gr = log --graph --format=line # graph
 	grd = log --graph --format=detail # graph detail
 	gra = log --graph --format=line --all # graph all
 	grad = log --graph --format=detail --all # graph all in detail

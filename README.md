@@ -190,6 +190,7 @@ listen_addresses = ['127.0.0.1:53000', '[::1]:53000']
 - Disable telemetry and change search engine
 - Change device name to be more recognizable
 ### Discord
+- Add `"SKIP_HOST_UPDATE": true` to config
 - Install `discord` or `discord-ptb`
 - NEW: `betterdiscord` (GUI)
 - Install `betterdiscordctl`
@@ -197,6 +198,7 @@ listen_addresses = ['127.0.0.1:53000', '[::1]:53000']
 - Connect dotfiles
 - Enable plugins and themes
 - Disable `Linux Settings/Minimize to tray` and enable `Settings/Developer Mode`
+
 ### Emacs
 - Install `emacs`
 - Install DOOM:

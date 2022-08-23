@@ -97,7 +97,7 @@ case "$1" in
         fi
         if [ `ps aux|grep element-desktop|wc -l` -eq 1 ]; then
             TMP="$(mktemp -u)_element"
-            firejail element-desktop | tee -a $TMP &
+            element-desktop | tee -a $TMP &
         fi
         ;;
     f3)

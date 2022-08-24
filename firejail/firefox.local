@@ -1,0 +1,8 @@
+include allow-directories.inc
+#whitelist ~/.cache
+
+# For KeepassXC integration
+#private-bin keepassxc-proxy
+private-bin bash,dbus-launch,dbus-send,env,firefox,sh,which,keepassxc-proxy
+whitelist ${RUNUSER}/kpxc_server
+whitelist ${RUNUSER}/org.keepassxc.KeePassXC.BrowserServer

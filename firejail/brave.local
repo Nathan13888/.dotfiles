@@ -1,0 +1,16 @@
+#include /etc/firejail/brave.profile
+include allow-directories.inc
+
+read-only ${HOME}/.config/mimeapps.list
+
+#private-bin bash,dbus-launch,dbus-send,env,brave,sh,which
+
+# KeepassXC
+whitelist ${RUNUSER}/kpxc_server
+whitelist ${RUNUSER}/org.keepassxc.KeePassXC.BrowserServer
+
+#dbus-user.talk org.keepassxc.KeePassXC.MainWindow
+dbus-user.talk org.keepassxc.KeePassXC.BrowserServer
+dbus-user.talk org.freedesktop.Notifications
+
+ignore apparmor

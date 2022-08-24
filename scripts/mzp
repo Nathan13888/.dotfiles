@@ -1,0 +1,5 @@
+#!/bin/sh
+
+sudo zpool import -R  /mnt -N rpool
+sudo zfs mount rpool/ROOT/default
+sudo zfs mount -a

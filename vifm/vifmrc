@@ -131,6 +131,8 @@ filetype *.mp3,*.mp4,*.mkv,*.mov mpv --player-operation-mode=pseudo-gui -- %f
 
 filetype *.arw feh --start-at %f
 
+filetype *.xcf gimp %f
+
 
 " Web
 filextype {*.html,*.htm},<text/html>

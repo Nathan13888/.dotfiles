@@ -75,7 +75,7 @@ bindsym XF86AudioMute exec --no-startup-id $volcommand togm
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
 # increase/decrease backlight brightness
-set $backlight ~/.local/bin/backlight.sh
+set $backlight ~/scripts/backlight.sh
 bindsym XF86MonBrightnessUp exec --no-startup-id $backlight inc
 bindsym XF86MonBrightnessDown exec --no-startup-id $backlight dec
 

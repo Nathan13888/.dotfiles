@@ -110,17 +110,17 @@
     lua
     #musl
     nodejs-16_x#nodejs
-    (let
-    custom-python-packages = python-packages: with python-packages; [
-      pip
-      setuptools poetry
-      wheel
-      requests
-      pyyaml
-      deemix
-    ]; 
-      python3Custom = python3.withPackages custom-python-packages;
-    in python3Custom)
+    #(let
+    #custom-python-packages = python-packages: with python-packages; [
+    #  pip
+    #  setuptools poetry
+    #  wheel
+    #  requests
+    #  pyyaml
+    #  deemix
+    #];
+    #  python3Custom = python3.withPackages custom-python-packages;
+    #in python3Custom)
     ruby
     rustup
     heroku netlify-cli
@@ -139,7 +139,7 @@
     pavucontrol
 
     ## Networking
-    brave ungoogled-chromium firefox-bin # Browsers
+    brave ungoogled-chromium firefox-bin google-chrome # Browsers
     #tor-browser-bundle-bin
     socat nyx
     profile-cleaner

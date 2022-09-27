@@ -1,3 +1,13 @@
+# Run xinit if this is the normal terminal
+if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
+  exec startx
+fi
+
+## If not in tmux, start tmux.
+#if [[ -z ${TMUX+X}${ZSH_SCRIPT+X}${ZSH_EXECUTION_STRING+X} ]]; then
+#  exec tmux
+#fi
+
 #zmodload zsh/zprof
 
 # Uncomment the following line if pasting URLs and other text is messed up.
@@ -73,6 +83,13 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
 # switch group using `,` and `.`
 zstyle ':fzf-tab:*' switch-group ',' '.'
 
+
+#https://github.com/romkatv/zsh-bench/blob/master/configs/diy%2B%2B/skel/.zshrc
+function zcompile-many() {
+  local f
+  for f; do zcompile -R -- "$f".zwc "$f"; done
+}
+
 #########################
 #        ZINIT          #
 #########################
@@ -104,11 +121,8 @@ zinit light-mode for \
 #        PROMPT         #
 #########################
 
-#zinit ice as"command" from"gh-r" \
-#    atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
-#    atpull"%atclone" src"init.zsh"
-#zinit light starship/starship
-eval "$(starship init zsh)"
+#eval "$(starship init zsh)"
+zinit light spaceship-prompt/spaceship-prompt
 
 #zinit ice wait lucid; zinit light junegunn/fzf
 #source /usr/share/fzf/completion.zsh
@@ -128,11 +142,8 @@ zinit ice wait lucid; zinit light jeffreytse/zsh-vi-mode
 zinit ice wait lucid; zinit light sobolevn/wakatime-zsh-plugin
 export ZSH_WAKATIME_BIN=$(which wakatime-cli)
 
-# Run xinit if this is the normal terminal
-if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-  exec startx
-fi
-
+unfunction zcompile-many
+ulimit -c 0 # disable core dumps
 
 #########################
 #        ALIASES        #

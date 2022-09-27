@@ -210,13 +210,13 @@ bindsym $mod+Control+9 move container to workspace $ws9; workspace $ws9
 # ASSIGN WORKSPACE
 assign [class="^Joplin$"] 2
 #assign [class="^zoom$"] 2
-assign [class="Teams"] 3
-assign [class="Signal"] 4
-for_window [class="^Element"] move to workspace $ws5
 assign [class="Eclipse"] 5
-for_window [title="Eclipse IDE "] no_focus, floating enable, move container to workspace 5
-#assign [class="FreeCAD"] 5
 assign [class="^Kicad$"] 5
+assign [class="FreeCAD"] 5
+for_window [title="Eclipse IDE "] no_focus, floating enable, move container to workspace 5
+assign [class="Teams"] 6
+assign [class="Signal"] 6
+for_window [class="^Element"] move to workspace $ws6
 assign [class="discord"] 7
 assign [class="KeePassXC$"] 8
 for_window [class="Spotify"] move to workspace $ws10, no_focus

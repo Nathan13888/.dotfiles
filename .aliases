@@ -75,40 +75,47 @@ if command -v nvim &> /dev/null; then
     alias v="nvim"
 fi
 alias sv='sudo v'
-alias vi="vim"
-vns() {
-    if [ -z "$1" ];then
-        echo "You must specify a path!"
-    else
-        if [ -e "$1" ];then
-            echo "'$1' already exists!"
-            return 1
-        fi
-
-        local SHEBANG="#!/bin/sh"
-        echo "$SHEBANG" >> "$1"
-
-        if ! [ -f "$1" ]; then
-            echo "Could not find created file"
-            return 1
-        fi
-
-        chmod +x "$1"
-        if ! [ -x "$1" ];then
-            echo "Failed to append execute permissions"
-            return 1
-        fi
-
-        if [ -f "$1" ]; then
-            v "$1"
-        fi
-    fi
-}
+#vns() {
+#    if [ -z "$1" ];then
+#        echo "You must specify a path!"
+#    else
+#        if [ -e "$1" ];then
+#            echo "'$1' already exists!"
+#            return 1
+#        fi
+#
+#        local SHEBANG="#!/bin/sh"
+#        echo "$SHEBANG" >> "$1"
+#
+#        if ! [ -f "$1" ]; then
+#            echo "Could not find created file"
+#            return 1
+#        fi
+#
+#        chmod +x "$1"
+#        if ! [ -x "$1" ];then
+#            echo "Failed to append execute permissions"
+#            return 1
+#        fi
+#
+#        if [ -f "$1" ]; then
+#            v "$1"
+#        fi
+#    fi
+#}
 
 alias g="git"
 if [[ $ISSERVER != YES ]] ; then
   alias git="hub"
 fi
+git-inspect-status() {
+  for f in ./*; do;
+    if [ -d "$f" ]; then
+      echo $f
+      git -C $f status -sb -uall
+    fi
+  done
+}
 alias n="npm"
 alias k="kubectl"
 alias py="python"
@@ -120,7 +127,8 @@ alias su="sudo su -"
 alias c="cd"
 alias clear="clear -x"
 alias e="exit"
-### WIFI
+
+### NETWORKING
 alias ifa="/sbin/ifconfig -a"
 alias ipshow="ip link show"
 alias nmds="nmcli device status"
@@ -168,13 +176,6 @@ function unmac {
 alias ipt="sudo iptables"
 alias resetlock="faillock --reset --user $USER"
 
-service () {
-    # TODO:  detect init system
-    CMD="rc-service"
-    # TODO:  root user or not
-    sudo $CMD
-}
-
 alias xc="xclip -selection clipboard -i"
 alias pg="pgrep" # find process id, `$ pidof` is another viable command alternative
 alias grep="grep --color=always"
@@ -212,14 +213,6 @@ alias fdisk="sudo fdisk"
 alias mount="sudo mount"
 alias umount="sudo umount"
 alias free="free -hm"
-
-alias disks='df -h | grep sd \
-    | sed -e "s_/dev/sda[1-9]_\x1b[34m&\x1b[0m_" \
-    | sed -e "s_/dev/sd[b-z][1-9]_\x1b[33m&\x1b[0m_" \
-    | sed -e "s_[,0-9]*[MG]_\x1b[36m&\x1b[0m_" \
-    | sed -e "s_[0-9]*%_\x1b[32m&\x1b[0m_" \
-    | sed -e "s_9[0-9]%_\x1b[31m&\x1b[0m_" \
-    | sed -e "s_/mnt/[-_A-Za-z0-9]*_\x1b[34;1m&\x1b[0m_"' # list all disks
 
 # SSD Benchmark
 function fiotest {
@@ -280,12 +273,11 @@ alias llfl="llf | less"
 
 ### FILE OPERATIONS
 alias remount="sudo mount -av"
-alias chm="chmod"
 alias chmox='sudo chmod +x'
-alias cho="chown"
 alias chowm="sudo chown $USER:$USER -v"
 alias mkd="mkdir -vp"
 alias smkd="sudo mkdir -vp"
+
 function rs {
   rsync -ahh --info=progress2,stats1 --partial "$@"
 }
@@ -313,20 +305,14 @@ function tarp {
   echo -e "Using compress program command '$program'\n"
   tar --use-compress-program="$program" -cf - -C "$source" . | pv > "$target"
 }
+
 alias cp='cp -v'
 alias mv='mv -v'
-function garb {
-    mv "$@" /tmp/
-}
 alias rm='rm -v'
 alias rmf='rm -f' # removes all prompts
 alias rmd="rmdir -v"
 
 ### CD
-alias down="cd ~/Downloads"
-alias docs="cd ~/Documents"
-alias pics="cd ~/Pictures"
-alias desk="cd ~/Desktop"
 alias ..="cd .."
 alias ...="cd ../.."
 alias .3='cd ../../..'
@@ -335,10 +321,4 @@ alias .5='cd ../../../../..'
 alias 1='cd -'
 alias 2='cd -2'
 alias 3='cd -3'
-alias 4='cd -4'
-alias 5='cd -5'
-alias 6='cd -6'
-alias 7='cd -7'
-alias 8='cd -8'
-alias 9='cd -9'
 

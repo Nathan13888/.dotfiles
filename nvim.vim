@@ -16,6 +16,7 @@ Plug 'ap/vim-css-color'
 " Functionalities
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 "Plug 'chrisbra/Recover.vim'
+Plug 'lervag/vimtex'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tpope/vim-surround'
 Plug 'majutsushi/tagbar'
@@ -25,7 +26,7 @@ Plug 'scrooloose/nerdcommenter'
 "Plug 'junegunn/fzf.vim'
 Plug 'chrisbra/Colorizer'
 Plug 'vim-scripts/loremipsum'
-"Plug 'SirVer/ultisnips'
+Plug 'sirver/ultisnips'
 Plug 'honza/vim-snippets'
 " Plug 'metakirby5/codi.vim'
 Plug 'dkarter/bullets.vim'
@@ -50,6 +51,13 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+" VimTxX
+let g:tex_flavor='latex'
+let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+set conceallevel=1
+let g:tex_conceal='abdmg'
 
 " NERDTree
 let NERDTreeShowHidden=1
@@ -125,7 +133,24 @@ let g:bullets_enabled_file_types = [
 " Ultisnips
 let g:UltiSnipsExpandTrigger="<C-Space>"
 let g:UltiSnipsJumpForwardTrigger="<Tab>"
-let g:UltiSnipsJumpBackwardTrigger="<C-x>"
+let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
+
+"snippet today "Date"
+"`date +%F`
+"endsnippet
+"
+"snippet box "Box"
+"`!p snip.rv = '┌' + '─' * (len(t[1]) + 2) + '┐'`
+"│ $1 │
+"`!p snip.rv = '└' + '─' * (len(t[1]) + 2) + '┘'`
+"$0
+"endsnippet
+"
+"snippet beg "begin{} / end{}" bA
+"\begin{$1}
+"	$0
+"\end{$1}
+"endsnippet
 
 " indentLine
 let g:indentLine_char = '▏'

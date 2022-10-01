@@ -24,6 +24,8 @@
     enableSshSupport = true;
   };
 
+  services.mpris-proxy.enable = true;
+
   services.syncthing = {
     enable = true;
     tray = {
@@ -52,6 +54,7 @@
     goosemod-discord
     betterdiscordctl betterdiscord-installer discordchatexporter-cli
     slack
+    signal-desktop
     element-desktop nheko
     teams zoom-us
     spotify spotify-qt
@@ -77,7 +80,7 @@
     kubectl lens
     insomnia
     mpv audacious deadbeef cozy guvcview kodi
-    archivebox
+    #archivebox
     syncthing
     obs-studio #obs-studio-plugins.obs-gstreamer
     asciinema
@@ -101,7 +104,7 @@
     killall
     wakatime time hyperfine tokei exa # Measurement
     ripgrep jq jo # Text Manipulation
-    gnumake ccache gdb
+    gnumake ccache gdb valgrind
     patchelf steam-run
     conda
     gcc
@@ -110,6 +113,7 @@
     lua
     #musl
     nodejs-16_x#nodejs
+    racket
     #(let
     #custom-python-packages = python-packages: with python-packages; [
     #  pip
@@ -143,7 +147,6 @@
     #tor-browser-bundle-bin
     socat nyx
     profile-cleaner
-    wireguard-tools
     zerotierone
     proxychains stunnel sslh
     dnscrypt-proxy2
@@ -173,6 +176,7 @@
     ## System/WM Utilities
     gnupg pinentry-gnome gnome.gnome-keyring gnome.seahorse
     networkmanager
+    bluez bluez-tools blueman
     flameshot
     screenkey
     arandr

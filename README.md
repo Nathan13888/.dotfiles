@@ -7,6 +7,8 @@ Three other Github repositories for fonts are included as a submodule of this re
 Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubuntu system.
 
 ## Prep
+
+
 ### NixOS
 - Load configs in `/etc/nixos`
 - Home Manager: `https://nix-community.github.io/home-manager/`
@@ -17,12 +19,15 @@ nix-shell '<home-manager>' -A install
 ```
 - `~/.config/nixpkgs/home.nix`
 
+
 ### WSL
 - refer to this [link](https://askubuntu.com/questions/966488/how-do-i-fix-r-command-not-found-errors-running-bash-scripts-in-wsl)
 - fix powerline fonts
 - remove any existing config files
 - install LS_COLORS
 - use `dos2unix` to fix any file ending problems
+
+
 ### Arch
 - Connecting to wifi: `nmtui`
 - Update reflector: `reflector --country Canada --country US --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist`
@@ -38,16 +43,20 @@ nix-shell '<home-manager>' -A install
 - Yay: clone `https://aur.archlinux.org/yay.git` and `makepkg -si`
 - Install all the packages you need form `PACKAGES.md`
 - Configure .local files: git, aliases, exports
+
+
 ### WM
 - Install all the WM packages
 - Link WM dotfiles
 - ~/.Xresources
 - ~/.xinitrc
 
+
 ### Flatpak
 - Add remote: `flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo`
 - Search: `flatpak search <query>`
 - Install: `flatpak install <package>`
+
 
 ### GPG
 - **Import Key**: `gpg --import private.key`
@@ -59,29 +68,45 @@ max-cache-ttl 34560000
 pinentry-program /usr/bin/pinentry-gnome3
 ```
 - (pinentry-gnome is needed for gnome-keyring to work)
+
+
 ### Gnome Keyring
 
+
+
 ### SSH Keys
+
+
 
 ### Git
 - install `git`, `git-lfs`, `hub`, [`git-extras`](https://github.com/tj/git-extras)
 - make a .gitconfig.local file
 - setup [git credential helper](https://git-scm.com/docs/gitcredentials)
 - setup GPG signing key
+
+
 ### Bash
 - Oh-my-bash: `bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"`
+
+
 ### ZSH
 - `chsh`
 - install `zsh`: `sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"` and [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)
 - remove `~/.oh-my-zsh/custom`
+
+
 #### PowerLevel10k
 - Install P10k:`git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k`
+
+
 #### Starship Prompt
 - Installing using curl: `curl -fsSL https://starship.rs/install.sh | bash`
 - Alternative, you could get starship from AUR: `starship, starship-bin, starship-git`
 
+
 ### Rustup
 - Setup toolchain: `rustup default stable`
+
 
 ### Pipewire
 - to change sample rate in `pipewire.conf`: `default.clock.rate = 192000`
@@ -92,6 +117,7 @@ context.exec = [
     { path = "/usr/bin/pipewire-media-session"  args = "" }
 ]
 ```
+
 
 ### Dnsmasq
 - Configure settings at `/etc/dnsmasq.conf`:
@@ -115,6 +141,7 @@ nameserver ::1
 nameserver 127.0.0.1
 options trust-ad
 ```
+
 
 ### Dnsmasq-proxy
 - Disable NetworkManager from messing with resolv.conf, edit `/etc/NetworkManager/NetworkManager.conf`:
@@ -154,9 +181,11 @@ server_names = ['cloudflare'] # ... https://dnscrypt.info/public-servers
 listen_addresses = ['127.0.0.1:53000', '[::1]:53000']
 ```
 
+
 ### Tmux
 - Installing TPM: `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
 - Install plugins: "Press prefix + I (capital i, as in Install) to fetch the plugin"
+
 
 ### Nvim
 - **Install Vim-Plug**: `sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'`
@@ -164,8 +193,10 @@ listen_addresses = ['127.0.0.1:53000', '[::1]:53000']
 - `CocInstall coc-css coc-json coc-python coc-discord coc-sh coc-yaml`
 - Install YCM using these instructions (https://github.com/ycm-core/YouCompleteMe#linux-64-bit)
 
+
 ### Discord
 - Disable Update Checks: add `"SKIP_HOST_UPDATE": true,` to `~/.config/discord/settings.json`
+
 
 ### Chromium/Brave
 - Enable:
@@ -178,6 +209,7 @@ listen_addresses = ['127.0.0.1:53000', '[::1]:53000']
 #enable-parallel-downloading
 ```
 - Disable IDLE API: `chrome://settings/content/idleDetection`
+
 
 ### Firefox
 - Download firefox (a gpg key server must be setup to install `firefox-nightly` from AUR)
@@ -199,39 +231,53 @@ listen_addresses = ['127.0.0.1:53000', '[::1]:53000']
 - Enable plugins and themes
 - Disable `Linux Settings/Minimize to tray` and enable `Settings/Developer Mode`
 
+
 ### Emacs
 - Install `emacs`
 - Install DOOM:
   - `git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d`
   - `~/.emacs.d/bin/doom install`
+
+
 ### LS_COLORS
 Install options:
 1. run the **install** script inside the submodule
 2. Arch Linux: `lscolors-git` from AUR
+
+
 ### Vivd (LS_COLORS alternative)
 - Arch Linux: `vivid` from AUR
 - add to .exports.local: `export LS_COLORS="$(vivid generate <theme>)"`
+
+
 ### Wakatime
 - install wakatime cli
 - add API key
+
+
 ### WireGuard ([quick install](https://www.wireguard.com/quickstart/))
 - `apt install wireguard`
 - configure wireguard
 
+
 ### Docker
 - 
 
+
 ### Podman
 - Refer to: `https://wiki.archlinux.org/title/Podman#Configuration`
+
 
 ### Node
 - Install Corepack: `sudo npm i -g corepack` and `corepack enable`
 - `npx next telemetry disable`
 
+
 ### NVME
 
 - NVME Power States: https://wiki.pine64.org/wiki/Pinebook_Pro_Hardware_Accessory_Compatibility#NVMe_SSD_drives
 - Disable APST: `sudo nvme set-feature -f 0x0c -v=0 /dev/nvme0`
+
 
 ### LIMITS
 - Realtime: add to end of `/etc/security/limits.conf`:
@@ -243,14 +289,17 @@ Install options:
 ### Graphics
 - KMS: https://wiki.archlinux.org/title/Kernel_mode_setting#Installation
 
+
 ### Virtual Machines
 - add user to `kvm` group
 - Create Bridge: `brctl addbr br0`
+
 
 ## Scripts
 - `install` --> regular install script for a desktop
 - `install-server` --> install script for a server
 - `UPDATE-SUBMODULES.sh` --> update submodules of this respository
+
 
 ## Cloning (with submodules)
 *Reference* https://git-scm.com/book/en/v2/Git-Tools-Submodules

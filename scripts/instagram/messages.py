@@ -26,6 +26,7 @@ def process(path):
   # messages
   for (dirpath, dirnames, filenames) in os.walk(path):
     for filename in filenames:
+      # analyze all messages*.json files
       if filename.endswith('.json') and filename.startswith('message'): 
         msg_file=os.sep.join([dirpath, filename])
         #print(f'Processing {msg_file}')
@@ -47,9 +48,13 @@ def process(path):
             }
 
         for m in data['messages']:
-          if 'bumped_message_metadata' in m and 'sender_name' in m:
-            if 'bumped_message' in m['bumped_message_metadata']:
-              msg=m['bumped_message_metadata']['bumped_message'].encode('latin1').decode()
+          if 'content' in m and 'sender_name' in m:
+            if m['content']=='Liked a message' or m['content'].startswith('Reacted '):
+              # not a user typed message
+              if m['sender_name'] in pp:
+                pp[m['sender_name']]['extra_msgs']+=1
+            else:
+              msg=m['content'].encode('latin1').decode()
               #print(msg)
               if m['sender_name'] in pp:
                 for thing in [w for w in msg if re.search(SPEC_REGEX, w)]:
@@ -61,9 +66,6 @@ def process(path):
                   pp[m['sender_name']]['msg_time'][t.tm_hour]+=1
                   year = t.tm_year
                   pp[m['sender_name']]['msg_year'][year]+=1
-            else: # not a user typed message
-              if m['sender_name'] in pp:
-                pp[m['sender_name']]['extra_msgs']+=1
 
             if 'reactions' in m:
               for r in m['reactions']:

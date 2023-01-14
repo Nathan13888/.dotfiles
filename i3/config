@@ -59,7 +59,7 @@ bindsym $mod+Shift+period exec --no-startup-id dunstctl context
 bindsym $mod+slash exec --no-startup-id dunstify "Dunst Paused" "$(dunstctl is-paused)" -u low
 bindsym $mod+Shift+slash exec --no-startup-id dunstctl set-paused toggle
 
-bindsym $mod+Mod1+K exec --no-startup-id ~/scripts/wm.sh keepassxc
+bindsym $mod+Shift+E exec --no-startup-id emote
 set $prtscr ~/scripts/wm.sh screenshot
 bindsym Print exec --no-startup-id $prtscr
 bindsym $mod+Shift+S exec --no-startup-id $prtscr

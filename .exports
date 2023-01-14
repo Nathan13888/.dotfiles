@@ -1,5 +1,12 @@
-export LANG=en_CA.UTF-8
-export LC_CTYPE=en_CA.UTF-8
+#export LANGUAGE=en_CA
+#export LC_ALL=
+#export LANG=en_CA.UTF-8
+#export LC_CTYPE=en_CA.UTF-8
+
+
+#export GDK_BACKEND=wayland
+#export XDG_SESSION_TYPE=wayland
+#export NIXOS_OZONE_WL=1
 
 export PATH="$HOME/.local/bin:$HOME/scripts:$HOME/wm.sh:$PATH"
 #export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
@@ -20,6 +27,9 @@ export PYTHONDONTWRITEBYTECODE=1
 # Ruby
 export GEM_HOME="$(ruby -e 'puts Gem.user_dir')"
 export PATH="$PATH:$GEM_HOME/bin"
+
+# Arduino
+#export ARDCONFIG=${XDG_CONFIG_HOME}/arduino-cli/config.yaml
 
 # GPG --> https://stackoverflow.com/questions/41052538/git-error-gpg-failed-to-sign-data
 export GPG_TTY=$(tty)

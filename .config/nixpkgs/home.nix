@@ -13,8 +13,7 @@
   home.homeDirectory = "/home/attackercow";
 
   # You can update Home Manager without changing this value
-  home.stateVersion = "21.05";
-  #home.stateVersion = "22.05";
+  home.stateVersion = "22.05";
 
   programs.home-manager.enable = true;
   services.gpg-agent = {
@@ -22,6 +21,11 @@
     defaultCacheTtl = 34560000;
     maxCacheTtl = 34560000;
     enableSshSupport = true;
+  };
+
+  services.gnome-keyring = {
+    enable = true;
+    components = [ "pkcs11" "secrets" "ssh" ];
   };
 
   services.mpris-proxy.enable = true;
@@ -54,8 +58,9 @@
     goosemod-discord
     betterdiscordctl betterdiscord-installer discordchatexporter-cli
     slack
-    signal-desktop
     element-desktop nheko
+    whatsapp-for-linux
+    signal-desktop
     teams zoom-us
     spotify spotify-qt
     spicetify-cli
@@ -75,9 +80,10 @@
     vscode-fhs
     onlyoffice-bin
     libreoffice
+    texlive.combined.scheme-full
     xournalpp okular
     arduino
-    kubectl lens
+    kubectl lens kubie
     insomnia
     mpv audacious deadbeef cozy guvcview kodi
     #archivebox
@@ -86,16 +92,19 @@
     asciinema
     gimp krita inkscape
     darktable
-    tenacity mixxx spek
+    tenacity #mixxx spek
     libsForQt5.kdenlive libsForQt5.kio-extras
     handbrake
-    kicad freecad openscad blender super-slicer
+    #kicad 
+    #freecad openscad blender
+    super-slicer
     android-file-transfer go-mtpfs
     rclone
     yt-dlp transmission-gtk qbittorrent
     ffmpeg
     img2pdf pdftk ocrmypdf poppler
-    exiftool
+    exiftool mat2
+    libheif
     icoutils
 
     ## Dev Tools
@@ -111,44 +120,53 @@
     go
     jdk
     lua
-    #musl
-    nodejs-16_x#nodejs
+    nodejs
     racket
-    #(let
-    #custom-python-packages = python-packages: with python-packages; [
-    #  pip
-    #  setuptools poetry
-    #  wheel
-    #  requests
-    #  pyyaml
-    #  deemix
-    #];
-    #  python3Custom = python3.withPackages custom-python-packages;
-    #in python3Custom)
+    #python39Full
+    (let
+    custom-python-packages = python-packages: with python-packages; [
+      pip
+      setuptools #poetry
+      pytest
+      wheel
+      requests
+      pyyaml
+      pyserial
+      #deemix
+    ];
+      python3Custom = python3.withPackages custom-python-packages;
+    in python3Custom)
     ruby
     rustup
+    podman-compose docker-compose
+    drone-cli
     heroku netlify-cli
-    plover.dev
-    qmk avrdude #pkgsCross.avr.buildPackages.gcc
+    #plover.dev
+    qmk emote
+    avrdude #pkgsCross.avr.buildPackages.gcc
     dfu-programmer stlink dfu-util esphome esptool-ck #openocd
 
-    wineWowPackages.full
+    #wineWowPackages.full
     gnome.zenity
-    arch-install-scripts nixos-install-tools
+    #arch-install-scripts nixos-install-tools
+    #nix-index
 
     ## Monitoring
     htop iftop btop bottom powertop pciutils usbutils
-    hardinfo
+    #hardinfo
     lm_sensors ipmitool lshw
     pavucontrol
 
     ## Networking
     brave ungoogled-chromium firefox-bin google-chrome # Browsers
+    cloudflare-warp
+    protonvpn-gui protonvpn-cli
+    chromedriver
     #tor-browser-bundle-bin
-    socat nyx
+    #socat nyx
     profile-cleaner
-    zerotierone
-    proxychains stunnel sslh
+    #zerotierone
+    #proxychains stunnel sslh
     dnscrypt-proxy2
     macchanger
     mitmproxy
@@ -159,8 +177,9 @@
 
     ### File
     ntfs3g dosfstools exfatprogs xfsprogs btrfs-progs zfs cifs-utils lockfileProgs # File Systems
+    sshfs
     nmon sysstat memtest86plus iotop ioping
-    fio phoronix-test-suite sysbench # Benchmark
+    fio kdiskmark phoronix-test-suite sysbench # Benchmark
     unar p7zip zip unzip #rar unrar
     gnutar pigz lz4 zstd xz lzip gzip
     smartmontools
@@ -178,9 +197,10 @@
     networkmanager
     bluez bluez-tools blueman
     flameshot
+    bitwarden bitwarden-cli
     screenkey
     arandr
-    pamixer helvum
+    #pamixer helvum
     notify-desktop
     xclip
     lxqt.lxqt-policykit

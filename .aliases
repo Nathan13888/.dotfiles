@@ -108,6 +108,14 @@ alias g="git"
 if [[ $ISSERVER != YES ]] ; then
   alias git="hub"
 fi
+function adjust_date {
+    date -d "$(date) $@"
+}
+function ag {
+    local DATE=$(adjust_date $1)
+    echo $DATE
+    GIT_COMMITTER_DATE="$DATE" git commit --amend --date="$DATE" --no-edit
+}
 git-inspect-status() {
   for f in ./*; do;
     if [ -d "$f" ]; then
@@ -125,7 +133,7 @@ alias l="less"
 alias m="more"
 alias su="sudo su -"
 alias c="cd"
-alias clear="clear -x"
+alias clear='printf "\ec"'
 alias e="exit"
 
 ### NETWORKING
@@ -209,6 +217,7 @@ function flash {
 sf () {
     sshfs -o allow_other "$@"
 }
+alias ssh-check="ssh -O check"
 alias fdisk="sudo fdisk"
 alias mount="sudo mount"
 alias umount="sudo umount"

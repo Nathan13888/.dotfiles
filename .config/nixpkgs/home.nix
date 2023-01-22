@@ -38,24 +38,74 @@
     };
   };
 
-  nixpkgs.overlays = [
-    (self: super:
-    {
-      goosemod-openasar = self.callPackage ./openasar { };
-      goosemod-discord = super.discord.overrideAttrs (old: {
-        postInstall = ''
-          cp ${self.goosemod-openasar}/app.asar $out/opt/Discord/resources/app.asar
-        '';
-      });
-    })
-  ];
+  # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/misc/snapper.nix
+  config.services.snapper = {
+    snapshotRootOnBoot = false;
+    snapshotInterval = "hourly"; # doc: {manpage}`systemd.time(7)
+    cleanupInterval = "3d";
+    filters = null;
+    configs = {
+      home = {
+        subvolume = "/home";
+        extraConfig = '''
+          ALLOW_USERS="attackercow"
+          TIMELINE_CREATE=yes
+          TIMELINE_CLEANUP=yes
+        ''';
+      };
+    };
+  };
+
+  # Fcitx5
+  i18n.inputMethod = {
+    enabled = "fcitx5";
+    fcitx5 = {
+        addons = [
+            pkgs.fcitx5-rime
+            pkgs.fcitx-engines.cloudpinyin
+            pkgs.fcitx-engines.libpinyin
+            #pkgs.fcitx5.chewing
+            pkgs.fcitx5-chinese-addons
+            pkgs.fcitx5-gtk
+            pkgs.libsForQt5.fcitx5-qt
+            pkgs.fcitx5-configtool
+            #(let
+            #    _pkgs = import /home/attackercow/nixpkgs {
+            #        config.allowUnfree = true;
+            #    };
+            #    sogoupinyin = _pkgs.fcitx-engines.sogoupinyin;
+            #in sogoupinyin)
+        ];
+        #enableRimeData = true; # unavailable in home manager
+    };
+  };
+
+  #nixpkgs.overlays = [
+  #  (self: super:
+  #  {
+  #    goosemod-openasar = self.callPackage ./openasar { };
+  #    goosemod-discord = super.discord.overrideAttrs (old: {
+  #      postInstall = ''
+  #        cp ${self.goosemod-openasar}/app.asar $out/opt/Discord/resources/app.asar
+  #      '';
+  #    });
+  #  })
+  #];
+
+  nixpkgs.overlays =
+    let
+      openasar = self: super: {
+        discord = super.discord.override { withOpenASAR = true; };
+      };
+    in
+    [ openasar ];
 
   # https://github.com/cryinkfly/Autodesk-Fusion-360-for-Linux
   home.packages = with pkgs; [
     ## Applications/Clients
     firejail
     #discord
-    goosemod-discord
+    #goosemod-discord
     betterdiscordctl betterdiscord-installer discordchatexporter-cli
     slack
     element-desktop nheko
@@ -156,6 +206,7 @@
     #hardinfo
     lm_sensors ipmitool lshw
     pavucontrol
+    lsb-release
 
     ## Networking
     brave ungoogled-chromium firefox-bin google-chrome # Browsers
@@ -186,6 +237,7 @@
     hdparm sdparm nvme-cli sedutil
     idle3tools
     gocryptfs
+    snapper-gui
 
     pv ncdu baobab # Analysis
 

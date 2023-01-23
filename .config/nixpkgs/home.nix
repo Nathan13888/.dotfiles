@@ -7,6 +7,12 @@
 #  buildInputs = [ pkgs.cargo pkgs.rustc ];
 #}
 
+let
+    _pkgs = import /home/attackercow/.dotfiles/nixpkgs/default.nix {
+        config.allowUnfree = true;
+        #config.permittedInsecurePackages = [
+    };
+in
 {
 
   home.username = "attackercow";
@@ -38,37 +44,23 @@
     };
   };
 
-  # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/misc/snapper.nix
-  config.services.snapper = {
-    snapshotRootOnBoot = false;
-    snapshotInterval = "hourly"; # doc: {manpage}`systemd.time(7)
-    cleanupInterval = "3d";
-    filters = null;
-    configs = {
-      home = {
-        subvolume = "/home";
-        extraConfig = '''
-          ALLOW_USERS="attackercow"
-          TIMELINE_CREATE=yes
-          TIMELINE_CLEANUP=yes
-        ''';
-      };
-    };
-  };
-
   # Fcitx5
   i18n.inputMethod = {
     enabled = "fcitx5";
     fcitx5 = {
         addons = [
             pkgs.fcitx5-rime
-            pkgs.fcitx-engines.cloudpinyin
-            pkgs.fcitx-engines.libpinyin
+            pkgs.rime-data
+            pkgs.librime
+            #pkgs.fcitx-engines.cloudpinyin
+            #pkgs.fcitx-engines.libpinyin
             #pkgs.fcitx5.chewing
             pkgs.fcitx5-chinese-addons
+            pkgs.fcitx5-table-extra
             pkgs.fcitx5-gtk
             pkgs.libsForQt5.fcitx5-qt
             pkgs.fcitx5-configtool
+            #_pkgs.libime-jyutping
             #(let
             #    _pkgs = import /home/attackercow/nixpkgs {
             #        config.allowUnfree = true;
@@ -141,11 +133,11 @@
     obs-studio #obs-studio-plugins.obs-gstreamer
     asciinema
     gimp krita inkscape
-    darktable
+    #darktable # TODO
     tenacity #mixxx spek
     libsForQt5.kdenlive libsForQt5.kio-extras
-    handbrake
-    #kicad 
+    #handbrake
+    #kicad
     #freecad openscad blender
     super-slicer
     android-file-transfer go-mtpfs
@@ -194,7 +186,8 @@
     #plover.dev
     qmk emote
     avrdude #pkgsCross.avr.buildPackages.gcc
-    dfu-programmer stlink dfu-util esphome esptool-ck #openocd
+    dfu-programmer stlink dfu-util #esphome # TODO
+    esptool-ck #openocd
 
     #wineWowPackages.full
     gnome.zenity
@@ -209,14 +202,13 @@
     lsb-release
 
     ## Networking
-    brave ungoogled-chromium firefox-bin google-chrome # Browsers
-    cloudflare-warp
-    protonvpn-gui protonvpn-cli
-    chromedriver
+    brave firefox-bin ungoogled-chromium # Browsers
+    google-chrome chromedriver
+    profile-cleaner
     #tor-browser-bundle-bin
     #socat nyx
-    profile-cleaner
-    #zerotierone
+    cloudflare-warp
+    protonvpn-gui protonvpn-cli
     #proxychains stunnel sslh
     dnscrypt-proxy2
     macchanger

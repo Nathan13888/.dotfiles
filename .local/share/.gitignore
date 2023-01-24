@@ -1,0 +1,6 @@
+# Fcitx5
+*.userdb
+*.history
+fcitx5/table
+fcitx5/rime/installation.yaml
+fcitx5/rime/user.yaml

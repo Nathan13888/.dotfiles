@@ -8,6 +8,9 @@ TODO.md
 spicetify/Backup
 spicetify/Extracted
 
+# i3
+i3/*.o
+
 # Xmonad
 .xmonad/xmonad-x86_64-linux
 .xmonad/xmonad.errors

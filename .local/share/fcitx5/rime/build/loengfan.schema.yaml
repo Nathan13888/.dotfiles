@@ -5,14 +5,30 @@ __build_info:
     default.custom: 1674595569
     key_bindings: 1674591345
     key_bindings.custom: 0
+    loengfan.custom: 0
+    loengfan.schema: 1654508981
     punctuation: 1674591345
     punctuation.custom: 0
-    stroke.custom: 0
-    stroke.schema: 1674591345
-abc_segmentor:
-  extra_tags:
-    - reverse_lookup
+cangjie5:
+  comment_format:
+    - "xlit|abcdefghijklmnopqrstuvwxyz~|日月金木水火土竹戈十大中一弓人心手口尸廿山女田難卜符～|"
+  dictionary: cangjie5
+  disable_user_dict_for_patterns:
+    - "^z.*$"
+    - "^yyy.*$"
+  enable_user_dict: false
+  preedit_format:
+    - "xform/^([a-z]*)$/$1\\t（\\U$1\\E）/"
+    - "xlit|ABCDEFGHIJKLMNOPQRSTUVWXYZ|日月金木水火土竹戈十大中一弓人心手口尸廿山女田難卜符|"
+  prefix: v
+  suffix: ";"
+  tag: cangjie5
+  tips: "〔倉頡五代〕"
 engine:
+  filters:
+    - simplifier
+    - uniquifier
+    - reverse_lookup_filter
   processors:
     - ascii_composer
     - recognizer
@@ -25,13 +41,14 @@ engine:
   segmentors:
     - ascii_segmentor
     - matcher
+    - "affix_segmentor@cangjie5"
     - abc_segmentor
     - punct_segmentor
     - fallback_segmentor
   translators:
     - punct_translator
-    - reverse_lookup_translator
-    - table_translator
+    - script_translator
+    - "table_translator@cangjie5"
 key_binder:
   bindings:
     - {accept: "Control+p", send: Up, when: composing}
@@ -67,7 +84,7 @@ key_binder:
     - {accept: "Control+Shift+percent", toggle: extended_charset, when: always}
   import_preset: default
 menu:
-  page_size: 9
+  page_size: 10
 punctuator:
   full_shape:
     " ": {commit: "　"}
@@ -140,50 +157,43 @@ punctuator:
 recognizer:
   import_preset: default
   patterns:
+    cangjie5: "^v[a-z]*;?$"
     email: "^[a-za-z][-_.0-9a-za-z]*@.*$"
-    reverse_lookup: "`[a-z]*'?$"
     uppercase: "[a-z][-_+.'0-9a-za-z]*$"
     url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$|^[a-z]+[.].+$"
 reverse_lookup:
-  comment_format:
-    - "xlit/hspnz/一丨丿丶乙/"
-  dictionary: luna_pinyin
-  preedit_format:
-    - "xform/([nl])v/$1ü/"
-    - "xform/([nl])ue/$1üe/"
-    - "xform/([jqxy])v/$1u/"
-  prefix: "`"
-  suffix: "'"
-  tips: "〔拼音〕"
+  dictionary: loengfan
+  overwrite_comment: false
+  tags:
+    - cangjie5
 schema:
   author:
-    - "四季的風"
-    - "雪齋"
-    - "Kunki Chou"
+    - "TianHeng <2417647441@qq.com>"
+    - "Ayaka Mikazuki <ayaka@mail.shn.hk>"
   dependencies:
-    - luna_pinyin
-  description: |
-    五筆畫
-    h,s,p,n,z 代表橫、豎、撇、捺、折
-
-  name: "五筆畫"
-  schema_id: stroke
-  version: 0.5
+    - cangjie5
+  description: "The Cantonese version of Liang Fen (兩分) input method."
+  name: "粵語兩分"
+  schema_id: loengfan
+  version: 2020.08.05
 speller:
-  alphabet: abcdefghijklmnopqrstuvwxyz
+  algebra:
+    - "derive/[123456]//"
+    - "xform/1/v/"
+    - "xform/4/vv/"
+    - "xform/2/x/"
+    - "xform/5/xx/"
+    - "xform/3/q/"
+    - "xform/6/qq/"
+  alphabet: zyxwvutsrqponmlkjihgfedcba
   delimiter: " '"
 switches:
   - name: ascii_mode
-    reset: 0
-    states: ["中文", "西文"]
+    states: ["中文", "英文"]
   - name: full_shape
-    states: ["半角", "全角"]
+    states: ["半形", "全形"]
   - name: ascii_punct
     states: ["。，", "．，"]
 translator:
-  comment_format:
-    - "xform/~//"
-    - "xlit/hspnz/一丨丿丶乙/"
-  dictionary: stroke
-  preedit_format:
-    - "xlit/hspnz/一丨丿丶乙/"
+  dictionary: loengfan
+  spelling_hints: 20

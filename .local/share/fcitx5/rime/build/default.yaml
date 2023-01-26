@@ -1,23 +1,22 @@
 __build_info:
   rime_version: 1.7.3
   timestamps:
-    default: 1674444500
-    default.custom: 1674385612
-    key_bindings: 1674444500
+    default: 1654509031
+    default.custom: 1674595569
+    key_bindings: 1674591345
     key_bindings.custom: 0
-    punctuation: 1674444500
+    punctuation: 1674591345
     punctuation.custom: 0
 ascii_composer:
   good_old_caps_lock: true
   switch_key:
-    Caps_Lock: clear
-    Control_L: noop
-    Control_R: noop
-    Eisu_toggle: clear
-    Shift_L: inline_ascii
-    Shift_R: commit_text
+    caps_lock: clear
+    control_l: noop
+    control_r: noop
+    eisu_toggle: clear
+    shift_l: inline_ascii
+    shift_r: commit_text
 config_version: 0.40
-installed_from: "rime-cantonese"
 key_binder:
   bindings:
     - {accept: "Control+p", send: Up, when: composing}
@@ -52,7 +51,7 @@ key_binder:
     - {accept: "Control+Shift+dollar", toggle: simplification, when: always}
     - {accept: "Control+Shift+percent", toggle: extended_charset, when: always}
 menu:
-  page_size: 9
+  page_size: 10
 punctuator:
   full_shape:
     " ": {commit: "　"}
@@ -123,22 +122,24 @@ punctuator:
     "~": ["~", "～"]
 recognizer:
   patterns:
-    email: "^[A-Za-z][-_.0-9A-Za-z]*@.*$"
-    uppercase: "[A-Z][-_+.'0-9A-Za-z]*$"
+    email: "^[a-za-z][-_.0-9a-za-z]*@.*$"
+    uppercase: "[a-z][-_+.'0-9a-za-z]*$"
     url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$|^[a-z]+[.].+$"
 schema_list:
   - schema: jyut6ping3
-  - schema: cangjie5
-  - schema: stroke
+  - schema: terra_pinyin
   - schema: luna_pinyin
+  - schema: luna_pinyin_simp
+  - schema: luna_pinyin_fluency
+  - schema: stroke
 switcher:
   abbreviate_options: true
   caption: "〔方案選單〕"
   fold_options: true
   hotkeys:
-    - "Control+grave"
-    - "Control+Shift+grave"
-    - F4
+    - "control+grave"
+    - "control+shift+grave"
+    - f4
   option_list_separator: "／"
   save_options:
     - full_shape

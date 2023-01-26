@@ -1,29 +1,28 @@
 [Hotkey]
 # Enumerate when press trigger key repeatedly
 EnumerateWithTriggerKeys=True
-# Temporally switch between first and current Input Method
-AltTriggerKeys=
 # Skip first input method while enumerating
 EnumerateSkipFirst=False
+# Enumerate Input Method Group Forward
+EnumerateGroupForwardKeys=
+# Enumerate Input Method Group Backward
+EnumerateGroupBackwardKeys=
 # Activate Input Method
 ActivateKeys=
 # Deactivate Input Method
 DeactivateKeys=
 
 [Hotkey/TriggerKeys]
-0=Control+Alt+Alt_R
+0=Shift+Super+Z
+
+[Hotkey/AltTriggerKeys]
+0=Shift+Shift_R
 
 [Hotkey/EnumerateForwardKeys]
-0=Control+Shift+Right
+0=Shift+Super+A
 
 [Hotkey/EnumerateBackwardKeys]
-0=Control+Shift+Left
-
-[Hotkey/EnumerateGroupForwardKeys]
-0=Super+space
-
-[Hotkey/EnumerateGroupBackwardKeys]
-0=Shift+Super+space
+0=Shift+Super+D
 
 [Hotkey/PrevPage]
 0=Up
@@ -46,7 +45,7 @@ ActiveByDefault=True
 # Share Input State
 ShareInputState=All
 # Show preedit in application
-PreeditEnabledByDefault=True
+PreeditEnabledByDefault=False
 # Show Input Method Information when switch input method
 ShowInputMethodInformation=True
 # Show Input Method Information when changing focus
@@ -56,7 +55,7 @@ CompactInputMethodInformation=True
 # Show first input method information
 ShowFirstInputMethodInformation=True
 # Default page size
-DefaultPageSize=7
+DefaultPageSize=9
 # Override Xkb Option
 OverrideXkbOption=False
 # Custom Xkb Option

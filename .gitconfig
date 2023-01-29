@@ -91,12 +91,12 @@
             | tr '\n' ' ' | xargs \
             > $TMPFILE; \
           cat $TMPFILE; \
-               commit=''; \
-               while :; do \
-               echo '> Commit with this message? [Yn]: '; \
-               read commit; \
-               ([ -z \"$commit\" ] || [ \"$commit\" = y ] || [ \"$commit\" = Y ] || [ \"$commit\" = n ]) && break; \
-               done; \
+          commit=''; \
+          while :; do \
+              echo '> Commit with this message? [Yn]: '; \
+              read commit; \
+                  ([ -z \"$commit\" ] || [ \"$commit\" = y ] || [ \"$commit\" = Y ] || [ \"$commit\" = n ]) && break; \
+          done; \
           test \"$commit\" != n || exit; \
           git commit -F $TMPFILE; \
           rm -f $TMPFILE \

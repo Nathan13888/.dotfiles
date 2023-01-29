@@ -1,6 +1,6 @@
 [Hotkey]
 # Enumerate when press trigger key repeatedly
-EnumerateWithTriggerKeys=True
+EnumerateWithTriggerKeys=False
 # Skip first input method while enumerating
 EnumerateSkipFirst=False
 # Enumerate Input Method Group Forward
@@ -13,7 +13,7 @@ ActivateKeys=
 DeactivateKeys=
 
 [Hotkey/TriggerKeys]
-0=Shift+Super+Z
+0=Control+space
 
 [Hotkey/AltTriggerKeys]
 0=Shift+Shift_R

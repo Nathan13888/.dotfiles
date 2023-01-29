@@ -1,20 +1,20 @@
 __build_info:
   rime_version: 1.7.3
   timestamps:
-    default: 1674595308
-    default.custom: 1674591345
+    default: 1674926662
+    default.custom: 0
     grammar: 0
-    key_bindings: 1674591345
+    key_bindings: 1674926662
     key_bindings.custom: 0
     luna_pinyin.custom: 0
-    luna_pinyin.schema: 1674591345
+    luna_pinyin.schema: 1674926661
     luna_quanpin.custom: 0
-    luna_quanpin.schema: 1674591345
-    pinyin: 1674591345
+    luna_quanpin.schema: 1674926661
+    pinyin: 1674926661
     pinyin.custom: 0
-    punctuation: 1674591345
+    punctuation: 1674926662
     punctuation.custom: 0
-    symbols: 1674591345
+    symbols: 1674926662
     symbols.custom: 0
 custom_phrase:
   db_class: stabledb
@@ -82,7 +82,7 @@ key_binder:
     - {accept: "Control+Shift+percent", toggle: extended_charset, when: always}
   import_preset: default
 menu:
-  page_size: 9
+  page_size: 5
 punctuator:
   full_shape:
     " ": {commit: "　"}
@@ -357,10 +357,10 @@ punctuator:
 recognizer:
   import_preset: default
   patterns:
-    email: "^[a-za-z][-_.0-9a-za-z]*@.*$"
+    email: "^[A-Za-z][-_.0-9A-Za-z]*@.*$"
     punct: "^/([0-9]0?|[A-Za-z]+)$"
     reverse_lookup: "`[a-z]*'?$"
-    uppercase: "[a-z][-_+.'0-9a-za-z]*$"
+    uppercase: "[A-Z][-_+.'0-9A-Za-z]*$"
     url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$|^[a-z]+[.].+$"
 reverse_lookup:
   comment_format:

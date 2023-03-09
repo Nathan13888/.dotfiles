@@ -31,7 +31,8 @@ in
 
   services.gnome-keyring = {
     enable = true;
-    components = [ "pkcs11" "secrets" "ssh" ];
+    components = [ "pkcs11" "ssh" ];
+    #components = [ "pkcs11" "secrets" "ssh" ];
   };
 
   services.mpris-proxy.enable = true;
@@ -96,7 +97,7 @@ in
   home.packages = with pkgs; [
     ## Applications/Clients
     firejail
-    #discord
+    discord-ptb
     #goosemod-discord
     betterdiscordctl betterdiscord-installer discordchatexporter-cli
     slack
@@ -237,7 +238,7 @@ in
     apacheHttpd
 
     ## System/WM Utilities
-    gnupg pinentry-gnome gnome.gnome-keyring gnome.seahorse
+    gnupg pinentry-gnome gnome.gnome-keyring gnome.seahorse libsecret
     networkmanager
     bluez bluez-tools blueman
     flameshot

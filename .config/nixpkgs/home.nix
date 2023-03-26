@@ -174,6 +174,7 @@ in
     heroku netlify-cli
     #plover.dev
     qmk emote
+    proxmark3-rrg
     avrdude #pkgsCross.avr.buildPackages.gcc
     dfu-programmer stlink dfu-util #esphome # TODO
     esptool-ck #openocd
@@ -192,6 +193,7 @@ in
 
     ## Networking
     brave firefox-bin ungoogled-chromium # Browsers
+    wireguard-tools # TODO FIXX
     google-chrome chromedriver
     profile-cleaner
     #tor-browser-bundle-bin
@@ -293,7 +295,7 @@ in
       "org/gnome/desktop/wm/keybindings" = {
         screenshot = [ "<super><shift>s" ];
         screenshot-window = [];
-        panel-run-dialog = [ "<alt>F2" ]; # run a command
+        panel-run-dialog = [ "<super>space" ]; # run a command
 
         close = [ "<super><shift>c" "<alt>f4" ];  # close window
         open-application-menu = [];
@@ -348,7 +350,7 @@ in
         move-to-workspace-7 = [ "<super><shift>7" ];
         move-to-workspace-8 = [ "<super><shift>8" ];
         move-to-workspace-9 = [ "<super><shift>9" ];
-        move-to-workspace-10 = [ "<super><shift>10" ];
+        move-to-workspace-10 = [ "<super><shift>0" ];
 
         move-to-workspace-last = [];
         move-to-workspace-left = [];

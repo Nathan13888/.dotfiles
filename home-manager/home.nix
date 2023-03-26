@@ -1,25 +1,6 @@
 { config, pkgs, ... }:
 
-#let
-#  # Rolling updates, not deterministic.
-#  pkgs = import (fetchTarball("channel:nixpkgs-unstable")) {};
-#in pkgs.mkShell {
-#  buildInputs = [ pkgs.cargo pkgs.rustc ];
-#}
-
-let
-    _pkgs = import /home/attackercow/.dotfiles/nixpkgs/default.nix {
-        config.allowUnfree = true;
-        #config.permittedInsecurePackages = [
-    };
-in
 {
-
-  home.username = "attackercow";
-  home.homeDirectory = "/home/attackercow";
-
-  # You can update Home Manager without changing this value
-  home.stateVersion = "22.05";
 
   programs.home-manager.enable = true;
   services.gpg-agent = {
@@ -146,6 +127,7 @@ in
     ripgrep jq jo # Text Manipulation
     gnumake ccache gdb valgrind
     patchelf #steam-run
+    nixpkgs-fmt
     conda
     gcc valgrind
     go
@@ -212,6 +194,7 @@ in
     ### File
     ntfs3g dosfstools exfatprogs xfsprogs btrfs-progs zfs cifs-utils lockfileProgs # File Systems
     sshfs
+    gparted
     nmon sysstat memtest86plus iotop ioping
     fio kdiskmark phoronix-test-suite sysbench # Benchmark
     unar p7zip zip unzip #rar unrar
@@ -426,3 +409,4 @@ in
     };
   };
 }
+

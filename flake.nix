@@ -25,11 +25,13 @@
       system = "x86_64-linux";
     in
     {
-      homeConfigurations = (
-        import ./home-manager/home-conf.nix {
-          inherit system nixpkgs nurpkgs home-manager;
-        }
-      );
+      homeConfigurations = {
+        "attackercow" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          extraSpecialArgs = {  inherit system nixpkgs nurpkgs home-manager; }; # Pass flake inputs to our config
+          modules = [ ./home-manager/home.nix ];
+        };
+      };
 
       nixosConfigurations = {
         lennar = nixpkgs.lib.nixosSystem {
@@ -38,9 +40,9 @@
 	    inherit inputs system;
 	  };
           modules = [
-	    ./nixos/configuration.nix
-	    ./hosts/lennar/hardware-configuration.nix
-	  ];
+            ./nixos/configuration.nix
+            ./hosts/lennar/hardware-configuration.nix
+          ];
         };
       };
 

@@ -1,6 +1,26 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
+# let
+#   pkgs = import nixpkgs {
+#     inherit system;
+#     config.allowUnfree = true;
+#     config.xdg.configHome = configHome;
+#     overlays = [ nurpkgs.overlay ];
+#   };
+
+#   nur = import nurpkgs {
+#     inherit pkgs;
+#     nurpkgs = pkgs;
+#   };
+# in
 {
+  home.username = "attackercow";
+  home.homeDirectory = "/home/attackercow";
+
+  # You can update Home Manager without changing this value
+  home.stateVersion = "22.11";
+
+  nixpkgs.config.allowUnfree = true;
 
   programs.home-manager.enable = true;
   services.gpg-agent = {
@@ -25,6 +45,18 @@
       package = pkgs.syncthingtray-minimal;
     };
   };
+
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "discord-ptb"
+    "slack"
+    "teams"
+    "zoom"
+    "spotify"
+    "code" "vscode"
+    "google-chrome"
+    "cloudflare-warp"
+    "cudatoolkit"
+  ];
 
   # Fcitx5
   i18n.inputMethod = {

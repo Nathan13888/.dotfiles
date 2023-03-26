@@ -43,5 +43,6 @@
     ];
   };
 
+  nixpkgs.config.allowUnfree = true;
 }
 

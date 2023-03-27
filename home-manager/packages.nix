@@ -47,7 +47,6 @@
     mpv audacious deadbeef cozy guvcview kodi
     #archivebox
     syncthing
-    obs-studio #obs-studio-plugins.obs-gstreamer
     asciinema
     gimp krita inkscape
     #darktable # TODO
@@ -121,7 +120,7 @@
     lsb-release
 
     ## Networking
-    brave firefox-bin ungoogled-chromium # Browsers
+    brave firefox-wayland ungoogled-chromium # Browsers
     wireguard-tools # TODO FIXX
     google-chrome chromedriver
     profile-cleaner
@@ -158,6 +157,8 @@
     apacheHttpd
 
     ## System/WM Utilities
+    waybar bemenu hyprpaper
+    feh
     xss-lock
     lxappearance
     networkmanagerapplet cbatticon
@@ -173,7 +174,7 @@
     arandr
     #pamixer helvum
     notify-desktop
-    xclip
+    wl-clipboard #xclip
     lxqt.lxqt-policykit
     nvtop
 
@@ -188,6 +189,11 @@
     gnomeExtensions.sound-output-device-chooser
     gnomeExtensions.space-bar
   ];
+
+  programs.obs-studio = {
+    enable = true;
+    plugins = with pkgs; [ obs-studio-plugins.wlrobs ];
+  };
 
   nixpkgs.config.allowUnfree = true;
 

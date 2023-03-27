@@ -2,7 +2,8 @@
   description = "";
   inputs = {
     # Nixpkgs
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
+    #nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     # Home Manager
     home-manager = {
@@ -18,9 +19,11 @@
       url = github:nix-community/NUR;
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    hyprland.url = "github:hyprwm/Hyprland";
   };
-  
-  outputs = inputs @ { self, nixpkgs, nurpkgs, home-manager }:
+
+  outputs = inputs @ { self, nixpkgs, nurpkgs, home-manager, hyprland, ... }:
     let
       system = "x86_64-linux";
     in
@@ -29,7 +32,10 @@
         "attackercow" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = {  inherit system nixpkgs nurpkgs home-manager; }; # Pass flake inputs to our config
-          modules = [ ./home-manager/home.nix ];
+          modules = [
+            hyprland.homeManagerModules.default
+	    ./home-manager/home.nix
+	  ];
         };
       };
 
@@ -37,8 +43,8 @@
         lennar = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit (nixpkgs) lib;
-	    inherit inputs system;
-	  };
+            inherit inputs system;
+          };
           modules = [
             ./nixos/configuration.nix
             ./hosts/lennar/hardware-configuration.nix

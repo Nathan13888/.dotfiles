@@ -8,6 +8,7 @@
   # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
+    #enable = false;
     layout = "us";
     xkbOptions = "eurosign:e";
     dpi = 192;
@@ -19,15 +20,15 @@
 
     displayManager.gdm.enable = true;
     displayManager.gdm.wayland = true;
-    desktopManager.gnome = {
-      enable = true;
-      #extraPackages = with pkgs; [
-      #  pop-desktop-widget
-      #  pop-control-center
-      #  pop-launcher
-      #  pop-shell-shortcuts
-      #];
-    };
+    #desktopManager.gnome = {
+    #  enable = true;
+    #  #extraPackages = with pkgs; [
+    #  #  pop-desktop-widget
+    #  #  pop-control-center
+    #  #  pop-launcher
+    #  #  pop-shell-shortcuts
+    #  #];
+    #};
 
     #displayManager.defaultSession = "none+i3";
     #displayManager.startx.enable = true;
@@ -45,7 +46,13 @@
     #  ];
     #};
   };
-  xdg.portal.enable = true;
+
+  #xdg.portal.enable = true;
+  #xdg.portal.extraPortals = with pkgs; [
+  #  xdg-desktop-portal-wlr
+  #  xdg-desktop-portal-gtk
+  #  xdg-desktop-portal-kde
+  #];
 
   environment.gnome.excludePackages = (with pkgs; [
     gnome-photos

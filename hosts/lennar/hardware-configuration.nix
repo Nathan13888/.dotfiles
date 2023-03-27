@@ -56,9 +56,10 @@
     #options = [ "defaults" "size=24G" "mode=755" ];
   };
 
-  swapDevices = [
-    #{ device = "/dev/vg0/lvswap"; }
-  ];
+  #swapDevices = [
+  #  #{ device = "/dev/vg0/lvswap"; }
+  #];
+  swapDevices = lib.mkForce [ ];
 
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

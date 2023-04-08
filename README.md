@@ -27,7 +27,6 @@ nix-shell '<home-manager>' -A install
 - install LS_COLORS
 - use `dos2unix` to fix any file ending problems
 
-
 ### Arch
 - Connecting to wifi: `nmtui`
 - Update reflector: `reflector --country Canada --country US --age 24 --protocol https --sort rate --save /etc/pacman.d/mirrorlist`
@@ -50,6 +49,9 @@ nix-shell '<home-manager>' -A install
 - Link WM dotfiles
 - ~/.Xresources
 - ~/.xinitrc
+
+### Drivers
+- https://wiki.archlinux.org/title/PC_speaker#Disabling_the_PC_speaker
 
 
 ### Flatpak
@@ -214,6 +216,7 @@ listen_addresses = ['127.0.0.1:53000', '[::1]:53000']
 ### Firefox
 - Download firefox (a gpg key server must be setup to install `firefox-nightly` from AUR)
 - HARDWARE ACCEL: https://wiki.archlinux.org/title/Firefox#Hardware_video_acceleration
+  - In `about:config`: set true for `gfx.webrender.all` and `media.ffmpeg.vaapi.enabled`
 - New tabs position: `browser.tabs.insertAfterCurrent` and `browser.tabs.insertRelatedAfterCurrent`
 - Disable `dom.event.contextmenu.enabled` if there are problems with right-click
 - Enable `browser.compactmode.show`
@@ -221,6 +224,7 @@ listen_addresses = ['127.0.0.1:53000', '[::1]:53000']
 - Sync settings
 - Disable telemetry and change search engine
 - Change device name to be more recognizable
+
 ### Discord
 - Add `"SKIP_HOST_UPDATE": true` to config
 - Install `discord` or `discord-ptb`

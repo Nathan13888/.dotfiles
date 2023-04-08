@@ -1,21 +1,10 @@
-#export LANGUAGE=en_CA
-#export LC_ALL=
-#export LANG=en_CA.UTF-8
-#export LC_CTYPE=en_CA.UTF-8
+export ZSH_WAKATIME_BIN=$(which wakatime-cli)
+
 
 export plum_dir="$HOME/plum"
 #export rime_dir="$HOME/.local/share/fcitx5/rime"
 export rime_dir="$HOME/plum/output"
 #export rime_frontend=fcitx-rime
-
-#GTK_IM_MODULE=fcitx
-#QT_IM_MODULE=fcitx
-#XMODIFIERS=@im=fcitx
-#GLFW_IM_MODULE=ibus # KITTY
-
-#export GDK_BACKEND=wayland
-#export XDG_SESSION_TYPE=wayland
-#export NIXOS_OZONE_WL=1
 
 export PATH="$HOME/.local/bin:$HOME/scripts:$HOME/wm.sh:$PATH"
 #export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}

@@ -1,7 +1,3 @@
-# Run xinit if this is the normal terminal
-if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-  exec startx
-fi
 
 ## If not in tmux, start tmux.
 #if [[ -z ${TMUX+X}${ZSH_SCRIPT+X}${ZSH_EXECUTION_STRING+X} ]]; then
@@ -138,9 +134,7 @@ zinit wait lucid for \
     zsh-users/zsh-autosuggestions
 
 zinit ice wait lucid; zinit light jeffreytse/zsh-vi-mode
-
 zinit ice wait lucid; zinit light sobolevn/wakatime-zsh-plugin
-export ZSH_WAKATIME_BIN=$(which wakatime-cli)
 
 unfunction zcompile-many
 ulimit -c 0 # disable core dumps
@@ -170,3 +164,11 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 #[ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
 
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+
+# TODO: remove
+# Run xinit if this is the normal terminal
+#if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
+#  exec startx
+#fi
+
+source .nix-profile/etc/profile.d/hm-session-vars.sh

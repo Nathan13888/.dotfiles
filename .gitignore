@@ -2,6 +2,7 @@
 *.log
 log/
 logs/
+tmp/
 TODO.md
 
 # Spicetify

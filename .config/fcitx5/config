@@ -41,7 +41,7 @@ DeactivateKeys=
 
 [Behavior]
 # Active By Default
-ActiveByDefault=True
+ActiveByDefault=False
 # Share Input State
 ShareInputState=All
 # Show preedit in application
@@ -49,7 +49,7 @@ PreeditEnabledByDefault=False
 # Show Input Method Information when switch input method
 ShowInputMethodInformation=True
 # Show Input Method Information when changing focus
-showInputMethodInformationWhenFocusIn=False
+showInputMethodInformationWhenFocusIn=True
 # Show compact input method information
 CompactInputMethodInformation=True
 # Show first input method information

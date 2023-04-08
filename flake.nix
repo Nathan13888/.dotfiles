@@ -31,11 +31,11 @@
       homeConfigurations = {
         "attackercow" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          extraSpecialArgs = {  inherit system nixpkgs nurpkgs home-manager; }; # Pass flake inputs to our config
+          extraSpecialArgs = {  inherit system nixpkgs nurpkgs home-manager; };
           modules = [
             hyprland.homeManagerModules.default
-	    ./home-manager/home.nix
-	  ];
+            ./home-manager/home.nix
+          ];
         };
       };
 
@@ -46,6 +46,8 @@
             inherit inputs system;
           };
           modules = [
+            hyprland.nixosModules.default
+            {programs.hyprland.enable = true;}
             ./nixos/configuration.nix
             ./hosts/lennar/hardware-configuration.nix
           ];

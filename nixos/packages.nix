@@ -14,6 +14,7 @@
     variables.TMPDIR = "/tmp";
     variables.EDITOR = "nvim";
     variables.TERMINAL = "kitty";
+    variables.TERM = "xterm-256color";
     #variables.BROWSER = "librewolf";
     variables.BROWSER = "firefox";
     #variables.BROWSER = "brave";

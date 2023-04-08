@@ -72,8 +72,9 @@
     wakatime time hyperfine tokei exa # Measurement
     ripgrep jq jo # Text Manipulation
     gnumake ccache gdb valgrind
-    patchelf #steam-run
+    patchelf steam-run
     nixpkgs-fmt
+    openssl
     conda
     gcc valgrind
     go
@@ -157,9 +158,12 @@
     apacheHttpd
 
     ## System/WM Utilities
-    waybar bemenu hyprpaper
+    waybar eww-wayland swww socat
+    bemenu hyprpaper dunst
+    grim slurp wayshot
     feh
     xss-lock
+    mpd mpc-cli
     lxappearance
     networkmanagerapplet cbatticon
     gnome.dconf-editor
@@ -174,7 +178,7 @@
     arandr
     #pamixer helvum
     notify-desktop
-    wl-clipboard #xclip
+    wl-clipboard xclip
     lxqt.lxqt-policykit
     nvtop
 
@@ -207,6 +211,7 @@
     "google-chrome"
     "cloudflare-warp"
     "cudatoolkit"
+    "steam-run" "steam-original"
   ];
 
 }

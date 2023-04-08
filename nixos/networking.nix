@@ -6,11 +6,7 @@
   networking.extraHosts =
   ''
 192.168.10.226 st.wocrekcatta.ml
-192.168.10.226 gitea.local cockroach-gitea.local
-192.168.10.225 zyber.local zyber
-34.95.3.150 sweater.example traefik.sweater.example
   '';
-#192.168.10.225 pihole.local warden.local netdata.local omada.local
 
   services.dnscrypt-proxy2 = {
     enable = true;

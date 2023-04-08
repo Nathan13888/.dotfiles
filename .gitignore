@@ -11,6 +11,9 @@ spicetify/Extracted
 # i3
 i3/*.o
 
+# Hyperland
+.config/hypr/hyprland.conf
+
 # Xmonad
 .xmonad/xmonad-x86_64-linux
 .xmonad/xmonad.errors

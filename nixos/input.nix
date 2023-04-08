@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  hardware.bluetooth.enable = true;
+  hardware.bluetooth.enable = false;
   services.blueman.enable = true;
   hardware.openrazer.enable = true;
 

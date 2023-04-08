@@ -11,7 +11,7 @@
     #enable = false;
     layout = "us";
     xkbOptions = "eurosign:e";
-    dpi = 192;
+    dpi = 96;
     desktopManager = {
       xterm.enable = false;
     };
@@ -47,12 +47,12 @@
     #};
   };
 
-  #xdg.portal.enable = true;
-  #xdg.portal.extraPortals = with pkgs; [
-  #  xdg-desktop-portal-wlr
-  #  xdg-desktop-portal-gtk
-  #  xdg-desktop-portal-kde
-  #];
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = with pkgs; [
+    xdg-desktop-portal-wlr
+    xdg-desktop-portal-gtk
+    xdg-desktop-portal-kde
+  ];
 
   environment.gnome.excludePackages = (with pkgs; [
     gnome-photos

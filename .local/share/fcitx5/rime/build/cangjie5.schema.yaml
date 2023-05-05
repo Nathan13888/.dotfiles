@@ -1,15 +1,15 @@
 __build_info:
-  rime_version: 1.7.3
+  rime_version: 1.8.5
   timestamps:
     cangjie5.custom: 0
-    cangjie5.schema: 1674928689
-    default: 1674928689
-    default.custom: 1674926795
-    key_bindings: 1674928689
+    cangjie5.schema: 1674591345
+    default: 0
+    default.custom: 1678997182
+    key_bindings: 1674591345
     key_bindings.custom: 0
-    punctuation: 1674928689
+    punctuation: 1674591345
     punctuation.custom: 0
-    symbols: 1674928689
+    symbols: 1674591345
     symbols.custom: 0
 abc_segmentor:
   extra_tags:
@@ -72,8 +72,6 @@ key_binder:
     - {accept: "Control+Shift+dollar", toggle: simplification, when: always}
     - {accept: "Control+Shift+percent", toggle: extended_charset, when: always}
   import_preset: default
-menu:
-  page_size: 10
 punctuator:
   full_shape:
     " ": {commit: "　"}

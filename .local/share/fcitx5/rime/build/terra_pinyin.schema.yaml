@@ -1,15 +1,15 @@
 __build_info:
-  rime_version: 1.7.3
+  rime_version: 1.8.5
   timestamps:
-    default: 1674928689
-    default.custom: 1674926795
+    default: 0
+    default.custom: 1678997182
     grammar: 0
-    key_bindings: 1674928689
+    key_bindings: 1674591345
     key_bindings.custom: 0
-    punctuation: 1674928689
+    punctuation: 1674591345
     punctuation.custom: 0
     terra_pinyin.custom: 0
-    terra_pinyin.schema: 1674928689
+    terra_pinyin.schema: 1674968651
 custom_phrase:
   db_class: stabledb
   dictionary: ""
@@ -77,8 +77,6 @@ key_binder:
     - {accept: minus, send: minus, when: has_menu}
     - {accept: minus, send: Page_Up, when: paging}
   import_preset: default
-menu:
-  page_size: 10
 punctuator:
   full_shape:
     " ": {commit: "　"}

@@ -1,18 +1,18 @@
 __build_info:
-  rime_version: 1.7.3
+  rime_version: 1.8.5
   timestamps:
-    default: 1674928689
-    default.custom: 1674926795
+    default: 0
+    default.custom: 1678997182
     grammar: 0
-    key_bindings: 1674928689
+    key_bindings: 1674591345
     key_bindings.custom: 0
     luna_pinyin.custom: 0
-    luna_pinyin.schema: 1674928689
-    pinyin: 1674928689
+    luna_pinyin.schema: 1674591345
+    pinyin: 1674591345
     pinyin.custom: 0
-    punctuation: 1674928689
+    punctuation: 1674591345
     punctuation.custom: 0
-    symbols: 1674928689
+    symbols: 1674591345
     symbols.custom: 0
 custom_phrase:
   db_class: stabledb
@@ -79,8 +79,6 @@ key_binder:
     - {accept: "Control+Shift+dollar", toggle: simplification, when: always}
     - {accept: "Control+Shift+percent", toggle: extended_charset, when: always}
   import_preset: default
-menu:
-  page_size: 10
 punctuator:
   full_shape:
     " ": {commit: "　"}

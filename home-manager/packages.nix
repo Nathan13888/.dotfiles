@@ -140,7 +140,8 @@
 
     ### File
     ntfs3g dosfstools exfatprogs xfsprogs btrfs-progs zfs cifs-utils lockfileProgs # File Systems
-    sshfs
+    sshfs f3
+    usbimager
     gparted
     nmon sysstat memtest86plus iotop ioping
     fio kdiskmark phoronix-test-suite sysbench # Benchmark
@@ -160,6 +161,7 @@
     ## System/WM Utilities
     waybar eww-wayland swww socat
     bemenu hyprpaper dunst
+    wlr-randr
     grim slurp wayshot
     feh
     xss-lock

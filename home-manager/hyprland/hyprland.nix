@@ -3,13 +3,24 @@ let
   waybar = "${lib.getExe pkgs.waybar}";
   volume = "~/scripts/volume.sh";
   backlight = "~/scripts/backlight.sh";
+  scripts = "~/scripts/";
+
+  big_mon = "HDMI-A-1";
+  smol_mon = "eDP-1";
 in
 ''
+# TODO: make device specific settings
 # See https://wiki.hyprland.org/Configuring/Monitors/
-monitor=,preferred,auto,auto
-monitor=,addreserved,50,0,0,0
-#monitor=,highres,auto,2
 
+#monitor=${big_mon},5120x1440@60,0x0,1
+monitor=${big_mon},5120x1440@60,0x0,auto,bitdepth,10
+#monitor=${big_mon},3840x1080@60,0x0,1,bitdepth,10
+monitor=${smol_mon},preferred,1600x1440,auto
+monitor=,preferred,auto,auto
+#monitor=,highres,auto,2
+monitor=,addreserved,50,0,0,0
+
+#exec-once=${scripts}handle_monitor_connect.sh # TODO
 
 # See https://wiki.hyprland.org/Configuring/Keywords/ for more
 
@@ -58,6 +69,7 @@ misc {
   disable_hyprland_logo=true
   animate_mouse_windowdragging=true # this fixes the laggy window movement (source: https://github.com/hyprwm/Hyprland/issues/1753)
   animate_manual_resizes=false # fixes slow resizes
+  vfr = true # variable frame rate, for laptop power savings
 }
 
 exec-once = fcitx5 -d
@@ -89,14 +101,14 @@ dwindle {
 decoration {
   blur_new_optimizations = true
   rounding = 15
-  blur = yes
+  blur = yes # TODO: no for laptop
   blur_size = 3
   blur_passes = 1
   blur_new_optimizations = on
   blur_xray=1
 
   inactive_opacity = 0.95
-  drop_shadow = yes
+  drop_shadow = yes # TODO: no for laptop
   shadow_range = 4
   shadow_render_power = 3
   col.shadow= 0x33000000
@@ -143,9 +155,17 @@ device:epic mouse V1 {
 $mod = SUPER
 bind = $mod, Return, exec, kitty # make this wtv $TERMINAL is
 bind = $mod SHIFT, c, killactive, 
-bind = $mod, space, togglefloating, 
+bind = $mod SHIFT, space, togglefloating, 
 bind = $mod, f, fullscreen, 
 bind = $mod SHIFT, f, fakefullscreen, 
+bind = $mod, p, pin,
+bind = $mod SHIFT, m, exec, hyprctl dispatch centerwindow active,
+bindr = $mod, TAB, exec, hyprctl dispatch cyclenext,
+bind = $mod SHIFT, TAB, exec, hyprctl dispatch cyclenext prev,
+
+bind = $mod SHIFT, x, exec, hyprctl dispatch swapactiveworkspaces ${big_mon} ${smol_mon}
+bind = $mod ALT, x, exec, hyprctl dispatch movecurrentworkspacetomonitor ${big_mon}
+
 # TODO
 bind = $mod, d, exec, bemenu-run -c -l 15 -W 0.3
 # https://github.com/hyprwm/Hyprland/discussions/416
@@ -263,9 +283,9 @@ windowrule=float,^(nm-connection-editor)$
 windowrule=float,zenity
 
 
-windowrulev2 = opacity 0.97 0.97, class:org.telegram.desktop
-windowrulev2 = workspace 1, class:firefox
-windowrulev2 = workspace 4, class:org.telegram.desktop
+#windowrulev2 = opacity 0.97 0.97, class:org.telegram.desktop
+#windowrulev2 = workspace 1, class:firefox
+#windowrulev2 = workspace 4, class:org.telegram.desktop
 layerrule = blur, eww
 layerrule = blur, notifications
 

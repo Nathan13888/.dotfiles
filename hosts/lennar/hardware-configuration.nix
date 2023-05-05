@@ -6,6 +6,7 @@
 {
   imports =
     [ (modulesPath + "/installer/scan/not-detected.nix")
+    ./extras.nix
     ];
 
   networking.hostName = "LENNAR";

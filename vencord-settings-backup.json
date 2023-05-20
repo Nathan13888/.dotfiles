@@ -222,9 +222,6 @@
             "WebContextMenus": {
                 "enabled": true
             },
-            "Webhook Tags": {
-                "enabled": false
-            },
             "WhoReacted": {
                 "enabled": true
             },
@@ -339,13 +336,18 @@
             },
             "SupportHelper": {
                 "enabled": true
+            },
+            "MoreUserTags": {
+                "enabled": false
             }
         },
         "notifications": {
             "timeout": 5000,
             "position": "bottom-right",
-            "useNative": "always"
-        }
+            "useNative": "always",
+            "logLimit": 50
+        },
+        "autoUpdateNotification": true
     },
     "quickCss": ""
 }

@@ -15,15 +15,15 @@
     #nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     # NUR
-    nurpkgs = {
-      url = github:nix-community/NUR;
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    #nurpkgs = {
+    #  url = github:nix-community/NUR;
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
 
     hyprland.url = "github:hyprwm/Hyprland";
   };
 
-  outputs = inputs @ { self, nixpkgs, nurpkgs, home-manager, hyprland, ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, hyprland, ... }:
     let
       system = "x86_64-linux";
     in
@@ -31,7 +31,7 @@
       homeConfigurations = {
         "attackercow" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          extraSpecialArgs = {  inherit system nixpkgs nurpkgs home-manager; };
+          extraSpecialArgs = {  inherit system nixpkgs home-manager; };
           modules = [
             hyprland.homeManagerModules.default
             ./home-manager/home.nix

@@ -3,6 +3,7 @@ let
   waybar = "${lib.getExe pkgs.waybar}";
   volume = "~/scripts/volume.sh";
   backlight = "~/scripts/backlight.sh";
+  grimblast = "~/scripts/grimblast";
   scripts = "~/scripts/";
 
   big_mon = "HDMI-A-1";
@@ -27,11 +28,16 @@ monitor=,addreserved,50,0,0,0
 #exec-once = hyperpaper
 exec-once = dunst
 
+# TODO: exit/suspend scripts
+# Notice that `swaymsg exit` will run after gtkgreet.
+#     exec "${pkgs.greetd.gtkgreet}/bin/gtkgreet -l; swaymsg exit"
 
 exec-once=wl-clipboard-history -t
-exec=gnome-keyring-daemon -sd
+exec=gnome-keyring-daemon -sd # TODO fix this
+# TODO: polkit agent
 exec-once=blueman-applet
 exec-once=nm-applet
+# TODO: https://wiki.hyprland.org/Useful-Utilities/Clipboard-Managers/
 
 
 # Source a file (multi-file configs)
@@ -169,7 +175,7 @@ bind = $mod ALT, x, exec, hyprctl dispatch movecurrentworkspacetomonitor ${big_m
 # TODO
 bind = $mod, d, exec, bemenu-run -c -l 15 -W 0.3
 # https://github.com/hyprwm/Hyprland/discussions/416
-bind = $mod SHIFT, s, exec, wayshot -s "$(hyprctl clients -j | jq -r ".[] | select(.workspace.id == "$(hyprctl activewindow -j | jq -r '.workspace.id')\)""| jq -r ".at,.size" | jq -s "add" | jq '_nwise(4)' | jq -r '"\(.[0]),\(.[1]) \(.[2])x\(.[3])"'| slurp -f '%x %y %w %h')" --stdout | wl-copy
+bind = $mod SHIFT, s, exec, ${grimblast} --notify copy area
 
 bind = $mod, comma, exec, dunstctl close,
 bind = $mod SHIFT, comma, exec, dunstctl close-all
@@ -283,10 +289,11 @@ windowrule=float,^(nm-connection-editor)$
 windowrule=float,zenity
 
 
+# TODO
 #windowrulev2 = opacity 0.97 0.97, class:org.telegram.desktop
 #windowrulev2 = workspace 1, class:firefox
 #windowrulev2 = workspace 4, class:org.telegram.desktop
-layerrule = blur, eww
-layerrule = blur, notifications
+#layerrule = blur, eww
+#layerrule = blur, notifications
 
 ''

@@ -18,8 +18,9 @@
 
     libinput.enable = true;
 
-    displayManager.gdm.enable = true;
-    displayManager.gdm.wayland = true;
+
+    #displayManager.gdm.enable = true;
+    #displayManager.gdm.wayland = true;
     #desktopManager.gnome = {
     #  enable = true;
     #  #extraPackages = with pkgs; [
@@ -45,6 +46,17 @@
     #    i3lock-color
     #  ];
     #};
+  };
+
+  services.greetd = {
+    enable = true;
+    settings = rec {
+      initial_session = {
+        command = "${pkgs.hyprland}/bin/Hyprland";
+        user = "attackercow";
+      };
+      default_session = initial_session;
+    };
   };
 
   xdg.portal.enable = true;

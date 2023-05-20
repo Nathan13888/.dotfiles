@@ -1,6 +1,12 @@
 { config, pkgs, lib, ... }:
 
+#let unstable = pkgs.nixos-unstable; in
 {
+  home.file."jdks/openjdk8".source = pkgs.adoptopenjdk-openj9-bin-8;
+  home.file."jdks/openjdk11".source = pkgs.adoptopenjdk-openj9-bin-11;
+  home.file."jdks/openjdk17".source = pkgs.jetbrains.jdk;
+  home.file."jdks/scala".source = pkgs.scala;
+
   nixpkgs.overlays =
     let
       openasar = self: super: {
@@ -37,6 +43,7 @@
     zinit starship fzf ripgrep # Prompt
     neovim neovide
     vscode-fhs
+    jetbrains.idea-community
     onlyoffice-bin
     libreoffice
     texlive.combined.scheme-full
@@ -44,17 +51,19 @@
     arduino
     kubectl lens kubie
     insomnia
-    mpv audacious deadbeef cozy guvcview kodi
+    protege-distribution
+    mpv vlc audacious deadbeef cozy guvcview kodi
     #archivebox
     syncthing
     asciinema
     gimp krita inkscape
-    #darktable # TODO
+    darktable # TODO
     tenacity #mixxx spek
     libsForQt5.kdenlive libsForQt5.kio-extras
-    #handbrake
+    handbrake
     #kicad
-    #freecad openscad blender
+    freecad openscad qcad
+    blender
     super-slicer
     android-file-transfer go-mtpfs
     rclone
@@ -78,9 +87,9 @@
     conda
     gcc valgrind
     go
-    jdk
+    temurin-jre-bin maven #jdk
     lua
-    nodejs
+    nodejs electron_23
     racket
     #python39Full
     (let
@@ -159,8 +168,8 @@
     apacheHttpd
 
     ## System/WM Utilities
-    waybar eww-wayland swww socat
-    bemenu hyprpaper dunst
+    waybar eww-wayland swww socat acpi
+    bemenu hyprpaper dunst libnotify
     wlr-randr
     grim slurp wayshot
     feh

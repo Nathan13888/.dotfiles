@@ -36,12 +36,6 @@
       "btrfs"
     ];
   };
-  #boot.initrd.availableKernelModules = [
-  #  "aesni_intel" "cryptd"
-  #];
-  #boot.kernelParams = [ "nohibernate" "nvme_core.default_ps_max_latency_us=0" "zfs_import_dir=/dev/disk/by-id" "zfs.zfs_arc_max=8589934592" "resume=/dev/vg0/lvswap" "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
-  #boot.extraModprobeConfig = "options kvm_amd nested=1";
-  #hardware.enableAllFirmware = true;
 
   services.udev.packages = with pkgs; [
     android-udev-rules

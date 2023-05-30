@@ -21,6 +21,7 @@ nix-shell '<home-manager>' -A install
 
 
 ### WSL
+- https://nix.dev/tutorials/install-nix
 - refer to this [link](https://askubuntu.com/questions/966488/how-do-i-fix-r-command-not-found-errors-running-bash-scripts-in-wsl)
 - fix powerline fonts
 - remove any existing config files

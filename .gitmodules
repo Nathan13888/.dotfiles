@@ -8,3 +8,6 @@
 [submodule "fcitx5-nord"]
 	path = fcitx5-nord
 	url = git@github.com:tonyfettes/fcitx5-nord.git
+[submodule "dotbot"]
+	path = dotbot
+	url = https://github.com/anishathalye/dotbot

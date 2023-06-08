@@ -156,9 +156,6 @@ export PYTHONDONTWRITEBYTECODE=1
 [ -f ~/.exports ] && source ~/.exports
 [ -f ~/.exports.local ] && source ~/.exports.local
 
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
 #rustup completions zsh cargo > ~/.zfunc/_cargo
 
 #[ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
@@ -171,4 +168,4 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 #  exec startx
 #fi
 
-source .nix-profile/etc/profile.d/hm-session-vars.sh
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

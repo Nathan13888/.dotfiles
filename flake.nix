@@ -29,7 +29,7 @@
     in
     {
       homeConfigurations = {
-        "attackercow" = home-manager.lib.homeManagerConfiguration {
+        "attackercow@lennar" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = {  inherit system nixpkgs home-manager; };
           modules = [

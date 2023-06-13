@@ -1,10 +1,6 @@
 { config, pkgs, ... }:
 
 {
-
-  ### VIDEO
-
-
   hardware.opengl = {
     enable = true;
     driSupport = true;

@@ -48,13 +48,15 @@
     components = [ "pkcs11" "ssh" ];
     #components = [ "pkcs11" "secrets" "ssh" ];
   };
+  
+  # TODO: keypassxc
 
   services.mpris-proxy.enable = true;
 
   services.syncthing = {
     enable = true;
     tray = {
-      enable = true;
+      enable = false;
       package = pkgs.syncthingtray-minimal;
     };
   };

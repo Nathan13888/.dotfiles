@@ -1,5 +1,8 @@
 { config, pkgs, options, ... }:
 
+let
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
+in
 {
   imports = [
     ./input.nix
@@ -9,10 +12,11 @@
     ./storage.nix
     ./virtualization.nix
     ./wm.nix
+    # (import "$(home-manager)/nixos")
   ];
 
   boot = {
-    blacklistedKernelModules = [ "snd_pcsp" ];
+    blacklistedKernelModules = [ "snd_pcsp" ]; # TODO: what's this?
     kernelPackages = pkgs.linuxPackages_xanmod; #pkgs.linuxPackages_latest;
     extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ]; # zfs rtl88xxau-aircrack #wireguard
     #zfs.enableUnstable = true;
@@ -132,8 +136,6 @@
 
   system.autoUpgrade.enable = false;
   system.autoUpgrade.allowReboot = false;
-
-  system.stateVersion = "21.11";
 
 }
 

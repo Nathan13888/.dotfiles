@@ -1,9 +1,29 @@
 { config, pkgs, lib, ... }:
 
 {
+  networking.hostName = "LENNAR";
+  networking.hostId = "2d5d9c67"; # head -c 8 /etc/machine-id
+  system.stateVersion = "21.11";
+
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
   hardware.openrazer.enable = true;
+
+  ### Video, Hardware Accel
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    extraPackages = with pkgs; [
+      intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
+  };
+  nixpkgs.config.packageOverrides = pkgs: {
+    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
+  };
+  hardware.video.hidpi.enable = false;
 
   ### Fingerprint
   services.fprintd.enable = true;
@@ -17,6 +37,13 @@
     enable = true;
     powertop.enable = true;
     #cpuFreqGovernor = lib.mkDefault "ondemand";
+  };
+
+  fileSystems."/tmp" = {
+    device = "none";
+    fsType = "tmpfs";
+    options = [ "defaults" "size=14G" "mode=755" ];
+    #options = [ "defaults" "size=24G" "mode=755" ];
   };
 
   boot.kernelParams = [ "mem_sleep_default=deep" ];

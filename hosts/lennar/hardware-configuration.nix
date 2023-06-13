@@ -9,9 +9,6 @@
     ./extras.nix
     ];
 
-  networking.hostName = "LENNAR";
-  networking.hostId = "2d5d9c67"; # head -c 8 /etc/machine-id
-
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [ "kvm-intel" ];
@@ -49,13 +46,6 @@
       #device = "/dev/disk/by-label/boot";
       fsType = "vfat";
     };
-
-  fileSystems."/tmp" = {
-    device = "none";
-    fsType = "tmpfs";
-    options = [ "defaults" "size=14G" "mode=755" ];
-    #options = [ "defaults" "size=24G" "mode=755" ];
-  };
 
   #swapDevices = [
   #  #{ device = "/dev/vg0/lvswap"; }

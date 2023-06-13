@@ -1,0 +1,60 @@
+- defaults:
+    link:
+      relink: true
+      create: true
+      force: true
+
+- clean: ['~']
+
+- link:
+    # BASH
+    ~/.aliases: .aliases
+    ~/.aliases.local: .aliases.local
+    ~/.exports: .exports
+    ~/.exports.local: .exports.local
+    ~/.zshrc: .zshrc
+    ~/.zshenv: .zshenv
+    ~/.config/starship.toml: starship.toml
+
+    # BASH 2
+    ~/.ssh/config: .ssh/config
+    ~/scripts: scripts
+
+    # BASH TOOLS
+    ~/.config/nvim: .config/nvim
+    ~/.config/vifm: vifm
+#    ~/.vim: .vim
+    ~/.vimrc: .vimrc
+    ~/.angular-config.json: angular-config.json
+#    ~/.cht.sh/cht.sh.conf: cht.sh.conf
+#    ~/.config/neofetch: neofetch
+    ~/.gitconfig: .gitconfig
+    ~/.gitconfig.local: .gitconfig.local
+    ~/.gitmessage.txt: .gitmessage.txt
+#    ~/.tmux.conf: .tmux.conf
+
+
+    # WM
+    #~/.alacritty.yml: .alacritty.yml
+    ~/.config/electron-flags.conf: .config/electron-flags.conf
+    ~/.config/electron13-flags.conf: .config/electron13-flags.conf
+    ~/.config/easyeffects: .config/easyeffects
+    ~/.config/hypr: .config/hypr
+    ~/.config/eww: .config/eww
+    ~/.config/dunst: dunst
+    ~/.config/fcitx5: .config/fcitx5
+
+    # Applications
+    ~/.config/mpv/mpv.conf: .config/mpv/mpv.conf
+
+
+- create:
+    - ~/ws
+    - ~/bin
+    - ~/jdks
+    - ~/mnt
+    - ~/tmp
+
+- shell:
+    - [echo -e "Syncing WSL Dotfiles\n\n", INIT]
+#  - [git submodule update --init --recursive, Installing submodules]

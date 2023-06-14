@@ -185,9 +185,6 @@ bind = $mod SHIFT, period, exec, dunstctl context
 bind = $mod, slash, exec, dunstify "Dunst Paused" "$(dunstctl is-paused)" -u low
 bind = $mod SHIFT, slash, exec, dunstctl set-paused toggle
 
-bind=,XF86AudioRaiseVolume,exec,amixer -D pulse set Master 5%+
-bind=,XF86AudioLowerVolume,exec,amixer -D pulse set Master 5%-
-bind=,XF86AudioMute,exec,amixer -D pulse set Master +1 toggle
 bind=,XF86MonBrightnessUp,exec,light -A 5
 bind=,XF86MonBrightnessDown,exec,light -U 5
 

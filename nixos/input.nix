@@ -6,7 +6,7 @@
     driSupport = true;
     extraPackages = with pkgs; [
       intel-media-driver # LIBVA_DRIVER_NAME=iHD
-      vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+      vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
       vaapiVdpau
       libvdpau-va-gl
     ];
@@ -19,8 +19,32 @@
 
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
-  services.pipewire = {
 
+  environment.etc =
+    let
+      json = pkgs.formats.json { };
+    in
+    {
+      "wireplumber/bluetooth.lua.d/51-bluez-config.lua".text = ''
+        bluez_monitor.properties = {
+          ["bluez5.enable-sbc-xq"] = true,
+          ["bluez5.enable-msbc"] = true,
+          ["bluez5.enable-hw-volume"] = true,
+          ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag ]"
+        }
+      '';
+      "pipewire/pipewire.d/92-low-latency.conf".source = json.generate "92-low-latency.conf" {
+        context.properties = {
+          default.clock.rate = 48000;
+          default.clock.quantum = 32;
+          default.clock.min-quantum = 32;
+          default.clock.max-quantum = 32;
+        };
+      };
+    };
+
+
+  services.pipewire = {
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
@@ -39,7 +63,7 @@
         ##"default.clock.min-quantum" = 32;
         ##"default.clock.max-quantum" = 8192;
         #"default.clock.max-quantum" = 64;
-	"core.daemon" = true;
+        "core.daemon" = true;
         "core.name" = "pipewire-0";
       };
       #"context.modules" = [

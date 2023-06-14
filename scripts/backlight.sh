@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
 STEPS="30"
-MAX="$(cat /sys/class/backlight/intel_backlight/max_brightness)"
-DEVICE="/sys/class/backlight/intel_backlight/"
+#MAX="$(cat /sys/class/backlight/intel_backlight/max_brightness)"
+MAX="100"
+#DEVICE="/sys/class/backlight/intel_backlight/"
 
 function set {
-    echo ${@: -1} > $DEVICE/brightness
+    #echo ${@: -1} > $DEVICE/brightness
+    xbacklight -set ${@: -1}
 }
 
 function inc {
@@ -29,7 +31,8 @@ function max {
 }
 
 function cur {
-    cat $DEVICE/brightness
+    #cat $DEVICE/brightness
+    xbacklight -get
 }
 
 function stepSize {

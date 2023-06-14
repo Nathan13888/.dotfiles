@@ -183,7 +183,7 @@
     gnupg pinentry-gnome gnome.gnome-keyring gnome.seahorse libsecret
     networkmanager
     #gnome.gnome-screenshot # TODO:
-    gnome-firmware gnome.gnome-control-center
+    gnome-firmware gnome.gnome-control-center gnome.gnome-system-monitor
     bluez bluez-tools blueman
     flameshot
     bitwarden bitwarden-cli

@@ -41,6 +41,7 @@
   };
 
   networking = {
+    nftables.enable = true;
     nat = {
       enable = true;
       enableIPv6 = false;
@@ -57,6 +58,7 @@
         #{ from = 5201; to = 5210; } # iperf3
         8888 # Public HTTP
         9993 # Zerotier
+        59100 # AudioRelay (TCP for messaging) 
       ];
       allowedUDPPorts = [
         #{ from = 29999; to = 29999; }
@@ -65,6 +67,8 @@
         5201
         9993 # Zerotier
 	51820 # Wireguard listening
+        59100 # AudioRelay (UDP for audio transport)
+        59200 # AudioRelay (UDP for server discovery)
       ];
       enable = true;
       allowPing = false;

@@ -27,8 +27,8 @@ in
     loader = {
       systemd-boot = {
         enable = true;
-    configurationLimit = 10;
-    memtest86.enable = true;
+        configurationLimit = 10;
+        memtest86.enable = true;
       };
       efi.canTouchEfiVariables = true;
       grub.enable = false;
@@ -74,7 +74,7 @@ in
 
   time.timeZone = "America/New_York";
   time.hardwareClockInLocalTime = false;
-  
+
   users = {
     defaultUserShell = pkgs.zsh;
     users.attackercow = {
@@ -121,7 +121,7 @@ in
         "http://cache.nixos.org"
         #"https://hyprland.cachix.org"
       ];
-      trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+      trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
     };
 
     settings.auto-optimise-store = true;

@@ -5,8 +5,9 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ./extras.nix
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
+      ./extras.nix
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
@@ -15,7 +16,8 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/mapper/enc";
+    {
+      device = "/dev/mapper/enc";
       fsType = "btrfs";
       options = [ "subvol=root" "compress=zstd" "noatime" ];
     };
@@ -23,26 +25,30 @@
   boot.initrd.luks.devices."enc".device = "/dev/disk/by-uuid/cfbe16d5-23ef-422d-92c3-b35d9d1042b8";
 
   fileSystems."/nix" =
-    { device = "/dev/mapper/enc";
+    {
+      device = "/dev/mapper/enc";
       fsType = "btrfs";
       options = [ "subvol=nix" "compress=zstd" "noatime" ];
     };
 
   fileSystems."/persist" =
-    { device = "/dev/mapper/enc";
+    {
+      device = "/dev/mapper/enc";
       fsType = "btrfs";
       options = [ "subvol=persist" "compress=zstd" "noatime" ];
     };
 
   fileSystems."/var/log" =
-    { device = "/dev/mapper/enc";
+    {
+      device = "/dev/mapper/enc";
       fsType = "btrfs";
       options = [ "subvol=log" "compress=zstd" "noatime" "autodefrag" ];
       neededForBoot = true;
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/F957-3318";
+    {
+      device = "/dev/disk/by-uuid/F957-3318";
       #device = "/dev/disk/by-label/boot";
       fsType = "vfat";
     };

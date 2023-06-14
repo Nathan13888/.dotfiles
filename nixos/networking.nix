@@ -4,9 +4,9 @@
 {
 
   networking.extraHosts =
-  ''
-192.168.10.226 st.wocrekcatta.ml
-  '';
+    ''
+      192.168.10.226 st.wocrekcatta.ml
+    '';
 
   services.dnscrypt-proxy2 = {
     enable = true;
@@ -18,7 +18,7 @@
           "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md"
           "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md"
         ];
-	cache_file = "/var/lib/dnscrypt-proxy2/public-resolvers.md";
+        cache_file = "/var/lib/dnscrypt-proxy2/public-resolvers.md";
         minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
       };
       server_names = [ "moulticast-ca-ipv4" "opennic-luggs" "opennic-luggs2" "quad9-doh-ip4-port443-nofilter-pri" "odoh-cloudflare" "cloudflare" "nextdns" "mullvad-doh" ];
@@ -52,9 +52,10 @@
     firewall = {
       allowedTCPPorts = [
         #{ from = 29999; to = 29999; }
-        4713 6000 # tor
+        4713
+        6000 # tor
         22 # SSH
-	53 # Wireguard DNS
+        53 # Wireguard DNS
         #{ from = 5201; to = 5210; } # iperf3
         8888 # Public HTTP
         9993 # Zerotier
@@ -63,10 +64,10 @@
       allowedUDPPorts = [
         #{ from = 29999; to = 29999; }
         #{ from = 5201; to = 5210; } # iperf3
-	53 # Wireguard DNS
+        53 # Wireguard DNS
         5201
         9993 # Zerotier
-	51820 # Wireguard listening
+        51820 # Wireguard listening
         59100 # AudioRelay (UDP for audio transport)
         59200 # AudioRelay (UDP for server discovery)
       ];
@@ -74,7 +75,7 @@
       allowPing = false;
     };
 
-    timeServers = options.networking.timeServers.default ++ [ "0.north-america.pool.ntp.org" "1.north-america.pool.ntp.org" "2.north-america.pool.ntp.org" "3.north-america.pool.ntp.org" ]; 
+    timeServers = options.networking.timeServers.default ++ [ "0.north-america.pool.ntp.org" "1.north-america.pool.ntp.org" "2.north-america.pool.ntp.org" "3.north-america.pool.ntp.org" ];
     nameservers = [ "127.0.0.1" "::1" ];
     resolvconf.enable = true;
     interfaces.eth0.useDHCP = true;
@@ -94,13 +95,13 @@
       wifi.backend = "iwd";
     };
 
-     wireless.iwd.enable = true;
+    wireless.iwd.enable = true;
   };
 
   # Tor
   #services.tor.enable = true;
   #services.tor.client.enable = true;
-  
+
   #networking.nat = {
   #  enable = true;
   #  internalInterfaces = ["ve-browser"];

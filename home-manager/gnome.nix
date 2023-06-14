@@ -1,4 +1,3 @@
-
 { config, pkgs, lib, ... }:
 
 {
@@ -36,45 +35,45 @@
     settings = {
       "org/gnome/desktop/wm/keybindings" = {
         screenshot = [ "<super><shift>s" ];
-        screenshot-window = [];
+        screenshot-window = [ ];
         panel-run-dialog = [ "<super>space" ]; # run a command
 
-        close = [ "<super><shift>c" "<alt>f4" ];  # close window
-        open-application-menu = [];
+        close = [ "<super><shift>c" "<alt>f4" ]; # close window
+        open-application-menu = [ ];
         toggle-application-view = [ "<super>d" ];
-        toggle-overview = [];
+        toggle-overview = [ ];
 
         # shift between overview states
-        shift-overview-up = [];
-        shift-overview-down = [];
+        shift-overview-up = [ ];
+        shift-overview-down = [ ];
 
         # move window one monitor to the left/right
-        move-to-monitor-left = [];
-        move-to-monitor-right = [];
+        move-to-monitor-left = [ ];
+        move-to-monitor-right = [ ];
         # move to monitor up: disable <super><shift>up
-        move-to-monitor-up = [];
+        move-to-monitor-up = [ ];
         # super + ctrl + direction keys, change workspaces, move focus between monitors
         # move to monitor down: disable <super><shift>down
-        move-to-monitor-down = [];
+        move-to-monitor-down = [ ];
         # super + direction keys, move window left and right monitors, or up and down workspaces
 
-        switch-to-application-1 = [];
-        switch-to-application-2 = [];
-        switch-to-application-3 = [];
-        switch-to-application-4 = [];
-        switch-to-application-5 = [];
-        switch-to-application-6 = [];
-        switch-to-application-7 = [];
-        switch-to-application-8 = [];
-        switch-to-application-9 = [];
+        switch-to-application-1 = [ ];
+        switch-to-application-2 = [ ];
+        switch-to-application-3 = [ ];
+        switch-to-application-4 = [ ];
+        switch-to-application-5 = [ ];
+        switch-to-application-6 = [ ];
+        switch-to-application-7 = [ ];
+        switch-to-application-8 = [ ];
+        switch-to-application-9 = [ ];
 
         toggle-message-try = [ "<super>m" ];
 
         toggle-maximized = [ "<super>f" ]; # toggle maximization state
         toggle-fullscreen = [ "<super><shift>f" ];
-        minimize = [ "<super>comma" ];   # hide window: disable <super>h
-        maximize = [];                   # maximize window: disable <super>up
-        unmaximize = [];                 # restore window: disable <super>down
+        minimize = [ "<super>comma" ]; # hide window: disable <super>h
+        maximize = [ ]; # maximize window: disable <super>up
+        unmaximize = [ ]; # restore window: disable <super>down
 
         # Move window N/E/S/W
         move-to-side-w = [ "<super><shift>h" ];
@@ -94,11 +93,11 @@
         move-to-workspace-9 = [ "<super><shift>9" ];
         move-to-workspace-10 = [ "<super><shift>0" ];
 
-        move-to-workspace-last = [];
-        move-to-workspace-left = [];
-        move-to-workspace-right = [];
-        move-to-workspace-down = [];
-        move-to-workspace-up = [];
+        move-to-workspace-last = [ ];
+        move-to-workspace-left = [ ];
+        move-to-workspace-right = [ ];
+        move-to-workspace-down = [ ];
+        move-to-workspace-up = [ ];
 
 
         # Switch to workspace X
@@ -113,15 +112,19 @@
         switch-to-workspace-9 = [ "<super>9" ];
         switch-to-workspace-10 = [ "<super><alt>f" ];
 
-        switch-to-workspace-left = [];   # switch to workspace left: disable <super>left
-        switch-to-workspace-right = [];  # switch to workspace right: disable <super>right
-        switch-to-workspace-down = [       # move to workspace below
-          "<primary><super>down" "<primary><super>j"
+        switch-to-workspace-left = [ ]; # switch to workspace left: disable <super>left
+        switch-to-workspace-right = [ ]; # switch to workspace right: disable <super>right
+        switch-to-workspace-down = [
+          # move to workspace below
+          "<primary><super>down"
+          "<primary><super>j"
         ];
-        switch-to-workspace-up = [     # move to workspace above
-          "<primary><super>up" "<primary><super>k"
+        switch-to-workspace-up = [
+          # move to workspace above
+          "<primary><super>up"
+          "<primary><super>k"
         ];
-        switch-to-workspace-last = [];
+        switch-to-workspace-last = [ ];
       };
 
       "org/gnome/desktop/wm/preferences" = {
@@ -129,12 +132,12 @@
       };
 
       "org/gnome/settings-daemon/plugins/media-keys" = {
-        screensaver = [ "<super>escape" ];  # lock screen
-        home = [];                          # home folder:  "<super>f"
-        email = [];                         # launch email client: disable  "<super>e" 
-        www = [ "<super>b" ];               # launch web browser
-        terminal = [ "<super>enter" ];    # launch terminal
-        rotate-video-lock-static = [];      # rotate video lock
+        screensaver = [ "<super>escape" ]; # lock screen
+        home = [ ]; # home folder:  "<super>f"
+        email = [ ]; # launch email client: disable  "<super>e" 
+        www = [ "<super>b" ]; # launch web browser
+        terminal = [ "<super>enter" ]; # launch terminal
+        rotate-video-lock-static = [ ]; # rotate video lock
       };
       "org/gnome/shell" = {
         disable-user-extensions = false;
@@ -160,7 +163,7 @@
 
       "org/gnome/mutter/wayland/keybindings" = {
         # restore the keyboard shortcuts: disable <super>escape
-        restore-shortcuts = [];
+        restore-shortcuts = [ ];
       };
       "org/gnome/mutter" = {
         workspaces-only-on-primary = false;

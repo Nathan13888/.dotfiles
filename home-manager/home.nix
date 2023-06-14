@@ -18,7 +18,7 @@
     ./packages.nix
     ./wm.nix
   ];
-  
+
   home.username = "attackercow";
   home.homeDirectory = "/home/attackercow";
 

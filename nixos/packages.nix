@@ -38,9 +38,11 @@
     systemPackages = with pkgs; [
       linuxHeaders
       vim
-      tmux neofetch
+      tmux
+      neofetch
       git
-      wget curl
+      wget
+      curl
     ];
   };
 

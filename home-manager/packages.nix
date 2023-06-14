@@ -15,7 +15,6 @@
     in
     [ openasar ];
 
-  # https://github.com/cryinkfly/Autodesk-Fusion-360-for-Linux
   home.packages = with pkgs; [
     ## Applications/Clients
     #firejail

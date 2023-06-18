@@ -2,14 +2,14 @@ __build_info:
   rime_version: 1.8.5
   timestamps:
     default: 0
-    default.custom: 1678997182
+    default.custom: 1686278199
     grammar: 0
-    key_bindings: 1674591345
+    key_bindings: 1686278199
     key_bindings.custom: 0
-    punctuation: 1674591345
+    punctuation: 1686278199
     punctuation.custom: 0
     terra_pinyin.custom: 0
-    terra_pinyin.schema: 1674968651
+    terra_pinyin.schema: 1686278199
 custom_phrase:
   db_class: stabledb
   dictionary: ""

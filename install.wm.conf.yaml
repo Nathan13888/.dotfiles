@@ -4,7 +4,7 @@
       create: true
       force: true
 
-- clean: ['~']
+- clean: ['~', '~/.config']
 
 - link:
     # BASH
@@ -39,22 +39,27 @@
     ~/.config/electron-flags.conf: .config/electron-flags.conf
     ~/.config/electron13-flags.conf: .config/electron13-flags.conf
     ~/.config/easyeffects: .config/easyeffects
-    ~/.config/hypr: .config/hypr
+    #~/.config/hypr: .config/hypr
     ~/.config/eww: .config/eww
     ~/.config/dunst: dunst
     ~/.config/fcitx5: .config/fcitx5
+    ~/.local/share/fcitx5: .local/share/fcitx5
+    #~/.config/powernotd/config.json: .config/powernotd/config.json
+    ~/.config/spotify-adblock: .config/spotify-adblock
+
+    ~/.local/share/applications: .local/share/applications
 
     # Applications
     ~/.config/mpv/mpv.conf: .config/mpv/mpv.conf
 
 
 - create:
-    - ~/ws
+    - ~/wallpapers
     - ~/bin
-    - ~/jdks
-    - ~/mnt
     - ~/tmp
+    - ~/mnt
+    - ~/ws
+    - ~/jdks
 
-- shell:
-    - [echo -e "Syncing WSL Dotfiles\n\n", INIT]
+#- shell:
 #  - [git submodule update --init --recursive, Installing submodules]

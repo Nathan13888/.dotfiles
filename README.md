@@ -10,14 +10,17 @@ Use the INSTALL scripts to create new symlinks in a new or existing Debian/Ubunt
 
 
 ### NixOS
-- Load configs in `/etc/nixos`
-- Home Manager: `https://nix-community.github.io/home-manager/`
+1. Clone this repo, generate NixOS genreation.
+2. Reboot and install HM.
+3. Home Manager: `https://nix-community.github.io/home-manager/`
 ```
 nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
 nix-channel --update
+(log out and log back in)
 nix-shell '<home-manager>' -A install
 ```
-- `~/.config/nixpkgs/home.nix`
+4. Generate Home manager
+5. Sync Dotfiles
 
 
 ### WSL

@@ -1,7 +1,7 @@
-#! /bin/bash
+#!/usr/bin/env bash
 #Optional script implementing xmonad-like workspace management for multi-monitors in Hyprland.
 #This script should replace your standard binds for changing workspaces by number. For example:
-#bind=SUPER,1,exec,~/.config/hypr/themes/garden/scripts/workspace 1
+#bind=SUPER,1,exec,~/scripts/workspace 1
 # TODO
 
 monitors=/tmp/hypr_monitors_temp

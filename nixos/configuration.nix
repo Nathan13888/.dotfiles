@@ -5,7 +5,7 @@ let
 in
 {
   imports = [
-    ./input.nix
+    ./audio.nix
     ./networking.nix
     ./packages.nix
     ./power.nix
@@ -22,7 +22,7 @@ in
     #zfs.enableUnstable = true;
 
     crashDump.enable = false;
-    cleanTmpDir = false;
+    tmp.cleanOnBoot = false;
 
     loader = {
       systemd-boot = {
@@ -72,7 +72,7 @@ in
     autorandr.enable = true;
   };
 
-  time.timeZone = "America/New_York";
+  #time.timeZone = "America/New_York";
   time.hardwareClockInLocalTime = false;
 
   users = {
@@ -93,11 +93,11 @@ in
       ];
     };
   };
+  users.mutableUsers = false;
   environment.homeBinInPath = true;
 
-  i18n = {
-    defaultLocale = "en_CA.UTF-8";
-  };
+  i18n.defaultLocale = "en_CA.UTF-8";
+  time.timeZone = "America/Toronto";
 
   console = {
     font = "${pkgs.terminus_font}/share/consolefonts/ter-v32n.psf.gz";

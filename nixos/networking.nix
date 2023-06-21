@@ -1,4 +1,4 @@
-{ config, pkgs, options, ... }:
+{ config, lib, pkgs, options, ... }:
 
 
 {
@@ -6,6 +6,7 @@
   networking.extraHosts =
     ''
       192.168.10.226 st.wocrekcatta.ml
+      192.168.10.180 bw.nathanchung.dev
     '';
 
   services.dnscrypt-proxy2 = {
@@ -36,9 +37,9 @@
   services.chrony.enable = true;
   services.zerotierone.enable = true;
 
-  systemd.services = {
-    NetworkManager-wait-online.enable = false;
-  };
+  systemd.services.NetworkManager-wait-online.enable = false;
+  systemd.network.wait-online.enable = false;
+  systemd.services.systemd-resolved.stopIfChanged = false;
 
   networking = {
     nftables.enable = true;
@@ -80,8 +81,8 @@
     resolvconf.enable = true;
     interfaces.eth0.useDHCP = true;
     interfaces.wlan0.useDHCP = true;
-    #useDHCP = true;
-    #useDHCP = [ "eth0" "en*" "wl*" ];
+    useDHCP = lib.mkDefault true;
+    
     #dhcpcd.enable = true;
     #dhcpcd.persistent = true;
     usePredictableInterfaceNames = true;

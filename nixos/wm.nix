@@ -16,21 +16,33 @@
       xterm.enable = false;
     };
 
-    libinput.enable = true;
+    # Enable touchpad support (enabled default in most desktopManager).
+    libinput = {
+      enable = true;
+      # disabling mouse acceleration
+      mouse = {
+        accelProfile = "adaptive";
+        naturalScrolling = false;
+        accelSpeed = null;
+      };
+      # disabling touchpad acceleration
+      touchpad = {
+        accelProfile = "flat";
+        scrollMethod = "twofinger";
+        naturalScrolling = true;
+        tapping = true;
+        accelSpeed = "1"; # float value in [-1,1]
+      };
+      # ^^^ or "adaptive"
+    };
 
 
-    #displayManager.gdm.enable = true;
-    #displayManager.gdm.wayland = true;
-    #desktopManager.gnome = {
-    #  enable = true;
-    #  #extraPackages = with pkgs; [
-    #  #  pop-desktop-widget
-    #  #  pop-control-center
-    #  #  pop-launcher
-    #  #  pop-shell-shortcuts
-    #  #];
-    #};
+    # TODO: move to GDM
+    displayManager.gdm.enable = true;
+    displayManager.gdm.wayland = true;
 
+
+    # TODO: move to i3
     #displayManager.defaultSession = "none+i3";
     #displayManager.startx.enable = true;
     #displayManager.lightdm = {
@@ -46,26 +58,11 @@
     #    i3lock-color
     #  ];
     #};
+    # END
   };
 
-  services.greetd = {
-    enable = true;
-    settings = rec {
-      initial_session = {
-        command = "${pkgs.hyprland}/bin/Hyprland";
-        user = "attackercow";
-      };
-      default_session = initial_session;
-    };
-  };
-
-  xdg.portal.enable = true;
-  xdg.portal.extraPortals = with pkgs; [
-    xdg-desktop-portal-wlr
-    xdg-desktop-portal-gtk
-    xdg-desktop-portal-kde
-  ];
-
+  # TODO: move gnome
+  services.xserver.desktopManager.gnome.enable = true;
   environment.gnome.excludePackages = (with pkgs; [
     gnome-photos
     gnome-tour
@@ -84,6 +81,27 @@
     hitori # sudoku game
     atomix # puzzle game
   ]);
+
+
+  # TODO: move to greetd
+  #services.greetd = {
+  #  enable = true;
+  #  settings = rec {
+  #    initial_session = {
+  #      command = "${pkgs.hyprland}/bin/Hyprland";
+  #      user = "attackercow";
+  #    };
+  #    default_session = initial_session;
+  #  };
+  #};
+
+  xdg.portal.enable = true;
+  # TODO: move wayland
+  xdg.portal.extraPortals = with pkgs; [
+    xdg-desktop-portal-wlr
+    #xdg-desktop-portal-gtk
+    xdg-desktop-portal-kde
+  ];
 
 
   fonts = {

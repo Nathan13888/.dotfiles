@@ -28,20 +28,23 @@
     filters = null;
     configs = {
       home = {
-        subvolume = "/home";
-        extraConfig = ''
-          ALLOW_USERS="attackercow"
-          TIMELINE_CREATE=yes
-          TIMELINE_CLEANUP=yes
-          TIMELINE_LIMIT_HOURLY=3
-          TIMELINE_LIMIT_DAILY=2
-          TIMELINE_LIMIT_WEEKLY=10
-          TIMELINE_LIMIT_MONTHLY=4
-          TIMELINE_LIMIT_YEARLY=0
-        '';
+        SUBVOLUME = "/home";
+	# TODO:
+        #extraConfig = ''
+        #  ALLOW_USERS="attackercow"
+        #  TIMELINE_CREATE=yes
+        #  TIMELINE_CLEANUP=yes
+        #  TIMELINE_LIMIT_HOURLY=3
+        #  TIMELINE_LIMIT_DAILY=2
+        #  TIMELINE_LIMIT_WEEKLY=10
+        #  TIMELINE_LIMIT_MONTHLY=4
+        #  TIMELINE_LIMIT_YEARLY=0
+        #'';
       };
     };
   };
+
+  # TODO: automatically generate directories
 
   fileSystems."/nas/personal" = {
     device = "//192.168.10.226/Personal";

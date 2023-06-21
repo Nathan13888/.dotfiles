@@ -4,9 +4,9 @@ let
   volume = "~/scripts/volume.sh";
   backlight = "~/scripts/backlight.sh";
   grimblast = "~/scripts/grimblast";
-  scripts = "~/scripts/";
+  scripts = "~/scripts";
 
-  big_mon = "HDMI-A-1";
+  big_mon = "DP-1";
   smol_mon = "eDP-1";
 in
 ''
@@ -14,14 +14,16 @@ in
   # See https://wiki.hyprland.org/Configuring/Monitors/
 
   #monitor=${big_mon},5120x1440@60,0x0,1
-  monitor=${big_mon},5120x1440@60,0x0,auto,bitdepth,10
-  #monitor=${big_mon},3840x1080@60,0x0,1,bitdepth,10
-  monitor=${smol_mon},preferred,1600x1440,auto
-  monitor=,preferred,auto,auto
+  #monitor=${big_mon},5120x1440@60,0x0,auto,bitdepth,10
+  #monitor=${big_mon},5120x1440@120,auto,auto,bitdepth,10
+  #monitor=${smol_mon},preferred,1600x1440,auto # lennar
+  #monitor=${smol_mon},preferred,640x1440,auto # jirachi
   #monitor=,highres,auto,2
+  monitor=,preferred,auto,auto,bitdepth,10
+  #monitor=,preferred,auto,auto
   monitor=,addreserved,50,0,0,0
 
-  #exec-once=${scripts}handle_monitor_connect.sh # TODO
+  exec-once=${scripts}/handle_monitor_connect.sh # TODO
 
   # See https://wiki.hyprland.org/Configuring/Keywords/ for more
 
@@ -33,6 +35,7 @@ in
   #     exec "${pkgs.greetd.gtkgreet}/bin/gtkgreet -l; swaymsg exit"
 
   exec-once=wl-clipboard-history -t
+  exec-once=batsignal -w 25 -c 7 -d 5 -f 95 -D "touch /tmp/reached_danger_level"
   exec=gnome-keyring-daemon -sd # TODO fix this
   # TODO: polkit agent
   exec-once=blueman-applet
@@ -84,7 +87,6 @@ in
   exec-once = numlockx
   exec-once = nm-applet
   # TODO: yofi/wofi
-  # TODO: wallpapers
 
   general {
     gaps_in = 5
@@ -171,6 +173,8 @@ in
 
   bind = $mod SHIFT, x, exec, hyprctl dispatch swapactiveworkspaces ${big_mon} ${smol_mon}
   bind = $mod ALT, x, exec, hyprctl dispatch movecurrentworkspacetomonitor ${big_mon}
+  # TODO: make binding for, dispatching all workspaces to main monitor, except for the last workspace
+  
 
   # TODO
   bind = $mod, d, exec, bemenu-run -c -l 15 -W 0.3
@@ -188,19 +192,19 @@ in
   bind=,XF86MonBrightnessUp,exec,light -A 5
   bind=,XF86MonBrightnessDown,exec,light -U 5
 
-  bind=,XF86AudioRaiseVolume, exec, ${volume} up
-  bind=,XF86AudioLowerVolume, exec, ${volume} dn
-  bind=,XF86AudioMute, exec, ${volume} togm
-  bind=,XF86AudioMicMute, exec, pactl set-source-mute @DEFAULT_SOURCE@ toggle
-  bind=,XF86MonBrightnessUp, exec, ${backlight} inc
-  bind=,XF86MonBrightnessDown, exec, ${backlight} dec
+  binde=,XF86AudioRaiseVolume, exec, ${volume} up
+  binde=,XF86AudioLowerVolume, exec, ${volume} dn
+  binde=,XF86AudioMute, exec, ${volume} togm
+  binde=,XF86AudioMicMute, exec, pactl set-source-mute @DEFAULT_SOURCE@ toggle
+  binde=,XF86MonBrightnessUp, exec, ${backlight} inc
+  binde=,XF86MonBrightnessDown, exec, ${backlight} dec
 
-  bind=,XF86AudioPlay,exec,playerctl play-pause
-  bind=,XF86AudioMedia,exec,playerctl play-pause
-  bind=,XF86AudioPause, exec,playerctl pause
-  bind=,XF86AudioNext, exec, playerctl next
-  bind=,XF86AudioPrev, exec, playerctl previous
-  bind=,XF86AudioStop,exec,playerctl stop
+  binde=,XF86AudioPlay,exec,playerctl play-pause
+  binde=,XF86AudioMedia,exec,playerctl play-pause
+  binde=,XF86AudioPause, exec,playerctl pause
+  binde=,XF86AudioNext, exec, playerctl next
+  binde=,XF86AudioPrev, exec, playerctl previous
+  binde=,XF86AudioStop,exec,playerctl stop
 
 
   #bind = $mod SHIFT, r, exec, screen-recorder-toggle
@@ -216,16 +220,28 @@ in
   bind = $mod SHIFT, l, movewindow, r
   bind = $mod SHIFT, j, movewindow, d
   bind = $mod SHIFT, k, movewindow, u
-  bind = $mod, 1, workspace, 1
-  bind = $mod, 2, workspace, 2
-  bind = $mod, 3, workspace, 3
-  bind = $mod, 4, workspace, 4
-  bind = $mod, 5, workspace, 5
-  bind = $mod, 6, workspace, 6
-  bind = $mod, 7, workspace, 7
-  bind = $mod, 8, workspace, 8
-  bind = $mod, 9, workspace, 9
+  
+  # Switching Workspaces
+  bind = $mod ALT, 1, workspace, 1
+  bind = $mod ALT, 2, workspace, 2
+  bind = $mod ALT, 3, workspace, 3
+  bind = $mod ALT, 4, workspace, 4
+  bind = $mod ALT, 5, workspace, 5
+  bind = $mod ALT, 6, workspace, 6
+  bind = $mod ALT, 7, workspace, 7
+  bind = $mod ALT, 8, workspace, 8
+  bind = $mod ALT, 9, workspace, 9
+  bind = $mod, 1, exec, ${scripts}/workspace 1
+  bind = $mod, 2, exec, ${scripts}/workspace 2
+  bind = $mod, 3, exec, ${scripts}/workspace 3
+  bind = $mod, 4, exec, ${scripts}/workspace 4
+  bind = $mod, 5, exec, ${scripts}/workspace 5
+  bind = $mod, 6, exec, ${scripts}/workspace 6
+  bind = $mod, 7, exec, ${scripts}/workspace 7
+  bind = $mod, 8, exec, ${scripts}/workspace 8
+  bind = $mod, 9, exec, ${scripts}/workspace 9
   bind = $mod ALT, F, workspace, 10
+
   bind = $mod CTRL, 1, movetoworkspace, 1
   bind = $mod CTRL, 2, movetoworkspace, 2
   bind = $mod CTRL, 3, movetoworkspace, 3
@@ -260,10 +276,10 @@ in
   # TODO
   }
 
-  bind=SUPERSHIFT,B,exec, killall -3 eww & sleep 1 && ~/scripts/launch_eww.sh
+  bind=SUPERSHIFT,B,exec, killall -3 eww & sleep 1 && ${scripts}/launch_eww.sh
   exec-once=eww daemon
-  exec-once=~/scripts/launch_eww.sh
-  exec=~/scripts/wallpaper.sh
+  exec-once=${scripts}/launch_eww.sh
+  exec=${scripts}/wallpaper.sh
 
 
   # example window rules

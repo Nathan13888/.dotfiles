@@ -21,8 +21,7 @@
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
   hardware.openrazer.enable = true;
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.enable = true;
+  
 
   # TODO:
   ### Laptops
@@ -48,6 +47,13 @@
     enable = true;
     powertop.enable = true;
     cpuFreqGovernor = lib.mkDefault "ondemand";
+  };
+
+  fileSystems."/tmp" = {
+    device = "none";
+    fsType = "tmpfs";
+    options = [ "defaults" "size=14G" "mode=755" ];
+    #options = [ "defaults" "size=24G" "mode=755" ];
   };
 
   # Setup keyfile

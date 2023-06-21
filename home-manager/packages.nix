@@ -125,7 +125,7 @@
     htop iftop btop bottom powertop pciutils usbutils
     #hardinfo
     lm_sensors ipmitool lshw
-    pavucontrol
+    pavucontrol pamixer
     lsb-release
 
     ## Networking
@@ -135,7 +135,7 @@
     profile-cleaner
     #tor-browser-bundle-bin
     #socat nyx
-    cloudflare-warp
+    #cloudflare-warp
     protonvpn-gui protonvpn-cli
     #proxychains stunnel sslh
     dnscrypt-proxy2
@@ -168,7 +168,9 @@
 
     ## System/WM Utilities
     waybar eww-wayland swww socat acpi
-    bemenu hyprpaper dunst libnotify
+    bemenu pop-launcher
+    dunst libnotify
+    batsignal
     wlr-randr
     grim slurp wayshot
     feh
@@ -188,7 +190,6 @@
     bitwarden bitwarden-cli
     screenkey
     arandr
-    #pamixer helvum
     notify-desktop
     wl-clipboard xclip
     lxqt.lxqt-policykit
@@ -220,6 +221,7 @@
     "zoom"
     "spotify"
     "code" "vscode"
+    "lens"
     "google-chrome"
     "cloudflare-warp"
     "cudatoolkit"

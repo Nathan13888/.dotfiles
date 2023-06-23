@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-INC="1"
-MAX="120"
+STEP="5"
+MAX="100"
 
+# TODO: volume icon
 notify () {
     dunstify "Volume" "$@" -u low
 }
@@ -25,12 +26,13 @@ function getCurVol {
     echo $(pamixer --get-volume)
 }
 
+# round to multiple of multiple of STEP
 function up {
-    if [ $(($(getCurVol)+$INC)) -le $MAX ]
+    if [ $(($(getCurVol)+$STEP)) -le $MAX ]
     then
-        echo "Increasing Volume by $INC"
+        echo "Increasing Volume by $STEP"
         unmute
-        pamixer --allow-boost -i $INC
+        pamixer --allow-boost -i $STEP
     else
         notify "Maximum volume reached."
         pamixer --set-volume $MAX
@@ -38,11 +40,11 @@ function up {
 }
 
 function dn {
-    if [ $(($(getCurVol)-$INC)) -ge 0 ]
+    if [ $(($(getCurVol)-$STEP)) -ge 0 ]
     then
-        echo "Decreasing Volume by $INC"
+        echo "Decreasing Volume by $STEP"
         unmute
-        pamixer --allow-boost -d $INC
+        pamixer --allow-boost -d $STEP
     else
         notify "Minimum volume reached."
         pamixer --set-volume 0

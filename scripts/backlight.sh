@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
-STEPS="30"
+STEPS="10"
 MAX="100"
 MIN="1"
-#DEVICE="/sys/class/backlight/intel_backlight/"
 
 function set {
-    #echo ${@: -1} > $DEVICE/brightness
+    echo "Setting brightness to ${@: -1}"
     xbacklight -set ${@: -1}
 }
 
@@ -31,7 +30,6 @@ function max {
 }
 
 function cur {
-    #cat $DEVICE/brightness
     xbacklight -get
 }
 

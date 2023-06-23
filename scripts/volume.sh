@@ -3,7 +3,6 @@
 STEP="5"
 MAX="100"
 
-# TODO: volume icon
 notify () {
     dunstify "Volume" "$@" -u low
 }
@@ -11,6 +10,26 @@ notify () {
 function isMicMuted {
     MIC=@DEFAULT_SOURCE@
     echo $(pamixer --get-mute --source $MIC)
+}
+
+
+function icon {
+	vol="$(pamixer --get-volume)"
+	current="${vol%%%}"
+
+	if [[ "$(pamixer --get-mute)" == "false" ]]; then
+		if [[ "$current" -eq "0" ]]; then
+			echo "🔈"
+		elif [[ ("$current" -ge "0") && ("$current" -le "30") ]]; then
+			echo "🔉"
+		elif [[ ("$current" -ge "30") && ("$current" -le "60") ]]; then
+			echo "🔊"
+		elif [[ ("$current" -ge "60") && ("$current" -le "100") ]]; then
+			echo "🔊+"
+		fi
+	else
+		echo "🔇"
+	fi
 }
 
 function isMMicon {
@@ -24,6 +43,10 @@ function isMMicon {
 
 function getCurVol {
     echo $(pamixer --get-volume)
+}
+
+function set {
+  pamixer --set-volume $1
 }
 
 # round to multiple of multiple of STEP
@@ -76,6 +99,9 @@ function unmute {
 }
 
 case "$1" in
+    icon)
+        icon
+	;;
     isMMicon)
         isMMicon
         ;;
@@ -88,6 +114,9 @@ case "$1" in
     curv)
         echo $(getCurVol)
         ;;
+    set)
+        set
+	;;
     up)
         up
         ;;

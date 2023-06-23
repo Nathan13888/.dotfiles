@@ -12,4 +12,6 @@ battery_stat() {
 case "$1" in
 	--bat) battery;;
 	--bat-st) battery_stat;;
+	# TODO: AC connected access
+	# TDP mode
 esac

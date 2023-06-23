@@ -8,14 +8,14 @@
 (include "yuck/sidebar/sidebar.yuck")
 
 ;; Variables
-(defpoll clock_time :interval "5s" "date '+\%I\%M'")
+(defpoll clock_time :interval "5s" "date '+\%I:\%M'")
 (defpoll clock_date :interval "1h" "date '+%b %d, %Y'")
 (defpoll calendar_day :interval "2h" "date '+%d'")
 (defpoll calendar_year :interval "2h" "date '+%Y'")
-(defpoll volume_percent :interval "1s"  "scripts/sbvol --get")
-; (defpoll mic_percent :interval "3s" "amixer -D pulse sget Capture | grep 'Left:' | awk -F'[][]' '{ print $2 }' | tr -d '%' | head -n 1")
-(defpoll mic_percent :interval "3s" "amixer -D pulse sget Capture | grep 'Mono:' | awk -F'[][]' '{ print $2 }' | tr -d '%' | head -n 1")
-(defpoll brightness_percent :interval "5s" "light")
+(defpoll volume_percent :interval "1s"  "~/scripts/volume.sh cur")
+(defpoll volume_icon :interval "1s" "~/scripts/volume.sh icon")
+(defpoll mic_percent :interval "3s" "pamixer --default-source --get-volume")
+(defpoll brightness_percent :interval "5s" "~/scripts/backlight.sh cur")
 (defpoll COL_WLAN :interval "1m" "scripts/wifi --COL")
 (defpoll ESSID_WLAN :interval "1m" "scripts/wifi --ESSID")
 (defpoll WLAN_ICON :interval "1m" "scripts/wifi --ICON")
@@ -74,7 +74,7 @@
           :space-evenly "true"
           (button
             :class "app-button"
-          :onclick "hyprctl dispatch togglefloating 1" "")
+          :onclick "hyprctl dispatch togglefloating 1" "🕹️")
           (button
             :class "app-button"
           :onclick "hyprctl dispatch fullscreen 1" "")
@@ -102,7 +102,7 @@
           :tooltip "${brightness_percent}%"
           :max 100
           :min 0
-        :onchange "light -S {}" ))
+        :onchange "~/scripts/backlight.sh set {}" ))
       (label
         :text ""
         :class "bright_icon"
@@ -126,13 +126,13 @@
           :value volume_percent
           :orientation "h"
           :tooltip "${volume_percent}%"
-          :max 100
+          :max 50
           :min 0
-        :onchange "amixer -D pulse sset Master {}%" ))
+        :onchange "pamixer --set-volume {}" ))
       (button
         :onclick "scripts/pop audio_ctl"
         :class "volume_icon"
-      "墳"))))
+      volume_icon))))
 
 (defwidget wifi []
   (eventbox
@@ -206,16 +206,6 @@
           :class "clock_date_class"
         :onclick "scripts/pop calendar" clock_date)))))
 
-(defwidget notif_button []
-  (box
-    :class "notif_button"
-    :space-evenly "false"
-    :orientation "h"
-    (button
-      :onclick "if ${EWW_CMD} state | grep 'rightside: false' ; then ${EWW_CMD} update rightside=true ; else ${EWW_CMD} update rightside=false ; fi"
-      (label
-      :text ""))))
-
 (defwidget sep []
   (box
     :class "module-2"
@@ -267,7 +257,6 @@
     (mem)
     (sep)
     (clock_module)
-    ; (notif_button)
   ))
 
 (defwidget bar_layout []
@@ -344,7 +333,7 @@
           (scale
             :value volume_percent
             :orientation "h"
-            :onchange "amixer -D pulse sset Master {}%"
+            :onchange "~/scripts/volume.sh set {}"
             :tooltip "volume on ${volume_percent}%"
             :max 100
           :min 0))))

@@ -81,7 +81,6 @@ in
     vfr = true # variable frame rate, for laptop power savings
   }
 
-  exec-once = fcitx5 -d
   exec-once = eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
   #export SSH_AUTH_SOCK
   exec-once = numlockx

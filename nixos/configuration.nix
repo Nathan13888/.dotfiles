@@ -75,13 +75,15 @@ in
   #time.timeZone = "America/New_York";
   time.hardwareClockInLocalTime = false;
 
+  # TODO: move to users.nix
   users = {
     defaultUserShell = pkgs.zsh;
     users.attackercow = {
       isNormalUser = true;
       home = "/home/attackercow";
       description = "Nathan";
-      hashedPassword = "$6$aXA3wSjO6ZqZwUhx$23ygPhj.yF7gbpTaj0oB3DueQjqhAR3eLRyS1MKWR.ZqHi1pDr0vHN3bfLLUvOEbdfZH5eBPWiqwqm.Pz/Mwa.";
+      #hashedPassword = "$6$aXA3wSjO6ZqZwUhx$23ygPhj.yF7gbpTaj0oB3DueQjqhAR3eLRyS1MKWR.ZqHi1pDr0vHN3bfLLUvOEbdfZH5eBPWiqwqm.Pz/Mwa."; # TODO:
+      hashedPassword = "$6$aEvS0ul31VsE9FcA$h9rWnpnYfxWD62cJl.On8IJecr41Hr5L18QOe7phPrVKY5hLG6yozwRZM5y1wxJBX8ahCutwFoWLbuzzGYMTB0";
       useDefaultShell = true;
       createHome = true;
       homeMode = "700";
@@ -93,9 +95,10 @@ in
       ];
     };
   };
-  users.mutableUsers = false;
+  #users.mutableUsers = false; #TODO:
   environment.homeBinInPath = true;
 
+  # TODO: move to locales.nix
   i18n.defaultLocale = "en_CA.UTF-8";
   time.timeZone = "America/Toronto";
 

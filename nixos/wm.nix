@@ -97,6 +97,15 @@
 
   xdg.portal.enable = true;
   # TODO: move wayland
+  xdg.portal.wlr = {
+    settings = {
+      screencast = {
+        choose_type = "simple";
+        # TODO: change wofi
+        chooser_cmd = "${pkgs.wofi}/bin/wofi -d -n --prompt='Select Monitor To Share: '";
+      };
+    };
+  };
   xdg.portal.extraPortals = with pkgs; [
     xdg-desktop-portal-wlr
     #xdg-desktop-portal-gtk
@@ -122,15 +131,20 @@
     };
 
     fonts = with pkgs; [
-      noto-fonts
-      noto-fonts-cjk
-      noto-fonts-emoji
-      noto-fonts-extra
       source-code-pro
       nerdfonts
       fira
       fira-code
       fira-mono
+      fira-code-symbols
+      mplus-outline-fonts.githubRelease
+
+      noto-fonts
+      noto-fonts-cjk
+      noto-fonts-cjk-serif
+      noto-fonts-emoji
+      noto-fonts-extra
+      last-resort
     ];
   };
 

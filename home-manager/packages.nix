@@ -28,7 +28,7 @@
     teams zoom-us
     spotify #spotify-qt
     spicetify-cli
-    vifm w3m xfce.thunar gnome.file-roller # File Explorer
+    vifm ranger w3m xfce.thunar gnome.file-roller # File Explorer
     calibre
     filezilla
     dbeaver
@@ -177,7 +177,7 @@
     xss-lock
     mpd mpc-cli
     lxappearance
-    networkmanagerapplet cbatticon
+    networkmanagerapplet
     gnome.dconf-editor
     fwupd
 
@@ -185,6 +185,7 @@
     networkmanager
     #gnome.gnome-screenshot # TODO:
     gnome-firmware gnome.gnome-control-center gnome.gnome-system-monitor
+    gnome.gnome-power-manager
     bluez bluez-tools blueman
     flameshot
     bitwarden bitwarden-cli

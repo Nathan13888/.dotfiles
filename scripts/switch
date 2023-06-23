@@ -1,3 +1,0 @@
-#!/bin/sh
-sudo nix-channel --update
-TMPDIR=/var/tmp sudo nixos-rebuild switch $@

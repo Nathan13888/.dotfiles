@@ -62,7 +62,9 @@
   };
 
   # TODO: move gnome
-  services.xserver.desktopManager.gnome.enable = true;
+  #services.xserver.desktopManager.default = "hyprland";
+  services.xserver.displayManager.defaultSession = "hyprland";
+  #services.xserver.desktopManager.gnome.enable = true;
   environment.gnome.excludePackages = (with pkgs; [
     gnome-photos
     gnome-tour
@@ -97,19 +99,10 @@
 
   xdg.portal.enable = true;
   # TODO: move wayland
-  xdg.portal.wlr = {
-    settings = {
-      screencast = {
-        choose_type = "simple";
-        # TODO: change wofi
-        chooser_cmd = "${pkgs.wofi}/bin/wofi -d -n --prompt='Select Monitor To Share: '";
-      };
-    };
-  };
   xdg.portal.extraPortals = with pkgs; [
-    xdg-desktop-portal-wlr
-    #xdg-desktop-portal-gtk
-    xdg-desktop-portal-kde
+    #xdg-desktop-portal-wlr
+    xdg-desktop-portal-gtk
+    #xdg-desktop-portal-kde
   ];
 
 

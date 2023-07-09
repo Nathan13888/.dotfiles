@@ -124,7 +124,12 @@
   boot.initrd.luks.devices."luks-257293d5-1268-4412-a6b6-3b2813ea132b".keyFile = "/crypto_keyfile.bin";
 
   # TODO: sort
-  boot.kernelParams = [ "mem_sleep_default=deep" "nvme_core.default_ps_max_latency_us=0" ];
+  boot.kernelParams = [ 
+    "amd_iommu=on"
+    "mem_sleep_default=deep"
+    "nvme_core.default_ps_max_latency_us=0"
+    "memmap=12M$20M"
+  ];
   # "nohibernate"
 
   #boot.initrd.availableKernelModules = [

@@ -53,7 +53,7 @@
     :spacing "15"
     :vexpand "true"
     (top)
-    (music-side)
+    ;(music-side) ;; TODO:
     (sys-tray)
     ; (clipboard)
     (bottom))

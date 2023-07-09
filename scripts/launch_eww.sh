@@ -18,7 +18,8 @@ source $HOME/scripts/load_envs;
 
 # Open widgets for primary display
 # use this for notifications : ${EWW} open-many "sidebar$PRIMARY_MONITOR_ID" "notifications$PRIMARY_MONITOR_ID"
-${EWW} open "sidebar$PRIMARY_MONITOR_ID"
+# TODO: fix sidebar??
+#${EWW} open "sidebar$PRIMARY_MONITOR_ID"
 
 ## Open standard widgets and bar
 NB_MONITORS=($(hyprctl monitors -j | jq -r '.[] | .id'))

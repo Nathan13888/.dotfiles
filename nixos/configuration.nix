@@ -61,13 +61,12 @@ in
   services = {
     openssh = {
       enable = true;
-      # FIXX
-      #settings = {
-      #  passwordAuthentication = false;
-      #	permitRootLogin = "no";
-      #  kbdInteractiveAuthentication = false;
-      #  #challengeResponseAuthentication = false;
-      #};
+
+      settings = {
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+        PermitRootLogin = "no";
+      };
     };
     autorandr.enable = true;
   };
@@ -82,13 +81,16 @@ in
       isNormalUser = true;
       home = "/home/attackercow";
       description = "Nathan";
-      #hashedPassword = "$6$aXA3wSjO6ZqZwUhx$23ygPhj.yF7gbpTaj0oB3DueQjqhAR3eLRyS1MKWR.ZqHi1pDr0vHN3bfLLUvOEbdfZH5eBPWiqwqm.Pz/Mwa."; # TODO:
-      hashedPassword = "$6$aEvS0ul31VsE9FcA$h9rWnpnYfxWD62cJl.On8IJecr41Hr5L18QOe7phPrVKY5hLG6yozwRZM5y1wxJBX8ahCutwFoWLbuzzGYMTB0";
+      # TODO:
+      #hashedPassword = "$6$aEvS0ul31VsE9FcA$h9rWnpnYfxWD62cJl.On8IJecr41Hr5L18QOe7phPrVKY5hLG6yozwRZM5y1wxJBX8ahCutwFoWLbuzzGYMTB0";
       useDefaultShell = true;
       createHome = true;
       homeMode = "700";
       extraGroups = [ "wheel" "video" "input" "plugdev" "audio" "networkmanager" "libvirtd" "wireshark" "adbusers" "adbusers" "uucp" "dialout" "vboxusers" "realtime" "docker" ];
       uid = 1000;
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGNJSdtQ4Rus1zXs2RV1yn8fO3yIQiVW6sq9VegtRNWd attackercow@jirachi"
+      ];
       openssh.authorizedKeys.keyFiles = [
         #/etc/nixos/ssh/authorized_keys
         # REMOVE, FIXX

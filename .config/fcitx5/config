@@ -45,17 +45,17 @@ ActiveByDefault=False
 # Share Input State
 ShareInputState=All
 # Show preedit in application
-PreeditEnabledByDefault=False
+PreeditEnabledByDefault=True
 # Show Input Method Information when switch input method
 ShowInputMethodInformation=True
 # Show Input Method Information when changing focus
-showInputMethodInformationWhenFocusIn=True
+showInputMethodInformationWhenFocusIn=False
 # Show compact input method information
 CompactInputMethodInformation=True
 # Show first input method information
-ShowFirstInputMethodInformation=True
+ShowFirstInputMethodInformation=False
 # Default page size
-DefaultPageSize=9
+DefaultPageSize=7
 # Override Xkb Option
 OverrideXkbOption=False
 # Custom Xkb Option

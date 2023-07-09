@@ -1,6 +1,5 @@
 { lib, pkgs, ... }:
 let
-  waybar = "${lib.getExe pkgs.waybar}";
   volume = "~/scripts/volume.sh";
   backlight = "~/scripts/backlight.sh";
   grimblast = "~/scripts/grimblast";
@@ -21,7 +20,7 @@ in
   #monitor=,highres,auto,2
   monitor=,preferred,auto,auto,bitdepth,10
   #monitor=,preferred,auto,auto
-  monitor=,addreserved,50,0,0,0
+  monitor=,addreserved,64,10,10,10
 
   exec-once=${scripts}/handle_monitor_connect.sh # TODO
 
@@ -38,12 +37,14 @@ in
   exec-once=batsignal -w 25 -c 7 -d 5 -f 95 -D "touch /tmp/reached_danger_level"
   exec=gnome-keyring-daemon -sd # TODO fix this
   # TODO: polkit agent
-  exec-once=blueman-applet
-  exec-once=nm-applet
+  # TODO: enable in new update
+  #exec-once=blueman-applet
+  #exec-once=nm-applet
   # TODO: https://wiki.hyprland.org/Useful-Utilities/Clipboard-Managers/
 
 
   # Source a file (multi-file configs)
+  # TODO:
   # source = ~/.config/hypr/myColors.conf
 
   # sets xwayland scale
@@ -103,6 +104,8 @@ in
 
   dwindle {
     pseudotile = true
+    #preserve_split = true # TODO: re-enable and have vertical split bindings
+    #no_gaps_when_only = true
   }
 
   decoration {
@@ -194,7 +197,7 @@ in
   binde=,XF86AudioRaiseVolume, exec, ${volume} up
   binde=,XF86AudioLowerVolume, exec, ${volume} dn
   binde=,XF86AudioMute, exec, ${volume} togm
-  binde=,XF86AudioMicMute, exec, pactl set-source-mute @DEFAULT_SOURCE@ toggle
+  binde=,XF86AudioMicMute, exec, ${volume} togmic
   binde=,XF86MonBrightnessUp, exec, ${backlight} inc
   binde=,XF86MonBrightnessDown, exec, ${backlight} dec
 
@@ -221,24 +224,33 @@ in
   bind = $mod SHIFT, k, movewindow, u
   
   # Switching Workspaces
-  bind = $mod ALT, 1, workspace, 1
-  bind = $mod ALT, 2, workspace, 2
-  bind = $mod ALT, 3, workspace, 3
-  bind = $mod ALT, 4, workspace, 4
-  bind = $mod ALT, 5, workspace, 5
-  bind = $mod ALT, 6, workspace, 6
-  bind = $mod ALT, 7, workspace, 7
-  bind = $mod ALT, 8, workspace, 8
-  bind = $mod ALT, 9, workspace, 9
-  bind = $mod, 1, exec, ${scripts}/workspace 1
-  bind = $mod, 2, exec, ${scripts}/workspace 2
-  bind = $mod, 3, exec, ${scripts}/workspace 3
-  bind = $mod, 4, exec, ${scripts}/workspace 4
-  bind = $mod, 5, exec, ${scripts}/workspace 5
-  bind = $mod, 6, exec, ${scripts}/workspace 6
-  bind = $mod, 7, exec, ${scripts}/workspace 7
-  bind = $mod, 8, exec, ${scripts}/workspace 8
-  bind = $mod, 9, exec, ${scripts}/workspace 9
+  bind = $mod, 1, workspace, 1
+  bind = $mod, 2, workspace, 2
+  bind = $mod, 3, workspace, 3
+  bind = $mod, 4, workspace, 4
+  bind = $mod, 5, workspace, 5
+  bind = $mod, 6, workspace, 6
+  bind = $mod, 7, workspace, 7
+  bind = $mod, 8, workspace, 8
+  bind = $mod, 9, workspace, 9
+  #bind = $mod ALT, 1, workspace, 1
+  #bind = $mod ALT, 2, workspace, 2
+  #bind = $mod ALT, 3, workspace, 3
+  #bind = $mod ALT, 4, workspace, 4
+  #bind = $mod ALT, 5, workspace, 5
+  #bind = $mod ALT, 6, workspace, 6
+  #bind = $mod ALT, 7, workspace, 7
+  #bind = $mod ALT, 8, workspace, 8
+  #bind = $mod ALT, 9, workspace, 9
+  #bind = $mod, 1, exec, ${scripts}/workspace 1
+  #bind = $mod, 2, exec, ${scripts}/workspace 2
+  #bind = $mod, 3, exec, ${scripts}/workspace 3
+  #bind = $mod, 4, exec, ${scripts}/workspace 4
+  #bind = $mod, 5, exec, ${scripts}/workspace 5
+  #bind = $mod, 6, exec, ${scripts}/workspace 6
+  #bind = $mod, 7, exec, ${scripts}/workspace 7
+  #bind = $mod, 8, exec, ${scripts}/workspace 8
+  #bind = $mod, 9, exec, ${scripts}/workspace 9
   bind = $mod ALT, F, workspace, 10
 
   bind = $mod CTRL, 1, movetoworkspace, 1
@@ -301,11 +313,17 @@ in
   windowrule=float,zenity
 
 
+  # Firefox Sharing Indicator
+  windowrulev2 = float,title:^(Firefox — Sharing Indicator)$
+  windowrulev2 = nofullscreenrequest,title:^(Firefox — Sharing Indicator)$
+  windowrulev2 = move 0 0,title:^(Firefox — Sharing Indicator)$
+  windowrulev2 = maxsize 55 31,title:^(Firefox — Sharing Indicator)$
+
   # TODO
   #windowrulev2 = opacity 0.97 0.97, class:org.telegram.desktop
   #windowrulev2 = workspace 1, class:firefox
   #windowrulev2 = workspace 4, class:org.telegram.desktop
-  #layerrule = blur, eww
+  layerrule = blur, eww
   #layerrule = blur, notifications
 
 ''

@@ -1,0 +1,57 @@
+{
+  "notifications": [
+    {
+      "level": 30,
+      "urgency": "Low",
+      "title": "Battery Status",
+      "message": "{}%"
+    },
+    {
+      "level": 20,
+      "urgency": "Normal",
+      "title": "Battery Status",
+      "message": "{}%"
+    },
+    {
+      "level": 15,
+      "urgency": "Critical",
+      "time_secs": 10000,
+      "title": "Battery Status",
+      "message": "{}%"
+    },
+    {
+      "level": 10,
+      "urgency": "Critical",
+      "time_secs": 10000,
+      "title": "Battery Status",
+      "message": "{}%"
+    },
+    {
+      "level": 5,
+      "urgency": "Critical",
+      "time_secs": 10000,
+      "title": "Critical Battery Status",
+      "message": "{}%"
+    },
+    {
+      "level": 2,
+      "urgency": "Critical",
+      "time_secs": 10000,
+      "title": "Critical Battery Status",
+      "message": "{}%"
+    },
+    {
+      "level": 1,
+      "urgency": "Critical",
+      "time_secs": 10000,
+      "title": "Critical Battery Status",
+      "message": "{}%"
+    }
+  ],
+  "full_notification": {
+    "urgency": "Low",
+    "enabled": true,
+    "title": "Battery Status",
+    "message": "Fully Charged 100%"
+  }
+}

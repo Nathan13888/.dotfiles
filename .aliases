@@ -126,6 +126,7 @@ git-inspect-status() {
 }
 alias n="npm"
 alias k="kubectl"
+alias h="helm"
 alias py="python"
 alias vr='v -r'
 alias vm="v -M"
@@ -204,7 +205,6 @@ function findexe() {
 }
 
 ### APPLICATIONS
-alias code="code-insiders"
 alias mpv="mpv --hwdec=auto"
 
 function flash {

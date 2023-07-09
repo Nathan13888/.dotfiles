@@ -15,9 +15,7 @@
     variables.EDITOR = "nvim";
     variables.TERMINAL = "kitty";
     variables.TERM = "xterm-256color";
-    #variables.BROWSER = "librewolf";
     variables.BROWSER = "firefox";
-    #variables.BROWSER = "brave";
     #variables.XDG_DATA_DIRS = "/var/lib/flatpak/exports/share:/home/attackercow/.local/share/flatpak/exports/share";
     variables.INPUT_METHOD = "fcitx";
     variables.GTK_IM_MODULE = "fcitx";

@@ -5,8 +5,8 @@
 
   networking.extraHosts =
     ''
-      192.168.10.226 st.wocrekcatta.ml
-      192.168.10.180 bw.nathanchung.dev
+      #192.168.10.226 st.wocrekcatta.ml
+      192.168.10.220 *.crux.nathanchung.dev omada-sdn.nathanchung.dev
     '';
 
   services.dnscrypt-proxy2 = {

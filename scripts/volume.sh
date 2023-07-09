@@ -7,9 +7,14 @@ notify () {
     dunstify "Volume" "$@" -u low
 }
 
+function isMuted {
+    pamixer --get-mute
+}
+
+
 function isMicMuted {
     MIC=@DEFAULT_SOURCE@
-    echo $(pamixer --get-mute --source $MIC)
+    pamixer --get-mute --source $MIC
 }
 
 
@@ -24,7 +29,7 @@ function icon {
 			echo "🔉"
 		elif [[ ("$current" -ge "30") && ("$current" -le "60") ]]; then
 			echo "🔊"
-		elif [[ ("$current" -ge "60") && ("$current" -le "100") ]]; then
+		elif [[ ("$current" -ge "60") && ("$current" -le "$MAX") ]]; then
 			echo "🔊+"
 		fi
 	else
@@ -42,11 +47,7 @@ function isMMicon {
 }
 
 function getCurVol {
-    echo $(pamixer --get-volume)
-}
-
-function set {
-  pamixer --set-volume $1
+    pamixer --get-volume
 }
 
 # round to multiple of multiple of STEP
@@ -56,6 +57,7 @@ function up {
         echo "Increasing Volume by $STEP"
         unmute
         pamixer --allow-boost -i $STEP
+	notify "Current volume: $(getCurVol)"
     else
         notify "Maximum volume reached."
         pamixer --set-volume $MAX
@@ -68,6 +70,7 @@ function dn {
         echo "Decreasing Volume by $STEP"
         unmute
         pamixer --allow-boost -d $STEP
+	notify "Current volume: $(getCurVol)"
     else
         notify "Minimum volume reached."
         pamixer --set-volume 0
@@ -94,8 +97,12 @@ function mute {
 }
 
 function unmute {
-    notify "Unmuting default sink"
-    pamixer -u
+    if [[ "$(pamixer --get-mute)" == "true" ]]; then
+        notify "Unmuting default sink"
+        pamixer -u
+    else
+        echo "Already unmuted."
+    fi
 }
 
 case "$1" in
@@ -105,17 +112,23 @@ case "$1" in
     isMMicon)
         isMMicon
         ;;
+    isMuted)
+        isMuted
+	;;
     isMicMuted)
         isMicMuted
         ;;
     togmic)
         togmic
         ;;
-    curv)
+    cur)
         echo $(getCurVol)
         ;;
     set)
-        set
+        pamixer --set-volume ${@: -1}
+	;;
+    set-mic)
+        pamixer --default-sink --set-volume ${@: -1}
 	;;
     up)
         up

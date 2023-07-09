@@ -1,18 +1,5 @@
 { config, pkgs, lib, ... }:
 
-# let
-#   pkgs = import nixpkgs {
-#     inherit system;
-#     config.allowUnfree = true;
-#     config.xdg.configHome = configHome;
-#     overlays = [ nurpkgs.overlay ];
-#   };
-
-#   nur = import nurpkgs {
-#     inherit pkgs;
-#     nurpkgs = pkgs;
-#   };
-# in
 {
   imports = [
     ./packages.nix

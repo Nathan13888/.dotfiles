@@ -7,6 +7,7 @@
   home.file."jdks/openjdk17".source = pkgs.jetbrains.jdk;
   home.file."jdks/scala".source = pkgs.scala;
 
+
   nixpkgs.overlays =
     let
       openasar = self: super: {
@@ -22,10 +23,10 @@
     #goosemod-discord betterdiscordctl betterdiscord-installer 
     discordchatexporter-cli
     slack
-    element-desktop nheko
+    element-desktop #nheko
     whatsapp-for-linux
     signal-desktop
-    teams zoom-us
+    teams #zoom-us
     spotify #spotify-qt
     spicetify-cli
     vifm ranger w3m xfce.thunar gnome.file-roller # File Explorer
@@ -51,7 +52,7 @@
     kubectl lens kubie
     insomnia
     protege-distribution
-    mpv vlc audacious deadbeef cozy guvcview kodi
+    mpv vlc audacious deadbeef cozy guvcview
     #archivebox
     syncthing
     asciinema
@@ -125,7 +126,8 @@
     htop iftop btop bottom powertop pciutils usbutils
     #hardinfo
     lm_sensors ipmitool lshw
-    pavucontrol pamixer
+    pavucontrol pamixer playerctl
+    bc
     lsb-release
 
     ## Networking
@@ -167,8 +169,8 @@
     apacheHttpd
 
     ## System/WM Utilities
-    waybar eww-wayland swww socat acpi
-    bemenu pop-launcher
+    eww-wayland swww socat acpi
+    bemenu
     dunst libnotify
     batsignal
     wlr-randr

@@ -79,14 +79,16 @@
     timeServers = options.networking.timeServers.default ++ [ "0.north-america.pool.ntp.org" "1.north-america.pool.ntp.org" "2.north-america.pool.ntp.org" "3.north-america.pool.ntp.org" ];
     nameservers = [ "127.0.0.1" "::1" ];
     resolvconf.enable = true;
+    
+    usePredictableInterfaceNames = true;
+    enableIPv6 = true;
+
+    ## DHCP
     interfaces.eth0.useDHCP = true;
     interfaces.wlan0.useDHCP = true;
     useDHCP = lib.mkDefault true;
-    
-    #dhcpcd.enable = true;
+    dhcpcd.enable = false;
     #dhcpcd.persistent = true;
-    usePredictableInterfaceNames = true;
-    #enableIPv6 = true;
 
     networkmanager = {
       enable = true;
@@ -96,7 +98,17 @@
       wifi.backend = "iwd";
     };
 
+    # TODO: move to individual hosts?
     wireless.iwd.enable = true;
+  };
+
+  system.activationScripts = {
+    rfkillUnblockWlan = {
+      text = ''
+      rfkill unblock wlan
+      '';
+      deps = [];
+    };
   };
 
   # Tor

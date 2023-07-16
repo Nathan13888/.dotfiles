@@ -3,10 +3,13 @@
 STEPS="10"
 MAX="100"
 MIN="1"
+DEFAULT="50"
+STATE_FILE="/tmp/screen_brightness_file"
 
 function set {
     echo "Setting brightness to ${@: -1}"
     xbacklight -set ${@: -1}
+    cur > $STATE_FILE
 }
 
 function inc {
@@ -48,6 +51,19 @@ case "$1" in
     dec)
         dec
         ;;
+    disable)
+        # change brightness without changing state file
+	xbacklight -set 0
+	;;
+    restore)
+	restore="$(cat $STATE_FILE)"
+	# TODO: don't attempt restore if brightness is non-zero?
+	if [ -z "$restore" ]; then
+	    set "$DEFAULT"
+	else
+	    set $restore
+	fi
+	;;
     min)
         min
         ;;

@@ -18,8 +18,8 @@ in
   #monitor=${smol_mon},preferred,1600x1440,auto # lennar
   #monitor=${smol_mon},preferred,640x1440,auto # jirachi
   #monitor=,highres,auto,2
-  monitor=,preferred,auto,auto,bitdepth,10
-  #monitor=,preferred,auto,auto
+  #monitor=,preferred,auto,auto,bitdepth,10
+  monitor=,preferred,auto,auto
   monitor=,addreserved,64,10,10,10
 
   exec-once=${scripts}/handle_monitor_connect.sh # TODO
@@ -32,6 +32,7 @@ in
   # TODO: exit/suspend scripts
   # Notice that `swaymsg exit` will run after gtkgreet.
   #     exec "${pkgs.greetd.gtkgreet}/bin/gtkgreet -l; swaymsg exit"
+  bindl=,switch:Lid Switch, exec, ${scripts}/lock.sh
 
   exec-once=wl-clipboard-history -t
   exec-once=batsignal -w 25 -c 7 -d 5 -f 95 -D "touch /tmp/reached_danger_level"
@@ -85,7 +86,6 @@ in
   exec-once = eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
   #export SSH_AUTH_SOCK
   exec-once = numlockx
-  exec-once = nm-applet
   # TODO: yofi/wofi
 
   general {
@@ -285,7 +285,6 @@ in
   binde = $mod CTRL, J, resizeactive, 0 15
 
   # TODO
-  }
 
   bind=SUPERSHIFT,B,exec, killall -3 eww & sleep 1 && ${scripts}/launch_eww.sh
   exec-once=eww daemon

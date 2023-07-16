@@ -181,7 +181,6 @@
     lxappearance
     networkmanagerapplet
     gnome.dconf-editor
-    fwupd
 
     gnupg pinentry-gnome gnome.gnome-keyring gnome.seahorse libsecret
     networkmanager

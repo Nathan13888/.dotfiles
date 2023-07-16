@@ -1,4 +1,4 @@
-{ config, pkgs, options, ... }:
+{ config, lib, pkgs, options, ... }:
 
 let
   home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
@@ -17,10 +17,25 @@ in
 
   boot = {
     blacklistedKernelModules = [ "snd_pcsp" ]; # TODO: what's this?
-    kernelPackages = pkgs.linuxPackages_xanmod; #pkgs.linuxPackages_latest;
+    # TODO: use lib.mkDefault
+    kernelPackages = lib.mkDefault pkgs.linuxPackages_xanmod_stable;
+    #kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_xanmod_latest.override {
+    #  structuredExtraConfig = with lib.kernel; {
+    #    X86_AMD_PSTATE = lib.mkForce yes;
+    #  };
+    #});
+
     extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ]; # zfs rtl88xxau-aircrack #wireguard
     #zfs.enableUnstable = true;
+  };
 
+  # reboot on kernel panic
+  boot.kernelParams = ["panic=1" "boot.panic_on_fail"];
+
+  # systemd tweaks
+  systemd.enableEmergencyMode = false;
+
+  boot = {
     crashDump.enable = false;
     tmp.cleanOnBoot = false;
 

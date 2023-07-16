@@ -37,9 +37,16 @@
   services.chrony.enable = true;
   services.zerotierone.enable = true;
 
+  systemd.services.network-addresses-eth0.enable = false;
   systemd.services.NetworkManager-wait-online.enable = false;
   systemd.network.wait-online.enable = false;
-  systemd.services.systemd-resolved.stopIfChanged = false;
+  systemd.services.systemd-resolved.enable = false;
+
+  # use tcp bbr
+  boot.kernel.sysctl = {
+    "net.core.default_qdisc" = "fq";
+    "net.ipv4.tcp_congestion_control" = "bbr";
+  };
 
   networking = {
     nftables.enable = true;
@@ -84,18 +91,19 @@
     enableIPv6 = true;
 
     ## DHCP
-    interfaces.eth0.useDHCP = true;
-    interfaces.wlan0.useDHCP = true;
-    useDHCP = lib.mkDefault true;
+    interfaces.eth0.useDHCP = false;
+    interfaces.wlan0.useDHCP = false;
+    useDHCP = lib.mkDefault false;
     dhcpcd.enable = false;
     #dhcpcd.persistent = true;
 
     networkmanager = {
       enable = true;
-      #dhcp = "dhcpcd";
-      dhcp = "internal";
+      dhcp = "internal"; # or "dhcpcd"
       dns = "none";
       wifi.backend = "iwd";
+      wifi.powersave = false; # disable wifi power saving
+      wifi.scanRandMacAddress = true;
     };
 
     # TODO: move to individual hosts?

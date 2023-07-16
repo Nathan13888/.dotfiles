@@ -31,6 +31,7 @@
         scrollMethod = "twofinger";
         naturalScrolling = true;
         tapping = true;
+	tappingButtonMap = "lrm";
         accelSpeed = "1"; # float value in [-1,1]
       };
       # ^^^ or "adaptive"

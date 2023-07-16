@@ -37,7 +37,7 @@
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
   hardware.openrazer.enable = true;
-  
+
 
   # TODO:
   ### Laptops
@@ -79,35 +79,15 @@
       CPU_SCALING_MIN_FREQ_ON_BAT = "400000";
       CPU_SCALING_MAX_FREQ_ON_BAT = "1800000";
 
-      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
-      CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
-
-      CPU_BOOST_ON_AC = "1";
-      CPU_BOOST_ON_BAT = "0";
-
-      SCHED_POWERSAVE_ON_AC = "0";
-      SCHED_POWERSAVE_ON_BAT = "1";
-
-      NMI_WATCHDOG = "0";
-
-      PCIE_ASPM_ON_AC = "default";
-      PCIE_ASPM_ON_BAT = "powersupersave";
+      SOUND_POWER_SAVE_ON_AC = "0";
+      SOUND_POWER_SAVE_ON_BAT = "0";
 
       RADEON_DPM_PERF_LEVEL_ON_AC = "auto";
       RADEON_DPM_PERF_LEVEL_ON_BAT = "low";
       RADEON_DPM_STATE_ON_AC = "performance";
       RADEON_DPM_STATE_ON_BAT = "battery";
-
-      WOL_DISABLE = "Y";
-
-      START_CHARGE_THRESH_BAT0 = "0";
-      STOP_CHARGE_THRESH_BAT0 = "80";
-
-      PLATFORM_PROFILE_ON_AC = "balanced";
-      PLATFORM_PROFILE_ON_BAT = "quiet";
     };
   };
-  services.power-profiles-daemon.enable = false;
 
   fileSystems."/tmp" = {
     device = "none";
@@ -124,7 +104,7 @@
   boot.initrd.luks.devices."luks-257293d5-1268-4412-a6b6-3b2813ea132b".keyFile = "/crypto_keyfile.bin";
 
   # TODO: sort
-  boot.kernelParams = [ 
+  boot.kernelParams = [
     "amd_iommu=on"
     "mem_sleep_default=deep"
     "nvme_core.default_ps_max_latency_us=0"

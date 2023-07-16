@@ -19,6 +19,11 @@
           ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag ]"
         }
       '';
+      "wireplumber/main.lua.d/90-suspend-timeout.lua".text = ''
+	apply_properties = {
+          ["session.suspend-timeout-seconds"] = 0;
+        };
+      '';
       "pipewire/pipewire.d/92-low-latency.conf".source = json.generate "92-low-latency.conf" {
         context.properties = {
           default.clock.rate = 48000;

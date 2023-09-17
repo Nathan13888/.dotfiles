@@ -79,20 +79,22 @@
                 "enabled": false
             },
             "EmoteCloner": {
-                "enabled": false
+                "enabled": true
             },
             "Experiments": {
-                "enabled": true,
+                "enabled": false,
                 "enableIsStaff": false,
                 "forceStagingBanner": false
             },
             "FakeNitro": {
-                "enabled": true,
+                "enabled": false,
                 "enableEmojiBypass": true,
                 "emojiSize": 48,
                 "enableStickerBypass": true,
                 "stickerSize": 160,
-                "enableStreamQualityBypass": true
+                "enableStreamQualityBypass": true,
+                "transformStickers": true,
+                "transformEmojis": true
             },
             "FixInbox": {
                 "enabled": false
@@ -189,10 +191,13 @@
                 "enabled": false
             },
             "SpotifyControls": {
-                "enabled": true
+                "enabled": true,
+                "hoverControls": false
             },
             "SpotifyCrack": {
-                "enabled": true
+                "enabled": true,
+                "noSpotifyAutoPause": true,
+                "keepSpotifyActivityOnIdle": false
             },
             "StartupTimings": {
                 "enabled": false
@@ -205,7 +210,8 @@
                 "includeMutedChannels": false
             },
             "TypingTweaks": {
-                "enabled": true
+                "enabled": true,
+                "alternativeFormatting": true
             },
             "Unindent": {
                 "enabled": false
@@ -220,7 +226,8 @@
                 "enabled": false
             },
             "WebContextMenus": {
-                "enabled": true
+                "enabled": true,
+                "addBack": false
             },
             "WhoReacted": {
                 "enabled": true
@@ -299,7 +306,8 @@
                 "enabled": true,
                 "list": false,
                 "badges": true,
-                "messages": false
+                "messages": false,
+                "colorMobileIndicator": true
             },
             "QuickMention": {
                 "enabled": true
@@ -311,7 +319,7 @@
                 "enabled": true
             },
             "ServerListIndicators": {
-                "enabled": false
+                "enabled": true
             },
             "SpotifyShareCommands": {
                 "enabled": true
@@ -339,6 +347,123 @@
             },
             "MoreUserTags": {
                 "enabled": false
+            },
+            "SettingsStoreAPI": {
+                "enabled": false
+            },
+            "AlwaysAnimate": {
+                "enabled": true
+            },
+            "BetterFolders": {
+                "enabled": false
+            },
+            "BiggerStreamPreview": {
+                "enabled": true
+            },
+            "F8Break": {
+                "enabled": false
+            },
+            "FakeProfileThemes": {
+                "enabled": false
+            },
+            "FavoriteEmojiFirst": {
+                "enabled": true
+            },
+            "FavoriteGifSearch": {
+                "enabled": false
+            },
+            "GameActivityToggle": {
+                "enabled": false
+            },
+            "GifPaste": {
+                "enabled": false
+            },
+            "GreetStickerPicker": {
+                "enabled": false
+            },
+            "ImageZoom": {
+                "enabled": false
+            },
+            "MutualGroupDMs": {
+                "enabled": false
+            },
+            "NoPendingCount": {
+                "enabled": false
+            },
+            "NoProfileThemes": {
+                "enabled": true
+            },
+            "NormalizeMessageLinks": {
+                "enabled": false
+            },
+            "OpenInApp": {
+                "enabled": false
+            },
+            "Party mode 🎉": {
+                "enabled": false
+            },
+            "PermissionsViewer": {
+                "enabled": true
+            },
+            "PinDMs": {
+                "enabled": true
+            },
+            "PreviewMessage": {
+                "enabled": false
+            },
+            "RelationshipNotifier": {
+                "enabled": false
+            },
+            "ReviewDB": {
+                "enabled": false
+            },
+            "AI Noise Suppression": {
+                "enabled": true
+            },
+            "SearchReply": {
+                "enabled": false
+            },
+            "SecretRingToneEnabler": {
+                "enabled": false
+            },
+            "SendTimestamps": {
+                "enabled": false
+            },
+            "ShowAllMessageButtons": {
+                "enabled": false
+            },
+            "ShowConnections": {
+                "enabled": false
+            },
+            "ShowMeYourName": {
+                "enabled": true
+            },
+            "TextReplace": {
+                "enabled": false
+            },
+            "Translate": {
+                "enabled": true
+            },
+            "UnsuppressEmbeds": {
+                "enabled": false
+            },
+            "UserVoiceShow": {
+                "enabled": false
+            },
+            "USRBG": {
+                "enabled": false
+            },
+            "ValidUser": {
+                "enabled": false
+            },
+            "VencordToolbox": {
+                "enabled": false
+            },
+            "VoiceMessages": {
+                "enabled": false
+            },
+            "Wikisearch": {
+                "enabled": false
             }
         },
         "notifications": {
@@ -347,7 +472,16 @@
             "useNative": "always",
             "logLimit": 50
         },
-        "autoUpdateNotification": true
+        "autoUpdateNotification": true,
+        "enabledThemes": [],
+        "macosTranslucency": false,
+        "disableMinSize": false,
+        "cloud": {
+            "authenticated": false,
+            "url": "https://api.vencord.dev/",
+            "settingsSync": false,
+            "settingsSyncVersion": 1694567027840
+        }
     },
     "quickCss": ""
 }

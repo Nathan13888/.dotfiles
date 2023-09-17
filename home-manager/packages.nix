@@ -18,30 +18,29 @@
 
   home.packages = with pkgs; [
     ## Applications/Clients
-    #firejail
-    discord-ptb
-    #goosemod-discord betterdiscordctl betterdiscord-installer 
+    #discord-ptb betterdiscordctl
     discordchatexporter-cli
-    slack
-    element-desktop #nheko
-    whatsapp-for-linux
-    signal-desktop
-    teams #zoom-us
-    spotify #spotify-qt
+    element-desktop
+    thunderbird
+    #whatsapp-for-linux
+    #signal-desktop
+    #slack
+    #teams #zoom-us
+    spotify
     spicetify-cli
     vifm ranger w3m xfce.thunar gnome.file-roller # File Explorer
     calibre
     filezilla
     dbeaver
     #thunderbird-bin protonmail-bridge # Email
-    openrgb liquidctl razergenie #openrazer-daemon 
+    #openrgb liquidctl razergenie #openrazer-daemon 
     keepassxc bitwarden-cli
     virt-manager qemu libguestfs
     easyeffects
 
     ## Utilities
     zinit starship fzf ripgrep # Prompt
-    neovim neovide
+    neovim #neovide
     vscode-fhs
     jetbrains.idea-community
     onlyoffice-bin
@@ -49,9 +48,9 @@
     texlive.combined.scheme-full
     xournalpp okular
     arduino
-    kubectl lens kubie
+    kubectl kubie # lens
     insomnia
-    protege-distribution
+    #protege-distribution
     mpv vlc audacious deadbeef cozy guvcview
     #archivebox
     syncthing
@@ -61,7 +60,7 @@
     tenacity #mixxx spek
     libsForQt5.kdenlive libsForQt5.kio-extras
     handbrake
-    #kicad
+    #kicad #TODO
     freecad openscad qcad
     blender
     super-slicer
@@ -78,7 +77,7 @@
     kitty thefuck
     hub gh git-lfs git-extras # Git
     killall
-    wakatime time hyperfine tokei exa # Measurement
+    wakatime time hyperfine tokei eza # Measurement
     ripgrep jq jo # Text Manipulation
     gnumake ccache gdb valgrind
     patchelf steam-run
@@ -105,6 +104,7 @@
     ];
       python3Custom = python3.withPackages custom-python-packages;
     in python3Custom)
+    micromamba
     ruby
     rustup
     podman-compose docker-compose
@@ -223,10 +223,8 @@
     "zoom"
     "spotify"
     "code" "vscode"
-    "lens"
     "google-chrome"
     "cloudflare-warp"
-    "cudatoolkit"
     "steam-run" "steam-original"
   ];
 

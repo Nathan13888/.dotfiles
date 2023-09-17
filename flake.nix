@@ -2,7 +2,6 @@
   description = "";
   inputs = {
     # Nixpkgs
-    #nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     # Home Manager
@@ -45,7 +44,8 @@
         jirachi = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit (nixpkgs) lib;
-            inherit inputs system;
+            inherit inputs; # important for hyprland!
+	    inherit system;
           };
           modules = [
             nixos-hardware.nixosModules.lenovo-thinkpad-z

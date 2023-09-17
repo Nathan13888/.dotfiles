@@ -18,8 +18,8 @@
     rebootKey = "reboot";
     rebootKeyLongPress = "reboot";
 
-    lidSwitch = "lock";
-    #lidSwitch = "suspend";
+    # lidSwitch = "lock";
+    lidSwitch = "suspend";
     lidSwitchExternalPower = "lock"; # for laptops.
     lidSwitchDocked = "ignore"; # for laptops. docked or >=1 connected displays
   };

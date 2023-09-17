@@ -111,7 +111,7 @@
     fontDir.enable = true;
     enableGhostscriptFonts = true;
 
-    enableDefaultFonts = true;
+    enableDefaultPackages = true;
     fontconfig = {
       enable = true;
       antialias = true;
@@ -124,7 +124,7 @@
       };
     };
 
-    fonts = with pkgs; [
+    packages = with pkgs; [
       source-code-pro
       nerdfonts
       fira

@@ -86,7 +86,6 @@ in
   exec-once = eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
   #export SSH_AUTH_SOCK
   exec-once = numlockx
-  # TODO: yofi/wofi
 
   general {
     gaps_in = 5
@@ -109,13 +108,13 @@ in
   }
 
   decoration {
-    blur_new_optimizations = true
+    blur {
+      # TODO: no for laptop
+      #enabled = yes
+      enabled = no
+    }
+
     rounding = 15
-    blur = yes # TODO: no for laptop
-    blur_size = 3
-    blur_passes = 1
-    blur_new_optimizations = on
-    blur_xray=1
 
     inactive_opacity = 0.95
     drop_shadow = yes # TODO: no for laptop

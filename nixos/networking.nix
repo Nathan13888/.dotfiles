@@ -103,7 +103,7 @@
       dns = "none";
       wifi.backend = "iwd";
       wifi.powersave = false; # disable wifi power saving
-      wifi.scanRandMacAddress = true;
+      wifi.scanRandMacAddress = false;
     };
 
     # TODO: move to individual hosts?

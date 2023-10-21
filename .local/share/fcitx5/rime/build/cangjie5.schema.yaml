@@ -3,7 +3,7 @@ __build_info:
   timestamps:
     cangjie5.custom: 0
     cangjie5.schema: 1686278199
-    default: 0
+    default: 1
     default.custom: 1686278199
     key_bindings: 1686278199
     key_bindings.custom: 0
@@ -72,6 +72,8 @@ key_binder:
     - {accept: "Control+Shift+dollar", toggle: simplification, when: always}
     - {accept: "Control+Shift+percent", toggle: extended_charset, when: always}
   import_preset: default
+menu:
+  page_size: 10
 punctuator:
   full_shape:
     " ": {commit: "　"}

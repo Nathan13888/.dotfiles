@@ -1,3 +1,10 @@
+.kube
+iwd
+eduroam
+*.local
+*.bin
+
+
 *.old
 *.log
 log/

@@ -54,7 +54,6 @@
   services.fprintd.enable = true;
   services.fprintd.tod.enable = true;
   services.fprintd.tod.driver = pkgs.libfprint-2-tod1-vfs0090;
-  #services.fprintd.tod.driver = pkgs.libfprint-2-tod1-goodix-550a;
 
   # Backlight
   services.udev.extraRules = ''
@@ -65,19 +64,20 @@
   powerManagement = {
     enable = true;
     powertop.enable = true;
-    cpuFreqGovernor = "ondemand";
+    cpuFreqGovernor = "powersave";
+    #cpuFreqGovernor = "ondemand";
   };
 
   services.tlp = {
     enable = true;
     settings = {
       CPU_SCALING_GOVERNOR_ON_AC = "performance";
-      CPU_SCALING_GOVERNOR_ON_BAT = "ondemand";
+      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
       CPU_SCALING_MIN_FREQ_ON_AC = "400000";
-      CPU_SCALING_MAX_FREQ_ON_AC = "4700000";
+      CPU_SCALING_MAX_FREQ_ON_AC = "4785000";
       CPU_SCALING_MIN_FREQ_ON_BAT = "400000";
-      CPU_SCALING_MAX_FREQ_ON_BAT = "1800000";
+      CPU_SCALING_MAX_FREQ_ON_BAT = "3200000";
 
       SOUND_POWER_SAVE_ON_AC = "0";
       SOUND_POWER_SAVE_ON_BAT = "0";

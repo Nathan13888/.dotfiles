@@ -9,7 +9,7 @@ path = ~/.gitconfig.local
 st = status -sb -uall
 status = status --show-stash
 tags = tag -l --sort=version:refname # view all tags
-credit = shortlog -sn
+credit = shortlog -sne
 save = commit -a -m "Save"
 mer = merge
 mff = merge --ff-only
@@ -36,6 +36,7 @@ rmc = rm --cached # remove from VCS
 us = reset --     # "unstage"; git reset [commit(def=HEAD)] -- <path>
 ci = check-ignore
 resethard = reset --hard
+squash-all = "!f(){ git reset $(git commit-tree HEAD^{tree} \"$@\");};f"
 renorm = add --renormalize .
 brow = browse
 pr="!f() { \

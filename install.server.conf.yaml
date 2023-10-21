@@ -7,7 +7,19 @@
 - clean: ['~']
 
 - link:
-    ~/.bashrc: .bashrc
+    ~/.aliases: .aliases
+    ~/.aliases.local: .aliases.local
+    ~/.exports: .exports
+    ~/.exports.local: .exports.local
+    ~/.zshrc.local: .zshrc.local
+
+    ~/.config/starship.toml: starship.toml
+    ~/.gitconfig: .gitconfig
+    ~/.gitmessage.txt: .gitmessage.txt
+#    ~/.tmux.conf: .tmux.conf
+#    ~/.vim: .vim
+    ~/.vimrc: .vimrc
+    ~/.zshrc: .zshrc
 
 #- create:
 #    - ~/.dotfiles

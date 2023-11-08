@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-STEPS="10"
+STEPS="30"
 MAX="100"
 MIN="1"
 DEFAULT="50"

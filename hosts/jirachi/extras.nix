@@ -60,6 +60,15 @@
     ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="amdgpu_bl1", MODE="0666", RUN+="${pkgs.coreutils}/bin/chmod a+w /sys/class/backlight/%k/brightness"
   '';
 
+  ### UPower
+  services.upower = {
+    enable = true;
+    percentageLow = 10;
+    percentageCritical = 7;
+    percentageAction = 3;
+    criticalPowerAction = "HybridSleep"; # "PowerOff" "Hibernate" "HybridSleep"
+  };
+
   ### TLP
   powerManagement = {
     enable = true;

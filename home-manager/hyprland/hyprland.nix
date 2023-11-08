@@ -36,7 +36,7 @@ in
 
   exec-once=wl-clipboard-history -t
   exec-once=batsignal -w 25 -c 7 -d 5 -f 95 -D "touch /tmp/reached_danger_level"
-  exec=gnome-keyring-daemon -sd # TODO fix this
+  exec-once=export KP_ROOT="$HOME/KeepassXC" && cat "$KP_ROOT/pass.txt" | keepassxc --keyfile "$KP_ROOT/unlock.key" --pw-stdin "$KP_ROOT/default.kdbx"
   # TODO: polkit agent
   # TODO: enable in new update
   #exec-once=blueman-applet

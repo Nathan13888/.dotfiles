@@ -35,11 +35,11 @@
 
 
     # WM
+    ~/.config/mimeapps.list: .config/mimeapps.list
     #~/.alacritty.yml: .alacritty.yml
     ~/.config/electron-flags.conf: .config/electron-flags.conf
     ~/.config/electron13-flags.conf: .config/electron13-flags.conf
     ~/.config/easyeffects: .config/easyeffects
-    #~/.config/hypr: .config/hypr
     ~/.config/eww: .config/eww
     ~/.config/dunst: dunst
     ~/.config/fcitx5: .config/fcitx5
@@ -51,6 +51,7 @@
 
     # Applications
     ~/.config/mpv/mpv.conf: .config/mpv/mpv.conf
+    ~/.kube: .kube
 
 
 - create:

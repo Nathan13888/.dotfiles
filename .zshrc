@@ -1,29 +1,80 @@
-
 ## If not in tmux, start tmux.
 #if [[ -z ${TMUX+X}${ZSH_SCRIPT+X}${ZSH_EXECUTION_STRING+X} ]]; then
 #  exec tmux
 #fi
 
-#zmodload zsh/zprof
+zmodload zsh/zprof
 
 # Uncomment the following line if pasting URLs and other text is messed up.
 DISABLE_MAGIC_FUNCTIONS=true
 
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-#HIST_STAMPS="mm/dd/yyyy"
-
+# History
 SAVEHIST=100000
 HISTFILE=$HOME/.zsh_history
+#HIST_STAMPS="mm/dd/yyyy"
 
-#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+# set descriptions format to enable group support
+zstyle ':completion:*:descriptions' format '[%d]'
+# set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# preview directory's content with exa when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+# switch group using `,` and `.`
+zstyle ':fzf-tab:*' switch-group ',' '.'
 
-# CHT.SH Autocomplete
-#fpath=(~/.zsh.d/ $fpath)
+
+function zcompile-many() {
+  local f
+  for f; do zcompile -R -- "$f".zwc "$f"; done
+}
+
+#########################
+#        ZINIT          #
+#########################
+
+### Added by Zinit's installer
+if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
+    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
+    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.zinit/bin" && \
+        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+        print -P "%F{160}▓▒░ The clone has failed.%f%b"
+fi
+
+source "$HOME/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+
+#########################
+#        PROMPT         #
+#########################
+
+
+#zinit light spaceship-prompt/spaceship-prompt
+
+# Load starship theme
+# line 1: `starship` binary as command, from github release
+# line 2: starship setup at clone(create init.zsh, completion)
+# line 3: pull behavior same as clone, source init.zsh
+#zinit ice as"command" from"gh-r" \
+#          atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+#          atpull"%atclone" src"init.zsh"
+zinit light starship/starship
+
+if command -v starship &> /dev/null; then
+    eval "$(starship init zsh)"
+else
+    # install starship
+    curl -sS https://starship.rs/install.sh | sh
+fi
+
+#zinit ice wait lucid; zinit light junegunn/fzf
+zinit ice wait lucid; zinit light Aloxaf/fzf-tab
+
+zinit ice wait lucid; zinit light jeffreytse/zsh-vi-mode
 
 #########################
 #          FZF          #
@@ -68,82 +119,19 @@ _fzf_comprun() {
   esac
 }
 
-# disable sort when completing `git checkout`
-zstyle ':completion:*:git-checkout:*' sort false
-# set descriptions format to enable group support
-zstyle ':completion:*:descriptions' format '[%d]'
-# set list-colors to enable filename colorizing
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-# preview directory's content with exa when completing cd
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
-# switch group using `,` and `.`
-zstyle ':fzf-tab:*' switch-group ',' '.'
 
+################################################################################
 
-#https://github.com/romkatv/zsh-bench/blob/master/configs/diy%2B%2B/skel/.zshrc
-function zcompile-many() {
-  local f
-  for f; do zcompile -R -- "$f".zwc "$f"; done
-}
-
-#########################
-#        ZINIT          #
-#########################
-
-### Added by Zinit's installer
-if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
-    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
-    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
-    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.zinit/bin" && \
-        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
-        print -P "%F{160}▓▒░ The clone has failed.%f%b"
-fi
-
-source "$HOME/.zinit/bin/zinit.zsh"
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
-
-# Load a few important annexes, without Turbo
-# (this is currently required for annexes)
-zinit light-mode for \
-    zdharma-continuum/zinit-annex-rust \
-    zdharma-continuum/zinit-annex-as-monitor \
-    zdharma-continuum/zinit-annex-patch-dl \
-    zdharma-continuum/zinit-annex-bin-gem-node
-
-### End of Zinit's installer chunk
-
-#########################
-#        PROMPT         #
-#########################
-
-#eval "$(starship init zsh)"
-zinit light spaceship-prompt/spaceship-prompt
-
-#zinit ice wait lucid; zinit light junegunn/fzf
-#source /usr/share/fzf/completion.zsh
-autoload -U compinit && compinit
-zinit ice wait lucid; zinit light Aloxaf/fzf-tab
-
-zinit wait lucid for \
- atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
-    zdharma-continuum/fast-syntax-highlighting \
- blockf \
-    zsh-users/zsh-completions \
- atload"!_zsh_autosuggest_start" \
-    zsh-users/zsh-autosuggestions
-
-zinit ice wait lucid; zinit light jeffreytse/zsh-vi-mode
+# Nice to have plugins
 zinit ice wait lucid; zinit light sobolevn/wakatime-zsh-plugin
+
+# zshrc.local
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
 unfunction zcompile-many
 ulimit -c 0 # disable core dumps
 
-#########################
-#       ZSH LOCAL       #
-#########################
-
-[ -f ~/.zshrc.local ] && source ~/.zshrc.local
+################################################################################
 
 #########################
 #        ALIASES        #
@@ -154,6 +142,7 @@ ulimit -c 0 # disable core dumps
 zinit ice wait lucid; [ -f ~/.aliases ] && source ~/.aliases
 zinit ice wait lucid; [ -f ~/.aliases.local ] && source ~/.aliases.local
 
+
 #########################
 #        EXPORTS        #
 #########################
@@ -162,7 +151,31 @@ export PYTHONDONTWRITEBYTECODE=1
 [ -f ~/.exports ] && source ~/.exports
 [ -f ~/.exports.local ] && source ~/.exports.local
 
-#rustup completions zsh cargo > ~/.zfunc/_cargo
 
+#########################
+#      COMPLETIONS      #
+#########################
+
+# (this is currently required for annexes)
+zinit light-mode for \
+    zdharma-continuum/zinit-annex-rust \
+    zdharma-continuum/zinit-annex-as-monitor \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-bin-gem-node
+
+#rustup completions zsh cargo > ~/.zfunc/_cargo
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
 
+
+# Compinit, Zinit zicdreplay
+zinit wait lucid for \
+ atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
+    zdharma-continuum/fast-syntax-highlighting \
+ blockf \
+    zsh-users/zsh-completions \
+ atload"!_zsh_autosuggest_start" \
+    zsh-users/zsh-autosuggestions
+
+
+
+#zprof

@@ -65,7 +65,7 @@ function up {
 }
 
 function dn {
-    if [ $(($(getCurVol)-$STEP)) -ge 0 ]
+    if [ $(($(getCurVol)-$STEP)) -gt 0 ]
     then
         echo "Decreasing Volume by $STEP"
         unmute
@@ -73,6 +73,7 @@ function dn {
 	notify "Current volume: $(getCurVol)"
     else
         notify "Minimum volume reached."
+	mute
         pamixer --set-volume 0
     fi
 }

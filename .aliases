@@ -236,8 +236,8 @@ function fiotest {
     sudo rm -ivf $testFile
 }
 
-alias fd='find . -type d -name' # find directory
-alias ff='find . -type f -name' # find file
+alias fdd='find . -type d -name' # find directory
+alias fff='find . -type f -name' # find file
 alias du="du -h"
 alias df="df -h"
 alias du1="du -d 1" # view the size of all directories of depth 1

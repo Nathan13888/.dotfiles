@@ -174,5 +174,7 @@ zinit wait lucid for \
     zsh-users/zsh-autosuggestions
 
 
+unsetopt BEEP
+unsetopt LIST_BEEP
 
 #zprof

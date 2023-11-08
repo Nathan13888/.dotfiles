@@ -302,4 +302,6 @@ set encoding=utf-8
 set number
 set title
 set mouse=a
+" https://vim.fandom.com/wiki/Disable_beeping
+set visualbell
 

@@ -13,6 +13,9 @@
     # Nixos Hardware
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
+    # Chaotic
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+
     # NUR
     #nurpkgs = {
     #  url = github:nix-community/NUR;
@@ -23,7 +26,7 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, nixos-hardware, hyprland, ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, nixos-hardware, chaotic, hyprland, ... }:
     let
       system = "x86_64-linux";
     in
@@ -53,6 +56,8 @@
             {programs.hyprland.enable = true;}
             ./nixos/configuration.nix
             ./hosts/jirachi/hardware-configuration.nix
+
+	    chaotic.nixosModules.default
           ];
         };
         lennar = nixpkgs.lib.nixosSystem {

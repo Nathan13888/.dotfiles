@@ -28,6 +28,7 @@ in
 
   #exec-once = hyperpaper
   exec-once = dunst
+  exec-once = aw-server # Activity Watch Server
 
   # TODO: exit/suspend scripts
   # Notice that `swaymsg exit` will run after gtkgreet.
@@ -96,13 +97,14 @@ in
     #col.active_border = rgba(33ccffee) rgba(00ff99ee) 45deg
     #col.inactive_border = rgba(595959aa)
     apply_sens_to_raw=0 # whether to apply the sensitivity to raw input (e.g. used by games where you aim using your mouse)
-    col.group_border=0xff89dceb
-    col.group_border_active=0xfff9e2af
     layout = dwindle
   }
 
   dwindle {
     pseudotile = true
+    # TODO:
+    #col.group_border=0xff89dceb
+    #col.group_border_active=0xfff9e2af
     #preserve_split = true # TODO: re-enable and have vertical split bindings
     #no_gaps_when_only = true
   }

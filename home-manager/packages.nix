@@ -88,7 +88,7 @@
     go
     temurin-jre-bin maven #jdk
     lua
-    nodejs electron_23
+    nodejs
     racket
     #python39Full
     (let

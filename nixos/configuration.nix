@@ -16,17 +16,8 @@ in
   ];
 
   boot = {
-    blacklistedKernelModules = [ "snd_pcsp" ]; # TODO: what's this?
-    # TODO: use lib.mkDefault
     kernelPackages = lib.mkDefault pkgs.linuxPackages_xanmod_stable;
-    #kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_xanmod_latest.override {
-    #  structuredExtraConfig = with lib.kernel; {
-    #    X86_AMD_PSTATE = lib.mkForce yes;
-    #  };
-    #});
-
-    extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ]; # zfs rtl88xxau-aircrack #wireguard
-    #zfs.enableUnstable = true;
+    blacklistedKernelModules = [];
   };
 
   # reboot on kernel panic

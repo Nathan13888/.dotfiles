@@ -30,7 +30,7 @@
         accelProfile = "flat";
         scrollMethod = "twofinger";
         naturalScrolling = true;
-        tapping = true;
+        tapping = false;
 	tappingButtonMap = "lrm";
         accelSpeed = "1"; # float value in [-1,1]
       };
@@ -98,6 +98,7 @@
   #  };
   #};
 
+  xdg.portal.config.common.default = "*";
   xdg.portal.enable = true;
   # TODO: move wayland
   xdg.portal.extraPortals = with pkgs; [

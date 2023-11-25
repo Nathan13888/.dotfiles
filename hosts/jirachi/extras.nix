@@ -10,6 +10,16 @@
   # this value at the release version of the first install of this system.
   system.stateVersion = "23.05";
 
+  # Chaotic Nyx
+  chaotic.nyx.cache.enable = true; # enable cache (default)
+
+  # TODO:
+  # Kernel and HDR (Sussy)
+  #boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  #chaotic.hdr = {
+  #  enable = true;
+  #};
+
   # loading `amdgpu` kernelModule at stage 1. (Add `amdgpu` to `boot.initrd.kernelModules`)
   hardware.amdgpu.loadInInitrd = true;
   # use amdvlk drivers instead mesa radv drivers
@@ -17,18 +27,27 @@
   # rocm opencl runtime (Install rocm-opencl-icd and rocm-opencl-runtime)
   hardware.amdgpu.opencl = true;
 
-
-  # TODO: fix opengl
   hardware.opengl = {
     enable = true;
     driSupport = true;
     extraPackages = with pkgs; [
+      intel-gmmlib
       intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      intel-ocl
       vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
       vaapiVdpau
       libvdpau-va-gl
     ];
+
   };
+  # Steam
+  hardware.opengl.driSupport32Bit = true;
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  };
+
   nixpkgs.config.packageOverrides = pkgs: {
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
   };
@@ -38,6 +57,8 @@
   services.blueman.enable = true;
   hardware.openrazer.enable = true;
 
+  # TODO: virtualization options
+  virtualisation.waydroid.enable = true;
 
   # TODO:
   ### Laptops

@@ -34,6 +34,7 @@ Plug 'dkarter/bullets.vim'
 "Plug 'vim-syntastic/syntastic'
 "Plug 'ycm-core/YouCompleteMe'
 Plug 'wakatime/vim-wakatime'
+Plug 'ActivityWatch/aw-watcher-vim'
 
 call plug#end()
 
@@ -180,6 +181,14 @@ let g:fzf_colors =
   \ 'marker':  ['fg', 'Keyword'],
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
+
+
+" Activity Watch
+let g:aw_apiurl_host = '127.0.0.1'
+let g:aw_apiurl_port = '5600'
+let g:aw_api_timeout = '3.0'
+let g:aw_hostname = hostname()
+
 
 """ Filetype-Specific Configurations
 

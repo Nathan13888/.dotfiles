@@ -36,7 +36,7 @@
         #  TIMELINE_CLEANUP=yes
         #  TIMELINE_LIMIT_HOURLY=3
         #  TIMELINE_LIMIT_DAILY=2
-        #  TIMELINE_LIMIT_WEEKLY=10
+        #  TIMELINE_LIMIT_WEEKLY.20
         #  TIMELINE_LIMIT_MONTHLY=4
         #  TIMELINE_LIMIT_YEARLY=0
         #'';
@@ -44,58 +44,83 @@
     };
   };
 
-  # TODO: automatically generate directories
-
   fileSystems."/nas/personal" = {
-    device = "//192.168.10.226/Personal";
+    device = "//192.168.20.225/vault";
     fsType = "cifs";
     options =
       let
-        automount_opts = "uid=1000,gid=1000,noauto,vers=3.0,iocharset=utf8";
+        automount_opts = "defaults,_netdev,nofail,uid=1000,gid=1000,dir_mode=0775,file_mode=0664,noauto,x-systemd.automount,vers=3.0,iocharset=utf8";
+      in
+      [ "${automount_opts},credentials=/etc/nixos/.smb" ];
+  };
+
+  fileSystems."/nas/home" = {
+    device = "//192.168.20.225/home";
+    fsType = "cifs";
+    options =
+      let
+        automount_opts = "defaults,_netdev,nofail,uid=1000,gid=1000,dir_mode=0775,file_mode=0664,noauto,x-systemd.automount,vers=3.0,iocharset=utf8";
       in
       [ "${automount_opts},credentials=/etc/nixos/.smb" ];
   };
 
   fileSystems."/nas/archive" = {
-    device = "//192.168.10.226/Archive";
+    device = "//192.168.20.225/archive";
     fsType = "cifs";
     options =
       let
-        automount_opts = "uid=1000,gid=1000,noauto,vers=3.0,iocharset=utf8";
+        automount_opts = "defaults,_netdev,nofail,uid=1000,gid=1000,dir_mode=0775,file_mode=0664,noauto,x-systemd.automount,vers=3.0,iocharset=utf8";
       in
       [ "${automount_opts},credentials=/etc/nixos/.smb" ];
   };
 
-  fileSystems."/nas/backup" = {
-    device = "//192.168.10.226/Backup";
+  fileSystems."/nas/dumps" = {
+    device = "//192.168.20.225/dumps";
     fsType = "cifs";
     options =
       let
-        automount_opts = "uid=1000,gid=1000,noauto,vers=3.0,iocharset=utf8";
+        automount_opts = "defaults,_netdev,nofail,uid=1000,gid=1000,dir_mode=0775,file_mode=0664,noauto,x-systemd.automount,vers=3.0,iocharset=utf8";
+      in
+      [ "${automount_opts},credentials=/etc/nixos/.smb" ];
+  };
+
+  fileSystems."/nas/isos" = {
+    device = "//192.168.20.225/isos";
+    fsType = "cifs";
+    options =
+      let
+        automount_opts = "defaults,_netdev,nofail,uid=1000,gid=1000,dir_mode=0775,file_mode=0664,noauto,x-systemd.automount,vers=3.0,iocharset=utf8";
       in
       [ "${automount_opts},credentials=/etc/nixos/.smb" ];
   };
 
   fileSystems."/nas/media" = {
-    device = "//192.168.10.226/Media";
+    device = "//192.168.20.225/media";
     fsType = "cifs";
     options =
       let
-        automount_opts = "uid=1000,gid=1000,noauto,vers=3.0,iocharset=utf8";
+        automount_opts = "defaults,_netdev,nofail,uid=1000,gid=1000,dir_mode=0775,file_mode=0664,noauto,x-systemd.automount,vers=3.0,iocharset=utf8";
       in
       [ "${automount_opts},credentials=/etc/nixos/.smb" ];
   };
 
   fileSystems."/nas/public" = {
-    device = "//192.168.10.226/Public";
+    device = "//192.168.20.225/public";
     fsType = "cifs";
     options =
       let
-        automount_opts = "uid=1000,gid=1000,noauto,vers=3.0,iocharset=utf8";
+        automount_opts = "defaults,_netdev,nofail,uid=1000,gid=1000,dir_mode=0775,file_mode=0664,noauto,x-systemd.automount,vers=3.0,iocharset=utf8";
       in
       [ "${automount_opts},credentials=/etc/nixos/.smb" ];
   };
 
-
-  #  "compress=zstd" "noatime" "autodefrag"
+  fileSystems."/nas/torrents" = {
+    device = "//192.168.20.225/torrents";
+    fsType = "cifs";
+    options =
+      let
+        automount_opts = "defaults,_netdev,nofail,uid=1000,gid=1000,dir_mode=0775,file_mode=0664,noauto,x-systemd.automount,vers=3.0,iocharset=utf8";
+      in
+      [ "${automount_opts},credentials=/etc/nixos/.smb" ];
+  };
 }

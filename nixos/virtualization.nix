@@ -3,7 +3,6 @@
 {
   # LibVirt
   virtualisation.libvirtd.enable = true;
-  programs.dconf.enable = true;
 
   # Podman
   virtualisation = {

@@ -29,7 +29,7 @@
     configs = {
       home = {
         SUBVOLUME = "/home";
-	# TODO:
+        # TODO:
         #extraConfig = ''
         #  ALLOW_USERS="attackercow"
         #  TIMELINE_CREATE=yes
@@ -116,6 +116,16 @@
 
   fileSystems."/nas/torrents" = {
     device = "//192.168.20.225/torrents";
+    fsType = "cifs";
+    options =
+      let
+        automount_opts = "defaults,_netdev,nofail,uid=1000,gid=1000,dir_mode=0775,file_mode=0664,noauto,x-systemd.automount,vers=3.0,iocharset=utf8";
+      in
+      [ "${automount_opts},credentials=/etc/nixos/.smb" ];
+  };
+
+  fileSystems."/nas/datasets" = {
+    device = "//192.168.20.225/datasets";
     fsType = "cifs";
     options =
       let

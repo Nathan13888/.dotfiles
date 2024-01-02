@@ -13,21 +13,15 @@ SAVEHIST=100000
 HISTFILE=$HOME/.zsh_history
 #HIST_STAMPS="mm/dd/yyyy"
 
-# disable sort when completing `git checkout`
-zstyle ':completion:*:git-checkout:*' sort false
-# set descriptions format to enable group support
-zstyle ':completion:*:descriptions' format '[%d]'
-# set list-colors to enable filename colorizing
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-# preview directory's content with exa when completing cd
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
-# switch group using `,` and `.`
-zstyle ':fzf-tab:*' switch-group ',' '.'
-
 
 function zcompile-many() {
   local f
   for f; do zcompile -R -- "$f".zwc "$f"; done
+}
+
+function comp() {
+    [[ ! "$1.zwc" -nt $1 ]] || zcompile $1
+    builtin source $@
 }
 
 #########################
@@ -46,6 +40,13 @@ fi
 source "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
+
+# (this is currently required for annexes)
+zinit light-mode for \
+    zdharma-continuum/zinit-annex-rust \
+    zdharma-continuum/zinit-annex-as-monitor \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-bin-gem-node
 
 
 #########################
@@ -77,14 +78,17 @@ zinit ice wait lucid; zinit light jeffreytse/zsh-vi-mode
 #          FZF          #
 #########################
 
+# preview directory's content with exa when completing cd
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+# switch group using `,` and `.`
+zstyle ':fzf-tab:*' switch-group ',' '.'
 
 # Use ~~ as the trigger sequence instead of the default **
 export FZF_COMPLETION_TRIGGER='~~'
 
 # Options to fzf command
-export FZF_DEFAULT_COMMAND='rg --files --no-ignore'
-export FZF_DEFAULT_OPTS='--height 90% --layout=reverse --border'
+export FZF_DEFAULT_COMMAND='fd --type file --hidden --no-ignore'
+export FZF_DEFAULT_OPTS='--height 90% --layout=reverse'
 
 # Use fd (https://github.com/sharkdp/fd) instead of the default find
 # command for listing path candidates.
@@ -126,6 +130,7 @@ zinit ice wait lucid; zinit light sobolevn/wakatime-zsh-plugin
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
 unfunction zcompile-many
+
 ulimit -c 0 # disable core dumps
 
 ################################################################################
@@ -153,15 +158,23 @@ export PYTHONDONTWRITEBYTECODE=1
 #      COMPLETIONS      #
 #########################
 
-# (this is currently required for annexes)
-zinit light-mode for \
-    zdharma-continuum/zinit-annex-rust \
-    zdharma-continuum/zinit-annex-as-monitor \
-    zdharma-continuum/zinit-annex-patch-dl \
-    zdharma-continuum/zinit-annex-bin-gem-node
 
+# TODO: dev completions
 #rustup completions zsh cargo > ~/.zfunc/_cargo
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+
+# TODO: git completions
+# https://cmetcalfe.ca/blog/git-checkout-autocomplete-local-branches-only.html
+
+# TODO: https://www.reddit.com/r/zsh/comments/dzhalc/overloading_git_autocomplete_methods/
+
+
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+# set descriptions format to enable group support
+zstyle ':completion:*:descriptions' format '[%d]'
+# set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 
 # Compinit, Zinit zicdreplay
@@ -172,7 +185,6 @@ zinit wait lucid for \
     zsh-users/zsh-completions \
  atload"!_zsh_autosuggest_start" \
     zsh-users/zsh-autosuggestions
-
 
 unsetopt BEEP
 unsetopt LIST_BEEP

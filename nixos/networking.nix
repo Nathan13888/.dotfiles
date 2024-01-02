@@ -1,14 +1,7 @@
 { config, lib, pkgs, options, ... }:
 
-
 {
-
-  networking.extraHosts =
-    ''
-      #192.168.10.226 st.wocrekcatta.ml
-      192.168.10.220 *.crux.nathanchung.dev omada-sdn.nathanchung.dev
-    '';
-
+  # DNSCrypt Proxy
   services.dnscrypt-proxy2 = {
     enable = true;
     settings = {
@@ -28,19 +21,31 @@
       timeout = 10000;
       lb_strategy = "p2";
       log_file = "/tmp/dnscrypt-proxy.log";
-      use_syslog = false;
+      use_syslog = false; # will make syslog messy otherwise
       cache_min_ttl = 3600;
       cache_neg_min_ttl = 600;
       cache_neg_max_ttl = 900;
     };
   };
-  services.chrony.enable = true;
   services.zerotierone.enable = true;
 
   systemd.services.network-addresses-eth0.enable = false;
   systemd.services.NetworkManager-wait-online.enable = false;
   systemd.network.wait-online.enable = false;
-  systemd.services.systemd-resolved.enable = false;
+  systemd.services.systemd-resolved.enable = true;
+  services.resolved = {
+    enable = true;
+    llmnr = "true";
+    dnssec = "false";
+    domains = [ "~." "lan" "nathanchung.dev" ];
+    #fallbackDns = [ "9.9.9.9#dns.quad9.net" "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one" ];
+    fallbackDns = [ ];
+    extraConfig = ''
+      ReadEtcHosts=yes
+      DNSOverTLS=no
+    '';
+  };
+  networking.nameservers = [ "127.0.0.1" ];
 
   # use tcp bbr
   boot.kernel.sysctl = {
@@ -52,7 +57,7 @@
     nftables.enable = true;
     nat = {
       enable = true;
-      enableIPv6 = false;
+      enableIPv6 = true;
       externalInterface = "eth0";
       internalInterfaces = [ "wg0" ];
     };
@@ -67,7 +72,7 @@
         #{ from = 5201; to = 5210; } # iperf3
         8888 # Public HTTP
         9993 # Zerotier
-        59100 # AudioRelay (TCP for messaging) 
+        #59100 # AudioRelay (TCP for messaging) 
       ];
       allowedUDPPorts = [
         #{ from = 29999; to = 29999; }
@@ -76,50 +81,71 @@
         5201
         9993 # Zerotier
         51820 # Wireguard listening
-        59100 # AudioRelay (UDP for audio transport)
-        59200 # AudioRelay (UDP for server discovery)
+        #59100 # AudioRelay (UDP for audio transport)
+        #59200 # AudioRelay (UDP for server discovery)
       ];
       enable = true;
       allowPing = false;
     };
 
     timeServers = options.networking.timeServers.default ++ [ "0.north-america.pool.ntp.org" "1.north-america.pool.ntp.org" "2.north-america.pool.ntp.org" "3.north-america.pool.ntp.org" ];
-    nameservers = [ "127.0.0.1" "::1" ];
-    resolvconf.enable = true;
-    
+
+    #resolvconf.enable = true;
+    #resolvconf.extraConfig = [];
+    #resolvconf.extraOptions = [ "ndots:1" "rotate" ];
+
+    bridges = {
+      "br0" = {
+        interfaces = [ "eth0" ];
+        # ipv4.addresses
+      };
+    };
+
     usePredictableInterfaceNames = true;
     enableIPv6 = true;
 
     ## DHCP
-    interfaces.eth0.useDHCP = false;
-    interfaces.wlan0.useDHCP = false;
+    interfaces.eth0.useDHCP = lib.mkDefault true;
+    interfaces.wlan0.useDHCP = lib.mkDefault true;
     useDHCP = lib.mkDefault false;
-    dhcpcd.enable = false;
-    #dhcpcd.persistent = true;
+    dhcpcd.enable = true;
+    dhcpcd.denyInterfaces = [ "br*" "macvtap0@*" ];
+    dhcpcd.persistent = true;
 
     networkmanager = {
       enable = true;
-      dhcp = "internal"; # or "dhcpcd"
-      dns = "none";
-      wifi.backend = "iwd";
-      wifi.powersave = false; # disable wifi power saving
-      wifi.scanRandMacAddress = false;
+      #dhcp = "internal"; # or "dhcpcd"
+      dhcp = "dhcpcd";
+      logLevel = "INFO"; # default: "WARN"
+      #insertNameservers = [];
+      #appendNameservers = [];
+      # https://developer-old.gnome.org/NetworkManager/stable/NetworkManager.conf.html
+      #dns = "default";
+      # rc-manager is automatically set to resolvconf
+    };
+
+    networkmanager.wifi = {
+      backend = "iwd";
+      powersave = false; # disable wifi power saving
+      scanRandMacAddress = true;
     };
 
     # TODO: move to individual hosts?
     wireless.iwd.enable = true;
   };
 
+  # RFkill
   system.activationScripts = {
     rfkillUnblockWlan = {
       text = ''
-      rfkill unblock wlan
+        rfkill unblock wlan
       '';
-      deps = [];
+      deps = [ ];
     };
   };
 
   # Tor
+  # TODO:
   #services.tor.enable = true;
   #services.tor.client.enable = true;
 

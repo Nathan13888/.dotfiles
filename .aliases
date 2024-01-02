@@ -126,16 +126,14 @@ git-inspect-status() {
 }
 alias n="npm"
 alias k="kubectl"
+alias m="micromamba"
 alias h="helm"
 alias py="python"
 alias vr='v -r'
 alias vm="v -M"
-alias l="less"
-alias m="more"
 alias su="sudo su -"
 alias c="cd"
 alias clear='printf "\ec"'
-alias e="exit"
 
 ### NETWORKING
 alias ifa="/sbin/ifconfig -a"

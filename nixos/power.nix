@@ -43,14 +43,14 @@
     AllowHybridSleep=no
     SuspendState=mem standby
   '';
-    #SuspendMode=
-    #SuspendState=mem freeze standby
-    #HibernateMode=platform shutdown
-    #HibernateState=disk
-    #HybridSleepMode=suspend platform shutdown
-    #HybridSleepState=disk
-    #HibernateDelaySec=
-    #SuspendEstimationSec=60min
+  #SuspendMode=
+  #SuspendState=mem freeze standby
+  #HibernateMode=platform shutdown
+  #HibernateState=disk
+  #HybridSleepMode=suspend platform shutdown
+  #HybridSleepState=disk
+  #HibernateDelaySec=
+  #SuspendEstimationSec=60min
 
   ## TLP
   # SOURCE: https://linrunner.de/tlp/support/optimizing.html
@@ -98,7 +98,7 @@
     wantedBy = [ "post-resume.target" ];
     after = [ "post-resume.target" ];
     script = ''
-    echo "This should show up in the journal after resuming."
+      echo "This should show up in the journal after resuming."
     '';
     serviceConfig.Type = "oneshot";
   };

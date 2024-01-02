@@ -1,27 +1,25 @@
 { config, lib, pkgs, options, ... }:
 
-let
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
-in
 {
   imports = [
-    ./audio.nix
     ./networking.nix
-    ./packages.nix
-    ./power.nix
     ./storage.nix
+    ./security.nix
+    ./locale.nix
+    ./power.nix
     ./virtualization.nix
+    ./packages.nix
     ./wm.nix
-    # (import "$(home-manager)/nixos")
+    ./audio.nix
   ];
 
   boot = {
-    kernelPackages = lib.mkDefault pkgs.linuxPackages_xanmod_stable;
-    blacklistedKernelModules = [];
+    kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+    blacklistedKernelModules = [ ];
   };
 
   # reboot on kernel panic
-  boot.kernelParams = ["panic=1" "boot.panic_on_fail"];
+  boot.kernelParams = [ "panic=1" "boot.panic_on_fail" ];
 
   # systemd tweaks
   systemd.enableEmergencyMode = false;
@@ -47,22 +45,6 @@ in
     ];
   };
 
-  services.udev.packages = with pkgs; [
-    android-udev-rules
-    gnome.gnome-settings-daemon
-  ];
-
-
-  security.sudo = {
-    enable = true;
-    wheelNeedsPassword = true;
-    execWheelOnly = true;
-    extraConfig = "Defaults insults";
-  };
-
-
-  programs.zsh.enable = true;
-
   programs.ssh.startAgent = true;
   services = {
     openssh = {
@@ -75,50 +57,6 @@ in
       };
     };
     autorandr.enable = true;
-  };
-
-  #time.timeZone = "America/New_York";
-  time.hardwareClockInLocalTime = false;
-
-  # TODO: move to users.nix
-  users = {
-    defaultUserShell = pkgs.zsh;
-    users.attackercow = {
-      isNormalUser = true;
-      home = "/home/attackercow";
-      description = "Nathan";
-      # TODO:
-      #hashedPassword = "$6$aEvS0ul31VsE9FcA$h9rWnpnYfxWD62cJl.On8IJecr41Hr5L18QOe7phPrVKY5hLG6yozwRZM5y1wxJBX8ahCutwFoWLbuzzGYMTB0";
-      useDefaultShell = true;
-      createHome = true;
-      homeMode = "700";
-      extraGroups = [ "wheel" "video" "input" "plugdev" "audio" "networkmanager" "libvirtd" "wireshark" "adbusers" "adbusers" "uucp" "dialout" "vboxusers" "realtime" "docker" ];
-      uid = 1000;
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGNJSdtQ4Rus1zXs2RV1yn8fO3yIQiVW6sq9VegtRNWd attackercow@jirachi"
-      ];
-      openssh.authorizedKeys.keyFiles = [
-        #/etc/nixos/ssh/authorized_keys
-        # REMOVE, FIXX
-      ];
-    };
-  };
-  #users.mutableUsers = false; #TODO:
-  environment.homeBinInPath = true;
-
-  # TODO: move to locales.nix
-  i18n.defaultLocale = "en_CA.UTF-8";
-  time.timeZone = "America/Toronto";
-
-  console = {
-    font = "${pkgs.terminus_font}/share/consolefonts/ter-v32n.psf.gz";
-    earlySetup = true;
-    keyMap = "us";
-  };
-
-  nixpkgs.config = {
-    allowUnfree = true;
-    # system = "x86_64-linux";
   };
 
   nix = {
@@ -141,8 +79,6 @@ in
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
-
-    #maxJobs = pkgs.stdenv.lib.mkForce 6;
   };
 
 

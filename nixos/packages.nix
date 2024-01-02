@@ -43,7 +43,15 @@
       curl
     ];
   };
+  environment.homeBinInPath = true;
+
+  programs.zsh.enable = true;
+  services.udev.packages = with pkgs; [
+    android-udev-rules
+    gnome.gnome-settings-daemon
+  ];
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowBroken = true;
 }
 

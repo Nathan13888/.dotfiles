@@ -19,6 +19,7 @@
   #chaotic.hdr = {
   #  enable = true;
   #};
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # loading `amdgpu` kernelModule at stage 1. (Add `amdgpu` to `boot.initrd.kernelModules`)
   hardware.amdgpu.loadInInitrd = true;
@@ -27,10 +28,21 @@
   # rocm opencl runtime (Install rocm-opencl-icd and rocm-opencl-runtime)
   hardware.amdgpu.opencl = true;
 
+  ## HIP
+  systemd.tmpfiles.rules = [
+    "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
+  ];
+  # Check with:
+  # nix-shell -p rocminfo --run rocminfo
+  # nix-shell -p rocm-opencl-runtime --run clinfo
+
   hardware.opengl = {
     enable = true;
     driSupport = true;
     extraPackages = with pkgs; [
+      rocmPackages.clr.icd
+      rocm-opencl-icd
+      amdvlk
       intel-gmmlib
       intel-media-driver # LIBVA_DRIVER_NAME=iHD
       intel-ocl
@@ -38,8 +50,13 @@
       vaapiVdpau
       libvdpau-va-gl
     ];
+    extraPackages32 = with pkgs; [
+      driversi686Linux.amdvlk
+    ];
 
   };
+
+
   # Steam
   hardware.opengl.driSupport32Bit = true;
   programs.steam = {
@@ -66,7 +83,8 @@
   services.hardware.bolt.enable = true;
   # NOTE: displaylink - prefetch
   # nix-prefetch-url --name displaylink.zip https://www.synaptics.com/sites/default/files/exe_files/2022-08/DisplayLink%20USB%20Graphics%20Software%20for%20Ubuntu5.6.1-EXE.zip
-  services.xserver.videoDrivers = [ "displaylink" "modesetting" "amdgpu" ];
+  services.xserver.videoDrivers = [ "modesetting" "amdgpu" ];
+  #services.xserver.videoDrivers = [ "displaylink" "modesetting" "amdgpu" ];
   services.xserver.displayManager.sessionCommands = ''
     ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
   '';

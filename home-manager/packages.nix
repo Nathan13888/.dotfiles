@@ -63,6 +63,7 @@
     #kicad #TODO
     freecad openscad qcad
     blender
+    orca-slicer
     super-slicer
     android-file-transfer go-mtpfs
     rclone
@@ -133,6 +134,7 @@
     ## Networking
     brave firefox-wayland ungoogled-chromium # Browsers
     wireguard-tools # TODO FIXX
+    iproute2
     google-chrome chromedriver
     profile-cleaner
     #tor-browser-bundle-bin

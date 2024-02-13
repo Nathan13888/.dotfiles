@@ -1,8 +1,5 @@
 {
     "output": {
-        "autogain#0": {
-            "bypass": false
-        },
         "bass_enhancer#1": {
             "amount": 0.0,
             "blend": 0.0,
@@ -17,14 +14,14 @@
         "blocklist": [],
         "convolver#0": {
             "autogain": true,
-            "bypass": true,
+            "bypass": false,
             "input-gain": -2.0,
             "ir-width": 100,
             "kernel-path": "/home/attackercow/.config/easyeffects/irs/HTC Beats Audio ((Z-Edition)).irs",
             "output-gain": 0.0
         },
         "crossfeed#0": {
-            "bypass": false,
+            "bypass": true,
             "fcut": 700,
             "feed": 4.5,
             "input-gain": 0.0,
@@ -136,7 +133,7 @@
                     "type": "Bell"
                 }
             },
-            "mode": "IIR",
+            "mode": "FFT",
             "num-bands": 10,
             "output-gain": 0.0,
             "pitch-left": 0.0,
@@ -245,6 +242,9 @@
             },
             "split-channels": false
         },
+        "level_meter#0": {
+            "bypass": true
+        },
         "limiter#0": {
             "alr": true,
             "alr-attack": 5.0,
@@ -266,7 +266,7 @@
             "threshold": -1.0
         },
         "maximizer#0": {
-            "bypass": false,
+            "bypass": true,
             "ceiling": 0.0,
             "input-gain": 0.0,
             "output-gain": 0.0,

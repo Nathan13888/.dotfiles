@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
 
@@ -56,19 +56,15 @@
     users.attackercow = {
       isNormalUser = true;
       home = "/home/attackercow";
+      name = "Nathan";
       description = "";
-      #hashedPassword = "$6$aEvS0ul31VsE9FcA$h9rWnpnYfxWD62cJl.On8IJecr41Hr5L18QOe7phPrVKY5hLG6yozwRZM5y1wxJBX8ahCutwFoWLbuzzGYMTB0";
       useDefaultShell = true;
       createHome = true;
       homeMode = "700";
       extraGroups = [ "wheel" "video" "input" "plugdev" "audio" "networkmanager" "libvirtd" "wireshark" "adbusers" "adbusers" "uucp" "dialout" "vboxusers" "realtime" "docker" ];
       uid = 1000;
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGNJSdtQ4Rus1zXs2RV1yn8fO3yIQiVW6sq9VegtRNWd jirachi"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL7TcOidULMhrBPFGKxiWkJtYcp63S44AjaX++vrccw1 l3nnar"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILqswlpb5l8do56aqxnAWGdQFbG62FUyOPW+VJnVjhvv charry"
-      ];
-      openssh.authorizedKeys.keyFiles = [ ];
+      openssh.authorizedKeys.keys     = lib.mkMerge [];
+      openssh.authorizedKeys.keyFiles = lib.mkMerge []; # /home/attackercow/.ssh/authorized_keys ];
     };
   };
   #users.mutableUsers = false;

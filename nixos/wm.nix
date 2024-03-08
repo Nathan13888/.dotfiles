@@ -40,31 +40,10 @@
     # TODO: move to GDM
     displayManager.gdm.enable = true;
     displayManager.gdm.wayland = true;
-
-
-    # TODO: move to i3
-    #displayManager.defaultSession = "none+i3";
-    #displayManager.startx.enable = true;
-    #displayManager.lightdm = {
-    #  enable = false;
-    #};
-
-    #windowManager.i3 = {
-    #  package = pkgs.i3-gaps;
-    #  enable = true;
-    #  extraPackages = with pkgs; [
-    #    polybarFull dunst rofi
-    #    feh
-    #    i3lock-color
-    #  ];
-    #};
-    # END
   };
 
   # TODO: move gnome
-  #services.xserver.desktopManager.default = "hyprland";
   services.xserver.displayManager.defaultSession = "hyprland";
-  #services.xserver.desktopManager.gnome.enable = true;
   environment.gnome.excludePackages = (with pkgs; [
     gnome-photos
     gnome-tour
@@ -84,19 +63,6 @@
     atomix # puzzle game
   ]);
 
-
-  # TODO: move to greetd
-  #services.greetd = {
-  #  enable = true;
-  #  settings = rec {
-  #    initial_session = {
-  #      command = "${pkgs.hyprland}/bin/Hyprland";
-  #      user = "attackercow";
-  #    };
-  #    default_session = initial_session;
-  #  };
-  #};
-
   xdg.portal.config.common.default = "*";
   xdg.portal.enable = true;
   # TODO: move wayland
@@ -105,7 +71,6 @@
     xdg-desktop-portal-gtk
     #xdg-desktop-portal-kde
   ];
-
 
   fonts = {
     fontDir.enable = true;

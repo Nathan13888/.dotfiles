@@ -5,6 +5,7 @@
   home.file."jdks/openjdk8".source = pkgs.adoptopenjdk-openj9-bin-8;
   home.file."jdks/openjdk11".source = pkgs.adoptopenjdk-openj9-bin-11;
   home.file."jdks/openjdk17".source = pkgs.jetbrains.jdk;
+  home.file."jdks/graal21".source = pkgs.graalvm-ce;
   home.file."jdks/scala".source = pkgs.scala;
 
 
@@ -40,6 +41,7 @@
 
     ## Utilities
     zinit starship fzf ripgrep # Prompt
+    zoxide # `cd` alternative
     neovim #neovide
     vscode-fhs
     jetbrains.idea-community
@@ -197,8 +199,7 @@
     notify-desktop
     wl-clipboard xclip
     lxqt.lxqt-policykit
-    nvtop
-
+    nvtop clinfo vulkan-tools libva-utils rocmPackages.rocminfo
 
     gnome.gnome-tweaks
     gnomeExtensions.appindicator

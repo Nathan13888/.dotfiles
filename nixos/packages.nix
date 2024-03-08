@@ -1,10 +1,29 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   programs.adb.enable = true;
   programs.firejail.enable = true;
   services.flatpak.enable = true;
   programs.mtr.enable = true;
+
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc
+    zlib
+    fuse3
+    icu
+    zlib
+    nss
+    openssl
+    curl
+    expat
+    # ...
+  ];
+
+  # https://github.com/Mic92/envfs
+  #services.envfs.enable = true;
+
+  programs.corectrl.enable = true;
 
   environment = {
     #variables.LANGUAGE = "en_CA";
@@ -51,11 +70,24 @@
     gnome.gnome-settings-daemon
   ];
 
-  programs.nix-ld.enable = true;
-  programs.nix-ld.libraries = with pkgs; [
-    # Add any missing dynamic libraries for unpackaged programs
-    # here, NOT in environment.systemPackages
-  ];
+  nix = {
+    package = lib.mkDefault pkgs.nixUnstable;
+    # TODO:
+    #settings.trusted-substituters = [
+    #  "http://cache.nixos.org"
+    #];
+
+    #settings = {
+    #  substituters = [
+    #    "http://cache.nixos.org"
+    #    "https://hyprland.cachix.org"
+    #  ];
+    #  trusted-public-keys = [
+    #    "https://nix-community.cachix.org"
+    #    "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+    #  ];
+    #};
+  };
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowBroken = true;

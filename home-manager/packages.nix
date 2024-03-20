@@ -200,6 +200,7 @@
     wl-clipboard xclip
     lxqt.lxqt-policykit
     nvtop clinfo vulkan-tools libva-utils rocmPackages.rocminfo
+    bleachbit
 
     gnome.gnome-tweaks
     gnomeExtensions.appindicator

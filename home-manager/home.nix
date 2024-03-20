@@ -6,7 +6,7 @@
     ./wm.nix
   ];
 
-  home.username = "attackercow";
+  home.username = "Nathan";
   home.homeDirectory = "/home/attackercow";
 
   # You can update Home Manager without changing this value

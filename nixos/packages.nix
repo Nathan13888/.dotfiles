@@ -47,8 +47,8 @@
     variables.NIXOS_OZONE_WL = "1";
     variables.GLFW_IM_MODULE = "ibus";
 
-    #export OCL_ICD_VENDORS=`nix-build '<nixpkgs>' --no-out-link -A rocm-opencl-icd`/etc/OpenCL/vendors/
-    #export VK_ICD_FILENAMES=`nix-build '<nixpkgs>' --no-out-link -A amdvlk`/share/vulkan/icd.d/amd_icd64.json
+    variables.XDG_CURRENT_DESKTOP = "GNOME";
+    variables.XDG_SESSION_DESKTOP = "gnome";
 
 
     # $ nix search wget

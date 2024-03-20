@@ -73,6 +73,7 @@
 
   # Zerotier
   services.zerotierone.enable = true;
+  systemd.services.zerotierone.wantedBy = lib.mkForce [ ]; # disable autostart
 
   # Don't wait for network online
   systemd.services.network-addresses-eth0.enable = false;
@@ -107,21 +108,33 @@
   systemd.services.macchanger =
     let
       change-mac = pkgs.writeShellScript "change-mac" ''
-        		card=$1
-        		tmp=$(mktemp)
-        		${pkgs.macchanger}/bin/macchanger "$card" -s | grep -oP "[a-zA-Z0-9]{2}:[a-zA-Z0-9]{2}:[^ ]*" > "$tmp"
-        		mac1=$(cat "$tmp" | head -n 1)
-        		mac2=$(cat "$tmp" | tail -n 1)
-        		if [ "$mac1" = "$mac2" ]; then
-        			if [ "$(cat /sys/class/net/"$card"/operstate)" = "up" ]; then
-        				${pkgs.iproute2}/bin/ip link set "$card" down &&
-        				${pkgs.macchanger}/bin/macchanger -r "$card"
-        				${pkgs.iproute2}/bin/ip link set "$card" up
-        			else
-        				${pkgs.macchanger}/bin/macchanger -r "$card"
-        			fi
-        		fi
-        	'';
+        card=$1
+        tmp=$(mktemp)
+        ${pkgs.macchanger}/bin/macchanger "$card" -s | grep -oP "[a-zA-Z0-9]{2}:[a-zA-Z0-9]{2}:[^ ]*" > "$tmp"
+        mac1=$(cat "$tmp" | head -n 1)
+        mac2=$(cat "$tmp" | tail -n 1)
+        FLAGS="-r"
+        if [ -f /etc/machine-id ]; then
+            # Macbook M1?
+            addr=$(cat /etc/machine-id | head -n 1 | md5sum | ${pkgs.gawk}/bin/awk '{print $1}' | cut -c 1-12 | sed -r 's/(..)(..)(..)(..)(..)(..)/bc:d0:74:\1:\2:\3/')
+            FLAGS="-m $addr"
+            echo "Updated macchanger flags: $FLAGS"
+        fi
+        # Change only if the MAC address is the same
+        if [ "$mac1" = "$mac2" ]; then
+          if [ "$(cat /sys/class/net/"$card"/operstate)" = "up" ]; then
+            echo "Detected $card is up, bringing down."
+            ${pkgs.iproute2}/bin/ip link set "$card" down
+            echo "Changing MAC address for $card."
+            ${pkgs.macchanger}/bin/macchanger $FLAGS "$card"
+            echo "Bringing $card back up."
+            ${pkgs.iproute2}/bin/ip link set "$card" up
+          else
+            echo "Changing MAC address for $card."
+            ${pkgs.macchanger}/bin/macchanger $FLAGS "$card"
+          fi
+        fi
+      '';
     in
     {
       enable = true;
@@ -139,6 +152,7 @@
 
   networking = {
     nftables.enable = true;
+
     nat = {
       enable = true;
       enableIPv6 = true;
@@ -204,7 +218,7 @@
       #appendNameservers = [];
       # https://developer-old.gnome.org/NetworkManager/stable/NetworkManager.conf.html
       #dns = "default";
-      # rc-manager is automatically set to resolvconf
+      dns = "systemd-resolved";
     };
 
     networkmanager.wifi = {
@@ -228,32 +242,6 @@
   };
 
   # Tor
-  # TODO:
   #services.tor.enable = true;
   #services.tor.client.enable = true;
-
-  #networking.nat = {
-  #  enable = true;
-  #  internalInterfaces = ["ve-browser"];
-  #  externalInterface = "eth0";
-  #};
-  #containers.browser = {
-  #  autoStart = false;
-  #  privateNetwork = true;
-  #  hostAddress = "192.168.7.10";
-  #  localAddress = "192.168.7.11";
-  #  config = {config, pkgs, ... }: {
-  #    services.openssh = {
-  #      enable = true;
-  #      forwardX11 = true;
-  #    };
-
-  #    users.extraUsers.browser = {
-  #      isNormalUser = true;
-  #      home = "/home/browser";
-  #      openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO7QUPxTZc3H+lDQ5WFufpJIPopoMI1v+Rj8uWw4hyvi attackercow@ARG0N" ];
-  #      extraGroups = ["audio" "video"];
-  #    };
-  #  };
-  #};
 }

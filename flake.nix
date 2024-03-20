@@ -6,19 +6,23 @@
 
     # Home Manager
     home-manager = {
-      url = github:nix-community/home-manager;
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Nixos Hardware
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
+    # Nix LD
+    #nix-ld.url = "github:Mic92/nix-ld";
+    #nix-ld.inputs.nixpkgs.follows = "nixpkgs";
+
     # Chaotic
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 
     # NUR
     #nurpkgs = {
-    #  url = github:nix-community/NUR;
+    #  url = "github:nix-community/NUR";
     #  inputs.nixpkgs.follows = "nixpkgs";
     #};
 
@@ -33,7 +37,7 @@
     {
       homeConfigurations = {
         # TODO: default home-manager config 
-        "attackercow" = home-manager.lib.homeManagerConfiguration {
+        "Nathan" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = {  inherit system nixpkgs home-manager; };
           modules = [
@@ -48,16 +52,19 @@
           specialArgs = {
             inherit (nixpkgs) lib;
             inherit inputs; # important for hyprland!
-	    inherit system;
+            inherit system;
           };
           modules = [
             nixos-hardware.nixosModules.lenovo-thinkpad-z
+            ./hosts/jirachi/hardware-configuration.nix
+            ./nixos/configuration.nix
+
+            chaotic.nixosModules.default
+            #nix-ld.nixosModules.nix-ld
+
             hyprland.nixosModules.default
             {programs.hyprland.enable = true;}
-            ./nixos/configuration.nix
-            ./hosts/jirachi/hardware-configuration.nix
-
-	    chaotic.nixosModules.default
+            # TODO: ./secrets/eduroam.nix
           ];
         };
         lennar = nixpkgs.lib.nixosSystem {

@@ -10,6 +10,16 @@
   # this value at the release version of the first install of this system.
   system.stateVersion = "23.05";
 
+  environment.variables = {
+    #NIX_BUILD_CORES = "15"
+    #AMD_VULKAN_ICD = "RADV";
+  };
+
+  # Build Settings
+  # TODO:
+  nix.settings.max-jobs = 2;
+  nix.settings.cores = 8;
+
   # Chaotic Nyx
   chaotic.nyx.cache.enable = true; # enable cache (default)
 
@@ -33,8 +43,8 @@
     "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
   ];
   # Check with:
-  # nix-shell -p rocminfo --run rocminfo
-  # nix-shell -p rocm-opencl-runtime --run clinfo
+  # vainfo rocminfo vulkaninfo clinfo nvtop
+  # getfacl /dev/dri/card0
 
   hardware.opengl = {
     enable = true;
@@ -92,11 +102,15 @@
   ### Fingerprint
   services.fprintd.enable = true;
   services.fprintd.tod.enable = true;
-  services.fprintd.tod.driver = pkgs.libfprint-2-tod1-vfs0090;
+  services.fprintd.tod.driver = pkgs.libfprint-2-tod1-goodix;
+  #services.fprintd.tod.driver = pkgs.libfprint-2-tod1-vfs0090;
 
-  # Backlight
+  # Udev rules
+  # allow users to change display brightness (oled)
+  # disable wakeup for pci devices
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="amdgpu_bl1", MODE="0666", RUN+="${pkgs.coreutils}/bin/chmod a+w /sys/class/backlight/%k/brightness"
+    ACTION=="add", SUBSYSTEM=="pci", DRIVER=="pcieport", ATTR{power/wakeup}="disabled"
   '';
 
   ### UPower
@@ -119,16 +133,19 @@
   services.tlp = {
     enable = true;
     settings = {
-      CPU_SCALING_GOVERNOR_ON_AC = "performance";
-      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+      # CPU_SCALING_GOVERNOR_ON_AC = "performance";
+      # CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
-      CPU_SCALING_MIN_FREQ_ON_AC = "400000";
-      CPU_SCALING_MAX_FREQ_ON_AC = "4785000";
-      CPU_SCALING_MIN_FREQ_ON_BAT = "400000";
-      CPU_SCALING_MAX_FREQ_ON_BAT = "3200000";
+      # CPU_SCALING_MIN_FREQ_ON_AC = "400000";
+      # CPU_SCALING_MAX_FREQ_ON_AC = "4785000";
+      # CPU_SCALING_MIN_FREQ_ON_BAT = "400000";
+      # CPU_SCALING_MAX_FREQ_ON_BAT = "3200000";
 
       SOUND_POWER_SAVE_ON_AC = "0";
       SOUND_POWER_SAVE_ON_BAT = "0";
+
+      TLP_DEFAULT_MODE = "BAT";
+      TLP_PERSISTENT_DEFAULT = 1;
 
       RADEON_DPM_PERF_LEVEL_ON_AC = "auto";
       RADEON_DPM_PERF_LEVEL_ON_BAT = "low";
@@ -136,6 +153,8 @@
       RADEON_DPM_STATE_ON_BAT = "battery";
     };
   };
+
+  services.auto-cpufreq.enable = true;
 
   fileSystems."/tmp" = {
     device = "none";

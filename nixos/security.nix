@@ -63,8 +63,8 @@
       homeMode = "700";
       extraGroups = [ "wheel" "video" "input" "plugdev" "audio" "networkmanager" "libvirtd" "wireshark" "adbusers" "adbusers" "uucp" "dialout" "vboxusers" "realtime" "docker" ];
       uid = 1000;
-      openssh.authorizedKeys.keys     = lib.mkMerge [];
-      openssh.authorizedKeys.keyFiles = lib.mkMerge []; # /home/attackercow/.ssh/authorized_keys ];
+      # openssh.authorizedKeys.keys = lib.mkMerge [ ];
+      # openssh.authorizedKeys.keyFiles = lib.mkMerge [ ];
     };
   };
   #users.mutableUsers = false;

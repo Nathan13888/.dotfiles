@@ -87,10 +87,26 @@
       WOL_DISABLE = lib.mkDefault "Y";
 
       START_CHARGE_THRESH_BAT0 = "0";
-      STOP_CHARGE_THRESH_BAT0 = "85";
+      STOP_CHARGE_THRESH_BAT0 = "90";
     };
   };
+
+  # Auto Freq
+  services.auto-cpufreq.enable = lib.mkDefault false;
+  services.auto-cpufreq.settings = {
+    battery = {
+      governor = "powersave";
+      turbo = "never";
+    };
+    charger = {
+      governor = "performance";
+      turbo = "auto";
+    };
+  };
+
   services.power-profiles-daemon.enable = lib.mkDefault false;
+
+  powerManagement.powertop.enable = true;
 
   # TODO
   systemd.services.post-resume-custom = {

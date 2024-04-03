@@ -8,8 +8,8 @@
   services.xserver = {
     enable = true;
     #enable = false;
-    layout = "us";
-    xkbOptions = "eurosign:e";
+    xkb.layout = "us";
+    xkb.options = "eurosign:e";
     dpi = 96;
     desktopManager = {
       xterm.enable = false;

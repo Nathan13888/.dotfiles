@@ -1,4 +1,11 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  system,
+  nixpkgs-staging-next,
+  ...
+}:
 
 {
   programs.adb.enable = true;
@@ -24,6 +31,15 @@
   #services.envfs.enable = true;
 
   programs.corectrl.enable = true;
+
+  # TODO: workaround for https://github.com/NixOS/nixpkgs/pull/300028
+  # SOURCE: https://github.com/DarkKirb/nixos-config/pull/381/
+  system.replaceRuntimeDependencies = [
+    {
+      original = pkgs.xz;
+      replacement = nixpkgs-staging-next.legacyPackages.${system}.xz;
+    }
+  ];
 
   environment = {
     #variables.LANGUAGE = "en_CA";

@@ -21,15 +21,16 @@
   nix.settings.cores = 8;
 
   # Chaotic Nyx
+  # --option 'extra-substituters' 'https://nyx.chaotic.cx/' --option extra-trusted-public-keys "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
   chaotic.nyx.cache.enable = true; # enable cache (default)
 
   # TODO:
   # Kernel and HDR (Sussy)
-  #boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  boot.kernelPackages = pkgs.linuxPackages_cachyos;
   #chaotic.hdr = {
   #  enable = true;
   #};
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # loading `amdgpu` kernelModule at stage 1. (Add `amdgpu` to `boot.initrd.kernelModules`)
   hardware.amdgpu.loadInInitrd = true;
@@ -159,8 +160,7 @@
   fileSystems."/tmp" = {
     device = "none";
     fsType = "tmpfs";
-    options = [ "defaults" "size=14G" "mode=755" ];
-    #options = [ "defaults" "size=24G" "mode=755" ];
+    options = [ "defaults" "size=8G" "mode=755" ];
   };
 
   # Setup keyfile
@@ -175,7 +175,7 @@
     "amd_iommu=on"
     "mem_sleep_default=deep"
     "nvme_core.default_ps_max_latency_us=0"
-    "memmap=12M$20M"
+    #"memmap=12M$20M" #https://kb.pmem.io/
   ];
   # "nohibernate"
 

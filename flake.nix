@@ -3,6 +3,7 @@
   inputs = {
     # Nixpkgs
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-staging-next.url = "github:NixOS/nixpkgs/staging-next";
 
     # Home Manager
     home-manager = {
@@ -30,7 +31,7 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, nixos-hardware, chaotic, hyprland, ... }:
+  outputs = inputs @ { self, nixpkgs, nixpkgs-staging-next, home-manager, nixos-hardware, chaotic, hyprland, ... }:
     let
       system = "x86_64-linux";
     in
@@ -51,20 +52,20 @@
         jirachi = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit (nixpkgs) lib;
+            inherit nixpkgs-staging-next;
             inherit inputs; # important for hyprland!
             inherit system;
           };
           modules = [
-            nixos-hardware.nixosModules.lenovo-thinkpad-z
-            ./hosts/jirachi/hardware-configuration.nix
-            ./nixos/configuration.nix
-
             chaotic.nixosModules.default
             #nix-ld.nixosModules.nix-ld
-
             hyprland.nixosModules.default
             {programs.hyprland.enable = true;}
             # TODO: ./secrets/eduroam.nix
+
+            nixos-hardware.nixosModules.lenovo-thinkpad-z
+            ./hosts/jirachi/hardware-configuration.nix
+            ./nixos/configuration.nix
           ];
         };
         lennar = nixpkgs.lib.nixosSystem {

@@ -11,8 +11,6 @@
     ./packages.nix
     ./wm.nix
     ./audio.nix
-
-    <home-manager/nixos>
   ];
 
   boot = {

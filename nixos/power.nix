@@ -29,8 +29,8 @@
   # TODO: systemd-inhibit --what=handle-lid-switch lock-screen-tool
   # ignore lidswitch
   services.logind.extraConfig = ''
-    LidSwitchIgnoreInhibited=no
 
+    LidSwitchIgnoreInhibited=yes
     IdleAction=ignore
   '';
 

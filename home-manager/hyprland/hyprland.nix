@@ -5,48 +5,43 @@ let
   grimblast = "~/scripts/grimblast";
   scripts = "~/scripts";
 
+  # TODO: fix
   big_mon = "DP-1";
   smol_mon = "eDP-1";
 in
 ''
   # TODO: make device specific settings
   # See https://wiki.hyprland.org/Configuring/Monitors/
+  # See https://wiki.hyprland.org/Configuring/Keywords/ for more
 
   #monitor=${big_mon},5120x1440@60,0x0,1
   #monitor=${big_mon},5120x1440@60,0x0,auto,bitdepth,10
   #monitor=${big_mon},5120x1440@120,auto,auto,bitdepth,10
   #monitor=${smol_mon},preferred,1600x1440,auto # lennar
   #monitor=${smol_mon},preferred,640x1440,auto # jirachi
-  #monitor=,highres,auto,2
   #monitor=,preferred,auto,auto,bitdepth,10
   monitor=,preferred,auto,auto
   monitor=,addreserved,64,10,10,10
 
   exec-once=${scripts}/handle_monitor_connect.sh # TODO
 
-  # See https://wiki.hyprland.org/Configuring/Keywords/ for more
 
-  #exec-once = hyperpaper
   exec-once = dunst
   exec-once = aw-server # Activity Watch Server
 
-  # TODO: exit/suspend scripts
-  # Notice that `swaymsg exit` will run after gtkgreet.
-  #     exec "${pkgs.greetd.gtkgreet}/bin/gtkgreet -l; swaymsg exit"
+  # Auto Lock. Lid Switch.
+  exec-once = xidlehook --detect-sleep --not-when-audio --not-when-fullscreen --timer 300 \'xset dpms force standby\' \'\' --timer 300 \'${scripts}/lock.sh\' \'\' --timer 300 \'systemctl suspend\' \'\'
   bindl=,switch:Lid Switch, exec, ${scripts}/lock.sh
 
   exec-once=wl-clipboard-history -t
   exec-once=batsignal -w 25 -c 7 -d 5 -f 95 -D "touch /tmp/reached_danger_level"
   exec-once=export KP_ROOT="$HOME/KeepassXC" && cat "$KP_ROOT/pass.txt" | keepassxc --keyfile "$KP_ROOT/unlock.key" --pw-stdin "$KP_ROOT/default.kdbx"
-  # TODO: polkit agent
-  # TODO: enable in new update
-  #exec-once=blueman-applet
-  #exec-once=nm-applet
+
   # TODO: https://wiki.hyprland.org/Useful-Utilities/Clipboard-Managers/
 
 
   # Source a file (multi-file configs)
-  # TODO:
+  # TODO: implement
   # source = ~/.config/hypr/myColors.conf
 
   # sets xwayland scale
@@ -157,13 +152,10 @@ in
     workspace_swipe_fingers=3
   }
 
-  device:epic mouse V1 {
-    sensitivity = -0.5
-  }
-
   # https://wiki.hyprland.org/Configuring/Window-Rules/
 
   $mod = SUPER
+  # TODO: https://github.com/raphamorim/rio
   bind = $mod, Return, exec, kitty # make this wtv $TERMINAL is
   bind = $mod SHIFT, c, killactive, 
   bind = $mod SHIFT, space, togglefloating, 
@@ -315,7 +307,7 @@ in
 
   # Firefox Sharing Indicator
   windowrulev2 = float,title:^(Firefox — Sharing Indicator)$
-  windowrulev2 = nofullscreenrequest,title:^(Firefox — Sharing Indicator)$
+  #windowrulev2 = nofullscreenrequest,title:^(Firefox — Sharing Indicator)$
   windowrulev2 = move 0 0,title:^(Firefox — Sharing Indicator)$
   windowrulev2 = maxsize 55 31,title:^(Firefox — Sharing Indicator)$
 

@@ -35,6 +35,11 @@ mkdot() {
     fi
 }
 
+function exp-path() {
+  SEL="$(readlink -f $1)"
+  export PATH="$PATH:$SEL"
+}
+
 function aurcommit() {
         MSG=$*
         if [[ -z "$1" ]]; then
@@ -268,7 +273,7 @@ alias stripexif="exiftool -all:all= -tagsfromfile @ -exif:Orientation"
 if command -v exa &> /dev/null; then
     alias ls="exa -@ --time-style iso --octal-permissions --no-permissions"
 fi
-alias la='ls -alhFg --color=always --group-directories-first'
+alias la='ls -alhg --color=always --group-directories-first'
 alias lag="la | grep --color=always ''"
 alias lad="la | grep --color=always '^d'"
 alias laf="la | grep --color=always '^-'"

@@ -33,6 +33,8 @@
     ~/.gitmessage.txt: .gitmessage.txt
 #    ~/.tmux.conf: .tmux.conf
 
+    # NIX
+    ~/.config/nixpkgs: .config/nixpkgs
 
     # WM
     ~/.config/mimeapps.list: .config/mimeapps.list
@@ -45,6 +47,7 @@
     ~/.config/fcitx5: .config/fcitx5
     ~/.local/share/fcitx5: .local/share/fcitx5
     #~/.config/powernotd/config.json: .config/powernotd/config.json
+    ~/.config/hypr/hyprlock.conf: .config/hypr/hyprlock.conf
     ~/.config/spotify-adblock: .config/spotify-adblock
 
     ~/.local/share/applications: .local/share/applications

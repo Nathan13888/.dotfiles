@@ -3,6 +3,10 @@
 if grep closed /proc/acpi/button/lid/*/state; then
     echo "lock.sh: lid is closed"
     $HOME/scripts/backlight.sh disable
+
+    # lock screen
+    hyprlock
+
     #if [[ `hyprctl monitors | grep "Monitor" | wc -l` != 1 ]]; then
         # TODO: auto detect monitor at ID 0
 

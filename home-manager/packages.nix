@@ -58,26 +58,26 @@
     syncthing
     asciinema
     gimp krita inkscape
-    darktable # TODO
+    darktable
     tenacity #mixxx spek
     libsForQt5.kdenlive libsForQt5.kio-extras
-    handbrake
+    #handbrake # TODO
     #kicad #TODO
     freecad openscad qcad
     blender
     orca-slicer
-    super-slicer
+    #super-slicer
     android-file-transfer go-mtpfs
     rclone
-    yt-dlp transmission-gtk qbittorrent
-    ffmpeg
+    yt-dlp transmission-gtk qbittorrent deluge-gtk
+    ffmpeg mediainfo
     img2pdf pdftk ocrmypdf poppler
     exiftool mat2
     libheif
     icoutils
 
     ## Dev Tools
-    kitty thefuck
+    rio kitty thefuck
     hub gh git-lfs git-extras # Git
     killall
     wakatime time hyperfine tokei eza # Measurement
@@ -160,7 +160,7 @@
     nmon sysstat memtest86plus iotop ioping
     fio kdiskmark phoronix-test-suite sysbench # Benchmark
     unar p7zip zip unzip #rar unrar
-    gnutar pigz lz4 zstd xz lzip gzip
+    gnutar pigz lz4 zstd lzip gzip # TODO: fuck you xz vulnerability
     smartmontools
     hdparm sdparm nvme-cli sedutil
     idle3tools
@@ -173,20 +173,21 @@
     apacheHttpd
 
     ## System/WM Utilities
-    eww-wayland swww socat acpi
+    eww swww socat acpi
     bemenu
     dunst libnotify
     batsignal
     wlr-randr
+    v4l-utils
     grim slurp wayshot
     feh
-    xss-lock
+    hyprlock xidlehook
     mpd mpc-cli
     lxappearance
     networkmanagerapplet
     gnome.dconf-editor
 
-    gnupg pinentry-gnome gnome.gnome-keyring gnome.seahorse libsecret
+    gnupg gnome.gnome-keyring gnome.seahorse libsecret
     networkmanager
     #gnome.gnome-screenshot # TODO:
     gnome-firmware gnome.gnome-control-center gnome.gnome-system-monitor
@@ -199,7 +200,7 @@
     notify-desktop
     wl-clipboard xclip
     lxqt.lxqt-policykit
-    nvtop clinfo vulkan-tools libva-utils rocmPackages.rocminfo
+    nvtopPackages.full clinfo vulkan-tools libva-utils rocmPackages.rocminfo rocmPackages.rocm-smi
     bleachbit
 
     gnome.gnome-tweaks

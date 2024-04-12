@@ -13,7 +13,15 @@
   environment.variables = {
     #NIX_BUILD_CORES = "15"
     #AMD_VULKAN_ICD = "RADV";
+
+    # ls -l /dev/dri/by-path
+    WLR_DRM_DEVICES = "/dev/dri/card1:/dev/dri/card0";
   };
+
+  environment.systemPackages = with pkgs; [
+    # TODO:
+    #howdy
+  ];
 
   # Build Settings
   # TODO:
@@ -27,10 +35,10 @@
   # TODO:
   # Kernel and HDR (Sussy)
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
-  #chaotic.hdr = {
-  #  enable = true;
-  #};
-  #boot.kernelPackages = pkgs.linuxPackages_latest;
+  chaotic.hdr = {
+    enable = true;
+  };
+  #boot.kernelPackages = pkgs.linuxPackages_xanmod_latest;
 
   # loading `amdgpu` kernelModule at stage 1. (Add `amdgpu` to `boot.initrd.kernelModules`)
   hardware.amdgpu.loadInInitrd = true;
@@ -109,6 +117,7 @@
   # Udev rules
   # allow users to change display brightness (oled)
   # disable wakeup for pci devices
+  services.udev.enable = true;
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="amdgpu_bl1", MODE="0666", RUN+="${pkgs.coreutils}/bin/chmod a+w /sys/class/backlight/%k/brightness"
     ACTION=="add", SUBSYSTEM=="pci", DRIVER=="pcieport", ATTR{power/wakeup}="disabled"
@@ -120,8 +129,10 @@
     percentageLow = 10;
     percentageCritical = 7;
     percentageAction = 3;
+    # TODO: fix, remove shutdown
     criticalPowerAction = "HybridSleep"; # "PowerOff" "Hibernate" "HybridSleep"
   };
+  # TODO: https://gist.github.com/mattdenner/befcf099f5cfcc06ea04dcdd4969a221
 
   ### TLP
   powerManagement = {
@@ -134,18 +145,18 @@
   services.tlp = {
     enable = true;
     settings = {
-      # CPU_SCALING_GOVERNOR_ON_AC = "performance";
-      # CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+      CPU_SCALING_GOVERNOR_ON_AC = "performance";
+      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
-      # CPU_SCALING_MIN_FREQ_ON_AC = "400000";
-      # CPU_SCALING_MAX_FREQ_ON_AC = "4785000";
-      # CPU_SCALING_MIN_FREQ_ON_BAT = "400000";
-      # CPU_SCALING_MAX_FREQ_ON_BAT = "3200000";
+      CPU_SCALING_MIN_FREQ_ON_AC = "400000";
+      CPU_SCALING_MAX_FREQ_ON_AC = "4785000";
+      CPU_SCALING_MIN_FREQ_ON_BAT = "400000";
+      CPU_SCALING_MAX_FREQ_ON_BAT = "3200000";
 
       SOUND_POWER_SAVE_ON_AC = "0";
-      SOUND_POWER_SAVE_ON_BAT = "0";
+      SOUND_POWER_SAVE_ON_BAT = "1"; # TODO: check
 
-      TLP_DEFAULT_MODE = "BAT";
+      TLP_DEFAULT_MODE = "BAT"; # TODO: check
       TLP_PERSISTENT_DEFAULT = 1;
 
       RADEON_DPM_PERF_LEVEL_ON_AC = "auto";
@@ -155,7 +166,7 @@
     };
   };
 
-  services.auto-cpufreq.enable = true;
+  #services.auto-cpufreq.enable = true;
 
   fileSystems."/tmp" = {
     device = "none";
@@ -175,6 +186,7 @@
     "amd_iommu=on"
     "mem_sleep_default=deep"
     "nvme_core.default_ps_max_latency_us=0"
+    # TODO:
     #"memmap=12M$20M" #https://kb.pmem.io/
   ];
   # "nohibernate"

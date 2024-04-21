@@ -1,5 +1,6 @@
 [user]
-name = Nathan13888
+name = Nathan
+#name = Nathan13888
 email = 29968201+Nathan13888@users.noreply.github.com
 
 [include]
@@ -192,9 +193,14 @@ pushInsteadOf = "gist:"
 insteadOf = "gl:"
 pushInsteadOf = "gl:"
 
-[url "gitea@192.168.10.200:"]
+[url "https://nathan13888@git.nathanchung.dev/"]
+#[url "gitea@192.168.10.200:"]
 insteadOf = "https://git.nathanchung.dev/"
 pushInsteadOf = "https://git.nathanchung.dev/"
+
+[url "git@csclub.uwaterloo.ca:"]
+insteadOf = "https://git.csclub.uwaterloo.ca/"
+pushInsteadOf = "https://git.csclub.uwaterloo.ca/"
 
 [url "ist-git@git.uwaterloo.ca:"]
 insteadOf = "https://git.uwaterloo.ca/"
@@ -209,3 +215,5 @@ rebase = false
 [init]
 defaultBranch = master
 #defaultBranch=$(git config --get init.defaultBranch || echo master)
+[advice]
+	addIgnoredFile = false

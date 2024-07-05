@@ -87,7 +87,9 @@
     #options = [ "defaults" "size=24G" "mode=755" ];
   };
 
-  boot.kernelParams = [ "mem_sleep_default=deep" ];
+  boot.kernelParams = [
+    "mem_sleep_default=deep"
+  ];
   #boot.kernelParams = [ "nohibernate" "nvme_core.default_ps_max_latency_us=0" "zfs_import_dir=/dev/disk/by-id" "zfs.zfs_arc_max=8589934592" "resume=/dev/vg0/lvswap" "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
 
   #boot.initrd.availableKernelModules = [

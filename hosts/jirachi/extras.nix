@@ -36,7 +36,8 @@
   # Kernel and HDR (Sussy)
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
   chaotic.hdr = {
-    enable = true;
+    enable = false;
+    #enable = true;
   };
   #boot.kernelPackages = pkgs.linuxPackages_xanmod_latest;
 
@@ -189,7 +190,6 @@
     # TODO:
     #"memmap=12M$20M" #https://kb.pmem.io/
   ];
-  # "nohibernate"
 
   #boot.initrd.availableKernelModules = [
   #  "aesni_intel" "cryptd"

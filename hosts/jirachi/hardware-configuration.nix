@@ -33,6 +33,7 @@
       fsType = "btrfs";
     };
 
+  # TODO: TPM unlock
   boot.initrd.luks.devices."luks-257293d5-1268-4412-a6b6-3b2813ea132b".device = "/dev/disk/by-uuid/257293d5-1268-4412-a6b6-3b2813ea132b";
 
   swapDevices = [
@@ -42,6 +43,7 @@
       randomEncryption.enable = true;
     }
   ];
+  boot.resumeDevice = "/dev/dm-1";
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's

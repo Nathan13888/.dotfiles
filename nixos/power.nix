@@ -30,7 +30,7 @@
   # ignore lidswitch
   services.logind.extraConfig = ''
 
-    LidSwitchIgnoreInhibited=yes
+    LidSwitchIgnoreInhibited=no
     IdleAction=ignore
   '';
 
@@ -40,10 +40,20 @@
     AllowSuspend=yes
     AllowHibernation=yes
     AllowSuspendThenHibernate=yes
-    AllowHybridSleep=no
-    SuspendState=mem standby
+    AllowHybridSleep=yes
+
+    SuspendState=freeze
+    HibernateDelaySec=30m
   '';
+  # ❯ cat /sys/power/state
+  # freeze mem disk
+  # ❯ cat /sys/power/mem_sleep
+  # s2idle
+  # ❯ cat /sys/power/disk
+  # [platform] shutdown reboot suspend test_resume
+
   #SuspendMode=
+  #SuspendState=mem standby
   #SuspendState=mem freeze standby
   #HibernateMode=platform shutdown
   #HibernateState=disk
@@ -114,13 +124,15 @@
     wantedBy = [ "post-resume.target" ];
     after = [ "post-resume.target" ];
     script = ''
-      echo "This should show up in the journal after resuming."
+      echo "This should show up in the journal after resuming 1."
+      ${pkgs.util-linux}/bin/rfkill unblock wlan0
     '';
     serviceConfig.Type = "oneshot";
   };
 
   powerManagement.resumeCommands = ''
-    echo "This should show up in the journal after resuming."
+    echo "This should show up in the journal after resuming 2."
+    ${pkgs.xorg.xbacklight}/bin/xbacklight -set 50
   '';
 
 }

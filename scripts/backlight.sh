@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-STEPS="7"
+STEPS="12"
 MAX="100"
 MIN="1"
 DEFAULT="50"
@@ -13,15 +13,25 @@ function set {
 }
 
 function inc {
-    TMP=$(( $(cur) + $(stepSize) ))
-    TMP=$(( $TMP<=$MAX ? $TMP : $MAX ))
-    set $TMP
+    #TMP=$(( $(cur) + $(stepSize) ))
+    #TMP=$(( $TMP<=$MAX ? $TMP : $MAX ))
+    #set $TMP
+    if [ ! -f $STATE_FILE ]; then
+        xbacklight -set $(cur)
+    fi
+    xbacklight -inc $(stepSize)
+    cur > $STATE_FILE
 }
 
 function dec {
-    TMP=$(( $(cur) - $(stepSize) ))
-    TMP=$(( $TMP>=0 ? $TMP : $MIN ))
-    set $TMP
+    #TMP=$(( $(cur) - $(stepSize) ))
+    #TMP=$(( $TMP>=0 ? $TMP : $MIN ))
+    #set $TMP
+    if [ ! -f $STATE_FILE ]; then
+        xbacklight -set $(cur)
+    fi
+    xbacklight -dec $(stepSize)
+    cur > $STATE_FILE
 }
 
 function min {

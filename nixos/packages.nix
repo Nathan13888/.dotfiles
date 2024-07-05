@@ -48,7 +48,7 @@
     #variables.LC_CTYPE = "en_CA.UTF-8";
     variables.TMPDIR = "/tmp";
     variables.EDITOR = "nvim";
-    variables.TERMINAL = "kitty";
+    variables.TERMINAL = "rio";
     variables.TERM = "xterm-256color";
     variables.BROWSER = "firefox";
     #variables.XDG_DATA_DIRS = "/var/lib/flatpak/exports/share:/home/attackercow/.local/share/flatpak/exports/share";
@@ -87,7 +87,7 @@
   ];
 
   nix = {
-    package = lib.mkDefault pkgs.nixUnstable;
+    package = lib.mkDefault pkgs.nixVersions.latest;
     # TODO:
     #settings.trusted-substituters = [
     #  "http://cache.nixos.org"

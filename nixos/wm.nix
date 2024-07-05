@@ -15,26 +15,6 @@
       xterm.enable = false;
     };
 
-    # Enable touchpad support (enabled default in most desktopManager).
-    libinput = {
-      enable = true;
-      # disabling mouse acceleration
-      mouse = {
-        accelProfile = "adaptive";
-        naturalScrolling = false;
-        accelSpeed = null;
-      };
-      # disabling touchpad acceleration
-      touchpad = {
-        accelProfile = "flat";
-        scrollMethod = "twofinger";
-        naturalScrolling = true;
-        tapping = false;
-        tappingButtonMap = "lrm";
-        accelSpeed = "1"; # float value in [-1,1]
-      };
-      # ^^^ or "adaptive"
-    };
 
 
     # TODO: move to GDM
@@ -42,8 +22,29 @@
     displayManager.gdm.wayland = true;
   };
 
+  # Enable touchpad support (enabled default in most desktopManager).
+  services.libinput = {
+    enable = true;
+    # disabling mouse acceleration
+    mouse = {
+      accelProfile = "adaptive";
+      naturalScrolling = false;
+      accelSpeed = null;
+    };
+    # disabling touchpad acceleration
+    touchpad = {
+      accelProfile = "flat";
+      scrollMethod = "twofinger";
+      naturalScrolling = true;
+      tapping = false;
+      tappingButtonMap = "lrm";
+      accelSpeed = "1"; # float value in [-1,1]
+    };
+    # ^^^ or "adaptive"
+  };
+
   # TODO: move gnome
-  services.xserver.displayManager.defaultSession = "hyprland";
+  services.displayManager.defaultSession = "hyprland";
   environment.gnome.excludePackages = (with pkgs; [
     gnome-photos
     gnome-tour
@@ -91,7 +92,7 @@
 
     packages = with pkgs; [
       source-code-pro
-      nerdfonts
+      #nerdfonts
       fira
       fira-code
       fira-mono

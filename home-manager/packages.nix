@@ -110,6 +110,7 @@
     in python3Custom)
     micromamba
     ruby
+    nixd nil
     rustup
     distrobox
     podman-compose docker-compose
@@ -184,6 +185,7 @@
     grim slurp wayshot
     feh
     hyprlock xidlehook
+    hyprpaper
     mpd mpc-cli
     lxappearance
     networkmanagerapplet

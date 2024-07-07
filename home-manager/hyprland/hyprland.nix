@@ -160,7 +160,7 @@ in
   $mod = SUPER
   bind = $mod, Return, exec, ${TERMINAL}
   bind = $mod SHIFT, c, killactive, 
-  bind = $mod SHIFT, space, togglefloating, 
+  bind = $mod, space, togglefloating, 
   bind = $mod, f, fullscreen, 
   bind = $mod SHIFT, f, fakefullscreen, 
   bind = $mod, p, pin,

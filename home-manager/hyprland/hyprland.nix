@@ -8,6 +8,9 @@ let
   # TODO: fix
   big_mon = "DP-1";
   smol_mon = "eDP-1";
+
+  #TERMINAL = "kitty";
+  TERMINAL = "rio";
 in
 ''
   # TODO: make device specific settings
@@ -155,8 +158,7 @@ in
   # https://wiki.hyprland.org/Configuring/Window-Rules/
 
   $mod = SUPER
-  # TODO: https://github.com/raphamorim/rio
-  bind = $mod, Return, exec, kitty # make this wtv $TERMINAL is
+  bind = $mod, Return, exec, ${TERMINAL}
   bind = $mod SHIFT, c, killactive, 
   bind = $mod SHIFT, space, togglefloating, 
   bind = $mod, f, fullscreen, 

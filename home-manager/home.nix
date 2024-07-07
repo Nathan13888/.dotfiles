@@ -12,7 +12,7 @@
   # You can update Home Manager without changing this value
   home.stateVersion = "22.11";
 
-  programs.home-manager.enable = true;
+  #programs.home-manager.enable = true;
 
 }
 

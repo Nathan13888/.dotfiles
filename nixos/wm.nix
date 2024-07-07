@@ -7,7 +7,6 @@
   # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
-    #enable = false;
     xkb.layout = "us";
     xkb.options = "eurosign:e";
     dpi = 96;
@@ -15,13 +14,11 @@
       xterm.enable = false;
     };
 
-
-
-    # TODO: move to GDM
     displayManager.gdm.enable = true;
     displayManager.gdm.wayland = true;
   };
 
+  # TODO: refactor to laptops
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput = {
     enable = true;
@@ -43,30 +40,13 @@
     # ^^^ or "adaptive"
   };
 
-  # TODO: move gnome
+  # https://wiki.hyprland.org/Nix/
+  programs.hyprland.enable = true;
+  environment.sessionVariables.NIXOS_OZONE_WL = "1"; # hint electron apps to use wayland
   services.displayManager.defaultSession = "hyprland";
-  environment.gnome.excludePackages = (with pkgs; [
-    gnome-photos
-    gnome-tour
-  ]) ++ (with pkgs.gnome; [
-    cheese # webcam tool
-    gnome-music
-    gnome-terminal
-    gedit # text editor
-    epiphany # web browser
-    geary # email reader
-    evince # document viewer
-    gnome-characters
-    totem # video player
-    tali # poker game
-    iagno # go game
-    hitori # sudoku game
-    atomix # puzzle game
-  ]);
 
   xdg.portal.config.common.default = "*";
   xdg.portal.enable = true;
-  # TODO: move wayland
   xdg.portal.extraPortals = with pkgs; [
     #xdg-desktop-portal-wlr
     xdg-desktop-portal-gtk

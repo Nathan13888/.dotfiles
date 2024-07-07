@@ -19,6 +19,7 @@
 
   home.packages = with pkgs; [
     ## Applications/Clients
+    vesktop
     #discord-ptb betterdiscordctl
     discordchatexporter-cli
     element-desktop
@@ -29,10 +30,10 @@
     #teams #zoom-us
     spotify
     spicetify-cli
-    vifm ranger w3m xfce.thunar gnome.file-roller # File Explorer
+    vifm ranger w3m xfce.thunar file-roller # File Explorer
     calibre
     filezilla
-    dbeaver
+    dbeaver-bin
     #thunderbird-bin protonmail-bridge # Email
     #openrgb liquidctl razergenie #openrazer-daemon 
     keepassxc bitwarden-cli
@@ -43,7 +44,7 @@
     zinit starship fzf ripgrep # Prompt
     zoxide # `cd` alternative
     neovim #neovide
-    vscode-fhs
+    vscode-fhs #TODO:zed-editor
     jetbrains.idea-community
     onlyoffice-bin
     libreoffice
@@ -69,7 +70,7 @@
     #super-slicer
     android-file-transfer go-mtpfs
     rclone
-    yt-dlp transmission-gtk qbittorrent deluge-gtk
+    yt-dlp transmission_4-gtk qbittorrent deluge-gtk
     ffmpeg mediainfo
     img2pdf pdftk ocrmypdf poppler
     exiftool mat2
@@ -82,7 +83,7 @@
     killall
     wakatime time hyperfine tokei eza # Measurement
     ripgrep jq jo # Text Manipulation
-    gnumake ccache gdb valgrind
+    gnumake gdb valgrind
     patchelf steam-run
     nixpkgs-fmt
     openssl
@@ -91,7 +92,7 @@
     go
     temurin-jre-bin maven #jdk
     lua
-    nodejs
+    nodejs bun fnm
     racket
     #python39Full
     (let
@@ -110,6 +111,7 @@
     micromamba
     ruby
     rustup
+    distrobox
     podman-compose docker-compose
     drone-cli
     heroku netlify-cli
@@ -121,7 +123,7 @@
     esptool-ck #openocd
 
     #wineWowPackages.full
-    gnome.zenity
+    zenity
     #arch-install-scripts nixos-install-tools
     #nix-index
 
@@ -185,12 +187,13 @@
     mpd mpc-cli
     lxappearance
     networkmanagerapplet
-    gnome.dconf-editor
 
-    gnupg gnome.gnome-keyring gnome.seahorse libsecret
+    gnupg gnome-keyring seahorse libsecret
     networkmanager
     #gnome.gnome-screenshot # TODO:
-    gnome-firmware gnome.gnome-control-center gnome.gnome-system-monitor
+    gnome-firmware gnome.gnome-control-center gnome-system-monitor
+    dconf-editor
+    #gnome.gnome-shell
     gnome.gnome-power-manager
     bluez bluez-tools blueman
     flameshot
@@ -203,7 +206,7 @@
     nvtopPackages.full clinfo vulkan-tools libva-utils rocmPackages.rocminfo rocmPackages.rocm-smi
     bleachbit
 
-    gnome.gnome-tweaks
+    gnome-tweaks
     gnomeExtensions.appindicator
     gnomeExtensions.pop-shell
     gnomeExtensions.user-themes

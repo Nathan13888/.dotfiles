@@ -42,7 +42,7 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = {  inherit system nixpkgs home-manager; };
           modules = [
-            hyprland.homeManagerModules.default
+            #hyprland.homeManagerModules.default
             ./home-manager/home.nix
           ];
         };
@@ -59,13 +59,15 @@
           modules = [
             chaotic.nixosModules.default
             #nix-ld.nixosModules.nix-ld
-            hyprland.nixosModules.default
-            {programs.hyprland.enable = true;}
+            #hyprland.nixosModules.default
+            #{programs.hyprland.enable = true;}
             # TODO: ./secrets/eduroam.nix
 
             nixos-hardware.nixosModules.lenovo-thinkpad-z
             ./hosts/jirachi/hardware-configuration.nix
             ./nixos/configuration.nix
+
+	    #<home-manager/nixos>
           ];
         };
         lennar = nixpkgs.lib.nixosSystem {
@@ -76,7 +78,7 @@
           modules = [
             nixos-hardware.nixosModules.lenovo-thinkpad-x1-7th-gen
             hyprland.nixosModules.default
-            {programs.hyprland.enable = true;}
+            #{programs.hyprland.enable = true;}
             ./nixos/configuration.nix
             ./hosts/lennar/hardware-configuration.nix
           ];

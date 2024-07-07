@@ -41,12 +41,10 @@
   };
   #boot.kernelPackages = pkgs.linuxPackages_xanmod_latest;
 
-  # loading `amdgpu` kernelModule at stage 1. (Add `amdgpu` to `boot.initrd.kernelModules`)
-  hardware.amdgpu.loadInInitrd = true;
   # use amdvlk drivers instead mesa radv drivers
-  hardware.amdgpu.amdvlk = false;
+  hardware.amdgpu.amdvlk.enable = false;
   # rocm opencl runtime (Install rocm-opencl-icd and rocm-opencl-runtime)
-  hardware.amdgpu.opencl = true;
+  hardware.amdgpu.opencl.enable = true;
 
   ## HIP
   systemd.tmpfiles.rules = [
@@ -56,9 +54,8 @@
   # vainfo rocminfo vulkaninfo clinfo nvtop
   # getfacl /dev/dri/card0
 
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
-    driSupport = true;
     extraPackages = with pkgs; [
       rocmPackages.clr.icd
       rocm-opencl-icd
@@ -73,12 +70,10 @@
     extraPackages32 = with pkgs; [
       driversi686Linux.amdvlk
     ];
-
   };
 
-
   # Steam
-  hardware.opengl.driSupport32Bit = true;
+  hardware.graphics.enable32Bit = true;
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play

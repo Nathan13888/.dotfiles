@@ -1,4 +1,5 @@
 [user]
+
 name = Nathan
 #name = Nathan13888
 email = 29968201+Nathan13888@users.noreply.github.com
@@ -35,6 +36,8 @@ undo2 = reset HEAD~2
 undo3 = reset HEAD~3
 rmc = rm --cached # remove from VCS
 us = reset --     # "unstage"; git reset [commit(def=HEAD)] -- <path>
+rs = restore --staged
+r = restore
 ci = check-ignore
 resethard = reset --hard
 squash-all = "!f(){ git reset $(git commit-tree HEAD^{tree} \"$@\");};f"

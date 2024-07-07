@@ -42,6 +42,7 @@
     defaultCacheTtl = 34560000;
     maxCacheTtl = 34560000;
     enableSshSupport = true;
+    pinentryPackage = pkgs.pinentry-gnome3;
   };
 
   services.gnome-keyring = {

@@ -3,7 +3,7 @@ iwd
 eduroam
 *.local
 *.bin
-
+.local/share/fcitx5
 
 *.old
 *.log

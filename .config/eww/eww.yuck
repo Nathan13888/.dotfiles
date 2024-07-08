@@ -68,7 +68,7 @@
                 
                 :onclick "$HOME/.config/eww/scripts/pop system"
                 
-                ""))))
+                "🔋"))))
 
 
 (defwidget mem []
@@ -83,7 +83,7 @@
                 :onclick "$HOME/.config/eww/scripts/pop system"
                 
                 
-                ""))))
+                "🧱"))))
 
 
 
@@ -96,7 +96,7 @@
 			  :onhoverlost "${eww} update time_rev=false"
     (box :class "module" :space-evenly "false"  :spacing "3" 
       (label :text clock_time :class "clock_time_class" )
-      (label :text "" :class "clock_time_sep" )
+      (label :text ":" :class "clock_time_sep" )
       (label :text clock_minute :class "clock_minute_class")
 	  (revealer :transition "slideleft"
 			  :reveal time_rev
@@ -110,7 +110,7 @@
   (eventbox :onhover "${eww} update vol_reveal=true"
 			  :onhoverlost "${eww} update vol_reveal=false"
   (box :class "module-2" :space-evenly "false"  :spacing "3" 
-	(button   :onclick "$HOME/.config/eww/scripts/pop audio"   :class "volume_icon" "")
+	(button   :onclick "$HOME/.config/eww/scripts/pop audio"   :class "volume_icon" "📢")
 	(revealer :transition "slideleft"
 			  :reveal vol_reveal
 			  :duration "350ms"
@@ -125,7 +125,7 @@
 (defwidget bright []
   (eventbox :onhover "${eww} update br_reveal=true" :onhoverlost "${eww} update br_reveal=false"
   (box :class "module-2" :space-evenly "false"  :spacing "3" 
-    (label :text "" :class "bright_icon" :tooltip "brightness")
+    (label :text "☀️" :class "bright_icon" :tooltip "brightness")
 	(revealer :transition "slideleft"
 			  :reveal br_reveal
 			  :duration "350ms"
@@ -235,6 +235,7 @@
                 
                 )))
             (label :text "" :class "sys_sep" :halign "center")
+
   (box :class "sys_mem_box"  :space-evenly "false" :halign "start"
       (circular-progress :value memory
                 :class "sys_mem"
@@ -337,9 +338,9 @@
 				(label :halign "center" :class "music"  :limit-width 13 :text song)
 				(label :halign "center" :class "music_artist"  :limit-width 15 :text song_artist)
 				(box  :spacing 15 :halign "center" :space-evenly "false" :vexpand "false" :hexpand "false"
-					(button :class "music_btn_prev" :onclick "$HOME/.config/eww/scripts/music_info --prev" "")
+					(button :class "music_btn_prev" :onclick "$HOME/.config/eww/scripts/music_info --prev" "⬅️")
 					(button :class "music_btn_play" :onclick "$HOME/.config/eww/scripts/music_info --toggle" song_status)
-					(button :class "music_btn_next" :onclick "$HOME/.config/eww/scripts/music_info --next" ""))
+					(button :class "music_btn_next" :onclick "$HOME/.config/eww/scripts/music_info --next" "➡️"))
 				(box :class "music_bar" :halign "center" :vexpand "false" :hexpand "false" :space-evenly "false"
 					(scale :onscroll "mpc -q seek {}" :min 0 :active "true" :max 100 :value current_status)))))
 

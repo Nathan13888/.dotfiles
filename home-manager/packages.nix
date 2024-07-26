@@ -44,7 +44,7 @@
     zinit starship fzf ripgrep # Prompt
     zoxide # `cd` alternative
     neovim #neovide
-    vscode-fhs #TODO:zed-editor
+    vscode zed-editor
     jetbrains.idea-community
     onlyoffice-bin
     libreoffice
@@ -156,7 +156,8 @@
     protonvpn-cli # VPNs
 
     ### File
-    ntfs3g dosfstools exfatprogs xfsprogs btrfs-progs zfs cifs-utils lockfileProgs # File Systems
+    ntfs3g dosfstools exfatprogs xfsprogs btrfs-progs #zfs
+    cifs-utils lockfileProgs # File Systems
     sshfs f3
     usbimager
     gparted

@@ -145,11 +145,6 @@ in
   }
 
   # https://wiki.hyprland.org/Configuring/Master-Layout/ 
-  master {
-    new_is_master = true
-  }
-
-  # https://wiki.hyprland.org/Configuring/Master-Layout/ 
   gestures {
     workspace_swipe = on
     workspace_swipe_fingers=3

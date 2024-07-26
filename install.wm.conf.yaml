@@ -48,6 +48,7 @@
     ~/.local/share/fcitx5: .local/share/fcitx5
     #~/.config/powernotd/config.json: .config/powernotd/config.json
     ~/.config/hypr/hyprlock.conf: .config/hypr/hyprlock.conf
+    ~/.config/hypr/hyprpaper.conf: .config/hypr/hyprpaper.conf
     ~/.config/spotify-adblock: .config/spotify-adblock
 
     ~/.local/share/applications: .local/share/applications

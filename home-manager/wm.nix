@@ -35,6 +35,11 @@
     };
   };
 
+  services.parcellite.enable = true;
+  services.parcellite.extraOptions = [
+    "--no-icon"
+  ];
+
   dconf.enable = true;
 
   services.gpg-agent = {

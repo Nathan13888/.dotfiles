@@ -45,6 +45,42 @@
     zoxide # `cd` alternative
     neovim #neovide
     vscode zed-editor
+
+    tree-sitter
+    #rust-analyzer
+
+    #tree-sitter-grammars.tree-sitter-c
+    #tree-sitter-grammars.tree-sitter-cpp
+    #tree-sitter-grammars.tree-sitter-go
+    #tree-sitter-grammars.tree-sitter-gomod
+    #tree-sitter-grammars.tree-sitter-python
+    #tree-sitter-grammars.tree-sitter-rst
+    #tree-sitter-grammars.tree-sitter-rust
+    #tree-sitter-grammars.tree-sitter-zig
+
+    #tree-sitter-grammars.tree-sitter-tsx
+    #tree-sitter-grammars.tree-sitter-html
+    #tree-sitter-grammars.tree-sitter-css
+    #tree-sitter-grammars.tree-sitter-typescript
+    #tree-sitter-grammars.tree-sitter-javascript
+
+    #tree-sitter-grammars.tree-sitter-bash
+    #tree-sitter-grammars.tree-sitter-make
+    #tree-sitter-grammars.tree-sitter-cmake
+    #tree-sitter-grammars.tree-sitter-dockerfile
+    #tree-sitter-grammars.tree-sitter-comment
+
+    #tree-sitter-grammars.tree-sitter-latex
+    #tree-sitter-grammars.tree-sitter-sql
+
+    #tree-sitter-grammars.tree-sitter-json
+    #tree-sitter-grammars.tree-sitter-json5
+    #tree-sitter-grammars.tree-sitter-proto
+    #tree-sitter-grammars.tree-sitter-markdown
+    #tree-sitter-grammars.tree-sitter-nix
+    #tree-sitter-grammars.tree-sitter-vim
+    #tree-sitter-grammars.tree-sitter-yaml
+
     jetbrains.idea-community
     onlyoffice-bin
     libreoffice
@@ -54,7 +90,7 @@
     kubectl kubie # lens
     insomnia
     #protege-distribution
-    mpv vlc audacious deadbeef cozy guvcview
+    mpv vlc audacious deadbeef guvcview
     #archivebox
     syncthing
     asciinema
@@ -64,7 +100,7 @@
     libsForQt5.kdenlive libsForQt5.kio-extras
     #handbrake # TODO
     #kicad #TODO
-    freecad openscad qcad
+    #freecad openscad qcad
     blender
     orca-slicer
     #super-slicer
@@ -79,7 +115,7 @@
 
     ## Dev Tools
     rio kitty thefuck
-    hub gh git-lfs git-extras # Git
+    hub lazygit gh git-lfs git-extras # Git
     killall
     wakatime time hyperfine tokei eza # Measurement
     ripgrep jq jo # Text Manipulation
@@ -92,23 +128,16 @@
     go
     temurin-jre-bin maven #jdk
     lua
-    nodejs bun fnm
+    nodejs fnm
     racket
-    #python39Full
     (let
     custom-python-packages = python-packages: with python-packages; [
       pip
-      setuptools #poetry
-      pytest
-      wheel
       requests
-      pyyaml
-      pyserial
-      #deemix
     ];
       python3Custom = python3.withPackages custom-python-packages;
     in python3Custom)
-    micromamba
+    conda micromamba
     ruby
     nixd nil
     rustup
@@ -224,6 +253,10 @@
     enable = true;
     plugins = with pkgs; [ obs-studio-plugins.wlrobs ];
   };
+
+  programs.neovim.plugins = [
+    pkgs.vimPlugins.nvim-treesitter.withAllGrammars
+  ];
 
   nixpkgs.config.allowUnfree = true;
 

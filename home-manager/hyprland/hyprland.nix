@@ -9,8 +9,7 @@ let
   big_mon = "DP-1";
   smol_mon = "eDP-1";
 
-  #TERMINAL = "kitty";
-  TERMINAL = "rio";
+  TERMINAL = "kitty";
 in
 ''
   # TODO: make device specific settings

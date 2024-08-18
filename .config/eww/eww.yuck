@@ -1,7 +1,7 @@
 ;; Variables
-(defpoll clock_time :interval "5m" "date +\%I")
+(defpoll clock_time :interval "1m" "date +\%I")
 (defpoll clock_minute :interval "5s" "date +\%M")
-(defpoll clock_date :interval "10h" "date '+%d/%m'")
+(defpoll clock_date :interval "1h" "date '+%d/%m'")
 (defpoll volume_percent :interval "3s" "$HOME/scripts/volume.sh cur")
 (defpoll mic_percent :interval "3s" "pamixer --default-source --get-volume")
 (defpoll brightness_percent :interval "5s" "$HOME/scripts/backlight.sh cur")

@@ -61,7 +61,7 @@
       useDefaultShell = true;
       createHome = true;
       homeMode = "700";
-      extraGroups = [ "wheel" "video" "render" "input" "plugdev" "audio" "networkmanager" "libvirtd" "wireshark" "adbusers" "adbusers" "uucp" "dialout" "vboxusers" "realtime" "docker" ];
+      extraGroups = [ "wheel" "video" "tty" "render" "input" "plugdev" "audio" "networkmanager" "libvirtd" "wireshark" "adbusers" "adbusers" "uucp" "dialout" "vboxusers" "realtime" "docker" ];
       uid = 1000;
       # openssh.authorizedKeys.keys = lib.mkMerge [ ];
       # openssh.authorizedKeys.keyFiles = lib.mkMerge [ ];

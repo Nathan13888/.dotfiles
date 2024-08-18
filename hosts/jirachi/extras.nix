@@ -34,12 +34,12 @@
 
   # TODO:
   # Kernel and HDR (Sussy)
-  boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  #boot.kernelPackages = pkgs.linuxPackages_cachyos;
   chaotic.hdr = {
     enable = false;
     #enable = true;
   };
-  #boot.kernelPackages = pkgs.linuxPackages_xanmod_latest;
+  boot.kernelPackages = pkgs.linuxPackages_xanmod_latest;
 
   # use amdvlk drivers instead mesa radv drivers
   hardware.amdgpu.amdvlk.enable = false;
@@ -105,9 +105,9 @@
   '';
 
   ### Fingerprint
-  services.fprintd.enable = true;
-  services.fprintd.tod.enable = true;
-  services.fprintd.tod.driver = pkgs.libfprint-2-tod1-goodix;
+  #services.fprintd.enable = true;
+  #services.fprintd.tod.enable = true;
+  #services.fprintd.tod.driver = pkgs.libfprint-2-tod1-goodix;
   #services.fprintd.tod.driver = pkgs.libfprint-2-tod1-vfs0090;
 
   # Udev rules
@@ -116,8 +116,11 @@
   services.udev.enable = true;
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="amdgpu_bl1", MODE="0666", RUN+="${pkgs.coreutils}/bin/chmod a+w /sys/class/backlight/%k/brightness"
+    ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="amdgpu_bl2", MODE="0666", RUN+="${pkgs.coreutils}/bin/chmod a+w /sys/class/backlight/%k/brightness"
     ACTION=="add", SUBSYSTEM=="pci", DRIVER=="pcieport", ATTR{power/wakeup}="disabled"
   '';
+
+  #system.activationScripts.script.text = ''chmod o+rw /dev/ttyACM0'';
 
   ### UPower
   services.upower = {

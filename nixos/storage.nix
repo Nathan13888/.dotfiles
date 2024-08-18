@@ -47,17 +47,17 @@ in
     };
   };
 
-  fileSystems."/nas/personal" = {
-    device = "192.168.20.200:/mnt/honshu/vaults/attackercow";
-    fsType = "nfs";
-    options = [ "x-systemd.automount" "noauto" "nfsvers=4.2" "x-systemd.idle-timeout=600" ];
-  };
-
-  fileSystems."/nas/media" = {
-    device = "192.168.20.200:/mnt/honshu/media";
-    fsType = "nfs";
-    options = [ "x-systemd.automount" "noauto" "nfsvers=4.2" "x-systemd.idle-timeout=600" ];
-  };
+#  fileSystems."/nas/personal" = {
+#    device = "192.168.20.200:/mnt/honshu/vaults/attackercow";
+#    fsType = "nfs";
+#    options = [ "x-systemd.automount" "noauto" "nfsvers=4.2" "x-systemd.idle-timeout=600" ];
+#  };
+#
+#  fileSystems."/nas/media" = {
+#    device = "192.168.20.200:/mnt/honshu/media";
+#    fsType = "nfs";
+#    options = [ "x-systemd.automount" "noauto" "nfsvers=4.2" "x-systemd.idle-timeout=600" ];
+#  };
 
 #  fileSystems."/nas/personal" = {
 #    device = "//192.168.20.225/vault";

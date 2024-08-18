@@ -130,7 +130,12 @@ git-inspect-status() {
   done
 }
 alias n="npm"
+alias nx="npx"
+alias p="pnpm"
+alias px="pnpm dlx"
+alias pr="pnpm run"
 alias b="bun"
+alias bx="bunx"
 alias k="kubectl"
 alias m="micromamba"
 alias h="helm"

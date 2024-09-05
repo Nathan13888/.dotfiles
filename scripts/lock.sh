@@ -5,7 +5,18 @@ if grep closed /proc/acpi/button/lid/*/state; then
     $HOME/scripts/backlight.sh disable
 
     # lock screen
+    set -euo pipefail
+    (
+        until fprintd-verify; do
+            echo "Failed to verify fingerprint at $(date)" | systemd-cat
+        done
+
+        echo "Unlocked at $(date)" | systemd-cat
+        pkill -USR1 hyprlock
+    ) &
     hyprlock
+    kill $(jobs -p)
+    pkill fprintd-verify
 
     #if [[ `hyprctl monitors | grep "Monitor" | wc -l` != 1 ]]; then
         # TODO: auto detect monitor at ID 0

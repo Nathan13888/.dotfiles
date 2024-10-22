@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 focusmon=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | .id')
+EWW="eww"
 
 ## Run eww daemon if not running already
 if [[ ! $(pidof eww) ]]; then
@@ -13,8 +14,6 @@ fi
 hyprctl dispatch focusmonitor "$focusmon"
 # primary display id
 source $HOME/scripts/load_envs;
-
-EWW="eww"
 
 # Open widgets for primary display use this for notifications : ${EWW} open-many "sidebar$PRIMARY_MONITOR_ID" "notifications$PRIMARY_MONITOR_ID"
 # TODO: fix sidebar??

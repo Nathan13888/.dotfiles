@@ -35,7 +35,7 @@
     };
   };
 
-  services.parcellite.enable = true;
+  services.parcellite.enable = false;
   services.parcellite.extraOptions = [
     "--no-icon"
   ];

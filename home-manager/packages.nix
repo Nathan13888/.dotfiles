@@ -2,12 +2,11 @@
 
 #let unstable = pkgs.nixos-unstable; in
 {
-  home.file."jdks/openjdk8".source = pkgs.adoptopenjdk-openj9-bin-8;
-  home.file."jdks/openjdk11".source = pkgs.adoptopenjdk-openj9-bin-11;
+  home.file."jdks/openjdk8".source = pkgs.semeru-bin-8;
+  home.file."jdks/openjdk11".source = pkgs.semeru-bin-11;
   home.file."jdks/openjdk17".source = pkgs.jetbrains.jdk;
   home.file."jdks/graal21".source = pkgs.graalvm-ce;
   home.file."jdks/scala".source = pkgs.scala;
-
 
   nixpkgs.overlays =
     let
@@ -185,7 +184,7 @@
     protonvpn-cli # VPNs
 
     ### File
-    ntfs3g dosfstools exfatprogs xfsprogs btrfs-progs #zfs
+    ntfs3g nfs-utils dosfstools exfatprogs xfsprogs btrfs-progs #zfs
     cifs-utils lockfileProgs # File Systems
     sshfs f3
     usbimager
@@ -222,11 +221,9 @@
 
     gnupg gnome-keyring seahorse libsecret
     networkmanager
-    #gnome.gnome-screenshot # TODO:
-    gnome-firmware gnome.gnome-control-center gnome-system-monitor
+    gnome-firmware gnome-control-center gnome-system-monitor
     dconf-editor
-    #gnome.gnome-shell
-    gnome.gnome-power-manager
+    gnome-power-manager
     bluez bluez-tools blueman
     flameshot
     bitwarden bitwarden-cli

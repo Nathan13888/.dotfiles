@@ -156,7 +156,6 @@ in
   bind = $mod SHIFT, c, killactive, 
   bind = $mod, space, togglefloating, 
   bind = $mod, f, fullscreen, 
-  bind = $mod SHIFT, f, fakefullscreen, 
   bind = $mod, p, pin,
   bind = $mod SHIFT, m, exec, hyprctl dispatch centerwindow active,
   bindr = $mod, TAB, exec, hyprctl dispatch cyclenext,

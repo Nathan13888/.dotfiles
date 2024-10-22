@@ -14,9 +14,23 @@
       xterm.enable = false;
     };
 
-    displayManager.gdm.enable = true;
-    displayManager.gdm.wayland = true;
+    #displayManager.gdm.enable = true;
+    #displayManager.gdm.wayland = true;
+
+
   };
+  services.greetd = {
+    enable = true;
+    settings = rec {
+      default_session = {
+      #initial_session = {
+        command = "${pkgs.hyprland}/bin/Hyprland";
+        user = "Nathan";
+      };
+      #default_session = initial_session;
+    };
+  };
+
 
   # TODO: refactor to laptops
   # Enable touchpad support (enabled default in most desktopManager).

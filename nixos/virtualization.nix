@@ -6,10 +6,13 @@
 
   # Podman
   virtualisation = {
-    #docker.enable = true;
+    docker.enable = true;
     podman = {
       enable = true;
-      dockerCompat = true;
+      #dockerCompat = true;
     };
   };
+
+  # Nerdctl
+  environment.systemPackages = [ pkgs.nerdctl ];
 }

@@ -56,6 +56,9 @@
       # localdomain      192.168.1.1
       # 192.in-addr.arpa 192.168.1.1
 
+      ## Forward *.localhost to 127.0.0.1
+      localhost 127.0.0.1
+
       ## Forward queries for example.com and *.example.com to 9.9.9.9 and 8.8.8.8
       # example.com      9.9.9.9,8.8.8.8
 

@@ -58,7 +58,6 @@
     enable = true;
     extraPackages = with pkgs; [
       rocmPackages.clr.icd
-      rocm-opencl-icd
       amdvlk
       intel-gmmlib
       intel-media-driver # LIBVA_DRIVER_NAME=iHD

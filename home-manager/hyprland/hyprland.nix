@@ -93,7 +93,6 @@ in
     col.inactive_border=0xff45475a
     #col.active_border = rgba(33ccffee) rgba(00ff99ee) 45deg
     #col.inactive_border = rgba(595959aa)
-    apply_sens_to_raw=0 # whether to apply the sensitivity to raw input (e.g. used by games where you aim using your mouse)
     layout = dwindle
   }
 

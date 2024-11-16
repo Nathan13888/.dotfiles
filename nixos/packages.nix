@@ -34,7 +34,7 @@
 
   # TODO: workaround for https://github.com/NixOS/nixpkgs/pull/300028
   # SOURCE: https://github.com/DarkKirb/nixos-config/pull/381/
-  system.replaceRuntimeDependencies = [
+  system.replaceDependencies.replacements = [
     {
       original = pkgs.xz;
       replacement = nixpkgs-staging-next.legacyPackages.${system}.xz;
@@ -83,7 +83,7 @@
   programs.zsh.enable = true;
   services.udev.packages = with pkgs; [
     android-udev-rules
-    gnome.gnome-settings-daemon
+    gnome-settings-daemon
   ];
 
   nix = {

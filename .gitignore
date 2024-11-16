@@ -5,6 +5,8 @@ eduroam
 *.bin
 .local/share/fcitx5
 
+secrets
+
 *.old
 *.log
 log/

@@ -23,11 +23,8 @@
     # BASH TOOLS
     ~/.config/nvim: .config/nvim
     ~/.config/vifm: vifm
-#    ~/.vim: .vim
     ~/.vimrc: .vimrc
     ~/.angular-config.json: angular-config.json
-#    ~/.cht.sh/cht.sh.conf: cht.sh.conf
-#    ~/.config/neofetch: neofetch
     ~/.gitconfig: .gitconfig
     ~/.gitconfig.local: .gitconfig.local
     ~/.gitmessage.txt: .gitmessage.txt

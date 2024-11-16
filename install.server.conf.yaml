@@ -21,9 +21,6 @@
     ~/.vimrc: .vimrc
     ~/.zshrc: .zshrc
 
-#- create:
-#    - ~/.dotfiles
-
 - shell:
    - echo "REMEMBER TO `export ISSERVER=YES`"
 #  - [git submodule update --init --recursive, Installing submodules]

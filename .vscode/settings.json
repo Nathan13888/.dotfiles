@@ -1,4 +1,53 @@
 {
-    "nix.enableLanguageServer": true,
-    "nix.serverPath": "nil"
+  "telemetry.telemetryLevel": "off",
+  "crashReporting.enabled": "off",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "eslint.rules.customizations": [
+    {
+      "rule": "*",
+      "severity": "warn"
+    }
+  ],
+  "eslint.workingDirectories": [
+    {
+      "pattern": "src/*/"
+    }
+  ],
+  "eslint.useFlatConfig": true,
+  "editor.tabSize": 2,
+  "tailwindCSS.experimental.classRegex": [
+    [
+      "cva\\(([^)]*)\\)",
+      "[\"'`]([^\"'`]*).*?[\"'`]"
+    ],
+    [
+      "cx\\(([^)]*)\\)",
+      "(?:'|\"|`)([^']*)(?:'|\"|`)"
+    ]
+  ],
+  "todohighlight.include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.html",
+    "**/*.css",
+    "**/*.md",
+    "**/*.mdo",
+    "**/*.txt"
+  ],
+  "todohighlight.isEnable": true,
+  "todohighlight.enableDiagnostics": true,
+  "todohighlight.keywordsPattern": "(todo|TODO)(\\(.+\\))?:.*",
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  }
 }

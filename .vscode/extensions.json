@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "eamodio.gitlens",
+    "vscodevim.vim",
+    "tamasfe.even-better-toml",
+    "fill-labs.dependi",
+    "esbenp.prettier-vscode",
+    "jnoortheen.nix-ide",
+    "arrterian.nix-env-selector"
+  ]
+}

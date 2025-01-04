@@ -22,6 +22,15 @@ nix-shell '<home-manager>' -A install
 4. Generate Home manager
 5. Sync Dotfiles
 
+### MacOS
+```bash
+nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake .
+darwin-rebuild switch --flake .
+```
+
+
+- https://github.com/LnL7/nix-darwin
+- https://github.com/sbmpost/AutoRaise
 
 ### WSL
 - https://nix.dev/tutorials/install-nix

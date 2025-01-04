@@ -1,0 +1,42 @@
+- defaults:
+    link:
+      relink: true
+      create: true
+      force: true
+
+- clean: ['~', '~/.config']
+
+- link:
+    # BASH
+    ~/.aliases: .aliases
+    ~/.exports: .exports
+    ~/.zshrc: .zshrc
+    ~/.zshenv: .zshenv
+    ~/.config/starship.toml: starship.toml
+    ~/scripts: scripts
+
+    # BASH TOOLS
+    ~/.config/nvim: .config/nvim
+    ~/.vimrc: .vimrc
+    ~/.gitconfig: .gitconfig
+    ~/.gitconfig.local: .gitconfig.local
+    ~/.gitmessage.txt: .gitmessage.txt
+#    ~/.tmux.conf: .tmux.conf
+
+    # NIX
+    # TODO: nix.conf enable experimental features
+
+    # WM
+    # TODO: need macos specific mimeapps.list
+    #~/.config/mimeapps.list: .config/mimeapps.list
+
+    # Applications with state
+    ~/.kube: .kube
+    #~/.ssh/config: .ssh/config
+
+
+- create:
+    - ~/tmp
+    - ~/mnt
+    - ~/ws
+

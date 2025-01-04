@@ -29,13 +29,31 @@
 
     hyprland.url = "github:hyprwm/Hyprland";
     flake-utils.url = "github:numtide/flake-utils";
+
+    # Darwin
+    nix-darwin.url = "github:LnL7/nix-darwin";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs @ { self, nixpkgs, nixpkgs-staging-next, home-manager, nixos-hardware, chaotic, hyprland, ... }:
+  outputs = inputs @ { self, nix-darwin, nixpkgs, nixpkgs-staging-next, home-manager, nixos-hardware, chaotic, hyprland, ... }:
     let
       system = "x86_64-linux";
+      darwin_config = {
+        # Set Git commit hash for darwin-version.
+        system.configurationRevision = self.rev or self.dirtyRev or null;
+      };
     in
     {
+      darwinConfigurations = {
+        darkrai = nix-darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          modules = [
+            darwin_config
+            ./hosts/darkrai/configuration.nix
+          ];
+        };
+      };
+
       homeConfigurations = {
         # TODO: default home-manager config 
         "Nathan" = home-manager.lib.homeManagerConfiguration {

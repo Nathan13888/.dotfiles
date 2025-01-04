@@ -110,9 +110,6 @@ alias sv='sudo v'
 #}
 
 alias g="git"
-if [[ $ISSERVER != YES ]] ; then
-  alias git="hub"
-fi
 function adjust_date {
     date -d "$(date) $@"
 }

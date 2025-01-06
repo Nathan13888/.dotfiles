@@ -25,6 +25,7 @@
 
     # NIX
     # TODO: nix.conf enable experimental features
+    ~/.yabairc: .yabairc
 
     # WM
     # TODO: need macos specific mimeapps.list

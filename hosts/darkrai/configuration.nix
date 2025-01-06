@@ -17,11 +17,14 @@
   # - Zerotier
   environment.systemPackages =
     with pkgs; [
+      # desktop
+      yabai
       # applications
       #kitty
       #vesktop
       #code-cursor
       # utilities
+      tmux
       vim
       neovim
       zoxide
@@ -62,7 +65,7 @@
     dock.mru-spaces = false; # don't sort spaces by recently used
     finder.AppleShowAllExtensions = true; # show file extensions
     finder.FXPreferredViewStyle = "clmv"; # use column view
-    loginwindow.LoginwindowText = "nixcademy.com";
+    loginwindow.LoginwindowText = "luv u lindor &lt;3";
     screencapture.location = "~/Pictures/screenshots";
     screensaver.askForPasswordDelay = 10;
   };

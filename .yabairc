@@ -1,5 +1,14 @@
+# scripting addition
+# @see https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)#configure-scripting-addition
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
+
+
+###
+
 # raise and focus window
-yabai -m config focus_follows_mouse autoraise
+yabai -m config focus_follows_mouse autofocus
+#yabai -m config focus_follows_mouse autoraise
 
 # window layout
 #yabai -m config layout     floating
@@ -30,3 +39,7 @@ yabai -m config window_origin_display cursor
 yabai -m config window_opacity on
 yabai -m config active_window_opacity 1.0
 yabai -m config normal_window_opacity 0.9
+
+# janky borders
+borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0 &
+skhd &

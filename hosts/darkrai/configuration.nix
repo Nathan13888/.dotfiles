@@ -58,7 +58,6 @@
       bun fnm
       micromamba
       go
-      gcc #valgrind
       nixpkgs-fmt
       wakatime-cli
       # iot

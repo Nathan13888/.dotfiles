@@ -1,9 +1,15 @@
-{ config, pkgs, ... }:
+{ lib, config, pkgs, ... }:
 
+# @see https://daiderd.com/nix-darwin/manual/index.html
 {
   # environment.systemPath = [
   #   "/Applications/Nix Apps"
   # ];
+
+  environment.variables = {
+    EDITOR = "vim";
+    LANG = "en_US.UTF-8";
+  };
 
   # Notable packages not installed with nix...
   # - Kitty
@@ -19,6 +25,7 @@
     with pkgs; [
       # desktop
       yabai
+      skhd
       # applications
       #kitty
       #vesktop
@@ -57,7 +64,20 @@
       # iot
       proxmark3
     ];
+  services.jankyborders.enable = true;
+  services.jankyborders.active_color = "gradient(top_right=0x9992B3F5,bottom_left=0x9992B3F5)";
+  services.jankyborders.width = 5.0;
+
+  # @see https://github.com/koekeishiya/yabai/wiki/Disabling-System-Integrity-Protection
+  # (in recovery)
+  # csrutil enable --without fs --without debug --without nvram
+  # sudo nvram boot-args=-arm64e_preview_abi
   
+  # Networking
+  #services.dnsmasq.enable = true;
+  #networking.dns = [];
+
+  # System
   security.pam.enableSudoTouchIdAuth = true;
 
   system.defaults = {

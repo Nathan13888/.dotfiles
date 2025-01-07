@@ -9,3 +9,25 @@ alt - 7 : yabai -m space --focus 7
 alt - 8 : yabai -m space --focus 8
 alt - 9 : yabai -m space --focus 9
 
+# Fullscreen
+alt - f : yabai -m window --toggle zoom-fullscreen
+
+# Focus windows
+alt - h : yabai -m window --focus west
+alt - j : yabai -m window --focus south
+alt - k : yabai -m window --focus north
+alt - l : yabai -m window --focus east
+
+# Move windows
+shift + alt - h : yabai -m window --warp west
+shift + alt - j : yabai -m window --warp south
+shift + alt - k : yabai -m window --warp north
+shift + alt - l : yabai -m window --warp east
+
+# Toggle float
+shift + alt - space : yabai -m window --toggle float
+
+# Open terminal (kitty)
+cmd - return : /Applications/kitty.app/Contents/MacOS/kitty -n --args --single-instance --title="zsh"
+#cmd - return : $HOME/scripts/kitty-dropdown.sh
+

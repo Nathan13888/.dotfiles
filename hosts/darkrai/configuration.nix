@@ -21,6 +21,10 @@
   # - Element Desktop
   # - Deluge
   # - Zerotier
+  # - Ueli
+  # - Claude/OpenAI
+  # - ProtonVPN
+  # - https://github.com/SpotX-Official/SpotX-Bash
   environment.systemPackages =
     with pkgs; [
       # desktop
@@ -46,20 +50,25 @@
       smartmontools
       # networking
       wireguard-tools
+      nmap
       iperf
       dig
       # system (files)
       rclone
+      cryfs
+      pdftk
       mat2
       exiftool
       # dev tools
       podman docker-compose
       rustup
       bun fnm
+      uv
       micromamba
       go
       nixpkgs-fmt
       wakatime-cli
+      curl wget
       # iot
       proxmark3
     ];
@@ -73,8 +82,11 @@
   # sudo nvram boot-args=-arm64e_preview_abi
   
   # Networking
-  #services.dnsmasq.enable = true;
-  #networking.dns = [];
+  services.dnsmasq.enable = true;
+  networking.dns = [
+    9.9.9.9
+    1.1.1.1
+  ];
 
   # System
   security.pam.enableSudoTouchIdAuth = true;

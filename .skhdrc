@@ -28,6 +28,6 @@ shift + alt - l : yabai -m window --warp east
 shift + alt - space : yabai -m window --toggle float
 
 # Open terminal (kitty)
-cmd - return : /Applications/kitty.app/Contents/MacOS/kitty -n --args --single-instance --title="zsh"
+#cmd - return : /Applications/kitty.app/Contents/MacOS/kitty -n --args --single-instance --title="zsh"
 #cmd - return : $HOME/scripts/kitty-dropdown.sh
 

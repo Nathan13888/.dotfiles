@@ -30,10 +30,12 @@
       # desktop
       yabai
       skhd
+      unnaturalscrollwheels
       # applications
       #kitty
       #vesktop
       #code-cursor
+      rustmission
       # utilities
       tmux
       vim
@@ -60,12 +62,15 @@
       mat2
       exiftool
       # dev tools
+      git-lfs
       podman docker-compose
       rustup
       bun fnm
       uv
       micromamba
       go
+      llvm lld
+      cmake
       nixpkgs-fmt
       wakatime-cli
       curl wget

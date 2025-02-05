@@ -31,6 +31,7 @@
       yabai
       skhd
       unnaturalscrollwheels
+      keycastr
       # applications
       #kitty
       #vesktop
@@ -70,10 +71,12 @@
       micromamba
       go
       llvm lld
+      gnuplot tokei
       cmake
       nixpkgs-fmt
       wakatime-cli
       curl wget
+      kubectl kubernetes-helm kubie
       # iot
       proxmark3
     ];

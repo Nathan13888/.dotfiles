@@ -7,7 +7,7 @@ sudo yabai --load-sa
 ###
 
 # raise and focus window
-yabai -m config focus_follows_mouse autofocus
+#yabai -m config focus_follows_mouse autofocus
 #yabai -m config focus_follows_mouse autoraise
 
 # window layout

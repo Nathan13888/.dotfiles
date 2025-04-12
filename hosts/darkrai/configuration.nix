@@ -37,6 +37,7 @@
       #vesktop
       #code-cursor
       rustmission
+      weechat
       # utilities
       tmux
       vim
@@ -59,12 +60,17 @@
       # system (files)
       rclone
       cryfs
+      imagemagick
+      graphviz
       pdftk
       mat2
       exiftool
       # dev tools
-      git-lfs
+      git-lfs git-filter-repo
       podman docker-compose
+      #git-graph
+      gource
+      dive skopeo syft grype trivy
       rustup
       bun fnm
       uv
@@ -77,6 +83,8 @@
       wakatime-cli
       curl wget
       kubectl kubernetes-helm kubie
+      kubectl-cnpg
+      gh gh-dash
       # iot
       proxmark3
     ];

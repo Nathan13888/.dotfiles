@@ -52,6 +52,13 @@
             ./hosts/darkrai/configuration.nix
           ];
         };
+        sylveon = nix-darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          modules = [
+            darwin_config
+            ./hosts/sylveon/configuration.nix
+          ];
+        };
       };
 
       homeConfigurations = {

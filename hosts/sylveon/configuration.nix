@@ -105,7 +105,7 @@
   ];
 
   # System
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   system.defaults = {
     dock.autohide = false; # don't hide dock
@@ -127,9 +127,6 @@
 
   # Use zsh as default shell.
   programs.zsh.enable = true;
-
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
 
   # Necessary for using flakes on this system.
   nix.settings.experimental-features = "nix-command flakes";

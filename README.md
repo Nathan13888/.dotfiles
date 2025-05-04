@@ -24,8 +24,22 @@ nix-shell '<home-manager>' -A install
 
 ### MacOS
 ```bash
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+
 nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake .
 darwin-rebuild switch --flake .
+
+
+## brew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+## fnm
+curl -fsSL https://fnm.vercel.app/install | bash
+fnm install 20
+fnm default 20
+
+## bun
+curl -fsSL https://bun.sh/install | bash
 ```
 
 

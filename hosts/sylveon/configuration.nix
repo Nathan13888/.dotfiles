@@ -66,7 +66,7 @@
       mat2
       exiftool
       # dev tools
-      git-lfs git-filter-repo
+      gh git-lfs git-filter-repo
       podman docker-compose
       #git-graph
       gource
@@ -99,6 +99,7 @@
   
   # Networking
   services.dnsmasq.enable = true;
+  networking.hostName = "sylveon";
   networking.dns = [
     9.9.9.9
     1.1.1.1

@@ -52,8 +52,7 @@ function aurcommit() {
         git commit -m "$MSG"
 }
 
-eval $(thefuck --alias)
-alias f="fuck"
+eval "$(pay-respects zsh --alias)"
 
 ### CLI & APPLICATIONS
 exportvar () {

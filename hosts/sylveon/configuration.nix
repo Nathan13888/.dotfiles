@@ -37,18 +37,20 @@
       #vesktop
       #code-cursor
       rustmission
-      weechat
+      mpv
+      mysql84
       # utilities
       tmux
       vim
       neovim
       zoxide
       fzf
-      thefuck
+      pay-respects
       # remote
       ipmitool
       # processing
       ffmpeg
+      yt-dlp
       # system
       btop
       smartmontools
@@ -60,11 +62,18 @@
       # system (files)
       rclone
       cryfs
+      ncdu
       imagemagick
+      pandoc
       graphviz
-      pdftk
+      pdftk mupdf
       mat2
       exiftool
+      intermodal
+      # sec
+      binwalk
+      john hashcat
+      inetutils
       # dev tools
       gh git-lfs git-filter-repo
       podman docker-compose
@@ -76,9 +85,12 @@
       uv
       micromamba
       go
+      dotnet-runtime
+      #R rPackages.languageserver
       llvm lld
       gnuplot tokei
       cmake
+      pkg-config
       nixpkgs-fmt
       wakatime-cli
       curl wget
@@ -108,6 +120,7 @@
   # System
   security.pam.services.sudo_local.touchIdAuth = true;
 
+  system.primaryUser = "nathan";
   system.defaults = {
     dock.autohide = false; # don't hide dock
     dock.mru-spaces = false; # don't sort spaces by recently used

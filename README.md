@@ -29,6 +29,8 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix 
 nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake .
 darwin-rebuild switch --flake .
 
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool truedefaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+
 
 ## brew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"

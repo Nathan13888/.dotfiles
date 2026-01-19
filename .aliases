@@ -292,9 +292,8 @@ alias chowm="sudo chown $USER:$USER -v"
 alias mkd="mkdir -vp"
 alias smkd="sudo mkdir -vp"
 
-function rs {
-  rsync -ahh --info=progress2,stats1 --partial "$@"
-}
+rs='rsync -avPhh --info=progress2,stats1 --partial "$@"'
+
 function wgt {
   NSLASH="$(echo "$1" | perl -pe 's|.*://[^/]+(.*?)/?$|\1|' | grep -o / | wc -l)"
   NCUT=$((NSLASH > 0 ? NSLASH-1 : 0))
@@ -304,6 +303,9 @@ function wgt {
 alias ydl="yt-dlp"
 ydl-video () {
   ydl -f "bestvideo[height>=720]+bestaudio/best" -ciw -o "%(title)s.%(ext)s" -v --merge-output-format=mkv "$@"
+}
+ydl-audio () {
+  ydl --extract-audio --audio-format mp3 --audio-quality 0 "$@"
 }
 ydl-archive () {
   ydl-video --write-annotations --write-description --write-info-json --write-all-thumbnails --download-archive downloaded.txt "$@"

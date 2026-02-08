@@ -1,277 +1,277 @@
 {
-    "output": {
-        "bass_enhancer#0": {
-            "amount": 5.0,
-            "blend": 0.0,
-            "bypass": false,
-            "floor": 20.0,
-            "floor-active": false,
-            "harmonics": 8.5,
-            "input-gain": 0.0,
-            "output-gain": 0.0,
-            "scope": 80.0
+  "output": {
+    "bass_enhancer#0": {
+      "amount": 5.0,
+      "blend": 0.0,
+      "bypass": false,
+      "floor": 20.0,
+      "floor-active": false,
+      "harmonics": 8.5,
+      "input-gain": 0.0,
+      "output-gain": 0.0,
+      "scope": 80.0
+    },
+    "blocklist": [],
+    "convolver#0": {
+      "autogain": true,
+      "bypass": true,
+      "input-gain": -2.0,
+      "ir-width": 100,
+      "kernel-path": "/home/attackercow/.config/easyeffects/irs/Razor Surround ((48k Z-Edition)) 2.Stereo +20 bass.irs",
+      "output-gain": 0.0
+    },
+    "equalizer#0": {
+      "balance": 0.0,
+      "bypass": false,
+      "input-gain": 0.0,
+      "left": {
+        "band0": {
+          "frequency": 31.5,
+          "gain": -3.9,
+          "mode": "APO (DR)",
+          "mute": false,
+          "q": 1.41,
+          "slope": "x1",
+          "solo": false,
+          "type": "Notch"
         },
-        "blocklist": [],
-        "convolver#0": {
-            "autogain": true,
-            "bypass": true,
-            "input-gain": -2.0,
-            "ir-width": 100,
-            "kernel-path": "/home/attackercow/.config/easyeffects/irs/Razor Surround ((48k Z-Edition)) 2.Stereo +20 bass.irs",
-            "output-gain": 0.0
+        "band1": {
+          "frequency": 63.0,
+          "gain": -3.9,
+          "mode": "APO (DR)",
+          "mute": false,
+          "q": 1.41,
+          "slope": "x1",
+          "solo": false,
+          "type": "Notch"
         },
-        "equalizer#0": {
-            "balance": 0.0,
-            "bypass": false,
-            "input-gain": 0.0,
-            "left": {
-                "band0": {
-                    "frequency": 31.5,
-                    "gain": -3.9,
-                    "mode": "APO (DR)",
-                    "mute": false,
-                    "q": 1.41,
-                    "slope": "x1",
-                    "solo": false,
-                    "type": "Notch"
-                },
-                "band1": {
-                    "frequency": 63.0,
-                    "gain": -3.9,
-                    "mode": "APO (DR)",
-                    "mute": false,
-                    "q": 1.41,
-                    "slope": "x1",
-                    "solo": false,
-                    "type": "Notch"
-                },
-                "band2": {
-                    "frequency": 125.0,
-                    "gain": -3.0,
-                    "mode": "APO (DR)",
-                    "mute": false,
-                    "q": 1.41,
-                    "slope": "x1",
-                    "solo": false,
-                    "type": "Notch"
-                },
-                "band3": {
-                    "frequency": 250.0,
-                    "gain": 3.0,
-                    "mode": "APO (DR)",
-                    "mute": false,
-                    "q": 1.41,
-                    "slope": "x1",
-                    "solo": false,
-                    "type": "Notch"
-                },
-                "band4": {
-                    "frequency": 500.0,
-                    "gain": -0.5,
-                    "mode": "APO (DR)",
-                    "mute": false,
-                    "q": 1.41,
-                    "slope": "x1",
-                    "solo": false,
-                    "type": "Notch"
-                },
-                "band5": {
-                    "frequency": 1000.0,
-                    "gain": 0.0,
-                    "mode": "APO (DR)",
-                    "mute": false,
-                    "q": 1.41,
-                    "slope": "x1",
-                    "solo": false,
-                    "type": "Notch"
-                },
-                "band6": {
-                    "frequency": 2000.0,
-                    "gain": 0.0,
-                    "mode": "APO (DR)",
-                    "mute": false,
-                    "q": 1.41,
-                    "slope": "x1",
-                    "solo": false,
-                    "type": "Notch"
-                },
-                "band7": {
-                    "frequency": 4000.0,
-                    "gain": 0.0,
-                    "mode": "APO (DR)",
-                    "mute": false,
-                    "q": 1.41,
-                    "slope": "x1",
-                    "solo": false,
-                    "type": "Notch"
-                },
-                "band8": {
-                    "frequency": 8000.0,
-                    "gain": -3.9,
-                    "mode": "APO (DR)",
-                    "mute": false,
-                    "q": 1.41,
-                    "slope": "x1",
-                    "solo": false,
-                    "type": "Notch"
-                },
-                "band9": {
-                    "frequency": 16000.0,
-                    "gain": -6.03,
-                    "mode": "APO (DR)",
-                    "mute": false,
-                    "q": 1.41,
-                    "slope": "x1",
-                    "solo": false,
-                    "type": "Notch"
-                }
-            },
-            "mode": "FFT",
-            "num-bands": 10,
-            "output-gain": 0.0,
-            "pitch-left": 0.0,
-            "pitch-right": 0.0,
-            "right": {
-                "band0": {
-                    "frequency": 31.5,
-                    "gain": -3.9,
-                    "mode": "APO (DR)",
-                    "mute": false,
-                    "q": 1.41,
-                    "slope": "x1",
-                    "solo": false,
-                    "type": "Notch"
-                },
-                "band1": {
-                    "frequency": 63.0,
-                    "gain": -3.9,
-                    "mode": "APO (DR)",
-                    "mute": false,
-                    "q": 1.41,
-                    "slope": "x1",
-                    "solo": false,
-                    "type": "Notch"
-                },
-                "band2": {
-                    "frequency": 125.0,
-                    "gain": -3.0,
-                    "mode": "APO (DR)",
-                    "mute": false,
-                    "q": 1.41,
-                    "slope": "x1",
-                    "solo": false,
-                    "type": "Notch"
-                },
-                "band3": {
-                    "frequency": 250.0,
-                    "gain": 3.0,
-                    "mode": "APO (DR)",
-                    "mute": false,
-                    "q": 1.41,
-                    "slope": "x1",
-                    "solo": false,
-                    "type": "Notch"
-                },
-                "band4": {
-                    "frequency": 500.0,
-                    "gain": -0.5,
-                    "mode": "APO (DR)",
-                    "mute": false,
-                    "q": 1.41,
-                    "slope": "x1",
-                    "solo": false,
-                    "type": "Notch"
-                },
-                "band5": {
-                    "frequency": 1000.0,
-                    "gain": 0.0,
-                    "mode": "APO (DR)",
-                    "mute": false,
-                    "q": 1.41,
-                    "slope": "x1",
-                    "solo": false,
-                    "type": "Notch"
-                },
-                "band6": {
-                    "frequency": 2000.0,
-                    "gain": 0.0,
-                    "mode": "APO (DR)",
-                    "mute": false,
-                    "q": 1.41,
-                    "slope": "x1",
-                    "solo": false,
-                    "type": "Notch"
-                },
-                "band7": {
-                    "frequency": 4000.0,
-                    "gain": 0.0,
-                    "mode": "APO (DR)",
-                    "mute": false,
-                    "q": 1.41,
-                    "slope": "x1",
-                    "solo": false,
-                    "type": "Notch"
-                },
-                "band8": {
-                    "frequency": 8000.0,
-                    "gain": -3.9,
-                    "mode": "APO (DR)",
-                    "mute": false,
-                    "q": 1.41,
-                    "slope": "x1",
-                    "solo": false,
-                    "type": "Notch"
-                },
-                "band9": {
-                    "frequency": 16000.0,
-                    "gain": -6.03,
-                    "mode": "APO (DR)",
-                    "mute": false,
-                    "q": 1.41,
-                    "slope": "x1",
-                    "solo": false,
-                    "type": "Notch"
-                }
-            },
-            "split-channels": false
+        "band2": {
+          "frequency": 125.0,
+          "gain": -3.0,
+          "mode": "APO (DR)",
+          "mute": false,
+          "q": 1.41,
+          "slope": "x1",
+          "solo": false,
+          "type": "Notch"
         },
-        "exciter#0": {
-            "amount": 6.0,
-            "blend": 0.0,
-            "bypass": false,
-            "ceil": 16000.0,
-            "ceil-active": false,
-            "harmonics": 8.000000000000002,
-            "input-gain": -2.0,
-            "output-gain": 0.0,
-            "scope": 5500.0
+        "band3": {
+          "frequency": 250.0,
+          "gain": 3.0,
+          "mode": "APO (DR)",
+          "mute": false,
+          "q": 1.41,
+          "slope": "x1",
+          "solo": false,
+          "type": "Notch"
         },
-        "limiter#0": {
-            "alr": true,
-            "alr-attack": 5.0,
-            "alr-knee": 0.0,
-            "alr-release": 50.0,
-            "attack": 5.0,
-            "bypass": true,
-            "dithering": "None",
-            "external-sidechain": false,
-            "gain-boost": false,
-            "input-gain": 0.0,
-            "lookahead": 5.0,
-            "mode": "Herm Thin",
-            "output-gain": 0.0,
-            "oversampling": "Half x4(3L)",
-            "release": 10.0,
-            "sidechain-preamp": 0.0,
-            "stereo-link": 100.0,
-            "threshold": -1.0
+        "band4": {
+          "frequency": 500.0,
+          "gain": -0.5,
+          "mode": "APO (DR)",
+          "mute": false,
+          "q": 1.41,
+          "slope": "x1",
+          "solo": false,
+          "type": "Notch"
         },
-        "plugins_order": [
-            "exciter#0",
-            "bass_enhancer#0",
-            "convolver#0",
-            "limiter#0",
-            "equalizer#0"
-        ]
-    }
+        "band5": {
+          "frequency": 1000.0,
+          "gain": 0.0,
+          "mode": "APO (DR)",
+          "mute": false,
+          "q": 1.41,
+          "slope": "x1",
+          "solo": false,
+          "type": "Notch"
+        },
+        "band6": {
+          "frequency": 2000.0,
+          "gain": 0.0,
+          "mode": "APO (DR)",
+          "mute": false,
+          "q": 1.41,
+          "slope": "x1",
+          "solo": false,
+          "type": "Notch"
+        },
+        "band7": {
+          "frequency": 4000.0,
+          "gain": 0.0,
+          "mode": "APO (DR)",
+          "mute": false,
+          "q": 1.41,
+          "slope": "x1",
+          "solo": false,
+          "type": "Notch"
+        },
+        "band8": {
+          "frequency": 8000.0,
+          "gain": -3.9,
+          "mode": "APO (DR)",
+          "mute": false,
+          "q": 1.41,
+          "slope": "x1",
+          "solo": false,
+          "type": "Notch"
+        },
+        "band9": {
+          "frequency": 16000.0,
+          "gain": -6.03,
+          "mode": "APO (DR)",
+          "mute": false,
+          "q": 1.41,
+          "slope": "x1",
+          "solo": false,
+          "type": "Notch"
+        }
+      },
+      "mode": "FFT",
+      "num-bands": 10,
+      "output-gain": 0.0,
+      "pitch-left": 0.0,
+      "pitch-right": 0.0,
+      "right": {
+        "band0": {
+          "frequency": 31.5,
+          "gain": -3.9,
+          "mode": "APO (DR)",
+          "mute": false,
+          "q": 1.41,
+          "slope": "x1",
+          "solo": false,
+          "type": "Notch"
+        },
+        "band1": {
+          "frequency": 63.0,
+          "gain": -3.9,
+          "mode": "APO (DR)",
+          "mute": false,
+          "q": 1.41,
+          "slope": "x1",
+          "solo": false,
+          "type": "Notch"
+        },
+        "band2": {
+          "frequency": 125.0,
+          "gain": -3.0,
+          "mode": "APO (DR)",
+          "mute": false,
+          "q": 1.41,
+          "slope": "x1",
+          "solo": false,
+          "type": "Notch"
+        },
+        "band3": {
+          "frequency": 250.0,
+          "gain": 3.0,
+          "mode": "APO (DR)",
+          "mute": false,
+          "q": 1.41,
+          "slope": "x1",
+          "solo": false,
+          "type": "Notch"
+        },
+        "band4": {
+          "frequency": 500.0,
+          "gain": -0.5,
+          "mode": "APO (DR)",
+          "mute": false,
+          "q": 1.41,
+          "slope": "x1",
+          "solo": false,
+          "type": "Notch"
+        },
+        "band5": {
+          "frequency": 1000.0,
+          "gain": 0.0,
+          "mode": "APO (DR)",
+          "mute": false,
+          "q": 1.41,
+          "slope": "x1",
+          "solo": false,
+          "type": "Notch"
+        },
+        "band6": {
+          "frequency": 2000.0,
+          "gain": 0.0,
+          "mode": "APO (DR)",
+          "mute": false,
+          "q": 1.41,
+          "slope": "x1",
+          "solo": false,
+          "type": "Notch"
+        },
+        "band7": {
+          "frequency": 4000.0,
+          "gain": 0.0,
+          "mode": "APO (DR)",
+          "mute": false,
+          "q": 1.41,
+          "slope": "x1",
+          "solo": false,
+          "type": "Notch"
+        },
+        "band8": {
+          "frequency": 8000.0,
+          "gain": -3.9,
+          "mode": "APO (DR)",
+          "mute": false,
+          "q": 1.41,
+          "slope": "x1",
+          "solo": false,
+          "type": "Notch"
+        },
+        "band9": {
+          "frequency": 16000.0,
+          "gain": -6.03,
+          "mode": "APO (DR)",
+          "mute": false,
+          "q": 1.41,
+          "slope": "x1",
+          "solo": false,
+          "type": "Notch"
+        }
+      },
+      "split-channels": false
+    },
+    "exciter#0": {
+      "amount": 6.0,
+      "blend": 0.0,
+      "bypass": false,
+      "ceil": 16000.0,
+      "ceil-active": false,
+      "harmonics": 8.000000000000002,
+      "input-gain": -2.0,
+      "output-gain": 0.0,
+      "scope": 5500.0
+    },
+    "limiter#0": {
+      "alr": true,
+      "alr-attack": 5.0,
+      "alr-knee": 0.0,
+      "alr-release": 50.0,
+      "attack": 5.0,
+      "bypass": true,
+      "dithering": "None",
+      "external-sidechain": false,
+      "gain-boost": false,
+      "input-gain": 0.0,
+      "lookahead": 5.0,
+      "mode": "Herm Thin",
+      "output-gain": 0.0,
+      "oversampling": "Half x4(3L)",
+      "release": 10.0,
+      "sidechain-preamp": 0.0,
+      "stereo-link": 100.0,
+      "threshold": -1.0
+    },
+    "plugins_order": [
+      "exciter#0",
+      "bass_enhancer#0",
+      "convolver#0",
+      "limiter#0",
+      "equalizer#0"
+    ]
+  }
 }

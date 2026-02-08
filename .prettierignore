@@ -1,0 +1,8 @@
+dotbot/
+*.nix
+*.sh
+.aliases*
+.exports*
+.zshrc*
+.zshenv
+.bashrc

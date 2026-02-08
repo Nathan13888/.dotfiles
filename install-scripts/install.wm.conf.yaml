@@ -4,7 +4,7 @@
       create: true
       force: true
 
-- clean: ['~', '~/.config']
+- clean: ["~", "~/.config"]
 
 - link:
     # BASH
@@ -25,7 +25,7 @@
     ~/.vimrc: .vimrc
     ~/.gitconfig: .gitconfig
     ~/.gitmessage.txt: .gitmessage.txt
-#    ~/.tmux.conf: .tmux.conf
+    #    ~/.tmux.conf: .tmux.conf
 
     # NIX
     ~/.config/nixpkgs: .config/nixpkgs
@@ -47,7 +47,6 @@
     # Applications
     ~/.config/mpv/mpv.conf: .config/mpv/mpv.conf
 
-
 - create:
     - ~/wallpapers
     - ~/bin
@@ -55,6 +54,5 @@
     - ~/mnt
     - ~/ws
     - ~/jdks
-
 #- shell:
 #  - [git submodule update --init --recursive, Installing submodules]

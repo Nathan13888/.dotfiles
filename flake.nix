@@ -117,7 +117,15 @@
         in {
           devShell = pkgs.mkShell {
             name = "installation-shell";
-            buildInputs = with pkgs; [ home-manager git];
+            buildInputs = with pkgs; [
+              home-manager
+              git
+              pre-commit
+              shellcheck
+              shfmt
+              nixfmt-rfc-style
+              nodePackages.prettier
+            ];
             #buildInputs = with pkgs; [ wget s-tar home-manager git vim tmux ];
             NIX_CONFIG = "experimental-features = nix-command flakes";
           };

@@ -1,0 +1,33 @@
+repos:
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.10.0-1
+    hooks:
+      - id: shfmt
+        args: [-i, "2", -ci, -bn, -w]
+        types_or: [shell, bash, zsh]
+        files: '(\.sh$|\.aliases|\.exports|\.zshrc|\.zshenv|\.bashrc)'
+        exclude: "^dotbot/"
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+        types_or: [shell, bash]
+        files: '(\.sh$|\.aliases|\.exports|\.bashrc)'
+        exclude: "^dotbot/"
+
+  - repo: local
+    hooks:
+      - id: nixfmt
+        name: nixfmt
+        entry: nixfmt
+        language: system
+        files: '\.nix$'
+        exclude: "^dotbot/"
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0-alpha.8
+    hooks:
+      - id: prettier
+        types_or: [yaml, json]
+        exclude: "^dotbot/"

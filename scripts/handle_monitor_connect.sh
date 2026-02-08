@@ -6,6 +6,7 @@ handle() {
     hyprctl dispatch moveworkspacetomonitor "2 1"
     hyprctl dispatch moveworkspacetomonitor "4 1"
     hyprctl dispatch moveworkspacetomonitor "5 1"
+    ;;
   esac
 }
 

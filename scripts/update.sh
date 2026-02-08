@@ -15,5 +15,3 @@ nix flake update
 flatpak update
 home-manager switch --flake .
 TMPDIR=/var/tmp sudo nixos-rebuild switch --flake . $@
-
-

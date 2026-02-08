@@ -4,7 +4,7 @@
       create: true
       force: true
 
-- clean: ['~', '~/.config']
+- clean: ["~", "~/.config"]
 
 - link:
     # BASH
@@ -20,7 +20,7 @@
     ~/.vimrc: .vimrc
     ~/.gitconfig: .gitconfig
     ~/.gitmessage.txt: .gitmessage.txt
-#    ~/.tmux.conf: .tmux.conf
+    #    ~/.tmux.conf: .tmux.conf
 
     # NIX
     # TODO: nix.conf enable experimental features
@@ -34,9 +34,7 @@
 
     #~/.ssh/config: .ssh/config
 
-
 - create:
     - ~/tmp
     - ~/mnt
     - ~/ws
-

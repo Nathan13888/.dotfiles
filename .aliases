@@ -64,7 +64,7 @@ alias vm="v -M"
 alias su="sudo su -"
 alias c="cd"
 alias clear='printf "\ec"'
-alias cc="claude"
+alias cc="claude --dangerously-skip-permissions"
 alias y="yazi"
 
 ### NETWORKING

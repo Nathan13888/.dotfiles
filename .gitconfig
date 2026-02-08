@@ -1,217 +1,228 @@
 [user]
-
-name = Nathan
-email = 29968201+Nathan13888@users.noreply.github.com
-
-[include]
-path = ~/.gitconfig.local
-
-[alias]
-st = status -sb -uall
-status = status --show-stash
-tags = tag -l --sort=version:refname # view all tags
-credit = shortlog -sne
-save = commit -a -m "Save"
-mer = merge
-mff = merge --ff-only
-mnff = merge --no-ff
-bra = branch -vv --all # view all branches in the current repository
-brv = bra              # remove duplicate
-brd = branch -d
-brrm = brd
-brm = branch -m   #<A> <B> rename branch from A to B
-cob = checkout -b # create new branch and switch to it
-remv = remote -vv
-rema = remote add     # add remote URL
-remao = rema origin   # add origin (remote) URL
-remau = rema upstream # add upstream URL
-rems = remote set-url # set remote URL
-remso = rems origin   # set origin URL
-remsu = rems upstream # set upstream URL
-smuir = submodule update --init --recursive
-# add fetch command, good for large projects
-undo = reset HEAD~1
-undo2 = reset HEAD~2
-undo3 = reset HEAD~3
-rmc = rm --cached # remove from VCS
-us = reset --     # "unstage"; git reset [commit(def=HEAD)] -- <path>
-rs = restore --staged
-r = restore
-ci = check-ignore
-resethard = reset --hard
-squash-all = "!f(){ git reset $(git commit-tree HEAD^{tree} \"$@\");};f"
-renorm = add --renormalize .
-brow = browse
-pr="!f() { \
-          BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD); \
-          git push -u origin $BRANCH_NAME; \
-          hub pull-request; \
-     };f "
-v = version
-mt = mergetool
-lsf = ls-files
-amend = commit --amend
-ca = commit -S -s # sign commit and add comment
-cam = ca -m
-caa = ca -a # stage and commit everything
-caam = caa -m
-ash = stash
-co = checkout
-br = branch
-di = diff
-pl = pull
-pu = push
-pp = !git pull && git push
-rem = remote
-reb = rebase
-fe = fetch
-sm = submodule
-a = add
-aa = add . # stage everything to be committed
-lg = log -p --pretty=fuller
-ll = log --graph --pretty=format:'%C(auto)%h%d (%cr) %cn <%ce> %s'
-gr = log --graph --oneline --all --decorate
-showtool = ! "st() { if [ -z $1 ]; then c='HEAD'; else c=$1; fi; git difftool $c~..$c; }; st"
-info = ! "inf() { if git rev-parse ${1} >/dev/null 2>&1; then git cat-file -p $(git rev-parse ${1}); else echo Invalid object; fi }; inf"
-# commit-status: generate a commit with message from git-status (staged changes).
-# Source: https://gist.github.com/erikw/654386d35ecfdb0354cd2b71763f19ae
-cst = !" \
-          TMPFILE=$(mktemp /tmp/git-commit-status-message.XXX); \
-          git status --porcelain \
-            | grep '^[MARCDT]' \
-            | sort \
-            | sed -re 's/^([[:upper:]])[[:upper:]]?[[:space:]]+/\\1:\\n/' \
-            | awk '!x[$0]++' \
-            | sed -re 's/^([[:upper:]]:)$/\\n\\1/' \
-            | sed -re 's/^M:$/Modified: /' \
-            | sed -re 's/^A:$/Added: /' \
-            | sed -re 's/^R:$/Renamed: /' \
-            | sed -re 's/^C:$/Copied: /' \
-            | sed -re 's/^D:$/Deleted: /' \
-            | sed -re 's/^T:$/File Type Changed: /' \
-            | tr '\n' ' ' | xargs \
-            > $TMPFILE; \
-          cat $TMPFILE; \
-          commit=''; \
-          while :; do \
-              echo '> Commit with this message? [Yn]: '; \
-              read commit; \
-                  ([ -z \"$commit\" ] || [ \"$commit\" = y ] || [ \"$commit\" = Y ] || [ \"$commit\" = n ]) && break; \
-          done; \
-          test \"$commit\" != n || exit; \
-          git commit -F $TMPFILE; \
-          rm -f $TMPFILE \
-          "
-
-[core]
-editor = vim
-filemode = true
-ignorecase = true
-autocrlf = input
-
-[credential]
-helper = store
-#helper = /usr/lib/git-core/git-credential-libsecret
-[commit]
-template = ~/.gitmessage.txt
-cleanup = strip
-gpgSign = true
-[diff]
-renames = true
-
-[push] # http://stackoverflow.com/a/23918418/89484
-default = current
-followTags = true
-
-[merge]
-tool = vimdiff
-renameLimit = 0
-ff = true # fast forward tip of current branch
-renames = true
-
-[fetch]
-prune = true
-
-[stash]
-showPatch = true
-
-[log]
-date = relative
-
-[filter "lfs"]
-required = true
-clean = git-lfs clean -- %f
-smudge = git-lfs smudge -- %f
-process = git-lfs filter-process
-
-[color]
-branch = auto
-diff = auto
-interactive = auto
-status = auto
-ui = auto
-[color "status"]
-added = green
-#updated = red
-changed = cyan
-untracked = magenta
-nobranch = red white bold # not sure what this is...
-[color "diff"]
-plain = dim
-meta = yellow
-frag = magenta bold
-func = cyan bold
-old = red
-new = green
-commit = blue bold
-whitespace = white reverse
-[color "branch"]
-current = green bold #reverse
-local = red bold
-remote = cyan bold
-plain = magenta dim
-[color "decorate"]    # slots: branch, remoteBranch, tag, stash, HEAD (for git log --decorate)
-[color "interactive"] # slots: prompt, header, help, error (for git add --interactive)
-
-[help]
-#autocorrect = 1 # basically instant, refer to git-config
+	name = Nathan
+	email = 29968201+Nathan13888@users.noreply.github.com
+	signingkey = /Users/nathan/.ssh/id_ed25519
 
 [gpg]
-program = gpg
+	format = ssh
+
+[include]
+	path = ~/.gitconfig.local
+
+[alias]
+	st = status -sb -u
+	status = status --show-stash
+	tags = tag -l --sort=version:refname
+	credit = shortlog -sne
+	save = commit -a -m "Save"
+	mer = merge
+	mff = merge --ff-only
+	mnff = merge --no-ff
+	bra = branch -vv --all
+	brd = branch -d
+	brrm = brd
+	brm = branch -m
+	cob = checkout -b
+	remv = remote -vv
+	rema = remote add
+	remao = rema origin
+	remau = rema upstream
+	rems = remote set-url
+	remso = rems origin
+	remsu = rems upstream
+	smuir = submodule update --init --recursive
+	undo = reset HEAD~1
+	undo2 = reset HEAD~2
+	undo3 = reset HEAD~3
+	rmc = rm --cached
+	us = reset --
+	rs = restore --staged
+	r = restore
+	ci = check-ignore
+	resethard = reset --hard
+	squash-all = "!f(){ git reset $(git commit-tree HEAD^{tree} \"$@\");};f"
+	renorm = add --renormalize .
+	brow = browse
+	pr = "!f() { \
+		BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD); \
+		git push -u origin $BRANCH_NAME; \
+		gh pr create; \
+	};f "
+	v = version
+	mt = mergetool
+	lsf = ls-files
+	amend = commit --amend
+	ca = commit -S -s
+	cam = ca -m
+	caa = ca -a
+	caam = caa -m
+	ash = stash
+	co = checkout
+	br = branch
+	di = diff
+	pl = pull
+	pu = push
+	pp = !git pull && git push
+	rem = remote
+	reb = rebase
+	fe = fetch
+	sm = submodule
+	a = add
+	aa = add .
+	lg = log -p --pretty=fuller
+	ll = log --graph --pretty=format:'%C(auto)%h%d (%cr) %cn <%ce> %s'
+	gr = log --graph --oneline --all --decorate
+	showtool = ! "st() { if [ -z $1 ]; then c='HEAD'; else c=$1; fi; git difftool $c~..$c; }; st"
+	info = ! "inf() { if git rev-parse ${1} >/dev/null 2>&1; then git cat-file -p $(git rev-parse ${1}); else echo Invalid object; fi }; inf"
+	# commit-status: generate a commit with message from git-status (staged changes)
+	# Source: https://gist.github.com/erikw/654386d35ecfdb0354cd2b71763f19ae
+	cst = !" \
+		TMPFILE=$(mktemp /tmp/git-commit-status-message.XXX); \
+		git status --porcelain \
+			| grep '^[MARCDT]' \
+			| sort \
+			| sed -re 's/^([[:upper:]])[[:upper:]]?[[:space:]]+/\\1:\\n/' \
+			| awk '!x[$0]++' \
+			| sed -re 's/^([[:upper:]]:)$/\\n\\1/' \
+			| sed -re 's/^M:$/Modified: /' \
+			| sed -re 's/^A:$/Added: /' \
+			| sed -re 's/^R:$/Renamed: /' \
+			| sed -re 's/^C:$/Copied: /' \
+			| sed -re 's/^D:$/Deleted: /' \
+			| sed -re 's/^T:$/File Type Changed: /' \
+			| tr '\n' ' ' | xargs \
+			> $TMPFILE; \
+		cat $TMPFILE; \
+		commit=''; \
+		while :; do \
+			echo '> Commit with this message? [Yn]: '; \
+			read commit; \
+				([ -z \"$commit\" ] || [ \"$commit\" = y ] || [ \"$commit\" = Y ] || [ \"$commit\" = n ]) && break; \
+		done; \
+		test \"$commit\" != n || exit; \
+		git commit -F $TMPFILE; \
+		rm -f $TMPFILE \
+		"
+
+[core]
+	editor = vim
+	filemode = true
+	ignorecase = true
+	autocrlf = input
+	fsmonitor = true
+
+[credential]
+	# macOS: osxkeychain; Linux: use libsecret or credential-cache
+	helper = osxkeychain
+
+[commit]
+	template = ~/.gitmessage.txt
+	cleanup = strip
+	gpgSign = true
+
+[diff]
+	renames = true
+
+[push]
+	default = current
+	followTags = true
+
+[merge]
+	tool = vimdiff
+	renameLimit = 0
+	ff = true
+	renames = true
+
+[fetch]
+	prune = true
+
+[stash]
+	showPatch = true
+
+[log]
+	date = relative
+
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+
+[color]
+	branch = auto
+	diff = auto
+	interactive = auto
+	status = auto
+	ui = auto
+
+[color "status"]
+	added = green
+	changed = cyan
+	untracked = magenta
+	nobranch = red white bold
+
+[color "diff"]
+	plain = dim
+	meta = yellow
+	frag = magenta bold
+	func = cyan bold
+	old = red
+	new = green
+	commit = blue bold
+	whitespace = white reverse
+
+[color "branch"]
+	current = green bold
+	local = red bold
+	remote = cyan bold
+	plain = magenta dim
+
+[color "decorate"]
+[color "interactive"]
 
 [url "ssh://git@github.com"]
-insteadOf = "https://github.com"
-pushInsteadOf = "https://github.com"
+	insteadOf = "https://github.com"
+	pushInsteadOf = "https://github.com"
 
 [url "git@gist.github.com:"]
-insteadOf = "gist:"
-pushInsteadOf = "gist:"
+	insteadOf = "gist:"
+	pushInsteadOf = "gist:"
 
 [url "git@gitlab.com:"]
-insteadOf = "gl:"
-pushInsteadOf = "gl:"
+	insteadOf = "gl:"
+	pushInsteadOf = "gl:"
 
+# TODO: still needed?
 [url "https://nathan13888@git.nathanchung.dev/"]
-#[url "gitea@192.168.10.200:"]
-insteadOf = "https://git.nathanchung.dev/"
-pushInsteadOf = "https://git.nathanchung.dev/"
+	insteadOf = "https://git.nathanchung.dev/"
+	pushInsteadOf = "https://git.nathanchung.dev/"
 
+# TODO: still needed?
 [url "git@csclub.uwaterloo.ca:"]
-insteadOf = "https://git.csclub.uwaterloo.ca/"
-pushInsteadOf = "https://git.csclub.uwaterloo.ca/"
+	insteadOf = "https://git.csclub.uwaterloo.ca/"
+	pushInsteadOf = "https://git.csclub.uwaterloo.ca/"
 
+# TODO: still needed?
 [url "ist-git@git.uwaterloo.ca:"]
-insteadOf = "https://git.uwaterloo.ca/"
-pushInsteadOf = "https://git.uwaterloo.ca/"
+	insteadOf = "https://git.uwaterloo.ca/"
+	pushInsteadOf = "https://git.uwaterloo.ca/"
 
 [rebase]
-autosquash = true
+	autosquash = true
 
 [pull]
-rebase = false
+	rebase = false
 
 [init]
-defaultBranch = master
-#defaultBranch=$(git config --get init.defaultBranch || echo master)
+	defaultBranch = master
+
 [advice]
 	addIgnoredFile = false
+
+[rerere]
+	enabled = true
+	autoupdate = true
+
+[maintenance]
+	repo = /Users/nathan/ws/gitar
+	repo = /Users/nathan/ws/gitar2

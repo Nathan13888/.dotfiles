@@ -1,38 +1,36 @@
 export ZSH_WAKATIME_BIN=$(which wakatime-cli)
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 export plum_dir="$HOME/plum"
-#export rime_dir="$HOME/.local/share/fcitx5/rime"
 export rime_dir="$HOME/plum/output"
-#export rime_frontend=fcitx-rime
 
 export PATH="$HOME/.local/bin:$HOME/scripts:$HOME/wm.sh:$PATH"
-#export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
 [ -f $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh ] && source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 
 # Node
 export NEXT_TELEMETRY_DISABLED=1
 export GATSBY_TELEMETRY_DISABLED=1
 
-# CARGO
+# Cargo
 export PATH=$PATH:$HOME/.cargo/bin
+
+# Go
 export PATH=$PATH:$GOROOT/bin
-export GOPATH=$HOME/go # the first path in GOPATH is always used to install external packages
+export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 export GOPATH=$GOPATH:$HOME/ws/scripts:$HOME/ws/gt
+
 export PYTHONDONTWRITEBYTECODE=1
 
-# Ruby
+# Ruby (runs `ruby -e` on every shell start)
 export GEM_HOME="$(ruby -e 'puts Gem.user_dir')"
 export PATH="$PATH:$GEM_HOME/bin"
 
-# Arduino
-#export ARDCONFIG=${XDG_CONFIG_HOME}/arduino-cli/config.yaml
+# VS Code
+export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
-# GPG --> https://stackoverflow.com/questions/41052538/git-error-gpg-failed-to-sign-data
+# GPG
 export GPG_TTY=$(tty)
-

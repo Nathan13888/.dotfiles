@@ -3,53 +3,23 @@
 #########################
 
 alias EA="nvim ~/.aliases"
-mkdot() {
-    if [ -z "$1" ];then
-        echo "You must specify a path"
-        return 1
-    else
-        readonly DOTF=`realpath ${DOTF?"$HOME/.dotfiles"}`
-        readonly SOURCE="$1"
-        readonly DEST="$DOTF/${SOURCE%$HOME}"
-        echo "Source:\t$SOURCE"
-        echo "Dest:\t$DEST"
-        echo "Dotf:\t$DOTF"
-        if ! [ -d "$DOTF" ]; then
-            echo "'$DOTF' is an invalid directory"
-            return 1
-        fi
-        if ! [ $1 = "$HOME*" ]; then
-            echo "Paths outside of '$HOME' are currently unsupported"
-            return 1
-        fi
-        if ! [ -d "$SOURCE" || -f "$SOURCE" ]; then
-            echo "Dotfile must be a file or directory!"
-            return 1
-        fi
-        if [ -e "$DEST" ]; then
-            echo "Dotfile already exists at '$DEST'!"
-            return 1
-        fi
-        #mv "$SOURCE" "$DEST"
-        #ln -s "$DEST" "$SOURCE"
-    fi
-}
 
 function exp-path() {
   SEL="$(readlink -f $1)"
   export PATH="$PATH:$SEL"
 }
 
+# Arch Linux AUR helper
 function aurcommit() {
-        MSG=$*
-        if [[ -z "$1" ]]; then
-                read -p "Message: " MSG
-        fi
-        updpkgsums
-        makepkg --printsrcinfo > .SRCINFO
-        git add PKGBUILD .SRCINFO
-        namcap PKGBUILD
-        git commit -m "$MSG"
+  MSG=$*
+  if [[ -z "$1" ]]; then
+    read -p "Message: " MSG
+  fi
+  updpkgsums
+  makepkg --printsrcinfo > .SRCINFO
+  git add PKGBUILD .SRCINFO
+  namcap PKGBUILD
+  git commit -m "$MSG"
 }
 
 eval "$(pay-respects zsh --alias)"
@@ -66,7 +36,7 @@ function reload {
   if [[ $SHELL == */tmux ]] ; then
     exec zsh
   else
-    exec $SHELL # reload whatever is $SHELL
+    exec $SHELL
   fi
 }
 alias ar="paru"
@@ -78,36 +48,9 @@ if command -v nvim &> /dev/null; then
     alias v="nvim"
 fi
 alias sv='sudo v'
-#vns() {
-#    if [ -z "$1" ];then
-#        echo "You must specify a path!"
-#    else
-#        if [ -e "$1" ];then
-#            echo "'$1' already exists!"
-#            return 1
-#        fi
-#
-#        local SHEBANG="#!/bin/sh"
-#        echo "$SHEBANG" >> "$1"
-#
-#        if ! [ -f "$1" ]; then
-#            echo "Could not find created file"
-#            return 1
-#        fi
-#
-#        chmod +x "$1"
-#        if ! [ -x "$1" ];then
-#            echo "Failed to append execute permissions"
-#            return 1
-#        fi
-#
-#        if [ -f "$1" ]; then
-#            v "$1"
-#        fi
-#    fi
-#}
 
 alias g="git"
+# NOTE: adjust_date uses GNU date -d (Linux only)
 function adjust_date {
     date -d "$(date) $@"
 }
@@ -120,7 +63,7 @@ git-inspect-status() {
   for f in ./*; do;
     if [ -d "$f" ]; then
       echo $f
-      git -C $f status -sb -uall
+      git -C $f status -sb
     fi
   done
 }
@@ -140,9 +83,13 @@ alias vm="v -M"
 alias su="sudo su -"
 alias c="cd"
 alias clear='printf "\ec"'
+alias cc="claude"
+alias y="yazi"
 
 ### NETWORKING
 alias ifa="/sbin/ifconfig -a"
+
+### LINUX-ONLY: Networking (nmcli, macchanger, airmon-ng, ip link, iptables)
 alias ipshow="ip link show"
 alias nmds="nmcli device status"
 alias nmcs="nmcli connection show"
@@ -156,13 +103,13 @@ alias mce="mc -e"
 alias mca="mc -a"
 alias mcA="mc -A"
 alias mcp="mc -p"
-alias airm="sudo airmon-ng" # https://github.com/aircrack-ng/rtl8812au
+alias airm="sudo airmon-ng"
 alias airmck="airm check kill"
 alias wq="wg-quick"
 alias wu="wg-quick up"
 alias wd="wg-quick down"
 function wr { echo -e "wg-quick down\n"; wg-quick down "$@"; echo -e "wg-quick up\n"; wg-quick up "$@"; }
-alias ipls="sudo ip link set" # reference below from https://stackoverflow.com/questions/55127741/how-do-you-pass-arguments-to-custom-zsh-functions
+alias ipls="sudo ip link set"
 function iplsd {
   readonly face=${1:?"The interface must be specified"}
   ipls $1 down
@@ -185,12 +132,13 @@ function unmac {
   mcp $1
   iplsu $1
 }
-### SYSTEM
-alias ipt="sudo iptables"
-alias resetlock="faillock --reset --user $USER"
 
-alias xc="xclip -selection clipboard -i"
-alias pg="pgrep" # find process id, `$ pidof` is another viable command alternative
+### LINUX-ONLY: System
+alias ipt="sudo iptables"
+alias resetlock="faillock --reset --user $USER"   # Linux PAM
+alias xc="xclip -selection clipboard -i"          # use pbcopy/pbpaste on macOS
+
+alias pg="pgrep"
 alias grep="grep --color=always"
 function GI {
   grep -i "$@"
@@ -203,6 +151,7 @@ function sedhref {
 }
 alias count="wc -l"
 
+# LINUX-ONLY: reads /proc
 function findexe() {
   readonly pid=${1:?"The PID of the process must be specified"}
   readlink -f /proc/$1/exe
@@ -225,9 +174,9 @@ alias ssh-check="ssh -O check"
 alias fdisk="sudo fdisk"
 alias mount="sudo mount"
 alias umount="sudo umount"
-alias free="free -hm"
+alias free="free -hm" # LINUX-ONLY: not available on macOS
 
-# SSD Benchmark
+# LINUX-ONLY: SSD Benchmark (requires fio with libaio)
 function fiotest {
     readonly testFile=${1:?"Test file must be specified"}
     sudo fio --loops=5 --size=1000m --filename=$testFile --stonewall --ioengine=libaio --direct=1 \
@@ -244,7 +193,7 @@ alias fdd='find . -type d -name' # find directory
 alias fff='find . -type f -name' # find file
 alias du="du -h"
 alias df="df -h"
-alias du1="du -d 1" # view the size of all directories of depth 1
+alias du1="du -d 1"
 dutop() {
   SOURCE=$1
   if [ SOURCE=="" ]; then
@@ -256,7 +205,6 @@ dutop() {
 tdur() {
     local P="$1"
     if [ -z "$P" ]; then
-        #P=./*
         echo -e "No path specified. Scanning all contents of working directory.\n\n"
         return 1
     else
@@ -265,24 +213,19 @@ tdur() {
     exiftool -n -p '\${Duration;our\$s;\$_=ConvertDuration(\$s+=\$_)}' $P|tail -n1
 }
 alias stripexif="exiftool -all:all= -tagsfromfile @ -exif:Orientation"
-#alias cf="count-files"
-#alias count-files="ls | wc -l"
-#alias cfr="count-files-recursive"
-#alias count-files-recursive="ls -R | wc -l"
-#alias ducks="du -cks -- * | sort -rn | head"
+
 ##### LS
-if command -v exa &> /dev/null; then
+if command -v eza &> /dev/null; then
+    alias ls="eza -@ --time-style iso --octal-permissions --no-permissions"
+elif command -v exa &> /dev/null; then
     alias ls="exa -@ --time-style iso --octal-permissions --no-permissions"
 fi
 alias la='ls -alhg --color=always --group-directories-first'
 alias lag="la | grep --color=always ''"
 alias lad="la | grep --color=always '^d'"
 alias laf="la | grep --color=always '^-'"
-alias lar="ls -R --color=always" # show all directories recursively, useful for small directories
-##### LS LESS
+alias lar="ls -R --color=always"
 alias lal="la | less"
-alias lldl="lld | less"
-alias llfl="llf | less"
 
 ### FILE OPERATIONS
 alias remount="sudo mount -av"
@@ -291,7 +234,7 @@ alias chowm="sudo chown $USER:$USER -v"
 alias mkd="mkdir -vp"
 alias smkd="sudo mkdir -vp"
 
-rs='rsync -avPhh --info=progress2,stats1 --partial "$@"'
+alias rs='rsync -avPhh --info=progress2,stats1 --partial'
 
 function wgt {
   NSLASH="$(echo "$1" | perl -pe 's|.*://[^/]+(.*?)/?$|\1|' | grep -o / | wc -l)"
@@ -328,7 +271,7 @@ function tarp {
 alias cp='cp -v'
 alias mv='mv -v'
 alias rm='rm -v'
-alias rmf='rm -f' # removes all prompts
+alias rmf='rm -f'
 alias rmd="rmdir -v"
 
 ### CD
@@ -340,4 +283,3 @@ alias .5='cd ../../../../..'
 alias 1='cd -'
 alias 2='cd -2'
 alias 3='cd -3'
-

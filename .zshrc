@@ -1,34 +1,16 @@
-## If not in tmux, start tmux.
-#if [[ -z ${TMUX+X}${ZSH_SCRIPT+X}${ZSH_EXECUTION_STRING+X} ]]; then
-#  exec tmux
-#fi
-
-zmodload zsh/zprof
-
-# Uncomment the following line if pasting URLs and other text is messed up.
 DISABLE_MAGIC_FUNCTIONS=true
 
 # History
 SAVEHIST=100000
 HISTFILE=$HOME/.zsh_history
-#HIST_STAMPS="mm/dd/yyyy"
 
-
-function zcompile-many() {
-  local f
-  for f; do zcompile -R -- "$f".zwc "$f"; done
-}
-
-function comp() {
-    [[ ! "$1.zwc" -nt $1 ]] || zcompile $1
-    builtin source $@
-}
+# Homebrew
+[[ -f /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
 #########################
 #        ZINIT          #
 #########################
 
-### Added by Zinit's installer
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
     print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
     command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
@@ -41,98 +23,73 @@ source "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-# (this is currently required for annexes)
+# Annexes
 zinit light-mode for \
     zdharma-continuum/zinit-annex-rust \
     zdharma-continuum/zinit-annex-as-monitor \
     zdharma-continuum/zinit-annex-patch-dl \
     zdharma-continuum/zinit-annex-bin-gem-node
 
-
 #########################
 #        PROMPT         #
 #########################
 
-
-#zinit light spaceship-prompt/spaceship-prompt
-
-# Load starship theme
-# line 1: `starship` binary as command, from github release
-# line 2: starship setup at clone(create init.zsh, completion)
-# line 3: pull behavior same as clone, source init.zsh
+# Load starship theme via zinit
 zinit ice as"command" from"gh-r" \
           atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
           atpull"%atclone" src"init.zsh"
 zinit light starship/starship
 
-if command -v starship &> /dev/null; then
-    eval "$(starship init zsh)"
-fi
+#########################
+#       PLUGINS         #
+#########################
 
-#zinit ice wait lucid; zinit light junegunn/fzf
 zinit ice wait lucid; zinit light Aloxaf/fzf-tab
-
 zinit ice wait lucid; zinit light jeffreytse/zsh-vi-mode
+zinit ice wait lucid; zinit light sobolevn/wakatime-zsh-plugin
+
+# direnv
+eval "$(direnv hook zsh)"
 
 #########################
 #          FZF          #
 #########################
 
-# preview directory's content with exa when completing cd
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
-# switch group using `,` and `.`
+# Preview directory's content with eza/exa when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath 2>/dev/null || exa -1 --color=always $realpath'
 zstyle ':fzf-tab:*' switch-group ',' '.'
 
-# search for files
 bindkey -s '^F' 'find . -type f | fzf^M'
 
-# Use ~~ as the trigger sequence instead of the default **
 export FZF_COMPLETION_TRIGGER='~~'
-
-# Options to fzf command
 export FZF_DEFAULT_COMMAND='fd --type file --hidden --no-ignore'
 export FZF_DEFAULT_OPTS='--height 90% --layout=reverse'
 
-# Use fd (https://github.com/sharkdp/fd) instead of the default find
-# command for listing path candidates.
-# - The first argument to the function ($1) is the base path to start traversal
-# - See the source code (completion.{bash,zsh}) for the details.
+# Use fd instead of find for path candidates
 _fzf_compgen_path() {
   fd --hidden --follow --exclude ".git" . "$1"
 }
 
-# Use fd to generate the list for directory completion
 _fzf_compgen_dir() {
   fd --type d --hidden --follow --exclude ".git" . "$1"
 }
 
-[ -n "$BASH" ] && complete -F _fzf_complete_doge -o default -o bashdefault doge
-
-# (EXPERIMENTAL) Advanced customization of fzf options via _fzf_comprun function
-# - The first argument to the function is the name of the command.
-# - You should make sure to pass the rest of the arguments to fzf.
 _fzf_comprun() {
   local command=$1
   shift
 
   case "$command" in
-    cd)           fzf "$@" --preview 'tree -C {} | head -200' ;; #'exa -1 --color=always $realpath'
+    cd)           fzf "$@" --preview 'tree -C {} | head -200' ;;
     export|unset) fzf "$@" --preview "eval 'echo \$'{}" ;;
     ssh)          fzf "$@" --preview 'dig {}' ;;
     *)            fzf "$@" ;;
   esac
 }
 
-
 ################################################################################
-
-# Nice to have plugins
-zinit ice wait lucid; zinit light sobolevn/wakatime-zsh-plugin
 
 # zshrc.local
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
-
-unfunction zcompile-many
 
 ulimit -c 0 # disable core dumps
 
@@ -142,43 +99,25 @@ ulimit -c 0 # disable core dumps
 #        ALIASES        #
 #########################
 
-## REMOVE ALL DEFAULT ZSH ALIASES
-#unalias -m '*'
-zinit ice wait lucid; [ -f ~/.aliases ] && source ~/.aliases
-zinit ice wait lucid; [ -f ~/.aliases.local ] && source ~/.aliases.local
-
+[ -f ~/.aliases ] && source ~/.aliases
+[ -f ~/.aliases.local ] && source ~/.aliases.local
 
 #########################
 #        EXPORTS        #
 #########################
 
-export PYTHONDONTWRITEBYTECODE=1
 [ -f ~/.exports ] && source ~/.exports
 [ -f ~/.exports.local ] && source ~/.exports.local
-
 
 #########################
 #      COMPLETIONS      #
 #########################
 
-
-# TODO: dev completions
-#rustup completions zsh cargo > ~/.zfunc/_cargo
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
 
-# TODO: git completions
-# https://cmetcalfe.ca/blog/git-checkout-autocomplete-local-branches-only.html
-
-# TODO: https://www.reddit.com/r/zsh/comments/dzhalc/overloading_git_autocomplete_methods/
-
-
-# disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
-# set descriptions format to enable group support
 zstyle ':completion:*:descriptions' format '[%d]'
-# set list-colors to enable filename colorizing
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-
 
 # Compinit, Zinit zicdreplay
 zinit wait lucid for \
@@ -191,5 +130,3 @@ zinit wait lucid for \
 
 unsetopt BEEP
 unsetopt LIST_BEEP
-
-#zprof

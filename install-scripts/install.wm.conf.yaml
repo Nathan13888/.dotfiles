@@ -9,6 +9,7 @@
 - link:
     # BASH
     ~/.aliases: .aliases
+    ~/.aliases.linux: .aliases.linux
     ~/.aliases.local: .aliases.local
     ~/.exports: .exports
     ~/.exports.local: .exports.local
@@ -16,17 +17,13 @@
     ~/.zshenv: .zshenv
     ~/.config/starship.toml: starship.toml
 
-    # BASH 2
-    ~/.ssh/config: .ssh/config
     ~/scripts: scripts
 
     # BASH TOOLS
     ~/.config/nvim: .config/nvim
     ~/.config/vifm: vifm
     ~/.vimrc: .vimrc
-    ~/.angular-config.json: angular-config.json
     ~/.gitconfig: .gitconfig
-    ~/.gitconfig.local: .gitconfig.local
     ~/.gitmessage.txt: .gitmessage.txt
 #    ~/.tmux.conf: .tmux.conf
 
@@ -42,17 +39,13 @@
     ~/.config/eww: .config/eww
     ~/.config/dunst: dunst
     ~/.config/fcitx5: .config/fcitx5
-    ~/.local/share/fcitx5: .local/share/fcitx5
     #~/.config/powernotd/config.json: .config/powernotd/config.json
     ~/.config/hypr/hyprlock.conf: .config/hypr/hyprlock.conf
     ~/.config/hypr/hyprpaper.conf: .config/hypr/hyprpaper.conf
     ~/.config/spotify-adblock: .config/spotify-adblock
 
-    ~/.local/share/applications: .local/share/applications
-
     # Applications
     ~/.config/mpv/mpv.conf: .config/mpv/mpv.conf
-    ~/.kube: .kube
 
 
 - create:

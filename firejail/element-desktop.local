@@ -1,5 +1,0 @@
-#include allow-firefox.inc
-#private-bin bash,dbus-launch,dbus-send,element-desktop
-
-# Notifications
-dbus-user.talk org.freedesktop.Notifications

@@ -9,20 +9,10 @@ function exp-path() {
   export PATH="$PATH:$SEL"
 }
 
-# Arch Linux AUR helper
-function aurcommit() {
-  MSG=$*
-  if [[ -z "$1" ]]; then
-    read -p "Message: " MSG
-  fi
-  updpkgsums
-  makepkg --printsrcinfo > .SRCINFO
-  git add PKGBUILD .SRCINFO
-  namcap PKGBUILD
-  git commit -m "$MSG"
-}
-
 eval "$(pay-respects zsh --alias)"
+
+# Linux-specific aliases (networking, system tools, benchmarks)
+[ -f ~/.aliases.linux ] && source ~/.aliases.linux
 
 ### CLI & APPLICATIONS
 exportvar () {
@@ -50,15 +40,6 @@ fi
 alias sv='sudo v'
 
 alias g="git"
-# NOTE: adjust_date uses GNU date -d (Linux only)
-function adjust_date {
-    date -d "$(date) $@"
-}
-function ag {
-    local DATE=$(adjust_date $1)
-    echo $DATE
-    GIT_COMMITTER_DATE="$DATE" git commit --amend --date="$DATE" --no-edit
-}
 git-inspect-status() {
   for f in ./*; do;
     if [ -d "$f" ]; then
@@ -89,55 +70,6 @@ alias y="yazi"
 ### NETWORKING
 alias ifa="/sbin/ifconfig -a"
 
-### LINUX-ONLY: Networking (nmcli, macchanger, airmon-ng, ip link, iptables)
-alias ipshow="ip link show"
-alias nmds="nmcli device status"
-alias nmcs="nmcli connection show"
-function nmwg { nmcli connection import type wireguard file "$@" }
-alias mc="sudo macchanger"
-alias mch="macchanger --help"
-alias mcl="macchanger -l"
-alias mcs="macchanger -s"
-alias mcr="mc -r"
-alias mce="mc -e"
-alias mca="mc -a"
-alias mcA="mc -A"
-alias mcp="mc -p"
-alias airm="sudo airmon-ng"
-alias airmck="airm check kill"
-alias wq="wg-quick"
-alias wu="wg-quick up"
-alias wd="wg-quick down"
-function wr { echo -e "wg-quick down\n"; wg-quick down "$@"; echo -e "wg-quick up\n"; wg-quick up "$@"; }
-alias ipls="sudo ip link set"
-function iplsd {
-  readonly face=${1:?"The interface must be specified"}
-  ipls $1 down
-  echo "Put interface $1 down"
-}
-function iplsu {
-  readonly face=${1:?"The interface must be specified"}
-  ipls $1 up
-  echo "Put interface $1 up"
-}
-function remac {
-  readonly face=${1:?"The interface must be specified"}
-  iplsd $1
-  mcA $1
-  iplsu $1
-}
-function unmac {
-  readonly face=${1:?"The interface must be specified"}
-  iplsd $1
-  mcp $1
-  iplsu $1
-}
-
-### LINUX-ONLY: System
-alias ipt="sudo iptables"
-alias resetlock="faillock --reset --user $USER"   # Linux PAM
-alias xc="xclip -selection clipboard -i"          # use pbcopy/pbpaste on macOS
-
 alias pg="pgrep"
 alias grep="grep --color=always"
 function GI {
@@ -150,12 +82,6 @@ function sedhref {
   sed -n 's/.*href="\([^"]*\).*/\1/p'
 }
 alias count="wc -l"
-
-# LINUX-ONLY: reads /proc
-function findexe() {
-  readonly pid=${1:?"The PID of the process must be specified"}
-  readlink -f /proc/$1/exe
-}
 
 ### APPLICATIONS
 alias mpv="mpv --hwdec=auto"
@@ -174,20 +100,6 @@ alias ssh-check="ssh -O check"
 alias fdisk="sudo fdisk"
 alias mount="sudo mount"
 alias umount="sudo umount"
-alias free="free -hm" # LINUX-ONLY: not available on macOS
-
-# LINUX-ONLY: SSD Benchmark (requires fio with libaio)
-function fiotest {
-    readonly testFile=${1:?"Test file must be specified"}
-    sudo fio --loops=5 --size=1000m --filename=$testFile --stonewall --ioengine=libaio --direct=1 \
-      --name=Seqread --bs=1m --rw=read \
-      --name=Seqwrite --bs=1m --rw=write \
-      --name=512Kread --bs=512k --rw=randread \
-      --name=512Kwrite --bs=512k --rw=randwrite \
-      --name=4kQD32read --bs=4k --iodepth=32 --rw=randread \
-      --name=4kQD32write --bs=4k --iodepth=32 --rw=randwrite
-    sudo rm -ivf $testFile
-}
 
 alias fdd='find . -type d -name' # find directory
 alias fff='find . -type f -name' # find file

@@ -8,6 +8,7 @@
 
 - link:
     ~/.aliases: .aliases
+    ~/.aliases.linux: .aliases.linux
     ~/.aliases.local: .aliases.local
     ~/.exports: .exports
     ~/.exports.local: .exports.local

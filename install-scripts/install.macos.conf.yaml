@@ -32,8 +32,6 @@
     # TODO: need macos specific mimeapps.list
     #~/.config/mimeapps.list: .config/mimeapps.list
 
-    # Applications with state
-    ~/.kube: .kube
     #~/.ssh/config: .ssh/config
 
 

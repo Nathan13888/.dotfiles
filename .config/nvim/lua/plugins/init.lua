@@ -107,6 +107,36 @@ return {
     },
   },
 
+  -- Git signs in gutter
+  {
+    "lewis6991/gitsigns.nvim",
+    opts = {},
+  },
+
+  -- Diagnostics list
+  {
+    "folke/trouble.nvim",
+    cmd = "Trouble",
+    keys = {
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>" },
+      { "<leader>xd", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>" },
+    },
+    opts = {},
+  },
+
+  -- LSP progress indicator
+  {
+    "j-hui/fidget.nvim",
+    opts = {},
+  },
+
+  -- Indent guides
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    opts = {},
+  },
+
   -- Tpope essentials
   "tpope/vim-surround",
   "tpope/vim-commentary",

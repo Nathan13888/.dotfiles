@@ -223,6 +223,3 @@
 	enabled = true
 	autoupdate = true
 
-[maintenance]
-	repo = /Users/nathan/ws/gitar
-	repo = /Users/nathan/ws/gitar2

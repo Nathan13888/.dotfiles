@@ -17,6 +17,7 @@
 
     # BASH TOOLS
     ~/.config/nvim: .config/nvim
+    ~/.vim: .vim
     ~/.vimrc: .vimrc
     ~/.gitconfig: .gitconfig
     ~/.gitmessage.txt: .gitmessage.txt

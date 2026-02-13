@@ -2,8 +2,6 @@
 #         ALIAS         #
 #########################
 
-alias EA="nvim ~/.aliases"
-
 function exp-path() {
   SEL="$(readlink -f $1)"
   export PATH="$PATH:$SEL"
@@ -34,9 +32,7 @@ alias tm="tmux"
 alias tma="tmux attach"
 alias tmr="tmux source-file ~/.tmux.conf"
 alias tmks="tmux kill-server"
-if command -v nvim &> /dev/null; then
-    alias v="nvim"
-fi
+alias v="vim"
 alias sv='sudo v'
 
 alias g="git"
@@ -64,7 +60,7 @@ alias vm="v -M"
 alias su="sudo su -"
 alias c="cd"
 alias clear='printf "\ec"'
-alias cc="claude --dangerously-skip-permissions"
+alias cc="claude --dangerously-skip-permissions --permission-mode plan"
 alias y="yazi"
 
 ### NETWORKING

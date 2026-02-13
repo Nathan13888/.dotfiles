@@ -25,6 +25,12 @@ repos:
         files: '\.nix$'
         exclude: "^dotbot/"
 
+  - repo: https://github.com/Vimjas/vint
+    rev: v0.4a4
+    hooks:
+      - id: vint
+        exclude: "^dotbot/"
+
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v4.0.0-alpha.8
     hooks:

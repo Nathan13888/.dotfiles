@@ -1,1 +1,0 @@
-source ~/.vim/common.vim

@@ -36,6 +36,7 @@ set ignorecase
 set title
 set hidden
 set mouse=a
+set clipboard=unnamed
 
 set number
 set autoindent

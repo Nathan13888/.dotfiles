@@ -107,6 +107,11 @@ return {
     },
   },
 
+  -- Tpope essentials
+  "tpope/vim-surround",
+  "tpope/vim-commentary",
+  "tpope/vim-sleuth",
+
   -- Colorscheme
   {
     "catppuccin/nvim",

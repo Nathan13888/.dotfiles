@@ -22,6 +22,7 @@
     # BASH TOOLS
     ~/.config/nvim: .config/nvim
     ~/.config/vifm: vifm
+    ~/.vim: .vim
     ~/.vimrc: .vimrc
     ~/.gitconfig: .gitconfig
     ~/.gitmessage.txt: .gitmessage.txt

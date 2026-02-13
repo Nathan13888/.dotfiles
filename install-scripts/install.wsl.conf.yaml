@@ -22,7 +22,7 @@
     ~/.gitconfig: .gitconfig
     ~/.gitmessage.txt: .gitmessage.txt
     #    ~/.tmux.conf: .tmux.conf
-    #    ~/.vim: .vim
+    ~/.vim: .vim
     ~/.vimrc: .vimrc
     ~/.zshrc: .zshrc
 

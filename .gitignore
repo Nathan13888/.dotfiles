@@ -38,6 +38,7 @@ vifm/vifminfo.json
 
 # NVIM
 .netrwhist
+.config/nvim/lazy-lock.json
 
 # ZSH
 .oh-my-zsh/custom/plugins/*

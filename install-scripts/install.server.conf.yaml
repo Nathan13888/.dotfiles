@@ -18,6 +18,7 @@
     ~/.gitconfig: .gitconfig
     ~/.gitmessage.txt: .gitmessage.txt
     #    ~/.tmux.conf: .tmux.conf
+    ~/.config/nvim: .config/nvim
     ~/.vim: .vim
     ~/.vimrc: .vimrc
     ~/.zshrc: .zshrc

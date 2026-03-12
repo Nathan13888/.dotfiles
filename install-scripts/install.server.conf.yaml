@@ -21,6 +21,7 @@
     ~/.config/nvim: .config/nvim
     ~/.vim: .vim
     ~/.vimrc: .vimrc
+    ~/.zshenv: .zshenv
     ~/.zshrc: .zshrc
 
 - shell:

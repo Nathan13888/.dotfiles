@@ -2,6 +2,8 @@ vim.cmd("source ~/.vim/common.vim")
 
 vim.g.mapleader = ","
 
+require("lastposition").setup()
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then

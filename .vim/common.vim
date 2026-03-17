@@ -41,6 +41,8 @@ set clipboard=unnamed
 set number
 set autoindent
 
+set undofile
+
 " Searching
 set smartcase
 set incsearch
